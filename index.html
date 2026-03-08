@@ -1740,15 +1740,27 @@
                         <svg viewBox="0 0 400 30" width="100%" height="30px" preserveAspectRatio="none"
                             style="overflow: visible;">
                             <defs>
-                                <radialGradient id="orangeSphere" cx="30%" cy="30%" r="70%">
-                                    <stop offset="0%" stop-color="#fdae74" />
-                                    <stop offset="60%" stop-color="#d97736" />
-                                    <stop offset="100%" stop-color="#9a4710" />
+                                <radialGradient id="animatedSphere" cx="30%" cy="30%" r="70%">
+                                    <stop offset="0%" stop-color="#ff7b54">
+                                        <animate attributeName="stop-color"
+                                            values="#ff7b54; #00b4d8; #20c997; #9b5de5; #f15bb5; #ff7b54" dur="16s"
+                                            repeatCount="indefinite" />
+                                    </stop>
+                                    <stop offset="60%" stop-color="#d9381e">
+                                        <animate attributeName="stop-color"
+                                            values="#d9381e; #0077b6; #028090; #7209b7; #f72585; #d9381e" dur="16s"
+                                            repeatCount="indefinite" />
+                                    </stop>
+                                    <stop offset="100%" stop-color="#7a140d">
+                                        <animate attributeName="stop-color"
+                                            values="#7a140d; #03045e; #023e8a; #3a0ca3; #b5179e; #7a140d" dur="16s"
+                                            repeatCount="indefinite" />
+                                    </stop>
                                 </radialGradient>
                             </defs>
                             <path id="heroSine" d="M 0 15 Q 50 -5, 100 15 T 200 15 T 300 15 T 400 15" fill="none"
                                 stroke="rgba(255,255,255,0.15)" stroke-width="1.5" />
-                            <circle r="12" fill="url(#orangeSphere)">
+                            <circle r="12" fill="url(#animatedSphere)">
                                 <animateMotion dur="32s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1"
                                     calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1">
                                     <mpath href="#heroSine" />
