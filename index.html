@@ -303,16 +303,15 @@
             /* Syncopate is very wide, so adjusting size down */
             letter-spacing: -0.02em;
             line-height: 0.9;
+            margin: 0;
             text-transform: uppercase;
-            margin: 0 0 24px 0;
             user-select: none;
             will-change: transform;
             position: relative;
 
             /* Gradient and Opacity styling */
-            background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(180, 180, 210, 0.7) 100%);
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.4) 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
             color: transparent;
             /* Fallback */
@@ -346,13 +345,13 @@
 
         /* Editorial serif subtitle */
         .hero__subtitle {
-            font-family: var(--font-serif, 'Cormorant Garamond', serif);
+            font-family: 'Syne', sans-serif;
             font-weight: 300;
             font-style: italic;
-            font-size: clamp(18px, 2.5vw, 32px);
+            font-size: clamp(16px, 2.2vw, 24px);
             color: rgba(255, 255, 255, 0.45);
             letter-spacing: 0.02em;
-            margin-top: clamp(24px, 4vw, 48px);
+            margin-top: clamp(48px, 6vw, 80px);
             max-width: 600px;
             line-height: 1.5;
             margin-bottom: 32px;
@@ -1656,10 +1655,14 @@
             <div class="hero__noise"></div>
 
             <div class="hero__content" id="heroContent">
-                <div class="hero__title-container" style="position: relative; display: inline-block;">
+                <div class="hero__title-container"
+                    style="position: relative; display: flex; flex-direction: column; align-items: center;">
                     <h1 class="hero__title" id="heroTitle"
                         style="opacity:1; transform: translateY(0); transition: opacity 0.1s linear, transform 0.1s linear;">
                         NEURONEST</h1>
+                    <p class="hero__tagline" id="heroTagline"
+                        style="opacity:1; transform: translateY(0); transition: opacity 0.1s linear, transform 0.1s linear;">
+                        SOUNDSCAPES FOR PERFORMANCE</p>
                     <canvas id="smokeCanvas"
                         style="position: absolute; inset: -50% -20%; width: 140%; height: 200%; pointer-events: none; z-index: 5; opacity: 0.6; mix-blend-mode: screen; transition: opacity 0.1s linear, transform 0.1s linear;"></canvas>
                 </div>
@@ -2894,6 +2897,7 @@
         (function () {
             const heroTitle = document.getElementById('heroTitle');
             const heroSubtitle = document.getElementById('heroSubtitle');
+            const heroTagline = document.getElementById('heroTagline');
             const heroDashboard = document.getElementById('heroDashboard');
             const heroGlowWave = document.getElementById('heroGlowWave');
             const smokeCanvas = document.getElementById('smokeCanvas');
@@ -2910,6 +2914,11 @@
                 if (heroTitle) {
                     heroTitle.style.opacity = opacity;
                     heroTitle.style.transform = `translateY(${translateY}px)`;
+                }
+
+                if (heroTagline) {
+                    heroTagline.style.opacity = opacity * 0.4;
+                    heroTagline.style.transform = `translateY(${translateY}px)`;
                 }
 
                 if (smokeCanvas) {
