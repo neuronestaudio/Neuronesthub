@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuronest - Living Knowledge Map</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@100..800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #020308;
+            --accent-cyan: #00e5ff;
+            --accent-violet: #8a2be2;
+            --accent-magenta: #e028cc;
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Syne', sans-serif;
+            overflow: hidden;
+            /* Embeddable full screen */
+        }
+
+        /* Cinematic Background */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 70% 50%, rgba(20, 25, 45, 0.8) 0%, rgba(2, 3, 8, 1) 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Container */
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
+
+        /* Canvas Layer */
+        #neuralCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            /* No pointer events to allow custom interaction detection if needed, 
+               but we need mousemove on it for parallax and hover. */
+            pointer-events: auto;
+            cursor: crosshair;
+        }
+
+        /* Typography Panel */
+        .text-panel {
+            position: relative;
+            z-index: 20;
+            max-width: 600px;
+            padding: 5%;
+            margin-left: 5%;
+            pointer-events: none;
+            /* Let clicks pass through if dragging canvas, but buttons need auto */
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-cyan);
+            margin-bottom: 24px;
+            display: block;
+            opacity: 0.9;
+        }
+
+        .headline {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: clamp(40px, 5vw, 72px);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .subheadline {
+            font-family: 'Syne', sans-serif;
+            font-weight: 300;
+            font-size: clamp(16px, 1.5vw, 22px);
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 48px;
+            max-width: 450px;
+        }
+
+        .cta-btn {
+            pointer-events: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .cta-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+
+        .cta-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Node Hover Label (Absolute Positioned via JS) */
+        .node-label {
+            position: absolute;
+            z-index: 30;
+            pointer-events: none;
+            background: rgba(10, 12, 20, 0.85);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 229, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .node-label.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .text-panel {
+                padding: 8%;
+                margin-left: 0;
+                margin-top: auto;
+                /* Push text down to leave top open for the brain */
+                background: linear-gradient(0deg, rgba(2, 3, 8, 1) 0%, rgba(2, 3, 8, 0.8) 50%, transparent 100%);
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .hero-container {
+                align-items: flex-end;
+            }
+
+            /* Shift gradient focus on mobile */
+            body::before {
+                background: radial-gradient(circle at 50% 30%, rgba(20, 25, 45, 0.8) 0%, rgba(2, 3, 8, 1) 70%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="neuralCanvas"></canvas>
+
+    <div class="hero-container">
+        <div class="text-panel">
+            <span class="eyebrow">Research Library</span>
+            <h1 class="headline">Explore the<br>Science of Sound</h1>
+            <p class="subheadline">A living map of evidence across sound, attention, memory, and neural entrainment.</p>
+            <a href="#research" class="cta-btn">View Research</a>
+        </div>
+    </div>
+
+    <div id="hoverLabel" class="node-label">Topic Name</div>
+
+    <script>
+        /**
+         * Living Knowledge Map - High Performance 3D projection engine
+         * Renders a rotating brain shape with interactive nodes.
+         */
+
+        const canvas = document.getElementById('neuralCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false }); // Optimize for no transparency to document body
+        const hoverLabel = document.getElementById('hoverLabel');
+
+        let width, height;
+        let centerX, centerY;
+
+        // 3D Engine Constants
+        const FOV = 600; // Field of view depth
+        let Z_OFFSET = 400; // Camera distance
+        if (window.innerWidth < 768) {
+            Z_OFFSET = 600; // Push further back on mobile
+        }
+
+        // Configuration
+        const TOTAL_POINTS = 900;
+        const HIGHLIGHT_DIST_2D = 30; // Radius to trigger hover
+        const CONNECTION_DIST_3D = 40; // Max distance to draw lines between neurons
+
+        // State
+        let rx = 0; // Rotation X
+        let ry = 0; // Rotation Y (ambient)
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRx = 0;
+        let targetRy = 0;
+        let hoveredNodeId = -1;
+        let time = 0;
+
+        // Visual Data
+        const neurons = [];
+        const connections = []; // cache [a, b, distance_factor]
+        const interactiveNodes = [];
+        const signals = []; // travelling pulses
+
+        // Interactive Topic Data
+        const topics = [
+            "Sustained Attention",
+            "White Noise",
+            "Auditory Pre-stimulation",
+            "Binaural Beats",
+            "Theta Entrainment",
+            "Gamma Stimulation",
+            "Working Memory",
+            "Cognitive Performance",
+            "Rapid Modulation in Music",
+            "Attention Support in Noisy Environments"
+        ];
+
+        // Ensure canvas fills window
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            // Shift center slightly right on desktop to balance text panel
+            if (width > 768) {
+                centerX = width * 0.65;
+                centerY = height * 0.5;
+            } else {
+                centerX = width * 0.5;
+                centerY = height * 0.4; // Shift up on mobile to clear text
+            }
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // ----------------------------------------------------
+        // 3D Math Helpers
+        // ----------------------------------------------------
+        function rotateX(y, z, angle) {
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            return { y: y * cos - z * sin, z: z * cos + y * sin };
+        }
+
+        function rotateY(x, z, angle) {
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            return { x: x * cos - z * sin, z: z * cos + x * sin };
+        }
+
+        // Generate Brain Shape (Ellipsoid with a fissure)
+        function generateStructure() {
+            // Create background structure nodes
+            for (let i = 0; i < TOTAL_POINTS; i++) {
+                // Random spherical coordinates
+                const u = Math.random();
+                const v = Math.random();
+                const theta = u * 2.0 * Math.PI;
+                const phi = Math.acos(2.0 * v - 1.0);
+
+                // Base radius (cluster towards surface)
+                let r = 100 + Math.random() * 40;
+
+                // Shape into brain roughly (longer front-to-back, narrower side-to-side)
+                let x = r * Math.sin(phi) * Math.cos(theta) * 0.8; // width (x axes)
+                let y = r * Math.sin(phi) * Math.sin(theta) * 0.9; // height (y axes)
+                let z = r * Math.cos(phi) * 1.2;                   // length (z axes) front to back
+
+                // Create fissure (push points away from center x=0)
+                if (Math.abs(x) < 10) {
+                    x = (x < 0 ? -1 : 1) * (15 + Math.random() * 10);
+                }
+
+                // Add structure variations
+                const noise = Math.sin(x * 0.05) * Math.cos(y * 0.05) * Math.sin(z * 0.05);
+                x += noise * 10;
+                y += noise * 10;
+                z += noise * 10;
+
+                neurons.push({
+                    x: x, y: y, z: z,
+                    ox: x, oy: y, oz: z, // Original coordinates for breathing
+                    phase: Math.random() * Math.PI * 2,
+                    isCore: false
+                });
+            }
+
+            // Distribute 10 Interactive Nodes evenly(ish) on the outer shell
+            for (let i = 0; i < topics.length; i++) {
+                // Golden ratio spiral distribution for even spread
+                const phi = Math.acos(1 - 2 * (i + 0.5) / topics.length);
+                const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+
+                let r = 145; // Put on outer edge
+
+                let x = r * Math.sin(phi) * Math.cos(theta) * 0.8;
+                let y = r * Math.sin(phi) * Math.sin(theta) * 0.9;
+                let z = r * Math.cos(phi) * 1.2;
+
+                // Create fissure
+                if (Math.abs(x) < 15) {
+                    x = (x < 0 ? -1 : 1) * 20;
+                }
+
+                const node = {
+                    id: i,
+                    topic: topics[i],
+                    x: x, y: y, z: z,
+                    ox: x, oy: y, oz: z,
+                    phase: Math.random() * Math.PI * 2,
+                    isCore: true,
+                    linkText: "research/topic-" + i // placeholder
+                };
+                neurons.push(node);
+                interactiveNodes.push(node);
+            }
+
+            // Pre-calculate connections to save CPU
+            for (let i = 0; i < neurons.length; i++) {
+                for (let j = i + 1; j < neurons.length; j++) {
+                    const dx = neurons[i].x - neurons[j].x;
+                    const dy = neurons[i].y - neurons[j].y;
+                    const dz = neurons[i].z - neurons[j].z;
+                    const distSq = dx * dx + dy * dy + dz * dz;
+
+                    if (distSq < CONNECTION_DIST_3D * CONNECTION_DIST_3D) {
+                        // Keep connection distance info for opacity calculations
+                        const distFactor = 1.0 - (Math.sqrt(distSq) / CONNECTION_DIST_3D);
+                        // Increase connection chance for core nodes to make them hubs
+                        if (Math.random() > 0.4 || neurons[i].isCore || neurons[j].isCore) {
+                            connections.push({ a: i, b: j, df: distFactor });
+                        }
+                    }
+                }
+            }
+
+            // Init some signal pulses
+            for (let i = 0; i < 30; i++) {
+                spawnSignal();
+            }
+        }
+
+        function spawnSignal() {
+            // Pick a random connection to travel
+            const conn = connections[Math.floor(Math.random() * connections.length)];
+            signals.push({
+                connIdx: connections.indexOf(conn),
+                progress: 0,
+                speed: 0.01 + Math.random() * 0.03,
+                active: true,
+                reversed: Math.random() > 0.5
+            });
+        }
+
+        // ----------------------------------------------------
+        // Interaction Tracking
+        // ----------------------------------------------------
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+
+            // Normalize for parallax (-1 to 1)
+            const nx = (mouseX / width) * 2 - 1;
+            const ny = (mouseY / height) * 2 - 1;
+
+            targetRy = nx * 0.2; // Max rotation offset
+            targetRx = ny * 0.2;
+        });
+
+        canvas.addEventListener('click', () => {
+            if (hoveredNodeId !== -1) {
+                const node = interactiveNodes.find(n => n.id === hoveredNodeId);
+                if (node) {
+                    console.log("Navigating to:", node.topic);
+                    // location.href = node.linkText; // Redirect placeholder
+                }
+            }
+        });
+
+        // ----------------------------------------------------
+        // Render Loop
+        // ----------------------------------------------------
+        function render() {
+            time += 0.02;
+
+            // Clear BG
+            ctx.fillStyle = '#020308';
+            ctx.fillRect(0, 0, width, height);
+
+            // Ease rotations (smooth mouse follow) + constant ambient rotation
+            ry += (targetRy + time * 0.1 - ry) * 0.05;
+            rx += (targetRx - rx) * 0.05;
+
+            // We need to project all 3D coords to 2D screen coords to draw and hit-test
+            const projected = [];
+            let closestNodeDist = HIGHLIGHT_DIST_2D * HIGHLIGHT_DIST_2D;
+            let currentHover = -1;
+            let hoverNodeData = null;
+
+            // 1. Project & Update Neurons
+            for (let i = 0; i < neurons.length; i++) {
+                const n = neurons[i];
+
+                // Small organic breathing
+                const breath = Math.sin(time + n.phase) * 2;
+                n.x = n.ox + (n.ox / 100) * breath;
+                n.y = n.oy + (n.oy / 100) * breath;
+                n.z = n.oz + (n.oz / 100) * breath;
+
+                // Apply Rotations
+                let r1 = rotateX(n.y, n.z, rx);
+                let r2 = rotateY(n.x, r1.z, ry);
+
+                const finalX = r2.x;
+                const finalY = r1.y;
+                const finalZ = r2.z;
+
+                // Project to 2D
+                const scale = FOV / (FOV + finalZ + Z_OFFSET);
+                const screenX = centerX + finalX * scale;
+                const screenY = centerY + finalY * scale;
+
+                projected.push({
+                    sx: screenX, sy: screenY,
+                    sc: scale, z: finalZ,
+                    isCore: n.isCore, id: n.id
+                });
+
+                // Hit testing against interactive nodes
+                if (n.isCore) {
+                    const dx = screenX - mouseX;
+                    const dy = screenY - mouseY;
+                    const distSq = dx * dx + dy * dy;
+                    if (distSq < closestNodeDist && finalZ > -100) { // Don't hover nodes on back of sphere
+                        closestNodeDist = distSq;
+                        currentHover = n.id;
+                        hoverNodeData = n;
+                    }
+                }
+            }
+
+            // Update Label UI
+            if (currentHover !== hoveredNodeId) {
+                hoveredNodeId = currentHover;
+                if (hoveredNodeId !== -1 && hoverNodeData) {
+                    hoverLabel.innerText = interactiveNodes.find(n => n.id === hoveredNodeId).topic;
+                    hoverLabel.classList.add('visible');
+                    canvas.style.cursor = 'pointer';
+                } else {
+                    hoverLabel.classList.remove('visible');
+                    canvas.style.cursor = 'crosshair';
+                }
+            }
+
+            if (hoveredNodeId !== -1) {
+                // Update position to stick to node
+                const p = projected.find(p => p.id === hoveredNodeId);
+                if (p) {
+                    hoverLabel.style.left = (p.sx + 15) + 'px';
+                    hoverLabel.style.top = (p.sy - 15) + 'px';
+                }
+            }
+
+            // Set blend mode for glowing aesthetics
+            ctx.globalCompositeOperation = 'screen';
+
+            // 2. Draw Connections
+            for (let i = 0; i < connections.length; i++) {
+                const c = connections[i];
+                const p1 = projected[c.a];
+                const p2 = projected[c.b];
+
+                // Depth fading
+                const avgZ = (p1.z + p2.z) / 2;
+                const zFade = Math.max(0, Math.min(1, (150 - avgZ) / 300)); // Fade out background lines
+
+                // Highlight connected lines if hovering a node
+                let isHighlightedLine = false;
+                if (hoveredNodeId !== -1 && (p1.id === hoveredNodeId || p2.id === hoveredNodeId)) {
+                    isHighlightedLine = true;
+                }
+
+                const baseAlpha = c.df * 0.15;
+                const alpha = isHighlightedLine ? 0.8 : baseAlpha * zFade;
+
+                if (alpha > 0.01) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.sx, p1.sy);
+                    ctx.lineTo(p2.sx, p2.sy);
+
+                    if (isHighlightedLine) {
+                        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+                        ctx.lineWidth = p1.sc * 1.5;
+                    } else {
+                        ctx.strokeStyle = `rgba(100, 150, 255, ${alpha})`;
+                        ctx.lineWidth = p1.sc * 0.8;
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            // 3. Update & Draw Signals
+            for (let i = signals.length - 1; i >= 0; i--) {
+                const s = signals[i];
+                s.progress += s.speed;
+                if (s.progress > 1) {
+                    // Signal died, spawn new
+                    signals.splice(i, 1);
+                    spawnSignal();
+                    continue;
+                }
+
+                const c = connections[s.connIdx];
+                const pA = projected[s.reversed ? c.b : c.a];
+                const pB = projected[s.reversed ? c.a : c.b];
+
+                const avgZ = (pA.z + pB.z) / 2;
+                if (avgZ < 50) { // Only show foreground signals
+                    const sx = pA.sx + (pB.sx - pA.sx) * s.progress;
+                    const sy = pA.sy + (pB.sy - pA.sy) * s.progress;
+
+                    // Fade in/out at ends of line
+                    const pulseFade = Math.sin(s.progress * Math.PI);
+
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, pA.sc * 1.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 255, 255, ${pulseFade * 0.8})`;
+                    ctx.fill();
+                }
+            }
+
+            // 4. Draw Nodes (Sort by Z first for proper painter's algorithm if using opacity, though screen mode handles overlapping well)
+            // But we want Core nodes on top.
+            for (let i = 0; i < projected.length; i++) {
+                const p = projected[i];
+                if (p.isCore) continue; // Draw bg nodes first
+
+                const zFade = Math.max(0, Math.min(1, (150 - p.z) / 300));
+
+                ctx.beginPath();
+                ctx.arc(p.sx, p.sy, p.sc * 1.2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(138, 43, 226, ${0.4 * zFade})`; // Violet base node
+                ctx.fill();
+            }
+
+            // Draw interactive Core Nodes
+            for (let i = 0; i < projected.length; i++) {
+                const p = projected[i];
+                if (!p.isCore) continue;
+
+                const isHovered = (p.id === hoveredNodeId);
+                const size = isHovered ? p.sc * 5 : p.sc * 3;
+                const glowSize = isHovered ? p.sc * 15 : p.sc * 8;
+                const zFade = Math.max(0, Math.min(1, (150 - p.z) / 300));
+                const breathing = Math.sin(time * 3 + p.id) * 0.5 + 0.5;
+
+                // Glow
+                ctx.beginPath();
+                ctx.arc(p.sx, p.sy, glowSize, 0, Math.PI * 2);
+                const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowSize);
+
+                if (isHovered) {
+                    grad.addColorStop(0, `rgba(0, 229, 255, 0.8)`);
+                    grad.addColorStop(1, `rgba(0, 229, 255, 0)`);
+                } else {
+                    grad.addColorStop(0, `rgba(0, 229, 255, ${0.4 * zFade + breathing * 0.2})`);
+                    grad.addColorStop(1, `rgba(0, 229, 255, 0)`);
+                }
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Core
+                ctx.beginPath();
+                ctx.arc(p.sx, p.sy, size, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+
+            ctx.globalCompositeOperation = 'source-over'; // reset
+
+            requestAnimationFrame(render);
+        }
+
+        // Boot
+        generateStructure();
+        render();
+
+    </script>
+</body>
+
+</html>
