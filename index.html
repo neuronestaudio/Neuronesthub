@@ -1658,20 +1658,21 @@
                     Science-led sound for sleep, focus, and restoration</p>
 
                 <!-- Hero Dashboard Grid -->
-                <div style="width: 100%; max-width: 1200px; text-align: left; margin-bottom: 16px; opacity: 0.8;">
+                <div style="width: 100%; max-width: 1200px; text-align: left; margin-bottom: 6px; opacity: 0.8;">
                     <span class="label" style="margin-bottom: 0; font-size: 26px; color: #fff;">Latest Release</span>
                 </div>
                 <div class="hero-dashboard" id="heroDashboard"
                     style="opacity:1; transform: translateY(0); transition: opacity 0.1s linear, transform 0.1s linear;">
 
                     <!-- Main Card: Latest Drop -->
-                    <a href="#play" class="dashboard-card card-main drop-card reveal" style="text-decoration: none;">
+                    <a href="#play" id="dropCard" class="dashboard-card card-main drop-card reveal"
+                        style="text-decoration: none;">
                         <img class="drop-card__thumbnail" src="https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg"
                             alt="NeuroNest Deep Focus Soundscape"
                             style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.6; z-index:-1; transition: opacity 0.4s ease;">
 
                         <div style="position:relative; z-index:2;">
-                            <button class="drop-card__play-btn" aria-label="Play soundscape"
+                            <button id="playDropBtn" class="drop-card__play-btn" aria-label="Play soundscape"
                                 style="margin-bottom: 24px;">
                                 <svg viewBox="0 0 24 24">
                                     <polygon points="5,3 19,12 5,21" />
