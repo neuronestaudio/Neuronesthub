@@ -133,14 +133,14 @@
 
         .nav-left {
             display: flex;
-            gap: 32px;
+            gap: 16px;
             justify-content: flex-start;
             align-items: center;
         }
 
         .nav-right {
             display: flex;
-            gap: 32px;
+            gap: 16px;
             justify-content: flex-end;
             align-items: center;
         }
@@ -153,14 +153,18 @@
             font-size: 13px;
             font-weight: 500;
             opacity: 0.6;
-            transition: opacity 0.3s ease;
-            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 6px;
         }
 
         .nav-left a:hover,
         .nav-right a:hover,
         .dropdown-wrapper:hover>a {
             opacity: 1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
         }
 
         .dropdown-wrapper {
