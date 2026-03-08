@@ -1736,8 +1736,8 @@
                         Soundscapes | Research | Engineering | Performance</p>
 
                     <!-- Animated SVG underline -->
-                    <div style="width: 100%; max-width: 400px; margin: 8px auto 0; position: relative;">
-                        <svg viewBox="0 0 400 30" width="100%" height="30px" preserveAspectRatio="none"
+                    <div style="width: 100%; max-width: 700px; margin: 8px auto 0; position: relative;">
+                        <svg viewBox="0 0 700 30" width="100%" height="30px" preserveAspectRatio="none"
                             style="overflow: visible;">
                             <defs>
                                 <radialGradient id="animatedSphere" cx="30%" cy="30%" r="70%">
@@ -1758,10 +1758,12 @@
                                     </stop>
                                 </radialGradient>
                             </defs>
-                            <path id="heroSine" d="M 0 15 Q 50 -5, 100 15 T 200 15 T 300 15 T 400 15" fill="none"
-                                stroke="rgba(255,255,255,0.25)" stroke-width="2.5" />
+                            <path id="heroSine"
+                                d="M 0 15 Q 50 -5, 100 15 T 200 15 T 300 15 T 400 15 T 500 15 T 600 15 T 700 15"
+                                fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" />
                             <circle r="12" fill="url(#animatedSphere)">
-                                <animateMotion dur="26.6s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1"
+                                <!-- 46.6s duration scales the travel speed exactly so it retains the 1.2x increase over the longer 700px path -->
+                                <animateMotion dur="46.6s" repeatCount="indefinite" keyPoints="0;1;0" keyTimes="0;0.5;1"
                                     calcMode="spline" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1">
                                     <mpath href="#heroSine" />
                                 </animateMotion>
