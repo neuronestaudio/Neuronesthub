@@ -1,0 +1,161 @@
+/**
+ * NeuroNest Icon Animation Styles
+ * 
+ * Add these to your global CSS or Tailwind @layer utilities.
+ * All animations respect prefers-reduced-motion automatically.
+ * 
+ * If using Tailwind, extend your tailwind.config.js with the
+ * keyframes and animation values shown in tailwind.config.cjs below.
+ */
+
+/* ==========================================
+   Animation Keyframes
+   ========================================== */
+
+/* Brain outline breathing glow */
+@keyframes brain-glow {
+  0%, 100% {
+    opacity: 0.5;
+    stroke-width: 1;
+  }
+  50% {
+    opacity: 0.8;
+    stroke-width: 1.5;
+  }
+}
+
+/* Neural pulse node firing */
+@keyframes brain-pulse {
+  0%, 20%, 100% {
+    opacity: 0;
+    r: 1.5;
+  }
+  40% {
+    opacity: 0.9;
+    r: 2.5;
+  }
+  70% {
+    opacity: 0.3;
+    r: 2;
+  }
+}
+
+/* Signal path flow (dash offset) */
+@keyframes signal-flow {
+  0%   { stroke-dashoffset: 30;  opacity: 0.2; }
+  50%  { stroke-dashoffset: 0;   opacity: 0.7; }
+  100% { stroke-dashoffset: -30; opacity: 0.2; }
+}
+
+/* Central hub glow pulse */
+@keyframes hub-glow {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+
+/* Waveform stabilization */
+@keyframes wave-stabilize {
+  0%   { d: path('M8,32 Q16,20 24,32 T40,32 T56,32'); }
+  30%  { d: path('M8,32 Q16,26 24,32 T40,32 T56,32'); }
+  60%  { d: path('M8,32 Q16,29 24,32 T40,32 T56,32'); }
+  100% { d: path('M8,32 Q16,20 24,32 T40,32 T56,32'); }
+}
+
+/* Verification check draw-in */
+@keyframes check-draw {
+  0%, 60%  { stroke-dashoffset: 16; opacity: 0; }
+  80%      { stroke-dashoffset: 0;  opacity: 0.9; }
+  95%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* Grid line reveal */
+@keyframes grid-reveal {
+  0%, 100% { opacity: 0.06; }
+  50%      { opacity: 0.12; }
+}
+
+/* Orbit ring rotation + breathing */
+@keyframes orbit-ring {
+  0%, 100% { opacity: 0.15; transform: rotate(0deg); }
+  50%      { opacity: 0.3;  transform: rotate(8deg); }
+}
+
+/* Orbit node drift — 4 variants */
+@keyframes orbit-shift1 {
+  0%, 100% { cx: 20; cy: 16; }
+  33%      { cx: 22; cy: 14; }
+  66%      { cx: 18; cy: 17; }
+}
+@keyframes orbit-shift2 {
+  0%, 100% { cx: 44; cy: 16; }
+  33%      { cx: 46; cy: 18; }
+  66%      { cx: 42; cy: 14; }
+}
+@keyframes orbit-shift3 {
+  0%, 100% { cx: 20; cy: 48; }
+  33%      { cx: 18; cy: 46; }
+  66%      { cx: 22; cy: 50; }
+}
+@keyframes orbit-shift4 {
+  0%, 100% { cx: 44; cy: 48; }
+  33%      { cx: 42; cy: 50; }
+  66%      { cx: 46; cy: 46; }
+}
+
+
+/* ==========================================
+   Animation Classes
+   ========================================== */
+
+/* Icon 1 — Neural Entrainment */
+.animate-brain-glow  { animation: brain-glow 6s ease-in-out infinite; }
+.animate-brain-pulse { animation: brain-pulse 6s ease-in-out infinite; }
+
+/* Icon 2 — Delivery Methods */
+.animate-signal-flow { animation: signal-flow 5s ease-in-out infinite; }
+.animate-hub-glow    { animation: hub-glow 4s ease-in-out infinite; }
+
+/* Icon 3 — Evidence-Based Design */
+.animate-wave-stabilize { animation: wave-stabilize 7s ease-in-out infinite; }
+.animate-check-draw     { animation: check-draw 7s ease-in-out infinite; }
+.animate-grid-reveal    { animation: grid-reveal 7s ease-in-out infinite; }
+
+/* Icon 4 — Personalized Protocols */
+.animate-orbit-ring { animation: orbit-ring 6s ease-in-out infinite; transform-origin: center; }
+.animate-orbit-n1   { animation: orbit-shift1 8s ease-in-out infinite; }
+.animate-orbit-n2   { animation: orbit-shift2 8s ease-in-out 1s infinite; }
+.animate-orbit-n3   { animation: orbit-shift3 8s ease-in-out 2s infinite; }
+.animate-orbit-n4   { animation: orbit-shift4 8s ease-in-out 3s infinite; }
+
+
+/* ==========================================
+   Animation Delay Utilities
+   ========================================== */
+.delay-0    { animation-delay: 0s; }
+.delay-800  { animation-delay: 0.8s; }
+.delay-1500 { animation-delay: 1.5s; }
+.delay-1600 { animation-delay: 1.6s; }
+.delay-2400 { animation-delay: 2.4s; }
+.delay-3000 { animation-delay: 3s; }
+.delay-4500 { animation-delay: 4.5s; }
+
+
+/* ==========================================
+   Accessibility: Respect reduced motion
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-brain-glow,
+  .animate-brain-pulse,
+  .animate-signal-flow,
+  .animate-hub-glow,
+  .animate-wave-stabilize,
+  .animate-check-draw,
+  .animate-grid-reveal,
+  .animate-orbit-ring,
+  .animate-orbit-n1,
+  .animate-orbit-n2,
+  .animate-orbit-n3,
+  .animate-orbit-n4 {
+    animation: none !important;
+  }
+}
