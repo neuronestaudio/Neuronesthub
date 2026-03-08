@@ -1482,9 +1482,9 @@
 
         .recommendation-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 48px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 32px;
         }
 
         .rec-card {
@@ -1580,7 +1580,13 @@
             display: block;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1100px) {
+            .recommendation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
             .recommendation-grid {
                 grid-template-columns: 1fr;
             }
@@ -2220,9 +2226,10 @@
         <!-- YouTube Recommendation Grid Section -->
         <section id="recommendations" class="recommendation-section">
             <div class="container">
-                <span class="label">Curated Selection</span>
-                <h2 class="reveal">Recommended States</h2>
-                <p class="reveal" style="max-width: 600px; margin-top: 16px; color: var(--text-secondary);">
+                <div style="text-align: left; margin-bottom: 8px; opacity: 0.8;">
+                    <span class="label" style="margin-bottom: 0; font-size: 26px; color: #fff;">Curated Selection</span>
+                </div>
+                <p class="reveal" style="max-width: 600px; margin-top: 8px; color: var(--text-secondary);">
                     Explore our hand-picked rotation of tracks engineered to complement specific neurological targets
                     and
                     cultural soundscapes.
@@ -2296,10 +2303,76 @@
                         </div>
                         <div class="rec-card__content">
                             <span class="rec-card__tag">Cultural Research</span>
-                            <h3>African Percussion & Healing</h3>
-                            <p>Modern neuroscience identifies traditional African polyrhythms as powerful tools for
-                                hemispheric balance. The repetitive djembe strikes often align with Gamma wave
-                                frequencies (30-100Hz), promoting peak awareness and communal synchronization.</p>
+                            <h3>African Percussion</h3>
+                            <p>Traditional polyrhythms promote hemispheric balance and Gamma wave synchronization.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 5: Sleep Optimization -->
+                    <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Sleep Tech</span>
+                            <h3>Sleep Deep</h3>
+                            <p>Delta transitions designed to guide the brain into restorative deep-sleep stages.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 6: Mood Elevation -->
+                    <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Emotional Flow</span>
+                            <h3>Mood Elevation</h3>
+                            <p>Using high-beta and gamma frequencies to lift cognitive spirit and focus.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 7: Spatial Clarity -->
+                    <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">8D Research</span>
+                            <h3>Spatial Clarity</h3>
+                            <p>360-degree auditory textures that expand the perceived mental workspace.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 8: Neuro-Plasticity -->
+                    <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Cognitive Health</span>
+                            <h3>Plasticity Flow</h3>
+                            <p>Stimulating neural re-wiring through structured frequency-following responses.</p>
                         </div>
                     </a>
                 </div>
