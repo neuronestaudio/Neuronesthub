@@ -389,11 +389,10 @@
             justify-content: center;
             overflow: visible;
             background: transparent;
-            margin-bottom: -300px;
-            /* Strong overlap over next section */
-            padding-top: 100px;
             pointer-events: none;
             z-index: 20;
+            margin-top: -150px;
+            /* Shift up inside the transition zone */
         }
 
         .parallax-text-base {
@@ -1086,7 +1085,7 @@
         }
 
         .parallax-layer--mid {
-            top: 50%;
+            top: 75%;
             font-family: var(--font-heading);
             font-size: clamp(28px, 5vw, 56px);
             font-weight: 300;
@@ -1096,7 +1095,7 @@
         }
 
         .parallax-layer--near {
-            top: 75%;
+            top: 85%;
             font-family: var(--font-mono);
             font-size: 12px;
             letter-spacing: 4px;
@@ -2513,6 +2512,14 @@
                     <circle cx="450" cy="60" r="1.5" fill="white" opacity="1" />
                 </svg>
             </div>
+
+            <!-- Parallax Scrolling Text Section (Overlay internally)  -->
+            <div class="parallax-text-section" id="parallaxTextSection">
+                <h2 class="parallax-text-base" id="parallaxBase" style="text-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                    RESEARCH
+                </h2>
+                <h2 class="parallax-text-overlay" id="parallaxOverlay">LATEST IN NEUROSCIENCE</h2>
+            </div>
         </section>
 
         <!-- Latest Research Section (wrapped for light-mode transition) -->
@@ -2533,14 +2540,7 @@
             }
         </style>
 
-        <!-- ═══════════════════════════════════════════ -->
-        <!-- Parallax Scrolling Text Section (Overlay)  -->
-        <!-- ═══════════════════════════════════════════ -->
-        <section class="parallax-text-section" id="parallaxTextSection">
-            <h2 class="parallax-text-base" id="parallaxBase" style="text-shadow: 0 10px 40px rgba(0,0,0,0.5);">RESEARCH
-            </h2>
-            <h2 class="parallax-text-overlay" id="parallaxOverlay">LATEST IN NEUROSCIENCE</h2>
-        </section>
+
 
         <div class="research-section-wrapper" id="researchWrapper" style="position: relative;">
             <section id="research" class="container">
@@ -3061,21 +3061,24 @@
                 const parallaxSection = document.getElementById('parallaxTextSection');
                 const parallaxBase = document.getElementById('parallaxBase');
                 const parallaxOverlay = document.getElementById('parallaxOverlay');
+                const parallaxZone = document.getElementById('parallaxZone');
 
-                if (parallaxSection && parallaxBase && parallaxOverlay) {
-                    const rect = parallaxSection.getBoundingClientRect();
-                    const visibility = 1 - (rect.top / windowHeight);
+                if (parallaxSection && parallaxBase && parallaxOverlay && parallaxZone) {
+                    const zoneRect = parallaxZone.getBoundingClientRect();
 
-                    if (visibility > -0.2 && visibility < 1.8) {
-                        const baseOpacity = Math.min(Math.max(visibility * 1.5, 0), 0.8);
+                    // Normalise visibility directly against the black transition zone's height
+                    const visibility = 1 - (zoneRect.top / windowHeight);
+
+                    if (visibility > 0.0 && visibility < 1.4) {
+                        const baseOpacity = Math.min(Math.max(visibility * 2, 0), 0.8);
 
                         // Slide left slightly and fade in
-                        const baseTranslateX = (0.5 - visibility) * 300;
+                        const baseTranslateX = (0.5 - visibility) * 200;
                         parallaxBase.style.opacity = baseOpacity;
                         parallaxBase.style.transform = `translate(${baseTranslateX}px, 0)`;
 
                         // Slide from left to right over it
-                        const overlayTranslateX = -50 + ((visibility - 0.5) * 150);
+                        const overlayTranslateX = -50 + ((visibility - 0.5) * 100);
                         parallaxOverlay.style.opacity = baseOpacity;
                         parallaxOverlay.style.transform = `translate(${overlayTranslateX}%, -50%)`;
                     }
