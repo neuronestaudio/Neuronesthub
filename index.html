@@ -349,51 +349,9 @@
             letter-spacing: 0.15em;
             margin: 0;
             color: white;
+            opacity: 0.8;
             text-transform: uppercase;
             text-align: center;
-        }
-
-        .word-fade {
-            display: inline-block;
-            opacity: 0;
-            animation: sequentialFade 12s infinite;
-        }
-
-        .word-fade:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .word-fade:nth-child(2) {
-            animation-delay: 1.5s;
-        }
-
-        .word-fade:nth-child(3) {
-            animation-delay: 3s;
-        }
-
-        .word-fade:nth-child(4) {
-            animation-delay: 4.5s;
-        }
-
-        @keyframes sequentialFade {
-
-            0%,
-            5% {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-
-            10%,
-            75% {
-                opacity: 0.8;
-                transform: translateY(0);
-            }
-
-            80%,
-            100% {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
         }
 
         .hero__subtitle {
@@ -1776,11 +1734,7 @@
                 <div class="hero__text-group" id="heroTextGroup"
                     style="opacity:1; transform: translateY(0); transition: opacity 0.1s linear, transform 0.1s linear;">
                     <p class="hero__tagline" id="heroTagline">
-                        <span class="word-fade">Soundscapes</span> |
-                        <span class="word-fade">Research</span> |
-                        <span class="word-fade">Engineering</span> |
-                        <span class="word-fade">Performance</span>
-                    </p>
+                        Soundscapes | Research | Engineering | Performance</p>
 
                     <!-- Animated SVG underline -->
                     <div style="width: 100%; max-width: 400px; margin: 8px auto 0; position: relative;">
@@ -1797,8 +1751,14 @@
                     </div>
 
                     <p class="hero__subtitle" id="heroSubtitle">
-                        Science-led sound for sleep, focus, and cognitive balance
+                        Science-led sound for sleep, focus, and restoration
                     </p>
+
+                    <!-- Filtered Circle Logo -->
+                    <div class="hero__circle-logo" id="heroCircleLogo" style="margin-top: 30px;">
+                        <img src="media__1772982207611.png" alt="Neuronest Neural Map"
+                            style="width: 140px; height: 140px; object-fit: cover; object-position: center 25%; border-radius: 50%; mask-image: radial-gradient(circle at center, black 45%, transparent 65%); -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 65%); filter: brightness(0.65);">
+                    </div>
                 </div>
 
                 <!-- Hero Dashboard Grid -->
@@ -2576,7 +2536,7 @@
         <!-- ═══════════════════════════════════════════ -->
         <!-- Parallax Scrolling Text Section (Overlay)  -->
         <!-- ═══════════════════════════════════════════ -->
-        <section class="parallax-text-section" id="parallaxTextSection" style="transform: translateY(-400px);">
+        <section class="parallax-text-section" id="parallaxTextSection">
             <h2 class="parallax-text-base" id="parallaxBase" style="text-shadow: 0 10px 40px rgba(0,0,0,0.5);">RESEARCH
             </h2>
             <h2 class="parallax-text-overlay" id="parallaxOverlay">LATEST IN NEUROSCIENCE</h2>
