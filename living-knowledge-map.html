@@ -210,9 +210,9 @@
     <div class="hero-container">
         <div class="text-panel">
             <span class="eyebrow">Research Library</span>
-            <h1 class="headline">Explore the<br>Science of Sound</h1>
+            <h1 class="headline">Explore the<br>Database of Sound</h1>
             <p class="subheadline">A living map of evidence across sound, attention, memory, and neural entrainment.</p>
-            <a href="#research" class="cta-btn">View Research</a>
+            <a href="index.html" class="cta-btn">Back to Neuronest</a>
         </div>
     </div>
 
@@ -259,18 +259,18 @@
         const interactiveNodes = [];
         const signals = []; // travelling pulses
 
-        // Interactive Topic Data
+        // Interactive Topic Data (with explicit URLs)
         const topics = [
-            "Sustained Attention",
-            "White Noise",
-            "Auditory Pre-stimulation",
-            "Binaural Beats",
-            "Theta Entrainment",
-            "Gamma Stimulation",
-            "Working Memory",
-            "Cognitive Performance",
-            "Rapid Modulation in Music",
-            "Attention Support in Noisy Environments"
+            { name: "Sustained Attention", url: "https://www.nature.com/articles/s41598-020-72439-4" },
+            { name: "White Noise", url: "https://pubmed.ncbi.nlm.hdr.gov/28841496/" },
+            { name: "Auditory Pre-stimulation", url: "https://pubmed.ncbi.nlm.nih.gov/30611425/" },
+            { name: "Binaural Beats", url: "https://www.frontiersin.org/articles/10.3389/fnhum.2018.00387/full" },
+            { name: "Theta Entrainment", url: "https://pubmed.ncbi.nlm.nih.gov/24434914/" },
+            { name: "Gamma Stimulation", url: "https://www.nature.com/articles/s41598-020-74522-8" },
+            { name: "Working Memory", url: "https://pubmed.ncbi.nlm.nih.gov/31336056/" },
+            { name: "Cognitive Performance", url: "https://pubmed.ncbi.nlm.nih.gov/29267104/" },
+            { name: "Rapid Modulation in Music", url: "https://www.frontiersin.org/articles/10.3389/fpsyg.2014.00445/full" },
+            { name: "Attention in Noisy Environments", url: "https://pubmed.ncbi.nlm.nih.gov/31420790/" }
         ];
 
         // Ensure canvas fills window
@@ -363,12 +363,12 @@
 
                 const node = {
                     id: i,
-                    topic: topics[i],
+                    topic: topics[i].name,
                     x: x, y: y, z: z,
                     ox: x, oy: y, oz: z,
                     phase: Math.random() * Math.PI * 2,
                     isCore: true,
-                    linkText: "research/topic-" + i // placeholder
+                    linkText: topics[i].url
                 };
                 neurons.push(node);
                 interactiveNodes.push(node);
@@ -430,9 +430,10 @@
         canvas.addEventListener('click', () => {
             if (hoveredNodeId !== -1) {
                 const node = interactiveNodes.find(n => n.id === hoveredNodeId);
-                if (node) {
-                    console.log("Navigating to:", node.topic);
-                    // location.href = node.linkText; // Redirect placeholder
+                if (node && node.linkText) {
+                    console.log("Navigating to:", node.topic, "->", node.linkText);
+                    // Use target="_blank" behavior for external research papers
+                    window.open(node.linkText, '_blank');
                 }
             }
         });
