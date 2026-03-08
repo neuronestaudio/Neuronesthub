@@ -1746,6 +1746,52 @@
                     }
                 </style>
 
+                <div class="tuned-in-badge">
+                    <svg class="headphone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path
+                            d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+                        </path>
+                    </svg>
+                    <span>How many are tuned in: <strong id="listenerCount">1,248</strong></span>
+                </div>
+
+                <style>
+                    .tuned-in-badge {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 12px;
+                        margin-bottom: 30px;
+                        padding: 10px 20px;
+                        background: rgba(255, 255, 255, 0.03);
+                        border-radius: 50px;
+                        width: fit-content;
+                        margin-left: auto;
+                        margin-right: auto;
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                    }
+
+                    .tuned-in-badge svg {
+                        width: 18px;
+                        height: 18px;
+                        color: var(--accent);
+                    }
+
+                    .tuned-in-badge span {
+                        font-family: var(--font-mono);
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.1em;
+                        color: rgba(255, 255, 255, 0.8);
+                    }
+
+                    .tuned-in-badge strong {
+                        color: #fff;
+                    }
+                </style>
+
                 <div class="wave-labels">
                     <div class="wl-item">
                         <h4 style="color: #3b82f6;">Delta</h4>
@@ -1840,6 +1886,14 @@
 
                         // Start animation
                         requestAnimationFrame(animateWave);
+
+                        // Live listener count simulation
+                        const countEl = document.getElementById('listenerCount');
+                        let count = 1248;
+                        setInterval(() => {
+                            count += Math.floor(Math.random() * 3) - 1;
+                            if (countEl) countEl.innerText = count.toLocaleString();
+                        }, 3000);
                     })();
                 </script>
             </div>
