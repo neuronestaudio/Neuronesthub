@@ -1474,6 +1474,118 @@
             }
         }
 
+        /* --- Recommendation Grid --- */
+        .recommendation-section {
+            padding: var(--section-padding) 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .rec-card {
+            background: rgba(20, 20, 20, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rec-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(30, 30, 40, 0.6);
+            transform: translateY(-5px);
+        }
+
+        .rec-card__thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rec-card__thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .rec-card:hover .rec-card__thumb::after {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .play-icon-small {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+        }
+
+        .play-icon-small svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+            margin-left: 2px;
+        }
+
+        .rec-card__content h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .rec-card__content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .rec-card__tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* --- Scroll Reveal --- */
         .reveal {
             opacity: 0;
@@ -2097,6 +2209,95 @@
                         <line x1="20" y1="48" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
                         <line x1="44" y1="48" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
                     </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- YouTube Recommendation Grid Section -->
+        <section id="recommendations" class="recommendation-section">
+            <div class="container">
+                <span class="label">Curated Selection</span>
+                <h2 class="reveal">Recommended States</h2>
+                <p class="reveal" style="max-width: 600px; margin-top: 16px; color: var(--text-secondary);">
+                    Explore our hand-picked rotation of tracks engineered to complement specific neurological targets
+                    and
+                    cultural soundscapes.
+                </p>
+
+                <div class="recommendation-grid">
+                    <!-- Category 1: ASSR Focus -->
+                    <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Deep Focus</span>
+                            <h3>The ASSR Rotation</h3>
+                            <p>My personal go-to for deep focus. These Auditory Steady-State Response tracks use 40Hz
+                                Gamma pulses to keep the prefrontal cortex locked in for hours.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 2: Calm -->
+                    <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Nervous System</span>
+                            <h3>Calm the Vagus Nerve</h3>
+                            <p>Specifically chosen to trigger the parasympathetic nervous system. Ideal for post-stress
+                                recovery, using slow-wave delta ramps and soothing textures.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 3: Lofi -->
+                    <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Study Tool</span>
+                            <h3>What is Lofi?</h3>
+                            <p>Lofi music uses "pink noise" and low-fidelity frequencies to mask environmental
+                                distractions. By providing a predictable, soft sonic landscape, it lowers cortisol and
+                                allows your brain to ignore minor background noises.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 4: African Percussion -->
+                    <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Cultural Research</span>
+                            <h3>African Percussion & Healing</h3>
+                            <p>Modern neuroscience identifies traditional African polyrhythms as powerful tools for
+                                hemispheric balance. The repetitive djembe strikes often align with Gamma wave
+                                frequencies (30-100Hz), promoting peak awareness and communal synchronization.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </section>
