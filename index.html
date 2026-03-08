@@ -51,6 +51,10 @@
 
         body {
             background-color: var(--bg-color);
+            background-image:
+                radial-gradient(ellipse at top right, rgba(255, 255, 255, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at center left, rgba(99, 102, 241, 0.02) 0%, transparent 50%);
+            background-attachment: fixed;
             color: var(--text-primary);
             font-family: var(--font-main);
             line-height: 1.6;
@@ -1395,6 +1399,21 @@
         footer {
             padding: 80px 0;
             border-top: 1px solid var(--border-subtle);
+            position: relative;
+            background: linear-gradient(to top, rgba(255, 120, 0, 0.08) 0%, transparent 100%);
+        }
+
+        /* Stronger orange glow specifically for the very bottom edge */
+        footer::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: radial-gradient(ellipse at bottom, rgba(255, 100, 0, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .footer-content {
