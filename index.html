@@ -3091,13 +3091,13 @@
                 const drift = -scrollProgress * 200;
 
                 if (layer1) {
-                    layer1.style.transform = `translate(-50%, calc(-50% + ${drift * 0.4}px - 400px))`;
+                    layer1.style.transform = `translate(-50%, calc(-50% + ${drift * 0.4}px - 300px))`;
                     layer1.style.opacity = p1Op;
                     // Force black once bg is light enough
                     layer1.style.color = '#000';
                 }
                 if (layer2) {
-                    layer2.style.transform = `translate(-50%, calc(-50% + ${drift * 0.6}px + 600px))`;
+                    layer2.style.transform = `translate(-50%, calc(-50% + ${drift * 0.6}px + 800px))`;
                     layer2.style.opacity = p2Op;
                     layer2.style.color = '#000';
                 }
