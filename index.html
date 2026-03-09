@@ -2660,7 +2660,8 @@
                 Exploring the Intersection of
             </div>
             <div class="parallax-transition__text-layer parallax-layer--mid" id="pLayer2">
-                Neuroscience and Sound Engineering
+                <div id="pLayer2a">Neuroscience and</div>
+                <div id="pLayer2b">Sound Engineering</div>
             </div>
 
             <!-- Midpoint soundwave / neural arc reveal -->
@@ -3004,6 +3005,8 @@
             const wave = document.getElementById('parallaxWave');
             const layer1 = document.getElementById('pLayer1');
             const layer2 = document.getElementById('pLayer2');
+            const layer2a = document.getElementById('pLayer2a');
+            const layer2b = document.getElementById('pLayer2b');
             const wrapper = document.getElementById('researchWrapper');
 
             if (!zone || !canvas) return;
@@ -3097,9 +3100,21 @@
                     layer1.style.color = '#000';
                 }
                 if (layer2) {
+                    // Slide progress (0 to 1 during the fade-in phase 0.55 - 0.75)
+                    const slideIn = Math.min(Math.max((scrollProgress - 0.55) * 5, 0), 1);
+
                     layer2.style.transform = `translate(-50%, calc(-50% + ${drift * 0.6}px + 800px))`;
                     layer2.style.opacity = p2Op;
                     layer2.style.color = '#000';
+
+                    if (layer2a) {
+                        // Slide in from left of the page
+                        layer2a.style.transform = `translateX(${(1 - slideIn) * -100}vw)`;
+                    }
+                    if (layer2b) {
+                        // Slide in from right of the page
+                        layer2b.style.transform = `translateX(${(1 - slideIn) * 100}vw)`;
+                    }
                 }
 
                 // 3. Midpoint soundwave reveal (centered around 0.5)
