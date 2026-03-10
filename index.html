@@ -234,9 +234,36 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: visible;
-            /* Changed from hidden so transition gradients can bleed out safely */
+            overflow: hidden;
+            /* Changed from visible back to hidden to contain the video */
             background: #000;
+        }
+
+        .hero__video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.6;
+            /* Slightly increased opacity for better visibility */
+            pointer-events: none;
+        }
+
+        .hero__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.6) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.7) 100%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Seamless background transition to dark grey page body */
@@ -1856,6 +1883,10 @@
         <!-- 2D Parallax Reveal Hero Section            -->
         <!-- ═══════════════════════════════════════════ -->
         <section class="hero" id="heroSection">
+            <video class="hero__video" autoplay loop muted playsinline id="heroVideo">
+                <source src="hero-video.mp4" type="video/mp4">
+            </video>
+            <div class="hero__overlay"></div>
             <div class="hero__glow" id="heroGlowWave"
                 style="transform: scale(1.2); opacity: 0.8; transition: transform 0.1s linear, opacity 0.1s linear; background: radial-gradient(circle at center, rgba(99, 102, 241, 0.25) 0%, transparent 60%);">
             </div>
