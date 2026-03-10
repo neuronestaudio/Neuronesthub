@@ -331,44 +331,6 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        /* Animated Mesh Overlay */
-        .hero__mesh {
-            position: absolute;
-            inset: -50%;
-            /* Massive bleed for drifting */
-            z-index: 2;
-            opacity: 0.15;
-            pointer-events: none;
-            animation: mesh-drift 20s linear infinite;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hero__mesh svg {
-            width: 200%;
-            height: 200%;
-            stroke: #ffffff;
-            stroke-width: 0.5;
-            fill: none;
-        }
-
-        @keyframes mesh-drift {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.05;
-            }
-
-            50% {
-                transform: translate(-5%, -5%) scale(1.1);
-                opacity: 0.2;
-            }
-
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.05;
-            }
-        }
 
         /* Content wrapper — editorial layout */
         .hero__content {
@@ -1858,11 +1820,11 @@
             </div>
 
             <a href="#" class="logo">
-                <svg class="logo-svg" viewBox="0 0 170 46" xmlns="http://www.w3.org/2000/svg">
+                <svg class="logo-svg" viewBox="0 0 220 46" xmlns="http://www.w3.org/2000/svg">
                     <text x="0" y="24" font-family="'Syncopate', sans-serif" font-weight="700" font-size="20"
-                        fill="white">NEURONEST</text>
+                        fill="white">NEURONEST.HUB</text>
                     <text x="0" y="42" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="9"
-                        fill="#888888" textLength="159" lengthAdjust="spacing">AUSTRALIA</text>
+                        fill="#888888" textLength="209" lengthAdjust="spacing">AUSTRALIA</text>
                 </svg>
             </a>
 
@@ -1891,50 +1853,6 @@
                 style="transform: scale(1.2); opacity: 0.8; transition: transform 0.1s linear, opacity 0.1s linear; background: radial-gradient(circle at center, rgba(99, 102, 241, 0.25) 0%, transparent 60%);">
             </div>
 
-            <div class="hero__mesh">
-                <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <mask id="meshMask">
-                            <radialGradient id="meshGradient" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="white" stop-opacity="1" />
-                                <stop offset="60%" stop-color="white" stop-opacity="0.5" />
-                                <stop offset="100%" stop-color="white" stop-opacity="0" />
-                            </radialGradient>
-                            <rect width="100%" height="100%" fill="url(#meshGradient)" />
-                        </mask>
-                    </defs>
-
-                    <g mask="url(#meshMask)">
-                        <!-- Dense Horizontal sweeping curves -->
-                        <path d="M-200,50 Q 250,-100 500,100 T 1200,150" />
-                        <path d="M-200,100 Q 250,-50 500,150 T 1200,200" />
-                        <path d="M-200,150 Q 250, 0 500,200 T 1200,250" />
-                        <path d="M-200,200 Q 250,50 500,250 T 1200,300" />
-                        <path d="M-200,250 Q 250,100 500,300 T 1200,350" />
-                        <path d="M-200,300 Q 250,150 500,350 T 1200,400" />
-                        <path d="M-200,350 Q 250,200 500,400 T 1200,450" />
-                        <path d="M-200,400 Q 250,250 500,450 T 1200,500" />
-                        <path d="M-200,450 Q 250,300 500,500 T 1200,550" />
-                        <path d="M-200,500 Q 250,350 500,550 T 1200,600" />
-                        <path d="M-200,550 Q 250,400 500,600 T 1200,650" />
-                        <path d="M-200,600 Q 250,450 500,650 T 1200,700" />
-
-                        <!-- Dense Vertical sweeping curves intersecting -->
-                        <path d="M 0,-200 Q -100,150 0,400 T 50,800" />
-                        <path d="M 100,-200 Q 0,150 100,400 T 150,800" />
-                        <path d="M 200,-200 Q 100,150 200,400 T 250,800" />
-                        <path d="M 300,-200 Q 200,150 300,400 T 350,800" />
-                        <path d="M 400,-200 Q 300,150 400,400 T 450,800" />
-                        <path d="M 500,-200 Q 400,150 500,400 T 550,800" />
-                        <path d="M 600,-200 Q 500,150 600,400 T 650,800" />
-                        <path d="M 700,-200 Q 600,150 700,400 T 750,800" />
-                        <path d="M 800,-200 Q 700,150 800,400 T 850,800" />
-                        <path d="M 900,-200 Q 800,150 900,400 T 950,800" />
-                        <path d="M 1000,-200 Q 900,150 1000,400 T 1050,800" />
-                        <path d="M 1100,-200 Q 1000,150 1100,400 T 1150,800" />
-                    </g>
-                </svg>
-            </div>
 
             <div class="hero__noise"></div>
 
@@ -1943,8 +1861,7 @@
                     style="position: relative; display: flex; flex-direction: column; align-items: flex-end; width: 100%; max-width: 1200px;">
                     <h1 class="hero__title" id="heroTitle">
                         <div class="hero__title-brand">
-                            neuronest
-                            <span class="hero__title-hub">hub</span>
+                            neuronest.hub
                         </div>
                         <div class="hero__title-australia">australia</div>
                     </h1>
