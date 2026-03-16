@@ -1,0 +1,3369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroNest Hub — Advancing Human Performance Through Sound</title>
+    <meta name="description"
+        content="NeuroNest Hub develops evidence-based auditory neuromodulation technology engineered to optimize sleep, sharpen focus, and regulate stress.">
+    <!-- Open Graph -->
+    <meta property="og:title" content="NeuroNest Hub — Advancing Human Performance Through Sound">
+    <meta property="og:description"
+        content="Evidence-based auditory neuromodulation technology for sleep, focus, and stress regulation.">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --font-heading: 'Outfit', sans-serif;
+            --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+        }
+    </style>
+
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-primary: #FFFFFF;
+            --text-secondary: #888888;
+            --accent: #6366F1;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --max-width: 1200px;
+            --section-padding: 140px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(ellipse at top right, rgba(255, 255, 255, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at center left, rgba(99, 102, 241, 0.02) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        section {
+            padding: var(--section-padding) 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        section:first-of-type {
+            border-top: none;
+        }
+
+        /* --- Typography --- */
+        h1,
+        h2,
+        h3 {
+            font-weight: 600;
+            letter-spacing: -0.03em;
+        }
+
+        .label {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        /* --- SVGs --- */
+        .logo-svg {
+            height: 40px;
+            width: auto;
+            fill: white;
+        }
+
+        /* --- Navigation: Rounded Floating Bar --- */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 900px;
+            z-index: 1000;
+            padding: 14px 28px;
+            background: rgba(10, 10, 14, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 14, 0.85);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        nav .container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 0;
+            max-width: 100%;
+            position: relative;
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+            /* Align right to push towards logo */
+            padding-right: 20px;
+            /* Push 20px right towards the logo */
+            align-items: center;
+        }
+
+        .nav-home {
+            position: absolute;
+            left: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-home a {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-start;
+            /* Align left to push towards logo */
+            padding-left: 20px;
+            /* Push 20px left towards the logo */
+            align-items: center;
+        }
+
+        .nav-left a,
+        .nav-right a,
+        .dropdown-wrapper>a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .nav-left a:hover,
+        .nav-right a:hover,
+        .dropdown-wrapper:hover>a {
+            opacity: 1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15));
+            color: #ffffff;
+        }
+
+        .dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+            padding: 10px 0;
+            /* Add invisible pad for smooth hover */
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: rgba(15, 15, 18, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 160px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-wrapper:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(10px);
+        }
+
+        .dropdown-menu a {
+            padding: 12px 20px;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            width: 100%;
+            text-align: center;
+            opacity: 0.7;
+            display: block;
+        }
+
+        .dropdown-menu a:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- Cinematic Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Changed from visible back to hidden to contain the video */
+            background: #000;
+        }
+
+        .hero__video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.6;
+            /* Slightly increased opacity for better visibility */
+            pointer-events: none;
+        }
+
+        .hero__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    rgba(0, 0, 0, 0.6) 0%,
+                    rgba(0, 0, 0, 0.2) 50%,
+                    rgba(0, 0, 0, 0.7) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Seamless background transition to dark grey page body */
+        .hero__bottom-gradient {
+            position: absolute;
+            bottom: -150px;
+            /* Bleed into next section */
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(to bottom, #000 0%, transparent 100%);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Atmospheric canvas layer */
+        .hero__canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Radial glow bloom behind the title */
+        .hero__glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80vw;
+            height: 80vw;
+            max-width: 900px;
+            max-height: 900px;
+            transform: translate(-50%, -55%);
+            background: radial-gradient(ellipse at center,
+                    rgba(99, 102, 241, 0.06) 0%,
+                    rgba(99, 102, 241, 0.03) 30%,
+                    rgba(99, 102, 241, 0.01) 50%,
+                    transparent 70%);
+            z-index: 2;
+            pointer-events: none;
+            animation: heroGlowBreathe 8s ease-in-out infinite;
+        }
+
+        @keyframes heroGlowBreathe {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: translate(-50%, -55%) scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -55%) scale(1.05);
+            }
+        }
+
+        /* Noise texture overlay */
+        .hero__noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+
+        /* Content wrapper — editorial layout */
+        .hero__content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Massive brand title */
+        .hero__title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            margin: 0;
+            text-transform: lowercase;
+            user-select: none;
+            will-change: transform;
+            position: absolute;
+            bottom: 5vh;
+            right: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 10;
+            background: linear-gradient(180deg, #ffffff 10%, #a5b4fc 60%, #6366f1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.2)) drop-shadow(0 0 80px rgba(99, 102, 241, 0.1));
+            animation: heroTextGlow 6s ease-in-out infinite;
+        }
+
+        .hero__title-brand {
+            font-size: clamp(50px, 9vw, 240px);
+            line-height: 0.8;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero__title-hub {
+            font-size: 0.3em;
+            position: absolute;
+            right: -0.8em;
+            bottom: 0.1em;
+            transform: rotate(90deg);
+            transform-origin: left bottom;
+            letter-spacing: -0.05em;
+            opacity: 0.9;
+        }
+
+        .hero__title-australia {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 400;
+            font-size: clamp(9px, 0.9vw, 16px);
+            color: #888888;
+            letter-spacing: 0.75em;
+            text-transform: uppercase;
+            margin-top: 0.1em;
+            background: none;
+            -webkit-background-clip: initial;
+            background-clip: initial;
+            color: #888888;
+            opacity: 0.6;
+            margin-left: 0.3em;
+            /* Align roughly with start of 'n' */
+        }
+
+        @keyframes heroTextGlow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.15)) drop-shadow(0 0 60px rgba(99, 102, 241, 0.05));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 50px rgba(99, 102, 241, 0.25)) drop-shadow(0 0 100px rgba(99, 102, 241, 0.15));
+            }
+        }
+
+
+        /* Animated Fading Text Rotator */
+        .fading-text-rotator {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: clamp(30px, 4vw, 50px);
+            margin: 40px auto 20px;
+            text-align: center;
+        }
+
+        .fading-text-rotator span {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            font-family: var(--font-mono);
+            font-size: clamp(14px, 1.8vw, 26px);
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: textRotateFade 16s infinite;
+        }
+
+        .fading-text-rotator span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .fading-text-rotator span:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .fading-text-rotator span:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        .fading-text-rotator span:nth-child(4) {
+            animation-delay: 12s;
+        }
+
+        @keyframes textRotateFade {
+
+            0%,
+            20%,
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+
+            5%,
+            15% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .hero__tagline {
+            font-family: var(--font-mono);
+            font-weight: 500;
+            font-size: clamp(11px, 1.2vw, 15px);
+            letter-spacing: 0.15em;
+            margin: 0;
+            color: white;
+            opacity: 0.8;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .hero__subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-style: italic;
+            font-weight: 400;
+            font-size: clamp(12px, 1.2vw, 16px);
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.05em;
+            margin: 0;
+            line-height: 1.6;
+            text-align: center;
+            display: block;
+            transition: opacity 1.5s ease-in-out;
+            padding-top: 10px;
+        }
+
+        .hero__text-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+
+        /* --- Huge Parallax Text Section --- */
+        .parallax-text-section {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            background: transparent;
+            pointer-events: none;
+            z-index: 20;
+            margin-top: 50px;
+            /* Shifted drastically down to overlap 'LATEST RELEASE' */
+        }
+
+        .parallax-text-base {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: clamp(60px, 16vw, 260px);
+            color: white;
+            white-space: nowrap;
+            letter-spacing: -0.02em;
+            position: absolute;
+            will-change: transform, opacity;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .parallax-text-overlay {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: clamp(30px, 9vw, 130px);
+            color: #d97736;
+            white-space: nowrap;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            will-change: transform, opacity;
+            opacity: 0;
+            z-index: 2;
+        }
+
+        /* --- Hero Dashboard Grid (Bento Box) --- */
+        .hero-dashboard {
+            display: grid;
+            grid-template-columns: 3.2fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 16px;
+            width: 100%;
+            max-width: 1200px;
+            z-index: 10;
+        }
+
+        .dashboard-card {
+            background: rgba(20, 20, 20, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: border-color 0.4s ease, transform 0.4s ease, background 0.4s ease;
+            text-align: left;
+            text-decoration: none;
+            color: white;
+            min-height: 200px;
+        }
+
+        .dashboard-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(30, 30, 40, 0.6);
+            transform: translateY(-4px);
+        }
+
+        .card-main {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+            min-height: 416px;
+        }
+
+        .card-upcoming {
+            grid-column: 2 / 4;
+            grid-row: 1 / 2;
+        }
+
+        .card-news {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        .card-protocol {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+
+        .card-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0;
+            font-weight: 300;
+        }
+
+        /* Responsive Dashboard */
+        @media (max-width: 900px) {
+            .hero-dashboard {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            .card-main,
+            .card-upcoming,
+            .card-news,
+            .card-protocol {
+                grid-column: auto;
+                grid-row: auto;
+                min-height: 180px;
+            }
+        }
+
+        /* Ghost CTA */
+        .hero__cta {
+            display: inline-block;
+            margin-top: clamp(32px, 4vw, 56px);
+            padding: 12px 32px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .hero__cta:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.08);
+        }
+
+        /* Scroll indicator at bottom */
+        .hero__scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.3;
+            animation: heroScrollFade 3s ease-in-out infinite;
+        }
+
+        .hero__scroll-hint span {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .hero__scroll-line {
+            width: 1px;
+            height: 32px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: heroScrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes heroScrollFade {
+
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes heroScrollPulse {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            50% {
+                transform: scaleY(1.3);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .hero__glow,
+            .hero__title::after,
+            .hero__scroll-hint,
+            .hero__scroll-line {
+                animation: none !important;
+            }
+        }
+
+        /* --- Waveform Decorative --- */
+        .waveform-separator {
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            opacity: 0.15;
+        }
+
+        .waveform-svg {
+            width: 60%;
+            height: 60px;
+        }
+
+        .wave-path {
+            fill: none;
+            stroke: white;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+        }
+
+        /* --- News Section --- */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-row {
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            align-items: center;
+            padding: 32px 20px;
+            margin: 0 -20px;
+            border-bottom: 1px solid var(--border-subtle);
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s ease;
+        }
+
+        .news-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .news-date {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .news-content h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .news-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .news-arrow {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* --- Technology Section --- */
+        .tech-grid {
+            margin-top: 60px;
+        }
+
+        .tech-block {
+            margin-bottom: 120px;
+            max-width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .tech-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .tech-block__text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tech-num {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .tech-block h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .tech-block p {
+            color: var(--text-secondary);
+            font-size: 17px;
+        }
+
+        /* --- Tech SVG Icons --- */
+        .tech-icon {
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+            opacity: 0.85;
+            transition: opacity 0.4s ease;
+        }
+
+        .tech-block:hover .tech-icon {
+            opacity: 1;
+        }
+
+        /* Reduce/remove motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            .tech-icon * {
+                animation: none !important;
+            }
+        }
+
+        /* Icon 1 — Neural Entrainment: brain outline with neural pulses */
+        @keyframes brain-pulse {
+
+            0%,
+            20%,
+            100% {
+                opacity: 0;
+                r: 1.5;
+            }
+
+            40% {
+                opacity: 0.9;
+                r: 2.5;
+            }
+
+            70% {
+                opacity: 0.3;
+                r: 2;
+            }
+        }
+
+        @keyframes brain-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                stroke-width: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+                stroke-width: 1.5;
+            }
+        }
+
+        .icon-brain-outline {
+            animation: brain-glow 6s ease-in-out infinite;
+        }
+
+        .icon-brain-pulse1 {
+            animation: brain-pulse 6s ease-in-out infinite;
+        }
+
+        .icon-brain-pulse2 {
+            animation: brain-pulse 6s ease-in-out 1.5s infinite;
+        }
+
+        .icon-brain-pulse3 {
+            animation: brain-pulse 6s ease-in-out 3s infinite;
+        }
+
+        .icon-brain-pulse4 {
+            animation: brain-pulse 6s ease-in-out 4.5s infinite;
+        }
+
+        /* Icon 2 — Delivery Methods: 4 signal paths converging */
+        @keyframes signal-flow {
+            0% {
+                stroke-dashoffset: 30;
+                opacity: 0.2;
+            }
+
+            50% {
+                stroke-dashoffset: 0;
+                opacity: 0.7;
+            }
+
+            100% {
+                stroke-dashoffset: -30;
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes hub-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .icon-signal-path1 {
+            animation: signal-flow 5s ease-in-out infinite;
+        }
+
+        .icon-signal-path2 {
+            animation: signal-flow 5s ease-in-out 0.8s infinite;
+        }
+
+        .icon-signal-path3 {
+            animation: signal-flow 5s ease-in-out 1.6s infinite;
+        }
+
+        .icon-signal-path4 {
+            animation: signal-flow 5s ease-in-out 2.4s infinite;
+        }
+
+        .icon-signal-hub {
+            animation: hub-glow 4s ease-in-out infinite;
+        }
+
+        /* Icon 3 — Evidence-Based: waveform stabilizing */
+        @keyframes wave-stabilize {
+            0% {
+                d: path('M8,32 Q16,20 24,32 T40,32 T56,32');
+            }
+
+            30% {
+                d: path('M8,32 Q16,26 24,32 T40,32 T56,32');
+            }
+
+            60% {
+                d: path('M8,32 Q16,29 24,32 T40,32 T56,32');
+            }
+
+            100% {
+                d: path('M8,32 Q16,20 24,32 T40,32 T56,32');
+            }
+        }
+
+        @keyframes check-draw {
+
+            0%,
+            60% {
+                stroke-dashoffset: 16;
+                opacity: 0;
+            }
+
+            80% {
+                stroke-dashoffset: 0;
+                opacity: 0.9;
+            }
+
+            95%,
+            100% {
+                stroke-dashoffset: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes grid-reveal {
+
+            0%,
+            100% {
+                opacity: 0.06;
+            }
+
+            50% {
+                opacity: 0.12;
+            }
+        }
+
+        .icon-evidence-wave {
+            animation: wave-stabilize 7s ease-in-out infinite;
+        }
+
+        .icon-evidence-check {
+            animation: check-draw 7s ease-in-out infinite;
+            stroke-dasharray: 16;
+        }
+
+        .icon-evidence-grid {
+            animation: grid-reveal 7s ease-in-out infinite;
+        }
+
+        /* Icon 4 — Personalized: adaptive orbit nodes */
+        @keyframes orbit-shift1 {
+
+            0%,
+            100% {
+                cx: 20;
+                cy: 16;
+            }
+
+            33% {
+                cx: 22;
+                cy: 14;
+            }
+
+            66% {
+                cx: 18;
+                cy: 17;
+            }
+        }
+
+        @keyframes orbit-shift2 {
+
+            0%,
+            100% {
+                cx: 44;
+                cy: 16;
+            }
+
+            33% {
+                cx: 46;
+                cy: 18;
+            }
+
+            66% {
+                cx: 42;
+                cy: 14;
+            }
+        }
+
+        @keyframes orbit-shift3 {
+
+            0%,
+            100% {
+                cx: 20;
+                cy: 48;
+            }
+
+            33% {
+                cx: 18;
+                cy: 46;
+            }
+
+            66% {
+                cx: 22;
+                cy: 50;
+            }
+        }
+
+        @keyframes orbit-shift4 {
+
+            0%,
+            100% {
+                cx: 44;
+                cy: 48;
+            }
+
+            33% {
+                cx: 42;
+                cy: 50;
+            }
+
+            66% {
+                cx: 46;
+                cy: 46;
+            }
+        }
+
+        @keyframes orbit-ring {
+
+            0%,
+            100% {
+                opacity: 0.15;
+                transform: rotate(0deg);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: rotate(8deg);
+            }
+        }
+
+        .icon-orbit-n1 {
+            animation: orbit-shift1 8s ease-in-out infinite;
+        }
+
+        .icon-orbit-n2 {
+            animation: orbit-shift2 8s ease-in-out 1s infinite;
+        }
+
+        .icon-orbit-n3 {
+            animation: orbit-shift3 8s ease-in-out 2s infinite;
+        }
+
+        .icon-orbit-n4 {
+            animation: orbit-shift4 8s ease-in-out 3s infinite;
+        }
+
+        .icon-orbit-ring {
+            animation: orbit-ring 6s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* --- Mobile Responsive for Tech Blocks --- */
+        @media (max-width: 768px) {
+            .tech-block {
+                flex-direction: column-reverse;
+                gap: 24px;
+            }
+
+            .tech-icon {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* --- Parallax Transition Zone: Black → White --- */
+        .parallax-transition {
+            position: relative;
+            height: 300vh;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .parallax-transition__bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transition: background-color 0s;
+        }
+
+        .parallax-transition__canvas {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Midpoint soundwave reveal */
+        .parallax-transition__wave {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 900px;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .parallax-transition__wave svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Floating text layers at different parallax speeds */
+        .parallax-transition__text-layer {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .parallax-layer--deep {
+            top: 25%;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0;
+            color: #555;
+        }
+
+        .parallax-layer--mid {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-heading);
+            font-size: clamp(32px, 6vw, 84px);
+            font-weight: 900;
+            opacity: 0;
+            color: #000;
+            letter-spacing: -0.04em;
+            width: 90%;
+            max-width: 1000px;
+            text-transform: uppercase;
+        }
+
+        /* Research section — transforms to white background */
+        .research-section-wrapper {
+            position: relative;
+            z-index: 2;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .research-section-wrapper.light-mode {
+            background: #ffffff;
+        }
+
+        .research-section-wrapper.light-mode .label {
+            color: #6366F1;
+        }
+
+        .research-section-wrapper.light-mode h2 {
+            color: #111111;
+        }
+
+        .research-section-wrapper.light-mode .research-card {
+            border-color: #e0e0e0;
+            background: #f8f8f8;
+        }
+
+        .research-section-wrapper.light-mode .research-card:hover {
+            border-color: #6366F1;
+            background: #f0f0ff;
+        }
+
+        .research-section-wrapper.light-mode .research-card__source {
+            color: #6366F1;
+        }
+
+        .research-section-wrapper.light-mode .research-card__title {
+            color: #111111;
+        }
+
+        .research-section-wrapper.light-mode .research-card__desc {
+            color: #555555;
+        }
+
+        .research-section-wrapper.light-mode .research-card__arrow {
+            color: #111111;
+        }
+
+        /* --- Latest Research Section --- */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .research-card {
+            border: 1px solid var(--border-subtle);
+            padding: 32px;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .research-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .research-card__source {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+        }
+
+        .research-card__title {
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+
+        .research-card__desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .research-card__meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .research-card__date {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .research-card__link {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-primary);
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .research-card:hover .research-card__link {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Latest Drops Section --- */
+        .drops-section {
+            padding: var(--section-padding) 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .drop-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            margin-top: 48px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .drop-card__thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, opacity 0.4s ease;
+        }
+
+        .drop-card:hover .drop-card__thumbnail {
+            transform: scale(1.02);
+        }
+
+        .drop-card__overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.3) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 48px;
+            transition: background 0.3s ease;
+        }
+
+        .drop-card__play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .drop-card__play-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .drop-card__play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+            margin-left: 3px;
+        }
+
+        .drop-card__tag {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .drop-card__title {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .drop-card__meta {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .drop-card iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- Floating Audio Player --- */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-subtle);
+            padding: 16px 0;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .audio-player.visible {
+            transform: translateY(0);
+        }
+
+        .audio-player .container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .audio-player__btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .audio-player__btn:hover {
+            opacity: 0.85;
+        }
+
+        .audio-player__btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .audio-player__info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .audio-player__title {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .audio-player__sub {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .audio-player__progress {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .audio-player__progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s linear;
+        }
+
+        .audio-player__time {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+
+        .audio-player__close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 8px;
+            flex-shrink: 0;
+            transition: color 0.2s ease;
+        }
+
+        .audio-player__close:hover {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .drop-card__overlay {
+                padding: 24px;
+            }
+
+            .drop-card__title {
+                font-size: 20px;
+            }
+
+            .drop-card__play-btn {
+                width: 60px;
+                height: 60px;
+            }
+
+            .audio-player .container {
+                gap: 12px;
+            }
+
+            .audio-player__progress {
+                display: none;
+            }
+
+            .audio-player__time {
+                display: none;
+            }
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 80px 0;
+            border-top: 1px solid var(--border-subtle);
+            position: relative;
+            background: linear-gradient(to top, rgba(255, 120, 0, 0.08) 0%, transparent 100%);
+        }
+
+        /* Stronger orange glow specifically for the very bottom edge */
+        footer::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: radial-gradient(ellipse at bottom, rgba(255, 100, 0, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-right a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-right a:hover {
+            color: var(--text-primary);
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 100px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .nav-links {
+                display: none;
+                /* Add hamburger menu later */
+            }
+
+            .news-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .news-arrow {
+                display: none;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 32px;
+                text-align: center;
+            }
+        }
+
+        /* --- Recommendation Grid --- */
+        .recommendation-section {
+            padding: var(--section-padding) 0;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .rec-card {
+            background: rgba(20, 20, 20, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rec-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(30, 30, 40, 0.6);
+            transform: translateY(-5px);
+        }
+
+        .rec-card__thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rec-card__thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .rec-card:hover .rec-card__thumb::after {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        .play-icon-small {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 2;
+        }
+
+        .play-icon-small svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+            margin-left: 2px;
+        }
+
+        .rec-card__content h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .rec-card__content p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .rec-card__tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        @media (max-width: 1100px) {
+            .recommendation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Scroll Reveal --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-home"><a href="index.html">← HOME</a></div>
+            <div class="nav-left">
+                <div class="dropdown-wrapper">
+                    <a href="living-knowledge-map.html">Research Hub</a>
+                    <div class="dropdown-menu">
+                        <a href="living-knowledge-map.html">Living Knowledge Map</a>
+                        <a href="#how-it-works">How does it work?</a>
+                    </div>
+                </div>
+                <div class="dropdown-wrapper">
+                    <a href="#radio">Radio</a>
+                    <div class="dropdown-menu">
+                        <a href="#calm">CALM</a>
+                        <a href="#focus">FOCUS</a>
+                        <a href="#meditation">MEDITATION</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" class="logo">
+                <svg class="logo-svg" viewBox="0 0 170 46" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="24" font-family="'Syncopate', sans-serif" font-weight="700" font-size="20"
+                        fill="white">NEURONEST</text>
+                    <text x="0" y="42" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="9"
+                        fill="#888888" textLength="159" lengthAdjust="spacing">AUSTRALIA</text>
+                </svg>
+            </a>
+
+            <div class="nav-right">
+                <div class="dropdown-wrapper">
+                    <a href="mailto:contact@neuronest.au">Contact</a>
+                    <div class="dropdown-menu">
+                        <a href="#about">About Us</a>
+                    </div>
+                </div>
+                <a href="#updates">Latest News</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- 2D Parallax Reveal Hero Section            -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section class="hero" id="heroSection">
+            <video class="hero__video" autoplay loop muted playsinline id="heroVideo">
+                <source src="hero-video.mp4" type="video/mp4">
+            </video>
+            <div class="hero__overlay"></div>
+            <div class="hero__glow" id="heroGlowWave"
+                style="transform: scale(1.2); opacity: 0.8; transition: transform 0.1s linear, opacity 0.1s linear; background: radial-gradient(circle at center, rgba(99, 102, 241, 0.25) 0%, transparent 60%);">
+            </div>
+
+
+            <div class="hero__noise"></div>
+
+            <div class="hero__content" id="heroContent">
+                <div class="hero__title-container"
+                    style="position: relative; display: flex; flex-direction: column; align-items: flex-end; width: 100%; max-width: 1200px;">
+                    <h1 class="hero__title" id="heroTitle">
+                        <div class="hero__title-brand">
+                            neuronest.hub
+                        </div>
+                        <div class="hero__title-australia">australia</div>
+                    </h1>
+                    <div class="hero__bottom-gradient"></div>
+                    <canvas id="smokeCanvas"
+                        style="position: absolute; inset: -50% -20%; width: 140%; height: 200%; pointer-events: none; z-index: 5; opacity: 0.8; mix-blend-mode: screen; transition: opacity 0.1s linear, transform 0.1s linear; mask-image: radial-gradient(ellipse at center, black 25%, transparent 60%); -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 60%);"></canvas>
+                </div>
+
+
+
+                <!-- Rotating Fading Text Group -->
+                <div class="fading-text-rotator">
+                    <span>Ambient Soundscapes</span>
+                    <span>Neuroscience News</span>
+                    <span>Sound Engineering Collaborations</span>
+                    <span>Clinical Performance</span>
+                </div>
+
+                <!-- Hero Dashboard Grid -->
+                <div
+                    style="width: 100%; max-width: 1200px; text-align: left; margin-bottom: 6px; opacity: 0.8; z-index: 10; position: relative;">
+                    <span class="label" style="margin-bottom: 0; font-size: 26px; color: #fff;">Latest Release</span>
+                </div>
+                <div class="hero-dashboard" id="heroDashboard"
+                    style="opacity:1; transform: translateY(0); transition: opacity 0.1s linear, transform 0.1s linear;">
+
+                    <!-- Main Card: Latest Drop -->
+                    <a href="#play" id="dropCard" class="dashboard-card card-main drop-card reveal"
+                        style="text-decoration: none;">
+                        <img class="drop-card__thumbnail" src="https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg"
+                            alt="NeuroNest Deep Focus Soundscape"
+                            style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.6; z-index:-1; transition: opacity 0.4s ease;">
+
+                        <div style="position:relative; z-index:2;">
+                            <button id="playDropBtn" class="drop-card__play-btn" aria-label="Play soundscape"
+                                style="margin-bottom: 24px;">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </button>
+                            <span class="card-label">Latest Drop · 40 Hz Gamma</span>
+                            <h3 class="card-title">Deep Focus Architecture</h3>
+                            <p class="card-desc">Engineered isochronic tones layered with brown noise. Designed for
+                                sustained cognitive performance.</p>
+                        </div>
+                    </a>
+
+                    <!-- Upcoming Card -->
+                    <a href="#schedule" class="dashboard-card card-upcoming">
+                        <span class="card-label">Upcoming Release</span>
+                        <h3 class="card-title">Theta Recovery Protocol</h3>
+                        <p class="card-desc">Scheduled for next week: a deep restorative soundscape targeting 4-8 Hz
+                            brainwave synchronization for deep relaxation.</p>
+                    </a>
+
+                    <!-- News Card -->
+                    <a href="#news" class="dashboard-card card-news">
+                        <span class="card-label">Research Hub</span>
+                        <h3 class="card-title">Neuroscience News</h3>
+                        <p class="card-desc">Explore the latest clinical studies on auditory stimulation.</p>
+                    </a>
+
+                    <!-- Protocol Card -->
+                    <a href="#protocols" class="dashboard-card card-protocol">
+                        <span class="card-label">Guide</span>
+                        <h3 class="card-title">Effective Usage</h3>
+                        <p class="card-desc">Optimal listening protocols and volume strategies.</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero__scroll-hint">
+                <span>Scroll</span>
+                <div class="hero__scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Waveform Separator -->
+        <div class="waveform-separator">
+            <svg class="waveform-svg" viewBox="0 0 800 60">
+                <path class="wave-path" d="M0,30 Q50,5 100,30 T200,30 T300,30 T400,30 T500,30 T600,30 T700,30 T800,30">
+                    <animate attributeName="d" dur="10s" repeatCount="indefinite" values="M0,30 Q50,5 100,30 T200,30 T300,30 T400,30 T500,30 T600,30 T700,30 T800,30;
+                                M0,30 Q50,55 100,30 T200,30 T300,30 T400,30 T500,30 T600,30 T700,30 T800,30;
+                                M0,30 Q50,5 100,30 T200,30 T300,30 T400,30 T500,30 T600,30 T700,30 T800,30" />
+                </path>
+            </svg>
+        </div>
+
+        <!-- News Section -->
+        <section id="updates" class="container">
+            <span class="label">Updates</span>
+            <div class="news-list">
+                <a href="#" class="news-row reveal">
+                    <span class="news-date">Mar 08, 2026</span>
+                    <div class="news-content">
+                        <h3>Auditory Steady-State Response (ASSR): Mechanism Review</h3>
+                        <p>A deep dive into the neurological pathways activated by steady-state stimuli.</p>
+                    </div>
+                    <span class="news-arrow">READ →</span>
+                </a>
+                <a href="#" class="news-row reveal">
+                    <span class="news-date">Feb 24, 2026</span>
+                    <div class="news-content">
+                        <h3>NeuroNest Sleep Protocol v2.1 — Updated Parameters</h3>
+                        <p>Refined frequency ramps for accelerated delta-wave entrainment transition.</p>
+                    </div>
+                    <span class="news-arrow">READ →</span>
+                </a>
+                <a href="#" class="news-row reveal">
+                    <span class="news-date">Feb 10, 2026</span>
+                    <div class="news-content">
+                        <h3>Isochronic Tones vs Binaural Beats: Comparative Data</h3>
+                        <p>Analyzing depth of modulation and its impact on neural phase-locking.</p>
+                    </div>
+                    <span class="news-arrow">READ →</span>
+                </a>
+                <a href="#" class="news-row reveal">
+                    <span class="news-date">Jan 28, 2026</span>
+                    <div class="news-content">
+                        <h3>Partnership Exploration: CSIRO Kick-Start Program</h3>
+                        <p>Advancing manufacturing capabilities for high-fidelity bone conduction devices.</p>
+                    </div>
+                    <span class="news-arrow">READ →</span>
+                </a>
+            </div>
+            <div style="margin-top: 40px;">
+                <a href="#"
+                    style="color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 500; opacity: 0.7; transition: opacity 0.3s ease;">View
+                    all updates →</a>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Brainwave Frequency Infographic page breaker -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section class="container" style="padding: 100px 0 60px 0;">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <span class="label">How it Works</span>
+                <h2 class="reveal">Frequency Synchronization</h2>
+                <p class="reveal" style="max-width: 600px; margin: 20px auto 0; color: var(--text-secondary);">
+                    Through auditory stimulation, the brain synchronizes its dominant wave frequency to match external
+                    rhythms, shifting emotional states and cognitive capacity in the prefrontal cortex.
+                </p>
+            </div>
+
+            <div class="continuous-wave-section reveal">
+                <style>
+                    .continuous-wave-section {
+                        position: relative;
+                        padding: 60px 40px;
+                        background: rgba(15, 15, 18, 0.4);
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                        border-radius: 20px;
+                        overflow: hidden;
+                    }
+
+                    .wave-labels {
+                        display: grid;
+                        grid-template-columns: repeat(5, 1fr);
+                        gap: 20px;
+                        margin-bottom: 50px;
+                        position: relative;
+                        z-index: 2;
+                    }
+
+                    .wl-item {
+                        text-align: center;
+                    }
+
+                    .wl-item h4 {
+                        font-family: var(--font-body);
+                        font-weight: 600;
+                        font-size: 18px;
+                        margin: 0 0 6px 0;
+                    }
+
+                    .wl-item span {
+                        font-family: var(--font-mono);
+                        font-size: 11px;
+                        letter-spacing: 0.1em;
+                        opacity: 0.9;
+                        display: block;
+                        margin-bottom: 16px;
+                    }
+
+                    .wl-item p {
+                        font-size: 13px;
+                        color: rgba(255, 255, 255, 0.6);
+                        line-height: 1.5;
+                        margin: 0;
+                    }
+
+                    .wave-visualizer {
+                        width: 100%;
+                        height: 140px;
+                        position: relative;
+                    }
+
+                    @media (max-width: 900px) {
+                        .wave-labels {
+                            grid-template-columns: repeat(3, 1fr);
+                        }
+                    }
+
+                    @media (max-width: 600px) {
+                        .wave-labels {
+                            grid-template-columns: 1fr;
+                            text-align: left;
+                        }
+
+                        .wl-item {
+                            text-align: left;
+                            margin-bottom: 10px;
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                        }
+
+                        .wl-item:last-child {
+                            border-bottom: none;
+                        }
+                    }
+                </style>
+
+                <div class="tuned-in-badge">
+                    <svg class="headphone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                        <path
+                            d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+                        </path>
+                    </svg>
+                    <span>How many are tuned in: <strong id="listenerCount">1,248</strong></span>
+                </div>
+
+                <style>
+                    .tuned-in-badge {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 12px;
+                        margin-bottom: 30px;
+                        padding: 10px 20px;
+                        background: rgba(255, 255, 255, 0.03);
+                        border-radius: 50px;
+                        width: fit-content;
+                        margin-left: auto;
+                        margin-right: auto;
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                    }
+
+                    .tuned-in-badge svg {
+                        width: 18px;
+                        height: 18px;
+                        color: var(--accent);
+                    }
+
+                    .tuned-in-badge span {
+                        font-family: var(--font-mono);
+                        font-size: 12px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.1em;
+                        color: rgba(255, 255, 255, 0.8);
+                    }
+
+                    .tuned-in-badge strong {
+                        color: #fff;
+                    }
+                </style>
+
+                <div class="wave-labels">
+                    <div class="wl-item">
+                        <h4 style="color: #3b82f6;">Delta</h4>
+                        <span style="color: #3b82f6;">0.5 — 4 Hz</span>
+                        <p>Deep offline sleep, physical restoration, and immune system regeneration.</p>
+                    </div>
+                    <div class="wl-item">
+                        <h4 style="color: #06b6d4;">Theta</h4>
+                        <span style="color: #06b6d4;">4 — 8 Hz</span>
+                        <p>Light sleep, deep meditation, intuition, and memory consolidation.</p>
+                    </div>
+                    <div class="wl-item">
+                        <h4 style="color: #10b981;">Alpha</h4>
+                        <span style="color: #10b981;">8 — 12 Hz</span>
+                        <p>Wakeful relaxation, calm lucidity, and bridging conscious and subconscious.</p>
+                    </div>
+                    <div class="wl-item">
+                        <h4 style="color: #eab308;">Beta</h4>
+                        <span style="color: #eab308;">12 — 30 Hz</span>
+                        <p>Active concentration, analytical thinking, and executive functioning.</p>
+                    </div>
+                    <div class="wl-item">
+                        <h4 style="color: #ec4899;">Gamma</h4>
+                        <span style="color: #ec4899;">30 — 100 Hz</span>
+                        <p>Peak cognitive processing, hyper-focus, and multisensory integration.</p>
+                    </div>
+                </div>
+
+                <div class="wave-visualizer">
+                    <svg viewBox="0 0 1000 140" preserveAspectRatio="none"
+                        style="width: 100%; height: 100%; overflow: visible;">
+                        <defs>
+                            <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#3b82f6" />
+                                <stop offset="25%" stop-color="#06b6d4" />
+                                <stop offset="50%" stop-color="#10b981" />
+                                <stop offset="75%" stop-color="#eab308" />
+                                <stop offset="100%" stop-color="#ec4899" />
+                            </linearGradient>
+                            <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="6" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Glow Layer -->
+                        <path id="brainwaveGlow" fill="none" stroke="url(#neonGradient)" stroke-width="4"
+                            filter="url(#neonGlow)" opacity="0.5"></path>
+                        <!-- Core Bright Line -->
+                        <path id="brainwaveCore" fill="none" stroke="url(#neonGradient)" stroke-width="2" opacity="0.9">
+                        </path>
+                    </svg>
+                </div>
+
+                <script>
+                    (function () {
+                        const pathCore = document.getElementById('brainwaveCore');
+                        const pathGlow = document.getElementById('brainwaveGlow');
+                        if (!pathCore || !pathGlow) return;
+
+                        let phase = 0;
+
+                        function animateWave() {
+                            phase -= 0.05; // Negative phase moves the wave rightward
+                            let d = 'M 0,70 ';
+
+                            // Generate path mapping from 0 to 1000 width
+                            for (let x = 0; x <= 1000; x += 3) { // Small step for smoothness
+                                const t = x / 1000; // Normalized position (0 to 1)
+
+                                // Frequency curve: starts slow (~3 waves), ends fast (~35 waves)
+                                // We use a power curve so the transition is exponential
+                                const freq = 2.5 + 32.5 * Math.pow(t, 2.2);
+
+                                // Amplitude envelope: taper at the very edges to 0, bulge slightly in middle
+                                const envelope = Math.sin(t * Math.PI);
+                                const amp = 15 + 40 * Math.pow(envelope, 0.4);
+
+                                // Calculate Y position using sine
+                                const y = 70 + Math.sin(t * freq * Math.PI * 2 + phase) * amp;
+                                d += `L ${x},${y} `;
+                            }
+
+                            pathCore.setAttribute('d', d);
+                            pathGlow.setAttribute('d', d);
+
+                            requestAnimationFrame(animateWave);
+                        }
+
+                        // Start animation
+                        requestAnimationFrame(animateWave);
+
+                        // Live listener count simulation
+                        const countEl = document.getElementById('listenerCount');
+                        let count = 1248;
+                        setInterval(() => {
+                            count += Math.floor(Math.random() * 3) - 1;
+                            if (countEl) countEl.innerText = count.toLocaleString();
+                        }, 3000);
+                    })();
+                </script>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology" class="container">
+            <span class="label">Technology</span>
+            <h2 class="reveal">The Science of Auditory Neuromodulation</h2>
+            <div class="tech-grid">
+                <!-- 01 — Neural Entrainment -->
+                <div class="tech-block reveal">
+                    <div class="tech-block__text">
+                        <span class="tech-num">01</span>
+                        <h3>Neural Entrainment</h3>
+                        <p>The brain synchronizes its electrical activity to rhythmic auditory stimuli. NeuroNest
+                            targets
+                            specific brainwave frequencies (delta for sleep, beta for focus, alpha for calm) using
+                            precisely
+                            calibrated audio patterns.</p>
+                    </div>
+                    <svg class="tech-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glowEntrain" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Brain outline - left hemisphere -->
+                        <path class="icon-brain-outline"
+                            d="M32,8 C26,8 21,10 18,14 C15,18 14,23 14,28 C14,33 15,37 18,40 C20,42 22,44 24,46 C25,48 26,50 27,52 L32,52"
+                            fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
+                            opacity="0.7" />
+                        <!-- Brain outline - right hemisphere -->
+                        <path class="icon-brain-outline"
+                            d="M32,8 C38,8 43,10 46,14 C49,18 50,23 50,28 C50,33 49,37 46,40 C44,42 42,44 40,46 C39,48 38,50 37,52 L32,52"
+                            fill="none" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"
+                            opacity="0.7" />
+                        <!-- Central fissure -->
+                        <line x1="32" y1="8" x2="32" y2="52" stroke="white" stroke-width="0.5" opacity="0.2" />
+                        <!-- Brain folds - left -->
+                        <path d="M20,18 Q24,16 28,20" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.35" />
+                        <path d="M16,28 Q22,25 26,30" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.3" />
+                        <path d="M18,36 Q23,34 27,38" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.25" />
+                        <!-- Brain folds - right -->
+                        <path d="M44,18 Q40,16 36,20" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.35" />
+                        <path d="M48,28 Q42,25 38,30" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.3" />
+                        <path d="M46,36 Q41,34 37,38" fill="none" stroke="white" stroke-width="0.8"
+                            stroke-linecap="round" opacity="0.25" />
+                        <!-- Neural pulse nodes -->
+                        <circle class="icon-brain-pulse1" cx="24" cy="22" r="2" fill="#6366F1" opacity="0"
+                            filter="url(#glowEntrain)" />
+                        <circle class="icon-brain-pulse2" cx="40" cy="26" r="1.8" fill="#6366F1" opacity="0"
+                            filter="url(#glowEntrain)" />
+                        <circle class="icon-brain-pulse3" cx="28" cy="34" r="1.5" fill="#6366F1" opacity="0"
+                            filter="url(#glowEntrain)" />
+                        <circle class="icon-brain-pulse4" cx="38" cy="38" r="1.5" fill="#6366F1" opacity="0"
+                            filter="url(#glowEntrain)" />
+                        <!-- Brainstem -->
+                        <path d="M30,52 Q32,56 34,52" fill="none" stroke="white" stroke-width="1" stroke-linecap="round"
+                            opacity="0.5" />
+                    </svg>
+                </div>
+
+                <!-- 02 — Delivery Methods -->
+                <div class="tech-block reveal">
+                    <div class="tech-block__text">
+                        <span class="tech-num">02</span>
+                        <h3>Delivery Methods</h3>
+                        <p>We engineer four primary modalities — binaural beats, isochronic tones, amplitude-modulated
+                            noise, and frequency-following response (FFR) stimuli — each optimized for different
+                            neurological targets.</p>
+                    </div>
+                    <svg class="tech-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glowDeliver" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- 4 signal paths converging to center hub -->
+                        <line class="icon-signal-path1" x1="8" y1="12" x2="28" y2="28" stroke="white" stroke-width="1.2"
+                            stroke-linecap="round" stroke-dasharray="4 3" opacity="0.5" />
+                        <line class="icon-signal-path2" x1="56" y1="12" x2="36" y2="28" stroke="white"
+                            stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 3" opacity="0.5" />
+                        <line class="icon-signal-path3" x1="8" y1="52" x2="28" y2="36" stroke="white" stroke-width="1.2"
+                            stroke-linecap="round" stroke-dasharray="4 3" opacity="0.5" />
+                        <line class="icon-signal-path4" x1="56" y1="52" x2="36" y2="36" stroke="white"
+                            stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 3" opacity="0.5" />
+                        <!-- Origin nodes -->
+                        <circle cx="8" cy="12" r="2.5" fill="none" stroke="white" stroke-width="1" opacity="0.5" />
+                        <circle cx="56" cy="12" r="2.5" fill="none" stroke="white" stroke-width="1" opacity="0.5" />
+                        <circle cx="8" cy="52" r="2.5" fill="none" stroke="white" stroke-width="1" opacity="0.5" />
+                        <circle cx="56" cy="52" r="2.5" fill="none" stroke="white" stroke-width="1" opacity="0.5" />
+                        <!-- Central hub -->
+                        <circle class="icon-signal-hub" cx="32" cy="32" r="6" fill="none" stroke="#6366F1"
+                            stroke-width="1.5" opacity="0.8" filter="url(#glowDeliver)" />
+                        <circle cx="32" cy="32" r="2.5" fill="#6366F1" opacity="1" filter="url(#glowDeliver)" />
+                    </svg>
+                </div>
+
+                <!-- 03 — Evidence-Based Design -->
+                <div class="tech-block reveal">
+                    <div class="tech-block__text">
+                        <span class="tech-num">03</span>
+                        <h3>Evidence-Based Design</h3>
+                        <p>Every NeuroNest protocol is grounded in peer-reviewed neuroscience. Our research database
+                            spans
+                            30+ papers covering ASSR, FFR, psychoacoustics, and clinical applications of auditory
+                            stimulation.</p>
+                    </div>
+                    <svg class="tech-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glowEvidence" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Calibration grid -->
+                        <line class="icon-evidence-grid" x1="8" y1="52" x2="56" y2="52" stroke="white"
+                            stroke-width="0.8" opacity="0.15" />
+                        <line class="icon-evidence-grid" x1="8" y1="42" x2="56" y2="42" stroke="white"
+                            stroke-width="0.5" opacity="0.1" />
+                        <line class="icon-evidence-grid" x1="8" y1="32" x2="56" y2="32" stroke="white"
+                            stroke-width="0.5" opacity="0.1" />
+                        <line class="icon-evidence-grid" x1="8" y1="22" x2="56" y2="22" stroke="white"
+                            stroke-width="0.5" opacity="0.1" />
+                        <line class="icon-evidence-grid" x1="8" y1="12" x2="56" y2="12" stroke="white"
+                            stroke-width="0.5" opacity="0.1" />
+                        <!-- Vertical axis -->
+                        <line x1="8" y1="12" x2="8" y2="52" stroke="white" stroke-width="0.8" opacity="0.2" />
+                        <!-- Waveform that stabilizes -->
+                        <path class="icon-evidence-wave" d="M8,32 Q16,20 24,32 T40,32 T56,32" fill="none" stroke="white"
+                            stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+                        <!-- Verification check -->
+                        <path class="icon-evidence-check" d="M44,18 L48,24 L56,12" fill="none" stroke="#6366F1"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0"
+                            filter="url(#glowEvidence)" />
+                    </svg>
+                </div>
+
+                <!-- 04 — Personalized Protocols -->
+                <div class="tech-block reveal">
+                    <div class="tech-block__text">
+                        <span class="tech-num">04</span>
+                        <h3>Personalized Protocols</h3>
+                        <p>Individual neurological responses vary. NeuroNest's approach adapts stimulation parameters —
+                            frequency, modulation depth, session duration — based on use case and emerging efficacy
+                            data.
+                        </p>
+                    </div>
+                    <svg class="tech-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glowPersonal" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                                <feMerge>
+                                    <feMergeNode in="blur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Central orbit ring -->
+                        <circle class="icon-orbit-ring" cx="32" cy="32" r="20" fill="none" stroke="white"
+                            stroke-width="0.8" stroke-dasharray="6 4" opacity="0.3" />
+                        <!-- Inner ring -->
+                        <circle cx="32" cy="32" r="10" fill="none" stroke="white" stroke-width="0.7"
+                            stroke-dasharray="3 3" opacity="0.2" />
+                        <!-- Center node -->
+                        <circle cx="32" cy="32" r="3.5" fill="#6366F1" opacity="0.9" filter="url(#glowPersonal)" />
+                        <circle cx="32" cy="32" r="1.5" fill="white" opacity="1" />
+                        <!-- Adaptive orbit nodes -->
+                        <circle class="icon-orbit-n1" cx="20" cy="16" r="3" fill="none" stroke="#6366F1"
+                            stroke-width="1.2" opacity="0.7" filter="url(#glowPersonal)" />
+                        <circle class="icon-orbit-n1" cx="20" cy="16" r="1.2" fill="white" opacity="0.8" />
+                        <circle class="icon-orbit-n2" cx="44" cy="16" r="3" fill="none" stroke="white" stroke-width="1"
+                            opacity="0.6" />
+                        <circle class="icon-orbit-n2" cx="44" cy="16" r="1.2" fill="white" opacity="0.7" />
+                        <circle class="icon-orbit-n3" cx="20" cy="48" r="3" fill="none" stroke="white" stroke-width="1"
+                            opacity="0.6" />
+                        <circle class="icon-orbit-n3" cx="20" cy="48" r="1.2" fill="white" opacity="0.7" />
+                        <circle class="icon-orbit-n4" cx="44" cy="48" r="3" fill="none" stroke="#6366F1"
+                            stroke-width="1.2" opacity="0.7" filter="url(#glowPersonal)" />
+                        <circle class="icon-orbit-n4" cx="44" cy="48" r="1.2" fill="white" opacity="0.8" />
+                        <!-- Connecting lines from nodes to center -->
+                        <line x1="20" y1="16" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
+                        <line x1="44" y1="16" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
+                        <line x1="20" y1="48" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
+                        <line x1="44" y1="48" x2="32" y2="32" stroke="white" stroke-width="0.5" opacity="0.15" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- YouTube Recommendation Grid Section -->
+        <section id="recommendations" class="recommendation-section">
+            <div class="container">
+                <div style="text-align: left; margin-bottom: 8px; opacity: 0.8;">
+                    <span class="label" style="margin-bottom: 0; font-size: 26px; color: #fff;">Curated Selection</span>
+                </div>
+                <p class="reveal" style="max-width: 600px; margin-top: 8px; color: var(--text-secondary);">
+                    Explore our hand-picked rotation of tracks engineered to complement specific neurological targets
+                    and
+                    cultural soundscapes.
+                </p>
+
+                <div class="recommendation-grid">
+                    <!-- Category 1: ASSR Focus -->
+                    <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Deep Focus</span>
+                            <h3>The ASSR Rotation</h3>
+                            <p>My personal go-to for deep focus. These Auditory Steady-State Response tracks use 40Hz
+                                Gamma pulses to keep the prefrontal cortex locked in for hours.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 2: Calm -->
+                    <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Nervous System</span>
+                            <h3>Calm the Vagus Nerve</h3>
+                            <p>Specifically chosen to trigger the parasympathetic nervous system. Ideal for post-stress
+                                recovery, using slow-wave delta ramps and soothing textures.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 3: Lofi -->
+                    <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Study Tool</span>
+                            <h3>What is Lofi?</h3>
+                            <p>Lofi music uses "pink noise" and low-fidelity frequencies to mask environmental
+                                distractions. By providing a predictable, soft sonic landscape, it lowers cortisol and
+                                allows your brain to ignore minor background noises.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 4: African Percussion -->
+                    <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Cultural Research</span>
+                            <h3>African Percussion</h3>
+                            <p>Traditional polyrhythms promote hemispheric balance and Gamma wave synchronization.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 5: Sleep Optimization -->
+                    <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Sleep Tech</span>
+                            <h3>Sleep Deep</h3>
+                            <p>Delta transitions designed to guide the brain into restorative deep-sleep stages.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 6: Mood Elevation -->
+                    <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Emotional Flow</span>
+                            <h3>Mood Elevation</h3>
+                            <p>Using high-beta and gamma frequencies to lift cognitive spirit and focus.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 7: Spatial Clarity -->
+                    <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">8D Research</span>
+                            <h3>Spatial Clarity</h3>
+                            <p>360-degree auditory textures that expand the perceived mental workspace.</p>
+                        </div>
+                    </a>
+
+                    <!-- Category 8: Neuro-Plasticity -->
+                    <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" class="rec-card reveal">
+                        <div class="rec-card__thumb"
+                            style="background-image: url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');">
+                            <div class="play-icon-small">
+                                <svg viewBox="0 0 24 24">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="rec-card__content">
+                            <span class="rec-card__tag">Cognitive Health</span>
+                            <h3>Plasticity Flow</h3>
+                            <p>Stimulating neural re-wiring through structured frequency-following responses.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- Parallax Transition: Black → White         -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section class="parallax-transition" id="parallaxZone">
+            <div class="parallax-transition__bg" id="parallaxBg"></div>
+            <canvas class="parallax-transition__canvas" id="parallaxCanvas"></canvas>
+
+            <!-- Floating sequential text layers -->
+            <div class="parallax-transition__text-layer parallax-layer--mid" id="pLayer1">
+                Exploring the Intersection of
+            </div>
+            <div class="parallax-transition__text-layer parallax-layer--mid" id="pLayer2">
+                <div id="pLayer2a">Neuroscience and</div>
+                <div id="pLayer2b">Sound Engineering</div>
+            </div>
+
+            <!-- Midpoint soundwave / neural arc reveal -->
+            <div class="parallax-transition__wave" id="parallaxWave">
+                <svg viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <!-- Waveform line 1 -->
+                    <path d="M0,60 Q50,20 100,60 T200,60 T300,60 T400,60 T500,60 T600,60 T700,60 T800,60 T900,60"
+                        stroke="#6366F1" stroke-width="1.5" opacity="0.6" stroke-linecap="round" />
+                    <!-- Waveform line 2 (offset) -->
+                    <path d="M0,60 Q75,30 150,60 T300,60 T450,60 T600,60 T750,60 T900,60" stroke="white"
+                        stroke-width="0.8" opacity="0.3" stroke-linecap="round" />
+                    <!-- Neural arc accent -->
+                    <ellipse cx="450" cy="60" rx="200" ry="40" stroke="#6366F1" stroke-width="0.6" opacity="0.2"
+                        stroke-dasharray="8 6" />
+                    <ellipse cx="450" cy="60" rx="120" ry="25" stroke="white" stroke-width="0.4" opacity="0.15"
+                        stroke-dasharray="4 4" />
+                    <!-- Center glow node -->
+                    <circle cx="450" cy="60" r="4" fill="#6366F1" opacity="0.8" />
+                    <circle cx="450" cy="60" r="1.5" fill="white" opacity="1" />
+                </svg>
+            </div>
+
+            <!-- Parallax Scrolling Text Section (Overlay internally)  -->
+            <div class="parallax-text-section" id="parallaxTextSection">
+                <h2 class="parallax-text-base" id="parallaxBase" style="text-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                    RESEARCH
+                </h2>
+                <h2 class="parallax-text-overlay" id="parallaxOverlay">LATEST IN NEUROSCIENCE</h2>
+            </div>
+        </section>
+
+        <!-- Latest Research Section (wrapped for light-mode transition) -->
+        <style>
+            .research-section-wrapper::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: url('media__1772984538980.jpg') center/cover no-repeat;
+                opacity: 0.5;
+                z-index: 0;
+                pointer-events: none;
+            }
+
+            #research {
+                position: relative;
+                z-index: 1;
+            }
+        </style>
+
+
+
+        <div class="research-section-wrapper" id="researchWrapper" style="position: relative;">
+            <section id="research" class="container">
+                <span class="label">Latest Research</span>
+                <h2 class="reveal" style="max-width: 800px;">Explore the Potential of Sound Applications</h2>
+                <div class="research-grid">
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11789498/" target="_blank" rel="noopener"
+                        class="research-card reveal">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Brainwave Entrainment for Health: An Integrative Review</h3>
+                        <p class="research-card__desc">A comprehensive review of brainwave entrainment as a noninvasive
+                            neuromodulation technique, covering improvements in pain management, sleep disturbances,
+                            mood
+                            disorders, and cognitive function.</p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2025 · Integrative Review</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                    <a href="https://mental.jmir.org/2025/1/e63498" target="_blank" rel="noopener"
+                        class="research-card reveal">
+                        <span class="research-card__source">JMIR Mental Health</span>
+                        <h3 class="research-card__title">Auditory Beat Stimulation for Anxiety Reduction</h3>
+                        <p class="research-card__desc">Alpha-range (10 Hz) auditory beat stimulation demonstrates
+                            measurable
+                            anxiolytic effects. The study identifies 24-minute sessions with music-combined ABS as the
+                            optimal protocol.</p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2025 · PLOS Mental Health</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/38566357/" target="_blank" rel="noopener"
+                        class="research-card reveal">
+                        <span class="research-card__source">PubMed · NIH.gov</span>
+                        <h3 class="research-card__title">A Review of Binaural Beats and the Brain</h3>
+                        <p class="research-card__desc">Examines ASSR responses to binaural beats originating in the
+                            auditory
+                            cortex during gamma-frequency stimulation. Demonstrates cortical activity synchronization
+                            via
+                            auditory stimuli.</p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2024 · Peer-Reviewed</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                    <a href="https://www.jmir.org/2025/1/e57457" target="_blank" rel="noopener"
+                        class="research-card reveal">
+                        <span class="research-card__source">JMIR · Peer-Reviewed</span>
+                        <h3 class="research-card__title">Sound Interventions and Physiological Stress Reduction</h3>
+                        <p class="research-card__desc">Systematic review showing music, natural sounds, and speech can
+                            lower
+                            cortisol, improve heart rate variability, and decrease blood pressure in stressed adults.
+                        </p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2025 · Systematic Review</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                    <a href="https://www.neurosciencenews.com/sound-alpha-brainwaves-sleep-27808/" target="_blank"
+                        rel="noopener" class="research-card reveal">
+                        <span class="research-card__source">Neuroscience News</span>
+                        <h3 class="research-card__title">Sound Can Stimulate Alpha Brain Waves to Improve Sleep</h3>
+                        <p class="research-card__desc">Alpha Closed-Loop Auditory Stimulation (aCLAS) can manipulate
+                            alpha
+                            rhythms, offering a non-invasive approach for sleep disturbances including dementia-related
+                            insomnia.</p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2024 · Neuroscience</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11612527/" target="_blank" rel="noopener"
+                        class="research-card reveal">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">40 Hz Auditory Stimulation — Alzheimer's & Cognition</h3>
+                        <p class="research-card__desc">40 Hz gamma auditory stimulation reduces amyloid-beta levels and
+                            improves cognitive performance. Human trials demonstrate enhanced memory and decreased
+                            amyloid
+                            plaques.</p>
+                        <div class="research-card__meta">
+                            <span class="research-card__date">2026 · Clinical Research</span>
+                            <span class="research-card__link">READ →</span>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </div> <!-- /research-section-wrapper -->
+    </main>
+
+    <footer class="container">
+        <div class="footer-content">
+            <div class="footer-left">
+                <p>© 2026 NeuroNest Hub Pty Ltd</p>
+                <p style="opacity: 0.5; margin-top: 4px;">ACN 692 412 874</p>
+            </div>
+            <div class="footer-right">
+                <a href="#">Research</a>
+                <a href="mailto:contact@neuronest.au">Contact</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Audio Player -->
+    <div class="audio-player" id="audioPlayer">
+        <div class="container">
+            <button class="audio-player__btn" id="audioPlayPause" aria-label="Play/Pause">
+                <svg id="audioPlayIcon" viewBox="0 0 24 24">
+                    <polygon points="5,3 19,12 5,21" />
+                </svg>
+                <svg id="audioPauseIcon" viewBox="0 0 24 24" style="display:none;">
+                    <rect x="5" y="3" width="4" height="18" />
+                    <rect x="15" y="3" width="4" height="18" />
+                </svg>
+            </button>
+            <div class="audio-player__info">
+                <div class="audio-player__title">Deep Focus — 40 Hz Gamma Enhancement</div>
+                <div class="audio-player__sub">NeuroNest Hub · Soundscape</div>
+            </div>
+            <div class="audio-player__progress" id="audioProgress">
+                <div class="audio-player__progress-bar" id="audioProgressBar"></div>
+            </div>
+            <span class="audio-player__time" id="audioTime">0:00</span>
+            <button class="audio-player__close" id="audioClose" aria-label="Close player">✕</button>
+        </div>
+    </div>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for reveal animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // (Hero atmospheric canvas replaced by Three.js 3D module — see bottom of file)
+
+        // --- Latest Drop / Audio Player Logic ---
+        const dropCard = document.getElementById('dropCard');
+        const playDropBtn = document.getElementById('playDropBtn');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioPlayPause = document.getElementById('audioPlayPause');
+        const audioPlayIcon = document.getElementById('audioPlayIcon');
+        const audioPauseIcon = document.getElementById('audioPauseIcon');
+        const audioProgressBar = document.getElementById('audioProgressBar');
+        const audioProgress = document.getElementById('audioProgress');
+        const audioTime = document.getElementById('audioTime');
+        const audioClose = document.getElementById('audioClose');
+
+        // YouTube iframe embed (loads on play)
+        let ytIframe = null;
+        let isPlaying = false;
+
+        function showPlayer() {
+            audioPlayer.classList.add('visible');
+        }
+
+        function hidePlayer() {
+            audioPlayer.classList.remove('visible');
+            if (ytIframe) {
+                ytIframe.remove();
+                ytIframe = null;
+            }
+            isPlaying = false;
+            audioPlayIcon.style.display = '';
+            audioPauseIcon.style.display = 'none';
+            // Restore thumbnail
+            const thumb = dropCard.querySelector('.drop-card__thumbnail');
+            if (thumb) thumb.style.opacity = '1';
+            const overlay = dropCard.querySelector('.drop-card__overlay');
+            if (overlay) overlay.style.opacity = '1';
+        }
+
+        function launchVideo() {
+            // Embed YouTube iframe into the drop card
+            if (!ytIframe) {
+                ytIframe = document.createElement('iframe');
+                ytIframe.src = 'https://www.youtube.com/embed/6vez9LT68SQ?autoplay=1&controls=0&loop=1&playlist=6vez9LT68SQ&modestbranding=1';
+                ytIframe.allow = 'autoplay; encrypted-media';
+                ytIframe.allowFullscreen = true;
+                dropCard.appendChild(ytIframe);
+                // Fade out thumbnail and overlay
+                const thumb = dropCard.querySelector('.drop-card__thumbnail');
+                if (thumb) thumb.style.opacity = '0';
+                const overlay = dropCard.querySelector('.drop-card__overlay');
+                if (overlay) overlay.style.opacity = '0';
+            }
+            isPlaying = true;
+            audioPlayIcon.style.display = 'none';
+            audioPauseIcon.style.display = '';
+            showPlayer();
+
+            // Simulate progress (since we can't read YT iframe time cross-origin)
+            simulateProgress();
+        }
+
+        let progressInterval = null;
+        let currentTime = 0;
+        const totalDuration = 2 * 3600 + 14 * 60; // 2h14m in seconds
+
+        function simulateProgress() {
+            clearInterval(progressInterval);
+            progressInterval = setInterval(() => {
+                if (isPlaying) {
+                    currentTime++;
+                    const pct = (currentTime / totalDuration) * 100;
+                    audioProgressBar.style.width = pct + '%';
+                    const mins = Math.floor(currentTime / 60);
+                    const secs = currentTime % 60;
+                    audioTime.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+                }
+            }, 1000);
+        }
+
+        // Play from drop card
+        playDropBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            launchVideo();
+        });
+
+        dropCard.addEventListener('click', () => {
+            launchVideo();
+        });
+
+        // Toggle play/pause from floating bar
+        audioPlayPause.addEventListener('click', () => {
+            if (isPlaying) {
+                // Pause: remove iframe (can't pause YouTube embed easily without API)
+                if (ytIframe) {
+                    ytIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+                isPlaying = false;
+                audioPlayIcon.style.display = '';
+                audioPauseIcon.style.display = 'none';
+            } else {
+                if (ytIframe) {
+                    ytIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } else {
+                    launchVideo();
+                }
+                isPlaying = true;
+                audioPlayIcon.style.display = 'none';
+                audioPauseIcon.style.display = '';
+            }
+        });
+
+        // Close player
+        audioClose.addEventListener('click', () => {
+            clearInterval(progressInterval);
+            currentTime = 0;
+            audioProgressBar.style.width = '0%';
+            audioTime.textContent = '0:00';
+            hidePlayer();
+        });
+
+        // Click on progress bar to seek (visual only)
+        audioProgress.addEventListener('click', (e) => {
+            const rect = audioProgress.getBoundingClientRect();
+            const pct = (e.clientX - rect.left) / rect.width;
+            currentTime = Math.floor(pct * totalDuration);
+            audioProgressBar.style.width = (pct * 100) + '%';
+        });
+
+        // ==============================================
+        // Parallax Transition: Black → White
+        // ==============================================
+        (function () {
+            const zone = document.getElementById('parallaxZone');
+            const bg = document.getElementById('parallaxBg');
+            const canvas = document.getElementById('parallaxCanvas');
+            const ctx = canvas.getContext('2d');
+            const wave = document.getElementById('parallaxWave');
+            const layer1 = document.getElementById('pLayer1');
+            const layer2 = document.getElementById('pLayer2');
+            const layer2a = document.getElementById('pLayer2a');
+            const layer2b = document.getElementById('pLayer2b');
+            const wrapper = document.getElementById('researchWrapper');
+
+            if (!zone || !canvas) return;
+
+            // Particle system
+            const particles = [];
+            const PARTICLE_COUNT = 80;
+
+            function initCanvas() {
+                canvas.width = zone.offsetWidth;
+                canvas.height = zone.offsetHeight;
+            }
+
+            function createParticles() {
+                particles.length = 0;
+                for (let i = 0; i < PARTICLE_COUNT; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.5 + 0.3,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: (Math.random() - 0.5) * 0.15 - 0.1,
+                        alpha: Math.random() * 0.4 + 0.1
+                    });
+                }
+            }
+
+            // Color stops for the transition
+            const colorStops = [
+                { r: 0, g: 0, b: 0 },       // 0%  — pure black
+                { r: 20, g: 20, b: 22 },     // 20% — near black
+                { r: 40, g: 40, b: 45 },     // 40% — charcoal
+                { r: 80, g: 80, b: 88 },     // 60% — dark mist
+                { r: 160, g: 160, b: 168 },  // 80% — light mist
+                { r: 255, g: 255, b: 255 }   // 100% — white
+            ];
+
+            function lerpColor(t) {
+                t = Math.max(0, Math.min(1, t));
+                const segCount = colorStops.length - 1;
+                const seg = t * segCount;
+                const i = Math.floor(seg);
+                const f = seg - i;
+                const c1 = colorStops[Math.min(i, segCount)];
+                const c2 = colorStops[Math.min(i + 1, segCount)];
+                return {
+                    r: Math.round(c1.r + (c2.r - c1.r) * f),
+                    g: Math.round(c1.g + (c2.g - c1.g) * f),
+                    b: Math.round(c1.b + (c2.b - c1.b) * f)
+                };
+            }
+
+            let scrollProgress = 0;
+            let ticking = false;
+
+            function updateParallax() {
+                const rect = zone.getBoundingClientRect();
+                const zoneH = zone.offsetHeight;
+                const viewH = window.innerHeight;
+
+                // progress: 0 when zone top enters viewport bottom, 1 when zone bottom exits viewport top
+                const rawProgress = (viewH - rect.top) / (zoneH + viewH);
+                scrollProgress = Math.max(0, Math.min(1, rawProgress));
+
+                // 1. Background color interpolation
+                // Reach white faster so black text is visible against a light bg
+                const colorFactor = Math.min(scrollProgress * 1.5, 1);
+                const c = lerpColor(colorFactor);
+                bg.style.backgroundColor = `rgb(${c.r},${c.g},${c.b})`;
+
+                // 2. Sequential text layers: Exploring the Intersection... -> Neuroscience and Sound Engineering
+                // Extended ranges for 300vh depth
+
+                // Phase 1 (Exploring...): 0.15 to 0.45
+                const p1FadeIn = Math.min(Math.max((scrollProgress - 0.15) * 8, 0), 1);
+                const p1FadeOut = Math.max(1 - (scrollProgress - 0.35) * 8, 0);
+                const p1Op = Math.min(p1FadeIn, p1FadeOut);
+
+                // Phase 2 (Neuroscience...): 0.55 to 0.85
+                const p2FadeIn = Math.min(Math.max((scrollProgress - 0.55) * 8, 0), 1);
+                const p2FadeOut = Math.max(1 - (scrollProgress - 0.75) * 8, 0);
+                const p2Op = Math.min(p2FadeIn, p2FadeOut);
+
+                // Subtle parallax drift
+                const drift = -scrollProgress * 200;
+
+                if (layer1) {
+                    layer1.style.transform = `translate(-50%, calc(-50% + ${drift * 0.4}px - 300px))`;
+                    layer1.style.opacity = p1Op;
+                    // Force black once bg is light enough
+                    layer1.style.color = '#000';
+                }
+                if (layer2) {
+                    // Slide progress (0 to 1 during the fade-in phase 0.55 - 0.75)
+                    const slideIn = Math.min(Math.max((scrollProgress - 0.55) * 5, 0), 1);
+
+                    layer2.style.transform = `translate(-50%, calc(-50% + ${drift * 0.6}px + 800px))`;
+                    layer2.style.opacity = p2Op;
+                    layer2.style.color = '#000';
+
+                    if (layer2a) {
+                        // Slide in from left of the page
+                        layer2a.style.transform = `translateX(${(1 - slideIn) * -100}vw)`;
+                    }
+                    if (layer2b) {
+                        // Slide in from right of the page
+                        layer2b.style.transform = `translateX(${(1 - slideIn) * 100}vw)`;
+                    }
+                }
+
+                // 3. Midpoint soundwave reveal (centered around 0.5)
+                const waveFade = Math.min(
+                    Math.max((scrollProgress - 0.2) * 4, 0),
+                    Math.max(1 - (scrollProgress - 0.6) * 4, 0)
+                );
+                wave.style.opacity = Math.max(0, Math.min(1, waveFade)) * 0.4;
+                const waveScale = 0.8 + scrollProgress * 0.5;
+                wave.style.transform = `translate(-50%, -50%) scale(${waveScale})`;
+
+                // 4. Research section light-mode toggle
+                if (scrollProgress > 0.8) {
+                    wrapper.classList.add('light-mode');
+                } else {
+                    wrapper.classList.remove('light-mode');
+                }
+
+                // 5. Draw particles on canvas
+                drawParticles();
+
+                ticking = false;
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Particle color shifts from light to dark as bg goes light
+                const brightness = scrollProgress > 0.5
+                    ? Math.round(255 - scrollProgress * 200)
+                    : Math.round(180 + scrollProgress * 100);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+
+                    // Update position (add subtle scroll-based drift)
+                    p.x += p.vx;
+                    p.y += p.vy - scrollProgress * 0.3;
+
+                    // Wrap around
+                    if (p.x < 0) p.x = canvas.width;
+                    if (p.x > canvas.width) p.x = 0;
+                    if (p.y < 0) p.y = canvas.height;
+                    if (p.y > canvas.height) p.y = 0;
+
+                    // Draw
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${brightness},${brightness},${brightness + 10},${p.alpha * (1 - scrollProgress * 0.5)})`;
+                    ctx.fill();
+                }
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }
+
+            // Init
+            initCanvas();
+            createParticles();
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', () => {
+                initCanvas();
+                createParticles();
+            });
+
+            // Initial draw
+            updateParallax();
+
+            // Animate particles even when not scrolling
+            function animLoop() {
+                drawParticles();
+                requestAnimationFrame(animLoop);
+            }
+            animLoop();
+        })();
+    </script>
+
+    <!-- ================================================ -->
+    <!-- Hero Scroll Parallax Effect                       -->
+    <!-- ================================================ -->
+    <script>
+        (function () {
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const heroTagline = document.getElementById('heroTagline');
+            const heroTextGroup = document.getElementById('heroTextGroup');
+            const heroDashboard = document.getElementById('heroDashboard');
+            const heroGlowWave = document.getElementById('heroGlowWave');
+            const smokeCanvas = document.getElementById('smokeCanvas');
+            const parallaxSection = document.getElementById('parallaxTextSection');
+            const parallaxBase = document.getElementById('parallaxBase');
+            const parallaxOverlay = document.getElementById('parallaxOverlay');
+
+            function updateHeroParallax() {
+                const scrollY = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                const fadeProgress = Math.min(Math.max(scrollY / (windowHeight * 0.5), 0), 1);
+                const easeIn = Math.pow(fadeProgress, 2);
+                const opacity = 1 - easeIn;
+                const translateY = fadeProgress * -100;
+
+                if (heroTitle) {
+                    heroTitle.style.opacity = opacity;
+                    heroTitle.style.transform = `translateY(${translateY}px)`;
+                }
+
+                if (heroTextGroup) {
+                    // Combine scroll opacity with base layout
+                    heroTextGroup.style.opacity = opacity;
+                    heroTextGroup.style.transform = `translateY(${translateY}px)`;
+                }
+
+                if (smokeCanvas) {
+                    smokeCanvas.style.opacity = opacity * 0.6;
+                    smokeCanvas.style.transform = `translateY(${translateY * 0.5}px)`;
+                }
+
+                if (heroSubtitle) {
+                    heroSubtitle.style.opacity = opacity;
+                    heroSubtitle.style.transform = `translateY(${translateY * 0.8}px)`;
+                }
+
+                if (heroDashboard) {
+                    heroDashboard.style.opacity = opacity;
+                    heroDashboard.style.transform = `translateY(${translateY * 0.3}px)`;
+                }
+
+                // Huge Parallax Text Logic
+                const parallaxSection = document.getElementById('parallaxTextSection');
+                const parallaxBase = document.getElementById('parallaxBase');
+                const parallaxOverlay = document.getElementById('parallaxOverlay');
+                const parallaxZone = document.getElementById('parallaxZone');
+
+                if (parallaxSection && parallaxBase && parallaxOverlay && parallaxZone) {
+                    const zoneRect = parallaxZone.getBoundingClientRect();
+
+                    // Normalise visibility directly against the black transition zone's height
+                    const visibility = 1 - (zoneRect.top / windowHeight);
+
+                    if (visibility > 0.0 && visibility < 1.4) {
+                        const baseOpacity = Math.min(Math.max(visibility * 2, 0), 0.8);
+
+                        // Slide left slightly and fade in
+                        const baseTranslateX = (0.5 - visibility) * 200;
+                        parallaxBase.style.opacity = baseOpacity;
+                        parallaxBase.style.transform = `translate(${baseTranslateX}px, 0)`;
+
+                        // Slide from left to right over it
+                        const overlayTranslateX = -50 + ((visibility - 0.5) * 100);
+                        parallaxOverlay.style.opacity = baseOpacity;
+                        parallaxOverlay.style.transform = `translate(${overlayTranslateX}%, -50%)`;
+                    }
+                }
+
+                if (heroGlowWave) {
+                    const waveScale = 1.2 - (fadeProgress * 0.4);
+                    heroGlowWave.style.opacity = opacity * 0.8;
+                    heroGlowWave.style.transform = `translate(-50%, -50%) scale(${waveScale})`;
+                    heroGlowWave.style.background = `radial-gradient(circle at center, rgba(99, 102, 241, 0.25) 0%, transparent 60%)`;
+                }
+            }
+
+            // --- WebGL Smoke Shader ---
+            (function initSmoke() {
+                if (!smokeCanvas) return;
+                const gl = smokeCanvas.getContext('webgl');
+                if (!gl) return;
+
+                const vs = `
+                    attribute vec2 position;
+                    void main() { gl_Position = vec4(position, 0.0, 1.0); }
+                `;
+
+                const fs = `
+                    precision mediump float;
+                    uniform float time;
+                    uniform vec2 resolution;
+
+                    // Simplex noise helper
+                    vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                    vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+
+                    float snoise(vec2 v) {
+                        const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+                        vec2 i  = floor(v + dot(v, C.yy) );
+                        vec2 x0 = v -   i + dot(i, C.xx);
+                        vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                        vec4 x12 = x0.xyxy + C.xxzz;
+                        x12.xy -= i1;
+                        i = mod289(i);
+                        vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0 ));
+                        vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+                        m = m*m;
+                        m = m*m;
+                        vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                        vec3 h = abs(x) - 0.5;
+                        vec3 ox = floor(x + 0.5);
+                        vec3 a0 = x - ox;
+                        m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+                        vec3 g;
+                        g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                        return 130.0 * dot(m, g);
+                    }
+
+                    void main() {
+                        vec2 uv = gl_FragCoord.xy / resolution.xy;
+                        float n = snoise(uv * 3.0 + time * 0.2);
+                        n += 0.5 * snoise(uv * 6.0 - time * 0.4);
+                        n += 0.25 * snoise(uv * 12.0 + time * 0.8);
+                        
+                        float smoke = smoothstep(0.1, 0.8, n * 0.5 + 0.5);
+                        vec3 color = mix(vec3(0.05), vec3(0.39, 0.4, 0.95), smoke * 0.3); // Subtle indigo blend
+                        gl_FragColor = vec4(color, smoke * 0.7);
+                    }
+                `;
+
+                function createShader(gl, type, source) {
+                    const shader = gl.createShader(type);
+                    gl.shaderSource(shader, source);
+                    gl.compileShader(shader);
+                    return shader;
+                }
+
+                const program = gl.createProgram();
+                gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vs));
+                gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fs));
+                gl.linkProgram(program);
+                gl.useProgram(program);
+
+                const posBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, posBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+                const posLoc = gl.getAttribLocation(program, 'position');
+                gl.enableVertexAttribArray(posLoc);
+                gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+                const timeLoc = gl.getUniformLocation(program, 'time');
+                const resLoc = gl.getUniformLocation(program, 'resolution');
+
+                function render(t) {
+                    smokeCanvas.width = smokeCanvas.clientWidth;
+                    smokeCanvas.height = smokeCanvas.clientHeight;
+                    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+                    gl.uniform1f(timeLoc, t * 0.001);
+                    gl.uniform2f(resLoc, gl.canvas.width, gl.canvas.height);
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                    requestAnimationFrame(render);
+                }
+                requestAnimationFrame(render);
+            })();
+
+            // --- Fade In/Out Loop ---
+            (function runFadeLoop() {
+                let isVisible = true;
+                const visibleTime = 4000;
+                const hiddenTime = 1500;
+
+                function toggleFade() {
+                    isVisible = !isVisible;
+                    if (heroSubtitle) {
+                        heroSubtitle.style.opacity = isVisible ? '0.8' : '0';
+                    }
+                    setTimeout(toggleFade, isVisible ? visibleTime : hiddenTime);
+                }
+
+                setTimeout(toggleFade, visibleTime);
+            })();
+
+            window.addEventListener('scroll', () => {
+                requestAnimationFrame(updateHeroParallax);
+            });
+            // Initial trigger
+            updateHeroParallax();
+        })();
+    </script>
+</body>
+
+</html>
