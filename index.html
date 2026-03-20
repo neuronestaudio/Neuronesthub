@@ -89,15 +89,109 @@
         }
 
         .menu-btn {
-            background: none;
-            border: none;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            padding: 8px 18px;
             color: var(--text-white);
             font-family: 'Outfit', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
-            cursor: pointer;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.32);
+        }
+
+        .menu-btn .chevron {
+            display: inline-block;
+            font-size: 9px;
+            line-height: 1;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-wrap.is-open .menu-btn .chevron {
+            transform: rotate(180deg);
+        }
+
+        .menu-wrap {
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .menu-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 220px;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            background: rgba(3, 8, 19, 0.50);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 0 0 0.5px rgba(255, 255, 255, 0.07);
+            transform-origin: top right;
+            transform: scaleY(0.6) translateY(-8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-wrap.is-open .menu-dropdown {
+            opacity: 1;
+            transform: scaleY(1) translateY(0);
+            pointer-events: auto;
+        }
+
+        @keyframes menuItemIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .menu-dropdown a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.82);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border-right: 2px solid transparent;
+            opacity: 0;
+            transition: background 0.15s ease, color 0.15s ease, border-right-color 0.15s ease;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a {
+            animation: menuItemIn 0.22s ease forwards;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a:nth-child(1) { animation-delay: 0.07s; }
+        .menu-wrap.is-open .menu-dropdown a:nth-child(2) { animation-delay: 0.12s; }
+        .menu-wrap.is-open .menu-dropdown a:nth-child(3) { animation-delay: 0.17s; }
+        .menu-wrap.is-open .menu-dropdown a:nth-child(4) { animation-delay: 0.22s; }
+        .menu-wrap.is-open .menu-dropdown a:nth-child(5) { animation-delay: 0.27s; }
+
+        .menu-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-right-color: rgba(149, 168, 255, 0.75);
         }
 
         /* --- Hero --- */
@@ -417,7 +511,16 @@
         <div class="header-left">
             THE FUTURE OF SOUND AND WELLBEING.<br>SUPPORTED BY NEUROSCIENCE.
         </div>
-        <button class="menu-btn">Menu</button>
+        <div class="menu-wrap" id="menuWrap">
+            <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuDropdown">Menu <span class="chevron">▾</span></button>
+            <div class="menu-dropdown" id="menuDropdown">
+                <a href="index.html" class="menu-option">Home</a>
+                <a href="radio.html" class="menu-option">Sound Hub</a>
+                <a href="about.html" class="menu-option">Learn More</a>
+                <a href="#research-hub" class="menu-option">Research Hub</a>
+                <a href="neuroscience-news.html" class="menu-option">Neuroscience News</a>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -522,10 +625,83 @@
                 <a href="#">Privacy Policy</a>
                 <a href="#">Accessibility Statement</a>
                 <p>© 2026 BY NEURONEST.ME</p>
-                <p>Powered and secured by Wix</p>
             </div>
         </div>
     </footer>
+
+    <script>
+        const menuWrap = document.getElementById('menuWrap');
+        const menuBtn = document.getElementById('menuBtn');
+        const menuDropdown = document.getElementById('menuDropdown');
+        const menuOptions = document.querySelectorAll('.menu-option');
+
+        let closeTimer = null;
+        let menuPinned = false;
+
+        function setMenuOpen(isOpen) {
+            if (isOpen) {
+                // Reset item animations so they replay each open
+                menuDropdown.querySelectorAll('a').forEach(function(a) {
+                    a.style.animation = 'none';
+                    void a.offsetWidth;
+                    a.style.animation = '';
+                });
+            }
+            menuWrap.classList.toggle('is-open', isOpen);
+            menuBtn.setAttribute('aria-expanded', String(isOpen));
+        }
+
+        function clearCloseTimer() {
+            if (closeTimer) {
+                clearTimeout(closeTimer);
+                closeTimer = null;
+            }
+        }
+
+        function queueMenuClose() {
+            clearCloseTimer();
+            if (menuPinned) return;
+            closeTimer = setTimeout(() => {
+                setMenuOpen(false);
+            }, 2000);
+        }
+
+        menuWrap.addEventListener('mouseenter', () => {
+            clearCloseTimer();
+            setMenuOpen(true);
+        });
+
+        menuWrap.addEventListener('mouseleave', () => {
+            queueMenuClose();
+        });
+
+        menuBtn.addEventListener('click', () => {
+            clearCloseTimer();
+            const isOpen = menuWrap.classList.contains('is-open');
+            if (isOpen && menuPinned) {
+                menuPinned = false;
+                queueMenuClose();
+            } else {
+                setMenuOpen(true);
+            }
+        });
+
+        menuOptions.forEach((option) => {
+            option.addEventListener('click', () => {
+                menuPinned = true;
+                clearCloseTimer();
+                setMenuOpen(true);
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!menuWrap.contains(event.target)) {
+                menuPinned = false;
+                setMenuOpen(false);
+                clearCloseTimer();
+            }
+        });
+    </script>
 
 </body>
 </html>
