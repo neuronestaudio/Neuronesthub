@@ -131,7 +131,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.45);
             z-index: 0;
         }
 
@@ -161,6 +161,14 @@
             color: var(--text-grey);
             margin-bottom: 40px;
             font-style: italic;
+        }
+
+        .hero-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         /* --- Intro Section --- */
@@ -397,6 +405,9 @@
             header {
                 padding: 20px;
             }
+            .hero-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -419,7 +430,11 @@
                 <div class="hero-welcome">Welcome to NeuroNest.</div>
                 <h1 class="hero-title">SOUNDSCAPES FOR<br>FOCUS, SLEEP & HEALING</h1>
                 <p class="hero-subtitle">"Revolutionising human performance, through sound."</p>
-                <a href="about.html" class="btn btn-outline">Learn More</a>
+                <div class="hero-actions">
+                    <a href="radio.html" class="btn btn-outline">SOUND HUB</a>
+                    <a href="about.html" class="btn btn-outline">Learn More</a>
+                    <a href="#research-hub" class="btn btn-outline">Research Hub</a>
+                </div>
             </div>
         </section>
 
@@ -432,10 +447,10 @@
             </div>
         </section>
 
-        <section class="research-hub">
+        <section class="research-hub" id="research-hub">
             <div class="research-content">
                 <div class="research-label">| RESEARCH HUB |</div>
-                <a href="about.html" class="btn btn-outline">Learn More</a>
+                <a href="neuroscience-news.html" class="btn btn-outline">NEUROSCIENCE NEWS</a>
             </div>
             <div class="research-video-container">
                 <video class="research-video" autoplay loop muted playsinline>
@@ -478,7 +493,7 @@
                 <source src="assets/footer_animation.mp4" type="video/mp4">
             </video>
             <div class="footer-banner-text">
-                Rewire your Potential with<br>neuro-science backed soundscapes.
+                EXPLORE YOUR POTENTIAL WITH<br>NEUROSCIENCE BACKED SOUNDSCAPES
             </div>
         </section>
     </main>

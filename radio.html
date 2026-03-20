@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroNest | Radio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030813;
+            --bg-soft: #081225;
+            --text: #eaf0ff;
+            --muted: #8f9ab0;
+            --line: rgba(94, 140, 255, 0.2);
+            --line-strong: rgba(94, 140, 255, 0.35);
+            --card: rgba(5, 15, 35, 0.75);
+            --card-2: rgba(6, 16, 38, 0.86);
+            --accent: #95a8ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 50% -20%, rgba(95, 127, 255, 0.25), transparent 45%),
+                repeating-linear-gradient(0deg, rgba(80, 120, 255, 0.08), rgba(80, 120, 255, 0.08) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(80, 120, 255, 0.08), rgba(80, 120, 255, 0.08) 1px, transparent 1px, transparent 40px),
+                linear-gradient(180deg, #02050e 0%, #050b1a 100%);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: min(1180px, 94vw);
+            margin: 0 auto;
+        }
+
+        .topbar {
+            padding: 24px 0 8px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-pill {
+            margin: 0 auto;
+            width: min(780px, 100%);
+            border-radius: 999px;
+            background: rgba(5, 9, 18, 0.88);
+            border: 1px solid rgba(106, 138, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-pill a {
+            text-decoration: none;
+            color: rgba(232, 240, 255, 0.72);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .nav-pill a:hover {
+            color: #ffffff;
+        }
+
+        .brand {
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            padding: 0 6px;
+        }
+
+        .brand strong {
+            display: block;
+            font-size: 27px;
+            line-height: 1;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .brand span {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.38em;
+            color: rgba(232, 240, 255, 0.56);
+            text-transform: uppercase;
+        }
+
+        .hero {
+            position: relative;
+            margin-top: 34px;
+            padding: 70px 0 36px;
+            text-align: center;
+        }
+
+        .hero video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.16;
+            filter: grayscale(0.1) contrast(1.1) brightness(0.48);
+            pointer-events: none;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(3, 8, 19, 0.4) 0%, rgba(3, 8, 19, 0.92) 88%);
+            pointer-events: none;
+        }
+
+        .hero > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(30px, 4.2vw, 46px);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(234, 240, 255, 0.8);
+            margin-bottom: 28px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid var(--line-strong);
+            padding: 10px 24px;
+            border-radius: 2px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            background: rgba(8, 18, 37, 0.45);
+        }
+
+        .layout {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 16px;
+            padding-bottom: 54px;
+        }
+
+        .card {
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--card);
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(159, 181, 255, 0.45);
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-main {
+            min-height: 420px;
+            position: relative;
+        }
+
+        .card-main__image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+        }
+
+        .card-main__shade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(1, 5, 12, 0.2) 0%, rgba(1, 5, 12, 0.88) 74%);
+        }
+
+        .card-main__content {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: 22px;
+            z-index: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .card-main h2 {
+            font-size: clamp(28px, 4vw, 78px);
+            line-height: 0.95;
+            letter-spacing: -0.01em;
+            text-transform: lowercase;
+        }
+
+        .card-main p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: rgba(226, 234, 252, 0.78);
+            max-width: 74%;
+        }
+
+        .card-side-wrap {
+            display: grid;
+            gap: 16px;
+            grid-template-rows: 1.2fr 1fr;
+        }
+
+        .card-side {
+            padding: 22px 20px;
+            background: var(--card-2);
+            min-height: 158px;
+        }
+
+        .card-side h3 {
+            font-size: clamp(24px, 2vw, 36px);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .card-side p {
+            color: var(--muted);
+            font-size: 15px;
+            max-width: 95%;
+        }
+
+        .card-side-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .card-small {
+            min-height: 164px;
+            padding: 20px;
+            background: rgba(6, 16, 38, 0.82);
+        }
+
+        .card-small h4 {
+            font-size: clamp(20px, 1.4vw, 32px);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .card-small p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            padding-bottom: 56px;
+        }
+
+        .extra-card {
+            padding: 16px;
+            min-height: 140px;
+            border-radius: 16px;
+            background: rgba(6, 16, 38, 0.72);
+            border: 1px solid rgba(106, 138, 255, 0.16);
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .extra-card:hover {
+            border-color: rgba(159, 181, 255, 0.45);
+        }
+
+        .extra-card h5 {
+            font-size: 22px;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .extra-card p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .radio-hub {
+            padding-bottom: 56px;
+        }
+
+        .tab-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .tab-btn {
+            border: 1px solid var(--line);
+            background: rgba(5, 15, 35, 0.8);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .tab-btn.is-active {
+            border-color: var(--line-strong);
+            background: rgba(20, 34, 70, 0.95);
+            color: #ffffff;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+        }
+
+        .hub-panel {
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: rgba(6, 16, 38, 0.82);
+            padding: 18px;
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .track-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .track-item {
+            width: 100%;
+            text-align: left;
+            border: 1px solid rgba(106, 138, 255, 0.16);
+            border-radius: 14px;
+            background: rgba(3, 11, 28, 0.72);
+            color: var(--text);
+            padding: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .track-item:hover,
+        .track-item.is-active {
+            border-color: rgba(160, 184, 255, 0.56);
+            transform: translateY(-1px);
+        }
+
+        .track-item strong {
+            display: block;
+            font-size: 18px;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .track-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .player {
+            border: 1px solid var(--line-strong);
+            border-radius: 16px;
+            background: rgba(8, 18, 37, 0.86);
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .player h3 {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .player p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .player audio {
+            width: 100%;
+        }
+
+        .queue-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .queue-item {
+            border: 1px solid rgba(106, 138, 255, 0.16);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 13px;
+            color: var(--muted);
+            background: rgba(4, 12, 28, 0.62);
+        }
+
+        @media (max-width: 1040px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .card-main p {
+                max-width: 100%;
+            }
+
+            .extra-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar {
+                position: static;
+                padding-top: 14px;
+            }
+
+            .nav-pill {
+                border-radius: 20px;
+                flex-direction: column;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .brand strong {
+                font-size: 23px;
+            }
+
+            .hero {
+                margin-top: 20px;
+                padding-top: 56px;
+            }
+
+            .hero h1 {
+                letter-spacing: 0.08em;
+            }
+
+            .card-side-bottom {
+                grid-template-columns: 1fr;
+            }
+
+            .extra-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <nav class="nav-pill container">
+            <div class="nav-group">
+                <a href="index.html">Home</a>
+                <a href="about.html">Research Hub</a>
+                <a href="radio.html">Radio</a>
+            </div>
+            <a class="brand" href="index.html" aria-label="Neuronest Australia">
+                <strong>Neuronest</strong>
+                <span>Australia</span>
+            </a>
+            <div class="nav-group">
+                <a href="neuroscience-news.html">Latest News</a>
+                <a href="mailto:contact@neuronest.au">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <video autoplay loop muted playsinline>
+                <source src="assets/hero_banner.mp4" type="video/mp4">
+            </video>
+            <div class="container">
+                <h1>Clinical Performance</h1>
+                <span class="hero-badge">Curated Section</span>
+            </div>
+        </section>
+
+        <section class="container radio-hub" aria-label="Live sound hub">
+            <div class="tab-row" id="radioTabs">
+                <button class="tab-btn is-active" data-tab="deep-focus">DEEP FOCUS</button>
+                <button class="tab-btn" data-tab="meditiations">MEDITIATIONS</button>
+                <button class="tab-btn" data-tab="calm">CALM</button>
+                <button class="tab-btn" data-tab="sleep">SLEEP</button>
+            </div>
+
+            <div class="hub-grid">
+                <div class="hub-panel">
+                    <div class="panel-title" id="panelTitle">Deep Focus Playlist</div>
+                    <div class="track-list" id="trackList"></div>
+                </div>
+
+                <div class="hub-panel">
+                    <div class="player">
+                        <div class="panel-title">Now Playing</div>
+                        <h3 id="nowTitle">Select a track</h3>
+                        <p id="nowMeta">Choose a state and press a track to start live playback.</p>
+                        <audio id="livePlayer" controls preload="none"></audio>
+                    </div>
+                    <div class="panel-title">Live Queue</div>
+                    <div class="queue-list" id="queueList"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Replace URLs below with your own stream links or local file paths when ready.
+        const stationMap = {
+            'deep-focus': {
+                label: 'Deep Focus Playlist',
+                tracks: [
+                    { title: 'Gamma Architecture 40Hz', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', type: 'Live Stream', duration: '58:00' },
+                    { title: 'Prefrontal Lock-in', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', type: 'Stream', duration: '44:00' },
+                    { title: 'Hyperfocus Engine', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', type: 'Stream', duration: '50:00' }
+                ]
+            },
+            meditiations: {
+                label: 'Meditiations Playlist',
+                tracks: [
+                    { title: 'Breath Alignment', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', type: 'Stream', duration: '36:00' },
+                    { title: 'Theta Drift Session', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', type: 'Stream', duration: '42:00' },
+                    { title: 'Body Scan Field', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', type: 'Stream', duration: '32:00' }
+                ]
+            },
+            calm: {
+                label: 'Calm Playlist',
+                tracks: [
+                    { title: 'Vagus Downshift', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', type: 'Live Stream', duration: '48:00' },
+                    { title: 'Ambient Recovery', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', type: 'Stream', duration: '39:00' },
+                    { title: 'Nervous System Reset', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', type: 'Stream', duration: '45:00' }
+                ]
+            },
+            sleep: {
+                label: 'Sleep Playlist',
+                tracks: [
+                    { title: 'Delta Entry', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', type: 'Night Stream', duration: '2:00:00' },
+                    { title: 'Deep Sleep Cycle', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3', type: 'Stream', duration: '1:20:00' },
+                    { title: 'Moonlight Restoration', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3', type: 'Stream', duration: '1:05:00' }
+                ]
+            }
+        };
+
+        const tabsEl = document.getElementById('radioTabs');
+        const trackListEl = document.getElementById('trackList');
+        const queueListEl = document.getElementById('queueList');
+        const panelTitleEl = document.getElementById('panelTitle');
+        const nowTitleEl = document.getElementById('nowTitle');
+        const nowMetaEl = document.getElementById('nowMeta');
+        const livePlayerEl = document.getElementById('livePlayer');
+
+        let activeTab = 'deep-focus';
+        let activeTrackIndex = -1;
+
+        function playTrack(track, index) {
+            activeTrackIndex = index;
+            livePlayerEl.src = track.src;
+            livePlayerEl.play().catch(() => {
+                nowMetaEl.textContent = 'Press play on the player to start this stream.';
+            });
+            nowTitleEl.textContent = track.title;
+            nowMetaEl.textContent = track.type + ' • ' + track.duration;
+            renderTracks();
+        }
+
+        function renderTracks() {
+            const station = stationMap[activeTab];
+            panelTitleEl.textContent = station.label;
+            trackListEl.innerHTML = station.tracks.map((track, index) => {
+                const activeClass = index === activeTrackIndex ? 'is-active' : '';
+                return '<button class="track-item ' + activeClass + '" data-index="' + index + '">' +
+                    '<strong>' + track.title + '</strong>' +
+                    '<div class="track-meta"><span>' + track.type + '</span><span>' + track.duration + '</span></div>' +
+                    '</button>';
+            }).join('');
+
+            queueListEl.innerHTML = station.tracks.map((track, index) => {
+                return '<div class="queue-item">' + (index + 1) + '. ' + track.title + '</div>';
+            }).join('');
+        }
+
+        tabsEl.addEventListener('click', (event) => {
+            const btn = event.target.closest('.tab-btn');
+            if (!btn) return;
+
+            activeTab = btn.dataset.tab;
+            activeTrackIndex = -1;
+            nowTitleEl.textContent = 'Select a track';
+            nowMetaEl.textContent = 'Choose a state and press a track to start live playback.';
+            livePlayerEl.removeAttribute('src');
+            livePlayerEl.load();
+
+            document.querySelectorAll('.tab-btn').forEach((tabBtn) => {
+                tabBtn.classList.toggle('is-active', tabBtn === btn);
+            });
+
+            renderTracks();
+        });
+
+        trackListEl.addEventListener('click', (event) => {
+            const button = event.target.closest('.track-item');
+            if (!button) return;
+            const station = stationMap[activeTab];
+            const index = Number(button.dataset.index);
+            playTrack(station.tracks[index], index);
+        });
+
+        renderTracks();
+    </script>
+</body>
+</html>
