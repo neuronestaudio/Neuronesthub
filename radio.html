@@ -7,17 +7,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
-            --bg: #030813;
-            --bg-soft: #081225;
-            --text: #eaf0ff;
-            --muted: #8f9ab0;
-            --line: rgba(94, 140, 255, 0.2);
-            --line-strong: rgba(94, 140, 255, 0.35);
-            --card: rgba(5, 15, 35, 0.75);
-            --card-2: rgba(6, 16, 38, 0.86);
-            --accent: #95a8ff;
+            --bg: #050506;
+            --bg-soft: #0d0c12;
+            --text: #f3f3f8;
+            --muted: #aeafbe;
+            --line: rgba(255, 255, 255, 0.18);
+            --line-strong: rgba(255, 255, 255, 0.34);
+            --card: rgba(12, 12, 16, 0.78);
+            --card-2: rgba(17, 15, 24, 0.86);
+            --accent: #b9a9ff;
         }
 
         * {
@@ -30,10 +31,10 @@
             font-family: 'Outfit', sans-serif;
             color: var(--text);
             background:
-                radial-gradient(circle at 50% -20%, rgba(95, 127, 255, 0.25), transparent 45%),
-                repeating-linear-gradient(0deg, rgba(80, 120, 255, 0.08), rgba(80, 120, 255, 0.08) 1px, transparent 1px, transparent 40px),
-                repeating-linear-gradient(90deg, rgba(80, 120, 255, 0.08), rgba(80, 120, 255, 0.08) 1px, transparent 1px, transparent 40px),
-                linear-gradient(180deg, #02050e 0%, #050b1a 100%);
+                radial-gradient(circle at 52% -16%, rgba(145, 111, 255, 0.18), transparent 44%),
+                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08) 1px, transparent 1px, transparent 40px),
+                linear-gradient(180deg, #020202 0%, #070609 100%);
             min-height: 100vh;
             line-height: 1.5;
         }
@@ -54,8 +55,8 @@
             margin: 0 auto;
             width: min(780px, 100%);
             border-radius: 999px;
-            background: rgba(5, 9, 18, 0.88);
-            border: 1px solid rgba(106, 138, 255, 0.15);
+            background: rgba(8, 8, 10, 0.88);
+            border: 1px solid var(--line);
             backdrop-filter: blur(8px);
             padding: 14px 24px;
             display: flex;
@@ -72,7 +73,7 @@
 
         .nav-pill a {
             text-decoration: none;
-            color: rgba(232, 240, 255, 0.72);
+            color: rgba(246, 246, 255, 0.74);
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.14em;
@@ -104,7 +105,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             letter-spacing: 0.38em;
-            color: rgba(232, 240, 255, 0.56);
+            color: rgba(238, 238, 246, 0.56);
             text-transform: uppercase;
         }
 
@@ -130,7 +131,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(3, 8, 19, 0.4) 0%, rgba(3, 8, 19, 0.92) 88%);
+            background: linear-gradient(180deg, rgba(7, 7, 9, 0.42) 0%, rgba(7, 7, 9, 0.94) 88%);
             pointer-events: none;
         }
 
@@ -144,7 +145,7 @@
             font-size: clamp(30px, 4.2vw, 46px);
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: rgba(234, 240, 255, 0.8);
+            color: rgba(245, 245, 251, 0.84);
             margin-bottom: 28px;
         }
 
@@ -158,7 +159,7 @@
             text-transform: uppercase;
             letter-spacing: 0.14em;
             color: var(--accent);
-            background: rgba(8, 18, 37, 0.45);
+            background: rgba(17, 14, 24, 0.56);
         }
 
         .layout {
@@ -183,7 +184,7 @@
 
         .card:hover {
             transform: translateY(-4px);
-            border-color: rgba(159, 181, 255, 0.45);
+            border-color: rgba(196, 180, 255, 0.56);
             box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
         }
 
@@ -203,7 +204,7 @@
         .card-main__shade {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(1, 5, 12, 0.2) 0%, rgba(1, 5, 12, 0.88) 74%);
+            background: linear-gradient(180deg, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.9) 74%);
         }
 
         .card-main__content {
@@ -234,7 +235,7 @@
         .card-main p {
             margin-top: 10px;
             font-size: 16px;
-            color: rgba(226, 234, 252, 0.78);
+            color: rgba(226, 226, 236, 0.8);
             max-width: 74%;
         }
 
@@ -271,7 +272,7 @@
         .card-small {
             min-height: 164px;
             padding: 20px;
-            background: rgba(6, 16, 38, 0.82);
+            background: rgba(15, 13, 22, 0.84);
         }
 
         .card-small h4 {
@@ -296,15 +297,15 @@
             padding: 16px;
             min-height: 140px;
             border-radius: 16px;
-            background: rgba(6, 16, 38, 0.72);
-            border: 1px solid rgba(106, 138, 255, 0.16);
+            background: rgba(12, 12, 18, 0.74);
+            border: 1px solid var(--line);
             text-decoration: none;
             color: inherit;
             transition: border-color 0.2s ease;
         }
 
         .extra-card:hover {
-            border-color: rgba(159, 181, 255, 0.45);
+            border-color: rgba(196, 180, 255, 0.56);
         }
 
         .extra-card h5 {
@@ -322,6 +323,144 @@
             padding-bottom: 56px;
         }
 
+        .curated-selection {
+            padding: 8px 0 34px;
+        }
+
+        .curated-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .curated-subtitle {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 760px;
+            margin-bottom: 18px;
+        }
+
+        .curated-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .curated-btn {
+            border: 1px solid var(--line);
+            background: rgba(12, 12, 18, 0.76);
+            border-radius: 16px;
+            color: var(--text);
+            padding: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .curated-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(196, 180, 255, 0.56);
+            background: rgba(22, 18, 34, 0.92);
+        }
+
+        .curated-btn strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .curated-btn span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .soundhub-signup {
+            padding: 18px 0 76px;
+        }
+
+        .soundhub-signup .signup-shell {
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: rgba(13, 11, 20, 0.82);
+            padding: clamp(20px, 4vw, 34px);
+        }
+
+        .soundhub-signup h2 {
+            font-size: clamp(24px, 3vw, 36px);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .soundhub-signup p {
+            color: var(--muted);
+            max-width: 740px;
+            margin-bottom: 24px;
+        }
+
+        .join-form {
+            max-width: 760px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(10, 10, 14, 0.76);
+            border: 1px solid var(--line);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: rgba(196, 180, 255, 0.62);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            color: #071327;
+            border: none;
+            border-radius: 999px;
+            padding: 13px 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+
         .tab-row {
             display: flex;
             flex-wrap: wrap;
@@ -331,7 +470,7 @@
 
         .tab-btn {
             border: 1px solid var(--line);
-            background: rgba(5, 15, 35, 0.8);
+            background: rgba(11, 11, 15, 0.82);
             color: var(--text);
             border-radius: 999px;
             padding: 10px 16px;
@@ -345,7 +484,7 @@
 
         .tab-btn.is-active {
             border-color: var(--line-strong);
-            background: rgba(20, 34, 70, 0.95);
+            background: rgba(35, 28, 52, 0.92);
             color: #ffffff;
         }
 
@@ -358,7 +497,7 @@
         .hub-panel {
             border: 1px solid var(--line);
             border-radius: 20px;
-            background: rgba(6, 16, 38, 0.82);
+            background: rgba(14, 13, 21, 0.84);
             padding: 18px;
         }
 
@@ -379,9 +518,9 @@
         .track-item {
             width: 100%;
             text-align: left;
-            border: 1px solid rgba(106, 138, 255, 0.16);
+            border: 1px solid var(--line);
             border-radius: 14px;
-            background: rgba(3, 11, 28, 0.72);
+            background: rgba(10, 10, 14, 0.78);
             color: var(--text);
             padding: 12px;
             cursor: pointer;
@@ -390,7 +529,7 @@
 
         .track-item:hover,
         .track-item.is-active {
-            border-color: rgba(160, 184, 255, 0.56);
+            border-color: rgba(196, 180, 255, 0.6);
             transform: translateY(-1px);
         }
 
@@ -412,7 +551,7 @@
         .player {
             border: 1px solid var(--line-strong);
             border-radius: 16px;
-            background: rgba(8, 18, 37, 0.86);
+            background: rgba(20, 16, 30, 0.84);
             padding: 14px;
             margin-bottom: 12px;
         }
@@ -438,12 +577,12 @@
         }
 
         .queue-item {
-            border: 1px solid rgba(106, 138, 255, 0.16);
+            border: 1px solid var(--line);
             border-radius: 12px;
             padding: 10px;
             font-size: 13px;
             color: var(--muted);
-            background: rgba(4, 12, 28, 0.62);
+            background: rgba(10, 10, 14, 0.68);
         }
 
         @media (max-width: 1040px) {
@@ -456,6 +595,10 @@
             }
 
             .extra-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .curated-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
@@ -497,6 +640,14 @@
             .extra-grid {
                 grid-template-columns: 1fr;
             }
+
+            .curated-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -530,6 +681,29 @@
             </div>
         </section>
 
+        <section class="container curated-selection" aria-label="Curated sound selection">
+            <div class="curated-title">Curated Selection</div>
+            <p class="curated-subtitle">Jump straight into your desired state. Each curated lane maps to a focused listening outcome.</p>
+            <div class="curated-grid">
+                <button class="curated-btn" data-tab-target="deep-focus" type="button">
+                    <strong>Deep Focus</strong>
+                    <span>Gamma-forward concentration sets for productivity blocks.</span>
+                </button>
+                <button class="curated-btn" data-tab-target="meditiations" type="button">
+                    <strong>Meditiations</strong>
+                    <span>Breath-led sessions for reset, calm, and mental clarity.</span>
+                </button>
+                <button class="curated-btn" data-tab-target="calm" type="button">
+                    <strong>Calm</strong>
+                    <span>Nervous system downshift soundscapes for daytime recovery.</span>
+                </button>
+                <button class="curated-btn" data-tab-target="sleep" type="button">
+                    <strong>Sleep</strong>
+                    <span>Nighttime tracks designed to support deeper rest cycles.</span>
+                </button>
+            </div>
+        </section>
+
         <section class="container radio-hub" aria-label="Live sound hub">
             <div class="tab-row" id="radioTabs">
                 <button class="tab-btn is-active" data-tab="deep-focus">DEEP FOCUS</button>
@@ -554,6 +728,34 @@
                     <div class="panel-title">Live Queue</div>
                     <div class="queue-list" id="queueList"></div>
                 </div>
+            </div>
+        </section>
+
+        <section class="container soundhub-signup" aria-label="Sound Hub early access signup">
+            <div class="signup-shell">
+                <h2>Sign up for free access to the Sound Hub in August 2026</h2>
+                <p>Reserve your place and get notified when Sound Hub access opens. We will send launch details and onboarding instructions to your email.</p>
+                <form class="join-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signup-first-name">First name</label>
+                            <input id="signup-first-name" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-last-name">Last name</label>
+                            <input id="signup-last-name" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="signup-email">Email</label>
+                        <input id="signup-email" type="email" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="signup-goal">What will you use Sound Hub for?</label>
+                        <textarea id="signup-goal" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Join Free Access List</button>
+                </form>
             </div>
         </section>
     </main>
@@ -596,6 +798,7 @@
         };
 
         const tabsEl = document.getElementById('radioTabs');
+        const curatedButtons = document.querySelectorAll('[data-tab-target]');
         const trackListEl = document.getElementById('trackList');
         const queueListEl = document.getElementById('queueList');
         const panelTitleEl = document.getElementById('panelTitle');
@@ -633,11 +836,10 @@
             }).join('');
         }
 
-        tabsEl.addEventListener('click', (event) => {
-            const btn = event.target.closest('.tab-btn');
-            if (!btn) return;
+        function setActiveTab(tabKey) {
+            if (!stationMap[tabKey]) return;
 
-            activeTab = btn.dataset.tab;
+            activeTab = tabKey;
             activeTrackIndex = -1;
             nowTitleEl.textContent = 'Select a track';
             nowMetaEl.textContent = 'Choose a state and press a track to start live playback.';
@@ -645,10 +847,25 @@
             livePlayerEl.load();
 
             document.querySelectorAll('.tab-btn').forEach((tabBtn) => {
-                tabBtn.classList.toggle('is-active', tabBtn === btn);
+                tabBtn.classList.toggle('is-active', tabBtn.dataset.tab === tabKey);
             });
 
             renderTracks();
+        }
+
+        tabsEl.addEventListener('click', (event) => {
+            const btn = event.target.closest('.tab-btn');
+            if (!btn) return;
+
+            setActiveTab(btn.dataset.tab);
+        });
+
+        curatedButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const tabKey = button.dataset.tabTarget;
+                setActiveTab(tabKey);
+                tabsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
         });
 
         trackListEl.addEventListener('click', (event) => {
@@ -661,5 +878,6 @@
 
         renderTracks();
     </script>
+    <script src="assets/page-transitions.js"></script>
 </body>
 </html>

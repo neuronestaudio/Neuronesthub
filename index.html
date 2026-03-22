@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
             --bg-dark: #000000;
@@ -263,6 +264,18 @@
             gap: 14px;
             flex-wrap: wrap;
             justify-content: center;
+        }
+
+        .hero-actions .btn-outline {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.48);
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-actions .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.8);
+            color: #000;
         }
 
         /* --- Intro Section --- */
@@ -702,6 +715,7 @@
             }
         });
     </script>
+    <script src="assets/page-transitions.js"></script>
 
 </body>
 </html>
