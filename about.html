@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroNest Hub — Advancing Human Performance Through Sound</title>
+    <title>NeuroNest | Learn More</title>
     <meta name="description" content="NeuroNest Hub develops evidence-based auditory neuromodulation technology engineered to optimize sleep, sharpen focus, and regulate stress.">
     <meta property="og:title" content="NeuroNest Hub — Advancing Human Performance Through Sound">
     <meta property="og:description" content="Evidence-based auditory neuromodulation technology for sleep, focus, and stress regulation.">
@@ -492,6 +492,65 @@
             gap: 16px;
             background: var(--glass-bg);
             box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0) scale(1);
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+        }
+
+        .research-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(191, 221, 255, 0.14) 0%, rgba(191, 221, 255, 0) 38%),
+                linear-gradient(280deg, rgba(99, 102, 241, 0.14) 0%, rgba(99, 102, 241, 0) 42%);
+            opacity: 0;
+            transition: opacity 0.28s ease;
+            pointer-events: none;
+        }
+
+        .research-card::after {
+            content: 'Selected';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #d8ecff;
+            border: 1px solid rgba(183, 214, 255, 0.45);
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: rgba(17, 36, 58, 0.72);
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.28s ease, transform 0.28s ease;
+            pointer-events: none;
+        }
+
+        .research-card:hover,
+        .research-card:focus-visible {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(188, 223, 255, 0.56);
+            background: rgba(25, 38, 61, 0.68);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(167, 207, 255, 0.3);
+        }
+
+        .research-card:hover::before,
+        .research-card:focus-visible::before {
+            opacity: 1;
+        }
+
+        .research-card:hover::after,
+        .research-card:focus-visible::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .research-card:focus-visible {
+            outline: none;
         }
 
         .research-card__source {
@@ -500,10 +559,18 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--accent);
+            transition: color 0.24s ease;
         }
 
         .research-card__title { font-size: 18px; line-height: 1.4; }
         .research-card__desc { font-size: 14px; color: var(--text-secondary); }
+
+        .research-card__title,
+        .research-card__desc,
+        .research-card__link,
+        .research-card__date {
+            transition: color 0.24s ease, opacity 0.24s ease;
+        }
 
         .research-card__meta {
             display: flex;
@@ -520,6 +587,42 @@
         }
 
         .research-card__link { font-size: 12px; opacity: 0.7; }
+
+        .research-card:hover .research-card__source,
+        .research-card:focus-visible .research-card__source {
+            color: #b9dcff;
+        }
+
+        .research-card:hover .research-card__title,
+        .research-card:focus-visible .research-card__title {
+            color: #ffffff;
+        }
+
+        .research-card:hover .research-card__desc,
+        .research-card:focus-visible .research-card__desc,
+        .research-card:hover .research-card__date,
+        .research-card:focus-visible .research-card__date {
+            color: #d3e6fb;
+        }
+
+        .research-card:hover .research-card__link,
+        .research-card:focus-visible .research-card__link {
+            opacity: 1;
+            color: #eaf5ff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .research-card,
+            .research-card::before,
+            .research-card::after,
+            .research-card__source,
+            .research-card__title,
+            .research-card__desc,
+            .research-card__link,
+            .research-card__date {
+                transition: none !important;
+            }
+        }
 
         footer {
             padding: 80px 0;
@@ -646,8 +749,8 @@
             <a href="#">Menu</a>
             <div class="dropdown-menu">
                 <a href="index.html">Home</a>
-                <a href="#recommendations">Curated Selection</a>
-                <a href="#research">Research Hub</a>
+                <a href="radio.html">Curated Selection</a>
+                <a href="neuroscience-news.html">Research Hub</a>
                 <a href="#how-it-works">How to Use Sound</a>
                 <a href="#circadian-diagram">Teaching Diagram</a>
                 <a href="living-knowledge-map.html">Living Knowledge Map</a>
@@ -684,7 +787,7 @@
                         </div>
                     </a>
 
-                    <a href="#recommendations" class="dashboard-card card-upcoming">
+                    <a href="radio.html" class="dashboard-card card-upcoming">
                         <span class="card-label">Button</span>
                         <h3 class="card-title">Curated Selection</h3>
                         <p class="card-desc">Jump straight to the curated tracks and topic playlists.</p>
@@ -831,22 +934,6 @@
                 <div class="tech-block"><div><span class="tech-num">02</span><h3>Delivery Methods</h3><p>We engineer binaural beats, isochronic tones, amplitude-modulated noise, and frequency-following response (FFR) stimuli, each optimized for different neurological targets.</p></div></div>
                 <div class="tech-block"><div><span class="tech-num">03</span><h3>Evidence-Based Design</h3><p>Every NeuroNest protocol is grounded in peer-reviewed neuroscience across ASSR, FFR, psychoacoustics, and clinical applications of auditory stimulation.</p></div></div>
                 <div class="tech-block"><div><span class="tech-num">04</span><h3>Personalized Protocols</h3><p>Individual neurological responses vary. NeuroNest adapts frequency, modulation depth, and session duration based on use case and efficacy data.</p></div></div>
-            </div>
-        </section>
-
-        <section id="recommendations" class="container">
-            <div style="text-align:left; margin-bottom:8px; opacity:.8;"><span class="label" style="margin-bottom:0; font-size:26px; color:#fff;">Curated Selection</span></div>
-            <p style="max-width: 600px; margin-top: 8px; color: var(--text-secondary);">Explore our hand-picked rotation of tracks engineered to complement specific neurological targets and cultural soundscapes.</p>
-
-            <div class="recommendation-grid">
-                <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div><span class="rec-card__tag">Deep Focus</span><h3>The ASSR Rotation</h3><p>Auditory Steady-State Response tracks using 40Hz Gamma pulses for sustained cognitive focus.</p></a>
-                <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');"></div><span class="rec-card__tag">Nervous System</span><h3>Calm the Vagus Nerve</h3><p>Designed for post-stress recovery using slow-wave delta ramps and soothing textures.</p></a>
-                <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');"></div><span class="rec-card__tag">Study Tool</span><h3>What is Lofi?</h3><p>Predictable, soft sonic landscapes that help mask distractions during focused work.</p></a>
-                <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');"></div><span class="rec-card__tag">Cultural Research</span><h3>African Percussion</h3><p>Traditional polyrhythms that support hemispheric balance and gamma synchronization.</p></a>
-                <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');"></div><span class="rec-card__tag">Sleep Tech</span><h3>Sleep Deep</h3><p>Delta transitions designed to guide the brain into restorative sleep stages.</p></a>
-                <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');"></div><span class="rec-card__tag">Emotional Flow</span><h3>Mood Elevation</h3><p>High-beta and gamma profiles used to lift arousal and attention.</p></a>
-                <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');"></div><span class="rec-card__tag">8D Research</span><h3>Spatial Clarity</h3><p>360-degree auditory textures that expand the perceived mental workspace.</p></a>
-                <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');"></div><span class="rec-card__tag">Cognitive Health</span><h3>Plasticity Flow</h3><p>Structured frequency-following responses intended to support neural adaptation.</p></a>
             </div>
         </section>
 
