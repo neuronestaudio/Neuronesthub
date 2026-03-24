@@ -206,6 +206,18 @@
             overflow: hidden;
         }
 
+        .hero::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: clamp(120px, 18vh, 220px);
+            background: linear-gradient(to bottom, rgba(12, 12, 12, 0), #0c0c0c 78%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .hero-video {
             position: absolute;
             top: 50%;
@@ -281,7 +293,7 @@
         /* --- Intro Section --- */
         .intro-section {
             padding: 120px 0;
-            background-color: #0c0c0c;
+            background: linear-gradient(to bottom, #0c0c0c 0%, #090909 100%);
         }
 
         .intro-title {
@@ -435,10 +447,35 @@
         }
 
         .footer-banner-text {
-            font-size: 28px;
-            font-weight: 400;
+            font-size: 20px;
+            font-weight: 500;
             max-width: 600px;
             line-height: 1.4;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #d9dee6;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+            .footer-banner-text {
+                background-image:
+                    linear-gradient(106deg,
+                        #737c89 0%,
+                        #f6f9ff 18%,
+                        #a3acb9 32%,
+                        #f8fbff 45%,
+                        #8a93a0 63%,
+                        #dbe2ec 80%,
+                        #6f7783 100%),
+                    repeating-linear-gradient(118deg,
+                        rgba(255, 255, 255, 0.25) 0 2px,
+                        rgba(18, 22, 30, 0.22) 2px 4px);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                -webkit-text-fill-color: transparent;
+            }
         }
 
         /* --- Main Footer --- */
@@ -522,7 +559,7 @@
 
     <header>
         <div class="header-left">
-            THE FUTURE OF SOUND AND WELLBEING.<br>SUPPORTED BY NEUROSCIENCE.
+            THE FUTURE OF<br>SOUNDSCAPES<br>SUPPORTED BY<br>NEUROSCIENCE.
         </div>
         <div class="menu-wrap" id="menuWrap">
             <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuDropdown">Menu <span class="chevron">▾</span></button>
@@ -530,7 +567,7 @@
                 <a href="index.html" class="menu-option">Home</a>
                 <a href="radio.html" class="menu-option">Sound Hub</a>
                 <a href="about.html" class="menu-option">Learn More</a>
-                <a href="#research-hub" class="menu-option">Research Hub</a>
+                <a href="about.html" class="menu-option">Research Hub</a>
                 <a href="neuroscience-news.html" class="menu-option">Neuroscience News</a>
             </div>
         </div>
@@ -549,7 +586,7 @@
                 <div class="hero-actions">
                     <a href="radio.html" class="btn btn-outline">SOUND HUB</a>
                     <a href="about.html" class="btn btn-outline">Learn More</a>
-                    <a href="#research-hub" class="btn btn-outline">Research Hub</a>
+                    <a href="about.html" class="btn btn-outline">Research Hub</a>
                 </div>
             </div>
         </section>
@@ -619,10 +656,8 @@
             <h4>ENTER YOUR FLOW-STATE</h4>
             <p style="font-size: 10px; color: var(--text-grey); margin-bottom: 20px;">ANYWHERE . ANYTIME</p>
             <div class="social-links">
-                <a href="#">IG</a>
-                <a href="#">TW</a>
-                <a href="#">LI</a>
-                <a href="#">YT</a>
+                <a href="https://www.facebook.com/profile.php?id=61580600726800" target="_blank" rel="noopener noreferrer">FB</a>
+                <a href="https://www.linkedin.com/company/108409122/admin/page-posts/published/" target="_blank" rel="noopener noreferrer">LI</a>
             </div>
         </div>
         <div class="footer-col">

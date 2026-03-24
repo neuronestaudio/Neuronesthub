@@ -10,15 +10,15 @@
     <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
-            --bg: #050506;
-            --bg-soft: #0d0c12;
-            --text: #f3f3f8;
-            --muted: #aeafbe;
-            --line: rgba(255, 255, 255, 0.18);
-            --line-strong: rgba(255, 255, 255, 0.34);
-            --card: rgba(12, 12, 16, 0.78);
-            --card-2: rgba(17, 15, 24, 0.86);
-            --accent: #b9a9ff;
+            --bg: #061226;
+            --bg-soft: #0b2338;
+            --text: #f4f8ff;
+            --muted: #b5c3d8;
+            --line: rgba(186, 218, 255, 0.2);
+            --line-strong: rgba(208, 231, 255, 0.42);
+            --card: rgba(12, 24, 42, 0.48);
+            --card-2: rgba(8, 19, 34, 0.56);
+            --accent: #8fd4ff;
         }
 
         * {
@@ -31,17 +31,31 @@
             font-family: 'Outfit', sans-serif;
             color: var(--text);
             background:
-                radial-gradient(circle at 52% -16%, rgba(145, 111, 255, 0.18), transparent 44%),
-                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08) 1px, transparent 1px, transparent 40px),
-                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08) 1px, transparent 1px, transparent 40px),
-                linear-gradient(180deg, #020202 0%, #070609 100%);
+                radial-gradient(1200px 560px at 50% 4%, rgba(134, 190, 255, 0.34), rgba(134, 190, 255, 0) 62%),
+                radial-gradient(880px 420px at 84% 22%, rgba(98, 160, 230, 0.22), rgba(98, 160, 230, 0) 64%),
+                radial-gradient(900px 460px at 14% 28%, rgba(56, 122, 180, 0.22), rgba(56, 122, 180, 0) 67%),
+                linear-gradient(180deg, #07203a 0%, #0d2a42 36%, #091827 74%, #050d16 100%);
             min-height: 100vh;
             line-height: 1.5;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 36%, rgba(234, 245, 255, 0.2) 0%, rgba(234, 245, 255, 0) 42%),
+                linear-gradient(180deg, rgba(3, 10, 18, 0) 0%, rgba(2, 8, 14, 0.26) 48%, rgba(1, 5, 10, 0.6) 100%);
+            z-index: 0;
         }
 
         .container {
             width: min(1180px, 94vw);
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .topbar {
@@ -55,9 +69,10 @@
             margin: 0 auto;
             width: min(780px, 100%);
             border-radius: 999px;
-            background: rgba(8, 8, 10, 0.88);
+            background: linear-gradient(180deg, rgba(17, 34, 56, 0.58) 0%, rgba(8, 18, 31, 0.6) 100%);
             border: 1px solid var(--line);
-            backdrop-filter: blur(8px);
+            box-shadow: 0 12px 32px rgba(2, 10, 20, 0.42);
+            backdrop-filter: blur(14px) saturate(120%);
             padding: 14px 24px;
             display: flex;
             align-items: center;
@@ -112,26 +127,17 @@
         .hero {
             position: relative;
             margin-top: 34px;
-            padding: 70px 0 36px;
+            padding: 86px 0 46px;
             text-align: center;
-        }
-
-        .hero video {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.16;
-            filter: grayscale(0.1) contrast(1.1) brightness(0.48);
-            pointer-events: none;
         }
 
         .hero::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, rgba(7, 7, 9, 0.42) 0%, rgba(7, 7, 9, 0.94) 88%);
+            background:
+                radial-gradient(580px 220px at 50% 8%, rgba(210, 238, 255, 0.2), rgba(210, 238, 255, 0) 70%),
+                linear-gradient(180deg, rgba(5, 12, 22, 0.06) 0%, rgba(6, 14, 24, 0.36) 54%, rgba(5, 12, 22, 0.68) 100%);
             pointer-events: none;
         }
 
@@ -145,21 +151,30 @@
             font-size: clamp(30px, 4.2vw, 46px);
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: rgba(245, 245, 251, 0.84);
-            margin-bottom: 28px;
+            color: rgba(245, 250, 255, 0.92);
+            margin-bottom: 12px;
+            text-shadow: 0 0 40px rgba(162, 216, 255, 0.22);
+        }
+
+        .hero-subtitle {
+            margin: 0 auto 24px;
+            max-width: 740px;
+            color: rgba(220, 236, 255, 0.76);
+            font-size: 17px;
         }
 
         .hero-badge {
             display: inline-block;
             border: 1px solid var(--line-strong);
             padding: 10px 24px;
-            border-radius: 2px;
+            border-radius: 999px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.14em;
             color: var(--accent);
-            background: rgba(17, 14, 24, 0.56);
+            background: rgba(11, 25, 41, 0.52);
+            backdrop-filter: blur(10px);
         }
 
         .layout {
@@ -324,7 +339,7 @@
         }
 
         .curated-selection {
-            padding: 8px 0 34px;
+            padding: 8px 0 44px;
         }
 
         .curated-title {
@@ -346,24 +361,26 @@
         .curated-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
+            gap: 14px;
         }
 
         .curated-btn {
             border: 1px solid var(--line);
-            background: rgba(12, 12, 18, 0.76);
-            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(18, 40, 63, 0.5) 0%, rgba(10, 25, 41, 0.5) 100%);
+            border-radius: 18px;
             color: var(--text);
-            padding: 14px;
+            padding: 16px;
             text-align: left;
             cursor: pointer;
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            box-shadow: 0 14px 28px rgba(2, 10, 20, 0.26);
+            backdrop-filter: blur(10px) saturate(118%);
         }
 
         .curated-btn:hover {
             transform: translateY(-2px);
-            border-color: rgba(196, 180, 255, 0.56);
-            background: rgba(22, 18, 34, 0.92);
+            border-color: rgba(197, 229, 255, 0.7);
+            background: linear-gradient(180deg, rgba(28, 56, 86, 0.58) 0%, rgba(14, 31, 50, 0.62) 100%);
         }
 
         .curated-btn strong {
@@ -385,8 +402,10 @@
         .soundhub-signup .signup-shell {
             border: 1px solid var(--line);
             border-radius: 22px;
-            background: rgba(13, 11, 20, 0.82);
+            background: linear-gradient(180deg, rgba(16, 37, 60, 0.58) 0%, rgba(9, 23, 38, 0.58) 100%);
             padding: clamp(20px, 4vw, 34px);
+            box-shadow: 0 18px 44px rgba(4, 14, 26, 0.34);
+            backdrop-filter: blur(12px) saturate(122%);
         }
 
         .soundhub-signup h2 {
@@ -427,7 +446,7 @@
 
         .form-group input,
         .form-group textarea {
-            background: rgba(10, 10, 14, 0.76);
+            background: rgba(5, 14, 24, 0.56);
             border: 1px solid var(--line);
             color: var(--text);
             border-radius: 12px;
@@ -444,8 +463,8 @@
 
         .submit-btn {
             width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            color: #071327;
+            background: linear-gradient(180deg, rgba(234, 246, 255, 0.96) 0%, rgba(213, 236, 255, 0.94) 100%);
+            color: #07253f;
             border: none;
             border-radius: 999px;
             padding: 13px 20px;
@@ -633,6 +652,10 @@
                 letter-spacing: 0.08em;
             }
 
+            .hero-subtitle {
+                font-size: 15px;
+            }
+
             .card-side-bottom {
                 grid-template-columns: 1fr;
             }
@@ -672,12 +695,10 @@
 
     <main>
         <section class="hero">
-            <video autoplay loop muted playsinline>
-                <source src="assets/hero_banner.mp4" type="video/mp4">
-            </video>
             <div class="container">
-                <h1>Clinical Performance</h1>
-                <span class="hero-badge">Curated Section</span>
+                <h1>Sound Hub Coming Soon</h1>
+                <p class="hero-subtitle">The full interactive Sound Hub is in development. While we prepare launch, start with curated selections designed for focus, calm, meditation, and sleep.</p>
+                <span class="hero-badge">Early Access · August 2026</span>
             </div>
         </section>
 
@@ -685,49 +706,22 @@
             <div class="curated-title">Curated Selection</div>
             <p class="curated-subtitle">Jump straight into your desired state. Each curated lane maps to a focused listening outcome.</p>
             <div class="curated-grid">
-                <button class="curated-btn" data-tab-target="deep-focus" type="button">
+                <button class="curated-btn" type="button">
                     <strong>Deep Focus</strong>
                     <span>Gamma-forward concentration sets for productivity blocks.</span>
                 </button>
-                <button class="curated-btn" data-tab-target="meditiations" type="button">
-                    <strong>Meditiations</strong>
+                <button class="curated-btn" type="button">
+                    <strong>Meditations</strong>
                     <span>Breath-led sessions for reset, calm, and mental clarity.</span>
                 </button>
-                <button class="curated-btn" data-tab-target="calm" type="button">
+                <button class="curated-btn" type="button">
                     <strong>Calm</strong>
                     <span>Nervous system downshift soundscapes for daytime recovery.</span>
                 </button>
-                <button class="curated-btn" data-tab-target="sleep" type="button">
+                <button class="curated-btn" type="button">
                     <strong>Sleep</strong>
                     <span>Nighttime tracks designed to support deeper rest cycles.</span>
                 </button>
-            </div>
-        </section>
-
-        <section class="container radio-hub" aria-label="Live sound hub">
-            <div class="tab-row" id="radioTabs">
-                <button class="tab-btn is-active" data-tab="deep-focus">DEEP FOCUS</button>
-                <button class="tab-btn" data-tab="meditiations">MEDITIATIONS</button>
-                <button class="tab-btn" data-tab="calm">CALM</button>
-                <button class="tab-btn" data-tab="sleep">SLEEP</button>
-            </div>
-
-            <div class="hub-grid">
-                <div class="hub-panel">
-                    <div class="panel-title" id="panelTitle">Deep Focus Playlist</div>
-                    <div class="track-list" id="trackList"></div>
-                </div>
-
-                <div class="hub-panel">
-                    <div class="player">
-                        <div class="panel-title">Now Playing</div>
-                        <h3 id="nowTitle">Select a track</h3>
-                        <p id="nowMeta">Choose a state and press a track to start live playback.</p>
-                        <audio id="livePlayer" controls preload="none"></audio>
-                    </div>
-                    <div class="panel-title">Live Queue</div>
-                    <div class="queue-list" id="queueList"></div>
-                </div>
             </div>
         </section>
 
@@ -760,124 +754,6 @@
         </section>
     </main>
 
-    <script>
-        // Replace URLs below with your own stream links or local file paths when ready.
-        const stationMap = {
-            'deep-focus': {
-                label: 'Deep Focus Playlist',
-                tracks: [
-                    { title: 'Gamma Architecture 40Hz', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', type: 'Live Stream', duration: '58:00' },
-                    { title: 'Prefrontal Lock-in', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', type: 'Stream', duration: '44:00' },
-                    { title: 'Hyperfocus Engine', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', type: 'Stream', duration: '50:00' }
-                ]
-            },
-            meditiations: {
-                label: 'Meditiations Playlist',
-                tracks: [
-                    { title: 'Breath Alignment', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', type: 'Stream', duration: '36:00' },
-                    { title: 'Theta Drift Session', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3', type: 'Stream', duration: '42:00' },
-                    { title: 'Body Scan Field', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3', type: 'Stream', duration: '32:00' }
-                ]
-            },
-            calm: {
-                label: 'Calm Playlist',
-                tracks: [
-                    { title: 'Vagus Downshift', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3', type: 'Live Stream', duration: '48:00' },
-                    { title: 'Ambient Recovery', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', type: 'Stream', duration: '39:00' },
-                    { title: 'Nervous System Reset', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', type: 'Stream', duration: '45:00' }
-                ]
-            },
-            sleep: {
-                label: 'Sleep Playlist',
-                tracks: [
-                    { title: 'Delta Entry', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3', type: 'Night Stream', duration: '2:00:00' },
-                    { title: 'Deep Sleep Cycle', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3', type: 'Stream', duration: '1:20:00' },
-                    { title: 'Moonlight Restoration', src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3', type: 'Stream', duration: '1:05:00' }
-                ]
-            }
-        };
-
-        const tabsEl = document.getElementById('radioTabs');
-        const curatedButtons = document.querySelectorAll('[data-tab-target]');
-        const trackListEl = document.getElementById('trackList');
-        const queueListEl = document.getElementById('queueList');
-        const panelTitleEl = document.getElementById('panelTitle');
-        const nowTitleEl = document.getElementById('nowTitle');
-        const nowMetaEl = document.getElementById('nowMeta');
-        const livePlayerEl = document.getElementById('livePlayer');
-
-        let activeTab = 'deep-focus';
-        let activeTrackIndex = -1;
-
-        function playTrack(track, index) {
-            activeTrackIndex = index;
-            livePlayerEl.src = track.src;
-            livePlayerEl.play().catch(() => {
-                nowMetaEl.textContent = 'Press play on the player to start this stream.';
-            });
-            nowTitleEl.textContent = track.title;
-            nowMetaEl.textContent = track.type + ' • ' + track.duration;
-            renderTracks();
-        }
-
-        function renderTracks() {
-            const station = stationMap[activeTab];
-            panelTitleEl.textContent = station.label;
-            trackListEl.innerHTML = station.tracks.map((track, index) => {
-                const activeClass = index === activeTrackIndex ? 'is-active' : '';
-                return '<button class="track-item ' + activeClass + '" data-index="' + index + '">' +
-                    '<strong>' + track.title + '</strong>' +
-                    '<div class="track-meta"><span>' + track.type + '</span><span>' + track.duration + '</span></div>' +
-                    '</button>';
-            }).join('');
-
-            queueListEl.innerHTML = station.tracks.map((track, index) => {
-                return '<div class="queue-item">' + (index + 1) + '. ' + track.title + '</div>';
-            }).join('');
-        }
-
-        function setActiveTab(tabKey) {
-            if (!stationMap[tabKey]) return;
-
-            activeTab = tabKey;
-            activeTrackIndex = -1;
-            nowTitleEl.textContent = 'Select a track';
-            nowMetaEl.textContent = 'Choose a state and press a track to start live playback.';
-            livePlayerEl.removeAttribute('src');
-            livePlayerEl.load();
-
-            document.querySelectorAll('.tab-btn').forEach((tabBtn) => {
-                tabBtn.classList.toggle('is-active', tabBtn.dataset.tab === tabKey);
-            });
-
-            renderTracks();
-        }
-
-        tabsEl.addEventListener('click', (event) => {
-            const btn = event.target.closest('.tab-btn');
-            if (!btn) return;
-
-            setActiveTab(btn.dataset.tab);
-        });
-
-        curatedButtons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const tabKey = button.dataset.tabTarget;
-                setActiveTab(tabKey);
-                tabsEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            });
-        });
-
-        trackListEl.addEventListener('click', (event) => {
-            const button = event.target.closest('.track-item');
-            if (!button) return;
-            const station = stationMap[activeTab];
-            const index = Number(button.dataset.index);
-            playTrack(station.tracks[index], index);
-        });
-
-        renderTracks();
-    </script>
     <script src="assets/page-transitions.js"></script>
 </body>
 </html>
