@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroNest | Learn More</title>
+    <meta name="description" content="Learn how NeuroNest uses neuroscience, psychoacoustics, and sound engineering to support sleep, focus, calm, and nervous system regulation.">
+    <meta property="og:title" content="NeuroNest Learn More — Science, Sound, and Practical Use">
+    <meta property="og:description" content="An education-first guide to evidence-informed soundscape design for sleep, focus, and calm.">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/page-transitions.css">
+
+    <style>
+        :root {
+            --bg-0: #0a0a0f;
+            --bg-1: #12121a;
+            --text-0: #f0ede8;
+            --text-1: #c7c4bf;
+            --text-2: #989792;
+            --accent: #4a9e8e;
+            --accent-dim: rgba(74, 158, 142, 0.35);
+            --line: rgba(124, 146, 168, 0.2);
+            --card: rgba(19, 22, 31, 0.72);
+            --max: 1140px;
+            --measure: 780px;
+            --h-font: 'DM Serif Display', serif;
+            --b-font: 'DM Sans', sans-serif;
+            --m-font: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--b-font);
+            background:
+                linear-gradient(0deg, transparent 24%, rgba(74, 158, 142, 0.05) 25%, rgba(74, 158, 142, 0.05) 26%, transparent 27%, transparent 74%, rgba(74, 158, 142, 0.05) 75%, rgba(74, 158, 142, 0.05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(74, 158, 142, 0.05) 25%, rgba(74, 158, 142, 0.05) 26%, transparent 27%, transparent 74%, rgba(74, 158, 142, 0.05) 75%, rgba(74, 158, 142, 0.05) 76%, transparent 77%, transparent),
+                radial-gradient(circle at 12% 0%, rgba(74, 158, 142, 0.19), transparent 35%),
+                radial-gradient(circle at 85% 10%, rgba(123, 146, 168, 0.18), transparent 42%),
+                linear-gradient(180deg, var(--bg-0), #0d0e15 38%, #0a0a0f 100%);
+            background-size: 50px 50px, 50px 50px, auto, auto, auto;
+            background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+            background-attachment: fixed;
+            color: var(--text-0);
+            line-height: 1.75;
+            font-size: 18px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px);
+            background-size: 3px 3px;
+            opacity: 0.08;
+            z-index: -1;
+            z-index: -1;
+        }
+
+        .container {
+            width: min(var(--max), 100% - 48px);
+            margin: 0 auto;
+        }
+
+        .measure {
+            width: min(var(--measure), 100%);
+        }
+
+        .site-nav {
+            position: sticky;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(10, 12, 18, 0.82);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            padding: 10px 16px;
+            backdrop-filter: blur(14px);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .site-nav a {
+            color: var(--text-0);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            margin-left: 14px;
+            opacity: 0.86;
+            transition: opacity 0.24s ease, color 0.24s ease;
+        }
+
+        .site-nav a:first-child {
+            margin-left: 0;
+        }
+
+        .site-nav a:hover {
+            opacity: 1;
+            color: #d8f3ee;
+        }
+
+        .progress {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            z-index: 1200;
+        }
+
+        .progress > span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #4a9e8e, #7b92a8);
+        }
+
+        section {
+            padding: 110px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        h1, h2 {
+            font-family: var(--h-font);
+            line-height: 1.14;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        h1 {
+            font-size: clamp(42px, 7vw, 76px);
+        }
+
+        h2 {
+            font-size: clamp(32px, 5vw, 50px);
+        }
+
+        h3 {
+            font-size: clamp(20px, 2.4vw, 28px);
+            margin-bottom: 12px;
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-1);
+            margin-bottom: 16px;
+        }
+
+        .label {
+            display: inline-block;
+            margin-bottom: 18px;
+            font-family: var(--m-font);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #b4d5cf;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            align-items: center;
+            border-top: none;
+            padding-top: 140px;
+        }
+
+        .hero .section-divider-lottie {
+            margin: 40px 0 32px;
+        }
+
+        .hero-cta {
+            margin-top: 0;
+            display: inline-block;
+            text-decoration: none;
+            color: #d8f3ee;
+            border: 1px solid var(--accent-dim);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-family: var(--m-font);
+            font-size: 12px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            transition: all 0.28s ease;
+        }
+
+        .hero-cta:hover {
+            background: rgba(74, 158, 142, 0.15);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        #intro-detail {
+            padding: 60px 0 40px;
+        }
+
+        .intro-desc {
+            max-width: 760px;
+            font-size: clamp(18px, 2vw, 24px);
+            color: #d3d0ca;
+            margin: 0 auto 36px;
+            text-align: center;
+        }
+
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .pillar-btn {
+            display: block;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--card);
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.28s ease;
+            text-align: center;
+        }
+
+        .pillar-btn:hover {
+            border-color: rgba(74, 158, 142, 0.5);
+            background: rgba(19, 22, 31, 0.95);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(74, 158, 142, 0.15);
+        }
+
+        .pillar-btn strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #e4e1dc;
+            font-size: 18px;
+        }
+
+        .pillar-btn span {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            display: block;
+            transition: opacity 0.28s ease, max-height 0.28s ease;
+        }
+
+        .pillar-btn:hover span {
+            opacity: 1;
+            max-height: 80px;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .diagram {
+            border: 1px solid rgba(123, 146, 168, 0.28);
+            border-radius: 24px;
+            padding: 24px;
+            background:
+                radial-gradient(circle at 12% 10%, rgba(74, 158, 142, 0.16), transparent 38%),
+                radial-gradient(circle at 85% 8%, rgba(123, 146, 168, 0.14), transparent 40%),
+                rgba(10, 14, 22, 0.82);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28), inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+        }
+
+        .pathway-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 20px;
+        }
+
+        .pathway-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 12px 0;
+        }
+
+        .pathway-stage.separator {
+            padding: 0;
+        }
+
+        .pathway-divider {
+            width: 2px;
+            height: 16px;
+            background: linear-gradient(to bottom, rgba(74, 158, 142, 0.6), rgba(74, 158, 142, 0.1));
+            margin: 4px 0;
+        }
+
+        .pathway-nodes {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .pathway-node {
+            background:
+                linear-gradient(135deg, rgba(74, 158, 142, 0.12), rgba(123, 146, 168, 0.08));
+            border: 1px solid rgba(123, 146, 168, 0.35);
+            border-radius: 16px;
+            padding: 14px 12px;
+            text-align: center;
+            font-size: 13px;
+            color: #d8d5d0;
+            backdrop-filter: blur(8px);
+            transition: all 0.28s ease;
+        }
+
+        .pathway-node:hover {
+            border-color: rgba(74, 158, 142, 0.7);
+            background:
+                linear-gradient(135deg, rgba(74, 158, 142, 0.18), rgba(123, 146, 168, 0.12));
+            transform: translateY(-3px);
+        }
+
+        .pathway-node strong {
+            display: block;
+            font-weight: 600;
+            color: #f0ede8;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .pathway-label {
+            font-family: var(--m-font);
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #a0aab8;
+            margin-bottom: 8px;
+            display: block;
+            text-align: center;
+        }
+
+        .diagram p {
+            font-size: 13px;
+            margin: 0;
+            color: #9fa5ad;
+        }
+
+        .cards {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        details {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(16, 20, 30, 0.66);
+            padding: 14px 16px;
+        }
+
+        details[open] {
+            border-color: var(--accent-dim);
+            background: rgba(18, 26, 34, 0.75);
+        }
+
+        details summary:hover {
+            color: #e8f3ee;
+        }
+
+        details[open] summary:hover,
+        summary:hover {
+            color: #d8f3ee;
+        }
+
+        summary {
+            cursor: pointer;
+            list-style: none;
+            font-weight: 600;
+            color: #e8e5e0;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::after {
+            content: '+';
+            float: right;
+            color: #b8d8d1;
+            font-family: var(--m-font);
+        }
+
+        details[open] summary::after {
+            content: '−';
+        }
+
+        .muted {
+            color: var(--text-2);
+            font-size: 15px;
+        }
+
+        .tag {
+            font-family: var(--m-font);
+            font-size: 13px;
+            color: #b7d6cf;
+            background: rgba(74, 158, 142, 0.12);
+            border: 1px solid rgba(74, 158, 142, 0.3);
+            border-radius: 8px;
+            padding: 1px 6px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 640px;
+            background: rgba(12, 16, 24, 0.72);
+        }
+
+        th, td {
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            padding: 12px 14px;
+            font-size: 15px;
+        }
+
+        th {
+            color: #d4d1cc;
+            font-family: var(--m-font);
+            font-size: 12px;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .guide-card {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            background: var(--card);
+        }
+
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .cta-card {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            background: rgba(16, 21, 31, 0.8);
+            transition: all 0.28s ease;
+        }
+
+        .cta-card:hover {
+            border-color: rgba(74, 158, 142, 0.5);
+            background:
+                linear-gradient(135deg, rgba(74, 158, 142, 0.08), rgba(123, 146, 168, 0.04)),
+                rgba(18, 24, 33, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(74, 158, 142, 0.18);
+        }
+
+        .cta-card a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #d8f3ee;
+            border: 1px solid rgba(74, 158, 142, 0.4);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 13px;
+            transition: all 0.24s ease;
+        }
+
+        .cta-card a:hover {
+            border-color: rgba(74, 158, 142, 0.8);
+            background: rgba(74, 158, 142, 0.12);
+        }
+
+        .faq details {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 48px 0 70px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: var(--text-2);
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 960px) {
+            .split,
+            .guide-grid,
+            .cta-grid,
+            .pillars {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 88px 0;
+            }
+
+            .site-nav {
+                position: sticky;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                border-radius: 12px;
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                width: calc(100% - 24px);
+                max-width: 100%;
+            }
+
+            .site-nav a {
+                margin: 0;
+                font-size: 11px;
+            }
+        }
+
+
+        .section-divider-lottie {
+            position: relative;
+            height: 280px;
+            margin: 0;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .section-divider-lottie .lottie-container {
+            height: 100%;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+    <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+    <nav class="site-nav" aria-label="Page navigation">
+        <a href="index.html">Home</a>
+        <a href="#science">Science</a>
+        <a href="#how-to-use">How to Use</a>
+        <a href="#faq">FAQ</a>
+        <a href="radio.html">Soundscapes</a>
+    </nav>
+
+    <main>
+        <section class="hero" id="intro">
+            <div class="container measure" style="position: relative; z-index: 1; text-align: center;">
+                <span class="label">NeuroNest Introduction Guide</span>
+                <h1>Sound, engineered for how your brain actually works.</h1>
+
+                <div class="section-divider-lottie" id="divider1"><div class="lottie-container"></div></div>
+
+                <a href="#why-sound-matters" class="hero-cta">Explore the science below</a>
+            </div>
+        </section>
+
+        <section id="intro-detail">
+            <div class="container measure">
+                <p class="intro-desc">NeuroNest designs evidence-informed soundscapes at the intersection of neuroscience, psychoacoustics, and professional sound engineering to help you sleep deeper, focus longer, and regulate your nervous system.</p>
+
+                <div class="pillars">
+                    <a href="#outcomes" class="pillar-btn">
+                        <strong>Sleep</strong>
+                        <span>Wind down. Fall asleep faster. Recover deeper.</span>
+                    </a>
+                    <a href="#how-to-use" class="pillar-btn">
+                        <strong>Focus</strong>
+                        <span>Reduce distractions. Sustain concentration. Enter flow.</span>
+                    </a>
+                    <a href="#outcomes" class="pillar-btn">
+                        <strong>Calm</strong>
+                        <span>Downshift your nervous system. Decompress. Restore balance.</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-sound-matters">
+            <div class="container split">
+                <article class="measure">
+                    <span class="label">Section 2</span>
+                    <h2>Your Brain Is Always Listening</h2>
+                    <p>Even when you are not paying attention to it, sound shapes your physiology. The auditory system processes acoustic information continuously and can influence brain activity, heart rate, stress hormones, and nervous system state.</p>
+                    <p>Sound enters as pressure waves, is transduced by cochlear hair cells, and travels via the auditory nerve to brainstem, thalamus, and auditory cortex. Importantly, this pathway branches into systems linked to emotion, memory, arousal, and autonomic tone.</p>
+                    <p class="muted">That is why acoustic design can affect how alert or drowsy, focused or scattered, calm or agitated you feel, often before conscious appraisal catches up.</p>
+
+                    <h3>The Listening Environment Effect</h3>
+                    <p>Unpredictable noise can elevate cortisol and fragment attention. Predictable, spectrally stable sound can reduce physiological load and improve sustained focus. NeuroNest uses purposeful spectral profile, temporal structure, and modulation depth to shape the listening environment intentionally.</p>
+                </article>
+
+                <aside class="diagram" aria-label="Auditory pathway diagram">
+                    <div class="pathway-flow">
+                        <span class="pathway-label">⊙ Primary Auditory Transduction</span>
+                        
+                        <div class="pathway-stage">
+                            <div class="pathway-nodes" style="grid-template-columns: repeat(3, 1fr);">
+                                <div class="pathway-node" style="opacity: 0.7;"></div>
+                                <div class="pathway-node">
+                                    <strong>Sound</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Pressure Waves</span>
+                                </div>
+                                <div class="pathway-node" style="opacity: 0.7;"></div>
+                            </div>
+                        </div>
+
+                        <div class="pathway-stage separator">
+                            <div class="pathway-divider"></div>
+                        </div>
+
+                        <div class="pathway-stage">
+                            <div class="pathway-nodes">
+                                <div class="pathway-node">
+                                    <strong>Cochlea</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Hair Cells</span>
+                                </div>
+                                <div class="pathway-node">
+                                    <strong>Auditory Nerve</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Signal Relay</span>
+                                </div>
+                                <div class="pathway-node">
+                                    <strong>Brainstem</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Core Integration</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pathway-stage separator">
+                            <div class="pathway-divider"></div>
+                        </div>
+
+                        <div class="pathway-stage">
+                            <div class="pathway-nodes" style="grid-template-columns: 1fr;">
+                                <div class="pathway-node">
+                                    <strong>Thalamus</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Sensory Gateway & Relay Hub</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pathway-stage separator">
+                            <div class="pathway-divider"></div>
+                        </div>
+
+                        <span class="pathway-label">⊙ Downstream Cognitive + Autonomic Branches</span>
+
+                        <div class="pathway-stage">
+                            <div class="pathway-nodes">
+                                <div class="pathway-node">
+                                    <strong>Auditory Cortex</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Conscious Processing</span>
+                                </div>
+                                <div class="pathway-node">
+                                    <strong>Amygdala</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Emotion & Fear</span>
+                                </div>
+                                <div class="pathway-node">
+                                    <strong>Hippocampus</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Memory</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pathway-stage">
+                            <div class="pathway-nodes" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="pathway-node">
+                                    <strong>Vagus Pathways</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Parasympathetic Tone</span>
+                                </div>
+                                <div class="pathway-node">
+                                    <strong>Reticular System</strong>
+                                    <span style="font-size: 12px; opacity: 0.8;">Arousal Regulation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Clean signal path: Sound transduction through cochlea and core relay circuits → distributed influence across cognitive, emotional, memory, and autonomic regulation systems.</p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-divider-lottie" id="divider2"><div class="lottie-container"></div></div>
+
+        <section id="outcomes">
+            <div class="container measure">
+                <span class="label">Section 3</span>
+                <h2>Practical Outcomes, Not Abstract Promises</h2>
+                <div class="cards">
+                    <details>
+                        <summary>Sleep support</summary>
+                        <p>Goal: reduce sleep onset latency, support slow-wave architecture, and improve overnight acoustic stability. Protocols are built around a gradual beta to alpha to theta to delta transition using pink or brown spectral foundations, controlled masking, and temporal pacing for entrainment support.</p>
+                        <p>Research indicators include meaningful reductions in sleep onset latency and improved memory consolidation signals in controlled settings. These are laboratory findings; real-world response varies with environment, baseline sleep quality, volume, and consistency.</p>
+                    </details>
+                    <details>
+                        <summary>Focus and concentration</summary>
+                        <p>Goal: support sustained attention and reduce distraction sensitivity. Mechanisms include auditory masking of variable external noise, stochastic facilitation, and rhythm structures around alpha and low-beta ranges.</p>
+                        <p>Evidence in entrainment literature shows strong effect sizes in selected tasks, with isochronic stimulation often outperforming binaural beat-only designs under comparable conditions.</p>
+                    </details>
+                    <details>
+                        <summary>Calm and nervous system regulation</summary>
+                        <p>Goal: support parasympathetic tone and post-stimulation recovery. Protocols prioritize predictable, non-jarring movement with low-frequency modulation patterns that align with slower respiratory and autonomic rhythms.</p>
+                        <p>Relevant outcomes include higher heart rate variability proxies and improved subjective calm in nature-like or designed low-variance sound environments.</p>
+                    </details>
+                    <details>
+                        <summary>Background environment design</summary>
+                        <p>Goal: replace chaotic acoustic conditions with stable foundations suitable for work, study, and daily regulation. Spectral balance and low-cognitive-load texturing are central, especially in open-plan or shared spaces.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider-lottie" id="divider3"><div class="lottie-container"></div></div>
+
+        <section id="how-to-use">
+            <div class="container measure">
+                <span class="label">Section 4</span>
+                <h2>A Practical Listening Guide</h2>
+                <div class="guide-grid">
+                    <article class="guide-card" id="how-it-works">
+                        <h3>Volume</h3>
+                        <p>Choose a comfortable level below the point where the sound demands attention. Effective use is usually in the <span class="tag">40-55 dB</span> range. For extended sessions, stay below <span class="tag">70 dB</span>.</p>
+                        <p class="muted">Sleep: lower than you think. Focus: moderate and stable. Calm: gentle and low-demand.</p>
+                        <details>
+                            <summary>Equal-loudness note (technical)</summary>
+                            <p>Human hearing is frequency-dependent. Equal-loudness contours explain why perceived intensity differs across low, mid, and high bands even at equal physical SPL. Practical implication: calibration by comfort and fatigue matters more than raw slider position.</p>
+                        </details>
+                    </article>
+                    <article class="guide-card">
+                        <h3>Duration</h3>
+                        <p>Sleep: 30-60 minutes during wind-down, optional overnight continuity. Focus: 25-90 minute blocks aligned to deep-work intervals. Calm: 10-30 minutes for downshift and reset.</p>
+                        <p class="muted">Some effects are immediate (masking, perceptual settling), while others are cumulative with consistent use.</p>
+                    </article>
+                    <article class="guide-card">
+                        <h3>Headphones vs speakers</h3>
+                        <p>Both can work. Headphones provide controlled delivery and are required for true binaural processing. Speakers support ambient room coverage and are often preferred at night.</p>
+                        <p class="muted">Open-back headphones are often better for long sessions. Earbuds are acceptable but may limit low-frequency representation.</p>
+                    </article>
+                    <article class="guide-card">
+                        <h3>Active vs background listening</h3>
+                        <p>Active listening means intentional attention to the soundscape. Background listening means the sound is present while attention stays on another task. Core mechanisms like masking and environmental stabilization can operate in both modes.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="different">
+            <div class="container measure">
+                <span class="label">Section 5</span>
+                <h2>This Is Not Music. This Is Not Random Noise.</h2>
+                <h3>Intentional design, not ambient content</h3>
+                <p>NeuroNest sessions are built from spectral profile, temporal structure, and modulation depth/rate targets. These are designed variables, not incidental production artifacts.</p>
+
+                <h3>Coloured noise foundations</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Noise</th>
+                                <th>Rolloff</th>
+                                <th>Character</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>White</td><td>0 dB/oct</td><td>Bright, hissing</td></tr>
+                            <tr><td>Pink</td><td>-3 dB/oct</td><td>Balanced, natural</td></tr>
+                            <tr><td>Brown</td><td>-6 dB/oct</td><td>Deep, warm, rumbling</td></tr>
+                            <tr><td>Grey</td><td>Psychoacoustically flat</td><td>Perceptually balanced</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="margin-top:18px;">Isochronic tones vs binaural beats</h3>
+                <p>Isochronic stimulation uses explicit amplitude pulses that remain effective without strict interaural separation. Binaural beats depend on differential signals to each ear and can be less robust in uncontrolled listening contexts. Existing comparisons often show stronger entrainment effect sizes for isochronic-first approaches.</p>
+
+                <h3>Education-first model</h3>
+                <p>NeuroNest avoids miracle claims. The model is transparent: what research supports, how design translates it, what limitations exist, and what outcomes are realistic.</p>
+            </div>
+        </section>
+
+        <section id="science">
+            <div class="container measure">
+                <span class="label">Section 6</span>
+                <h2>How Sound Influences Your Brain and Body</h2>
+                <h3>Neural entrainment</h3>
+                <p>Like synchronizing to a steady group rhythm, neural populations can align phase and timing to consistent external pulses. Typical target ranges include delta (~2 Hz) for sleep windows, alpha (~10 Hz) for relaxed alertness, and gamma (~40 Hz) for high-demand attention contexts.</p>
+
+                <h3>Autonomic nervous system</h3>
+                <p>The sympathetic system acts like an accelerator; parasympathetic pathways act like a brake. Modern environments often bias chronic acceleration. Stable sound can function as a down-regulation cue, with heart rate variability used as a practical regulation proxy.</p>
+
+                <h3>Auditory masking</h3>
+                <p>Not every benefit requires advanced neurophysiology. Broadband masking lowers the effective salience of disruptive external noise and improves the local signal-to-noise environment.</p>
+
+                <h3>The thalamic gateway</h3>
+                <p>The thalamus is a sensory relay and gating structure. During sleep preparation, its dynamics shift alongside spindle and slow-oscillation architecture. Predictable auditory input may support this transition by reducing abrupt sensory perturbation.</p>
+            </div>
+        </section>
+
+        <section id="deep-dive">
+            <div class="container measure">
+                <span class="label">Section 7</span>
+                <h2>For the Curious, the Sceptical, and the Technical</h2>
+                <details>
+                    <summary>Expand full mechanistic taxonomy</summary>
+                    <p>This section summarizes entrainment pathways, thalamo-cortical dynamics, autonomic mechanisms, plasticity hypotheses, and stochastic facilitation concepts in practical terms.</p>
+                    <h3>7.1 Entrainment mechanisms</h3>
+                    <p><span class="tag">ASSR</span> (auditory steady-state response), <span class="tag">FFR</span> (frequency-following response), phase alignment, cross-frequency coupling, and alpha gating collectively describe how external rhythm can bias neural timing organization.</p>
+                    <h3>7.2 Thalamo-cortical dynamics</h3>
+                    <p>Sleep spindles and slow oscillations interact with thalamo-cortical loops. Timing-sensitive sound may modulate transitions when paired to the right state window.</p>
+                    <h3>7.3 Autonomic and vagal mechanisms</h3>
+                    <p><span class="tag">HRV</span>, <span class="tag">RSA</span>, and baroreflex-linked coherence around 0.1 Hz are relevant for regulation-oriented protocols.</p>
+                    <h3>7.4 Neuroplasticity</h3>
+                    <p>Repeated, context-appropriate stimulation may influence attention-gated learning windows and timing-dependent adaptation, though effect durability is highly context dependent.</p>
+                    <h3>7.5 Stochastic facilitation</h3>
+                    <p>Well-calibrated noise can improve detectability and stability in certain systems. In listening design, this supports using controlled noise floors rather than silence or abrupt variability.</p>
+                    <h3>7.6 Additional mechanisms</h3>
+                    <p>Current hypotheses include predictive coding load reduction, default mode modulation, and circadian-aligned timing effects.</p>
+                </details>
+            </div>
+        </section>
+
+        <section id="safety">
+            <div class="container measure">
+                <span class="label">Section 8</span>
+                <h2>What NeuroNest Is, And What It Is Not</h2>
+                <h3>Realistic expectations</h3>
+                <p>Immediate shifts can include better masking and subjective settling. Cumulative outcomes require consistency and appropriate protocol matching to context and baseline state.</p>
+                <h3>Safety</h3>
+                <p>Volume is the primary safety variable. Use conservative levels, especially for long sessions. If you have a seizure history, tinnitus sensitivity, or any condition affected by rhythmic stimulation, consult a qualified clinician before use. Do not use while driving or operating dangerous equipment.</p>
+                <h3>Medical disclaimer</h3>
+                <p>NeuroNest is a sound design platform. It is not a medical device, therapeutic intervention, or substitute for professional healthcare.</p>
+            </div>
+        </section>
+
+        <section id="faq" class="faq">
+            <div class="container measure">
+                <span class="label">Section 9</span>
+                <h2>Frequently Asked Questions</h2>
+                <details><summary>1. Is this scientifically proven?</summary><p>The underlying mechanisms are supported by substantial neuroscience and psychoacoustic literature. Individual outcomes vary with context, protocol match, and consistency.</p></details>
+                <details><summary>2. Is NeuroNest just music or white noise?</summary><p>No. It uses engineered spectral, temporal, and modulation structures with specific physiological and cognitive design goals.</p></details>
+                <details><summary>3. Do I need headphones or can I use speakers?</summary><p>Both are valid. Headphones are best for controlled delivery and binaural designs; speakers are often preferred for ambient sleep contexts.</p></details>
+                <details><summary>4. How loud should I listen?</summary><p>Comfortably low. Typical effective range is 40-55 dB, and prolonged exposure should remain below 70 dB.</p></details>
+                <details><summary>5. How long should I use a track?</summary><p>Use context-based duration: 10-30 minutes for calm sessions, 25-90 for focus blocks, and 30-60 for sleep wind-down.</p></details>
+                <details><summary>6. Can I use this while working or sleeping?</summary><p>Yes. Protocols are designed for both active task contexts and passive overnight use depending on session type.</p></details>
+                <details><summary>7. How do I choose the right track?</summary><p>Start with your primary goal: sleep onset, sustained focus, or nervous system downshift. Then adjust by comfort and response.</p></details>
+                <details><summary>8. Will I feel something immediately?</summary><p>Some people notice immediate changes in perceived noise burden and state. Others mainly observe cumulative effects over repeated sessions.</p></details>
+                <details><summary>9. Is it safe to use daily?</summary><p>Daily use at safe volume levels is generally reasonable for most users. If uncertain, begin shorter and monitor fatigue or irritation.</p></details>
+                <details><summary>10. Is this a treatment or medical product?</summary><p>No. NeuroNest is an educational, evidence-informed sound design platform and not a medical treatment.</p></details>
+                <details><summary>11. What makes NeuroNest different from other sound apps?</summary><p>Design decisions are mechanism-led, evidence-informed, and explained transparently, with clear limits and practical guidance rather than hype claims.</p></details>
+            </div>
+        </section>
+
+        <section id="where-to-start">
+            <div class="container measure">
+                <span class="label">Section 10</span>
+                <h2>Three Paths, One Goal</h2>
+                <div class="cta-grid">
+                    <article class="cta-card">
+                        <h3>Sleep Path</h3>
+                        <p>You want a calmer wind-down, a better night-time environment, or support for deeper overnight recovery.</p>
+                        <a href="radio.html#sleep">Start with sleep-support soundscapes</a>
+                    </article>
+                    <article class="cta-card">
+                        <h3>Focus Path</h3>
+                        <p>You want fewer distractions, sustained concentration during deep work, or an acoustic environment for cognitive performance.</p>
+                        <a href="radio.html#focus">Start with deep work and focus sessions</a>
+                    </article>
+                    <article class="cta-card">
+                        <h3>Calm Path</h3>
+                        <p>You want parasympathetic downshift, decompression after a high-stimulation day, or support for meditation and regulation.</p>
+                        <a href="radio.html#calm">Start with calm and downshift sessions</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="glossary">
+            <div class="container measure">
+                <span class="label">Appendix</span>
+                <h2>Nomenclature and Quick Reference</h2>
+
+                <h3>Frequency bands</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Band</th><th>Range</th><th>Associated State</th></tr></thead>
+                        <tbody>
+                            <tr><td>Delta</td><td>0.5-4 Hz</td><td>Deep sleep, high restoration load</td></tr>
+                            <tr><td>Theta</td><td>4-8 Hz</td><td>Drowsy transition, internal attention</td></tr>
+                            <tr><td>Alpha</td><td>8-12 Hz</td><td>Relaxed alertness</td></tr>
+                            <tr><td>Beta</td><td>12-30 Hz</td><td>Focused cognitive effort</td></tr>
+                            <tr><td>Gamma</td><td>30-80+ Hz</td><td>High-frequency integrative processing</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="margin-top:18px;">Key acronyms</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Acronym</th><th>Term</th><th>Plain-language meaning</th></tr></thead>
+                        <tbody>
+                            <tr><td>ASSR</td><td>Auditory Steady-State Response</td><td>Brain response that locks to repetitive sound rates</td></tr>
+                            <tr><td>FFR</td><td>Frequency-Following Response</td><td>Neural tracking of tonal frequency characteristics</td></tr>
+                            <tr><td>HRV</td><td>Heart Rate Variability</td><td>Beat-to-beat variability used as a regulation proxy</td></tr>
+                            <tr><td>HF-HRV</td><td>High-Frequency HRV</td><td>Parasympathetic-linked HRV component</td></tr>
+                            <tr><td>RSA</td><td>Respiratory Sinus Arrhythmia</td><td>Heart rhythm fluctuation with breathing cycle</td></tr>
+                            <tr><td>BRS</td><td>Baroreflex Sensitivity</td><td>Blood pressure-heart rate feedback responsiveness</td></tr>
+                            <tr><td>PAC</td><td>Phase-Amplitude Coupling</td><td>One rhythm's phase modulating another's amplitude</td></tr>
+                            <tr><td>PLV</td><td>Phase-Locking Value</td><td>Consistency of phase alignment over time</td></tr>
+                            <tr><td>SO</td><td>Slow Oscillation</td><td>Large, slow cortical rhythm common in deep sleep</td></tr>
+                            <tr><td>DMN</td><td>Default Mode Network</td><td>Brain network active in internally oriented cognition</td></tr>
+                            <tr><td>BDNF</td><td>Brain-Derived Neurotrophic Factor</td><td>Protein linked to neuronal adaptation and plasticity</td></tr>
+                            <tr><td>LTP</td><td>Long-Term Potentiation</td><td>Long-lasting strengthening of synaptic signaling</td></tr>
+                            <tr><td>STDP</td><td>Spike-Timing-Dependent Plasticity</td><td>Learning effects driven by precise timing relations</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container measure">
+            <p>NeuroNest Hub Pty Ltd</p>
+            <p>Evidence-informed auditory neuromodulation and education-first sound design.</p>
+            <p><a href="index.html" style="color:#d7f2ed; text-decoration:none;">Return Home</a></p>
+        </div>
+    </footer>
+
+    <script src="assets/page-transitions.js" defer></script>
+    <script>
+        (function () {
+            var progress = document.getElementById('progressBar');
+
+            function onScroll() {
+                var winH = window.innerHeight;
+                var docH = document.documentElement.scrollHeight - winH;
+                var ratio = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+                progress.style.width = Math.min(100, Math.max(0, ratio)) + '%';
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            onScroll();
+        })();
+
+        // Lottie divider animations
+        (function () {
+            var lottie = window.lottie;
+            if (!lottie) return;
+
+            if (document.getElementById('divider1')) {
+                lottie.loadAnimation({
+                    container: document.querySelector('#divider1 .lottie-container'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'assets/Grid%20wave%20flow.json',
+                    rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
+                });
+            }
+
+            if (document.getElementById('divider2')) {
+                lottie.loadAnimation({
+                    container: document.querySelector('#divider2 .lottie-container'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'assets/Particle%20wave%20with%20depth.json',
+                    rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
+                });
+            }
+
+            if (document.getElementById('divider3')) {
+                lottie.loadAnimation({
+                    container: document.querySelector('#divider3 .lottie-container'),
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: true,
+                    path: 'assets/Wave%20loader.json',
+                    rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

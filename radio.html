@@ -6,7 +6,7 @@
     <title>NeuroNest | Radio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
@@ -28,7 +28,7 @@
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             color: var(--text);
             background:
                 radial-gradient(1200px 560px at 50% 4%, rgba(134, 190, 255, 0.34), rgba(134, 190, 255, 0) 62%),
@@ -51,6 +51,19 @@
             z-index: 0;
         }
 
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(186, 218, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(186, 218, 255, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
         .container {
             width: min(1180px, 94vw);
             margin: 0 auto;
@@ -59,31 +72,79 @@
         }
 
         .topbar {
-            padding: 24px 0 8px;
+            padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 50;
         }
 
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            color: rgba(245, 250, 255, 0.92);
+            white-space: nowrap;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            flex-shrink: 0;
+        }
+
+        .header-nav-btns {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .header-nav-btn {
+            text-decoration: none;
+            color: rgba(200, 220, 245, 0.8);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(186, 218, 255, 0.18);
+            background: rgba(12, 24, 42, 0.5);
+            backdrop-filter: blur(8px);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .header-nav-btn:hover {
+            color: #fff;
+            border-color: rgba(143, 212, 255, 0.45);
+            background: rgba(20, 40, 68, 0.7);
+            box-shadow: 0 0 12px rgba(143, 212, 255, 0.12);
+        }
+
         .nav-pill {
-            margin: 0 auto;
-            width: min(780px, 100%);
             border-radius: 999px;
             background: linear-gradient(180deg, rgba(17, 34, 56, 0.58) 0%, rgba(8, 18, 31, 0.6) 100%);
             border: 1px solid var(--line);
             box-shadow: 0 12px 32px rgba(2, 10, 20, 0.42);
             backdrop-filter: blur(14px) saturate(120%);
-            padding: 14px 24px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 14px;
+            justify-content: center;
+            gap: 0;
+            position: relative;
+            flex-shrink: 0;
         }
 
         .nav-group {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 0;
         }
 
         .nav-pill a {
@@ -104,7 +165,11 @@
             text-align: center;
             text-decoration: none;
             color: inherit;
-            padding: 0 6px;
+            padding: 0 12px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
         }
 
         .brand strong {
@@ -124,10 +189,53 @@
             text-transform: uppercase;
         }
 
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(17, 34, 56, 0.98) 0%, rgba(8, 18, 31, 0.98) 100%);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            backdrop-filter: blur(14px) saturate(120%);
+            padding: 8px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-8px);
+            transition: opacity 0.28s ease, visibility 0.28s ease, transform 0.28s ease;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .brand:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 16px;
+            color: rgba(246, 246, 255, 0.74);
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            transition: all 0.24s ease;
+            border-radius: 8px;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(143, 212, 255, 0.12);
+            color: #8fd4ff;
+        }
+
         .hero {
             position: relative;
-            margin-top: 34px;
-            padding: 86px 0 46px;
+            margin-top: 0;
+            padding: 60px 0;
             text-align: center;
         }
 
@@ -147,13 +255,14 @@
         }
 
         .hero h1 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(30px, 4.2vw, 46px);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(48px, 6vw, 72px);
+            text-transform: none;
+            letter-spacing: -0.01em;
             color: rgba(245, 250, 255, 0.92);
-            margin-bottom: 12px;
-            text-shadow: 0 0 40px rgba(162, 216, 255, 0.22);
+            margin-bottom: 16px;
+            font-weight: 400;
+            text-shadow: none;
         }
 
         .hero-subtitle {
@@ -397,84 +506,116 @@
         }
 
         .curated-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--accent);
+            font-family: 'DM Serif Display', serif;
+            font-size: 40px;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            color: rgba(244, 249, 255, 0.96);
             margin-bottom: 10px;
+            text-align: center;
+            font-weight: 400;
         }
 
         .curated-subtitle {
             font-size: 16px;
             color: var(--muted);
             max-width: 760px;
-            margin-bottom: 18px;
+            margin: 0 auto 40px;
+            text-align: center;
         }
 
-        .recommendation-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
+        .mosaic-grid {
+            columns: 4;
+            column-gap: 14px;
         }
 
-        .rec-card {
+        .mosaic-card {
+            break-inside: avoid;
+            margin-bottom: 14px;
             background: linear-gradient(180deg, rgba(18, 40, 63, 0.5) 0%, rgba(10, 25, 41, 0.5) 100%);
             border: 1px solid var(--line);
             border-radius: 18px;
             color: var(--text);
-            padding: 16px;
+            padding: 14px;
             text-decoration: none;
-            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
             box-shadow: 0 14px 28px rgba(2, 10, 20, 0.26);
             backdrop-filter: blur(10px) saturate(118%);
             display: block;
+            overflow: hidden;
         }
 
-        .rec-card:hover {
-            transform: translateY(-2px);
+        .mosaic-card:hover {
+            transform: translateY(-4px) scale(1.02);
             border-color: rgba(197, 229, 255, 0.7);
             background: linear-gradient(180deg, rgba(28, 56, 86, 0.58) 0%, rgba(14, 31, 50, 0.62) 100%);
         }
 
-        .rec-card__thumb {
+        .mosaic-card__thumb {
             width: 100%;
-            aspect-ratio: 16 / 9;
             border-radius: 12px;
             background-size: cover;
             background-position: center;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border: 1px solid rgba(193, 222, 255, 0.22);
         }
 
-        .rec-card__tag {
+        .mosaic-card__thumb.tall { aspect-ratio: 3 / 4; }
+        .mosaic-card__thumb.wide { aspect-ratio: 16 / 9; }
+        .mosaic-card__thumb.square { aspect-ratio: 1 / 1; }
+        .mosaic-card__thumb.cinematic { aspect-ratio: 21 / 9; }
+        .mosaic-card__thumb.portrait { aspect-ratio: 2 / 3; }
+
+        .mosaic-card__tag {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: var(--accent);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: block;
         }
 
-        .rec-card h3 {
-            font-size: 33px;
-            margin-bottom: 5px;
+        .mosaic-card h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
             line-height: 1.15;
         }
 
-        .rec-card p {
-            color: var(--text);
-            font-size: 17px;
-            line-height: 1.45;
+        .mosaic-card.featured h3 {
+            font-size: 28px;
         }
 
-        .soundhub-signup {
-            padding: 18px 0 76px;
+        .mosaic-card p {
+            color: rgba(220, 236, 255, 0.76);
+            font-size: 14px;
+            line-height: 1.4;
         }
 
-        .coming-soon-footer {
-            padding: 0 0 84px;
+        .mosaic-card.featured {
+            padding: 18px;
+        }
+
+        .mosaic-card.minimal {
+            padding: 12px;
+        }
+
+        .mosaic-card.minimal h3 {
+            font-size: 16px;
+        }
+
+        .mosaic-card.minimal p {
+            display: none;
+        }
+
+        @media (max-width: 1040px) {
+            .mosaic-grid { columns: 3; }
+        }
+        @media (max-width: 760px) {
+            .mosaic-grid { columns: 2; }
+        }
+        @media (max-width: 480px) {
+            .mosaic-grid { columns: 1; }
         }
 
         .coming-soon-shell {
@@ -503,29 +644,17 @@
             font-size: 16px;
         }
 
-        .soundhub-signup .signup-shell {
-            border: 1px solid var(--line);
-            border-radius: 22px;
-            background: linear-gradient(180deg, rgba(16, 37, 60, 0.58) 0%, rgba(9, 23, 38, 0.58) 100%);
-            padding: clamp(20px, 4vw, 34px);
-            box-shadow: 0 18px 44px rgba(4, 14, 26, 0.34);
-            backdrop-filter: blur(12px) saturate(122%);
-        }
-
-        .soundhub-signup h2 {
-            font-size: clamp(24px, 3vw, 36px);
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-
-        .soundhub-signup p {
-            color: var(--muted);
-            max-width: 740px;
-            margin-bottom: 24px;
+        .signup-subtitle {
+            font-size: clamp(16px, 2vw, 22px);
+            color: #c8dff4;
+            margin: 28px 0 18px;
+            font-weight: 400;
         }
 
         .join-form {
             max-width: 760px;
+            margin: 0 auto;
+            text-align: left;
         }
 
         .form-row {
@@ -779,130 +908,191 @@
             .form-row {
                 flex-direction: column;
             }
+
+            .header-nav-btns {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <header class="topbar">
-        <nav class="nav-pill container">
-            <div class="nav-group">
-                <a href="index.html">Home</a>
-                <a href="about.html">Learn More</a>
-                <a href="radio.html">Radio</a>
+        <div class="header-row container">
+            <nav class="nav-pill">
+                <a class="brand" href="index.html" aria-label="Neuronest Australia">
+                    <strong>NeuroNest</strong>
+                    <span>Australia</span>
+                    <div class="dropdown-menu">
+                        <a href="index.html">Home</a>
+                        <a href="learn-more.html">Learn More</a>
+                        <a href="radio.html">Sound Hub</a>
+                        <a href="neuroscience-news.html">Latest News</a>
+                        <a href="mailto:contact@neuronest.au">Contact</a>
+                    </div>
+                </a>
+            </nav>
+            <div class="header-title">Sound Hub</div>
+            <nav class="header-nav-btns">
+                <a href="#latest-release" class="header-nav-btn">Latest Releases</a>
+                <a href="#curated-grid" class="header-nav-btn">Curated Selection</a>
+            </nav>
+            <div class="rotating-text-wrap">
+                <span class="rotating-text active">Sound Engineering Collaborations</span>
+                <span class="rotating-text">Latest Neuroscience News</span>
+                <span class="rotating-text">Sound Engineering</span>
             </div>
-            <a class="brand" href="index.html" aria-label="Neuronest Australia">
-                <strong>Neuronest</strong>
-                <span>Australia</span>
-            </a>
-            <div class="nav-group">
-                <a href="neuroscience-news.html">Latest News</a>
-                <a href="mailto:contact@neuronest.au">Contact</a>
-            </div>
-        </nav>
+        </div>
     </header>
 
     <main>
         <section class="hero">
             <div class="container">
-                <h1>Sound Hub</h1>
+
+                <div class="coming-soon-shell" style="margin-top: 32px; margin-bottom: 40px;">
+                    <h2>Sound Hub Coming Soon</h2>
+                    <p>The full interactive Sound Hub experience is in active development. In the meantime, use the curated selections above and join the early access list for launch updates.</p>
+
+                    <h3 class="signup-subtitle">Sign up for free access in August 2026</h3>
+                    <form class="join-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="signup-first-name">First name</label>
+                                <input id="signup-first-name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-last-name">Last name</label>
+                                <input id="signup-last-name" type="text" required>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="signup-email">Email</label>
+                            <input id="signup-email" type="email" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="signup-goal">What will you use Sound Hub for?</label>
+                            <textarea id="signup-goal" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Join Free Access List</button>
+                    </form>
+                </div>
+
                 <p class="hero-subtitle">Explore curated selections and latest releases while we continue building the full interactive hub experience.</p>
                 <span class="hero-badge">Curated Listening · Live Now</span>
-            </div>
-        </section>
 
-        <section class="container latest-release-section" aria-label="Latest release and quick links">
-            <p class="latest-release-kicker">Sound Engineering Collaborations</p>
-            <div class="latest-release-heading">Latest Release</div>
+                <div id="latest-release" style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: 0.18em; text-transform: none; color: rgba(244, 249, 255, 0.96); margin-bottom: 40px; text-align: center; font-weight: 400; margin-top: 72px;">Latest Release</div>
 
-            <div class="layout">
-                <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener" class="card card-main">
-                    <div class="card-main__image" style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div>
-                    <div class="card-main__shade"></div>
-                    <div class="card-main__content">
-                        <div class="latest-play-btn" aria-hidden="true">
-                            <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                <div class="layout">
+                    <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener" class="card card-main">
+                        <div class="card-main__image" style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div>
+                        <div class="card-main__shade"></div>
+                        <div class="card-main__content">
+                            <div class="latest-play-btn" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                            </div>
+                            <span class="tag">Latest Drop · 40 Hz Gamma</span>
+                            <h2>Deep Focus Architecture</h2>
+                            <p>Engineered isochronic tones layered with brown noise. Designed for sustained cognitive performance.</p>
                         </div>
-                        <span class="tag">Latest Drop · 40 Hz Gamma</span>
-                        <h2>Deep Focus Architecture</h2>
-                        <p>Engineered isochronic tones layered with brown noise. Designed for sustained cognitive performance.</p>
-                    </div>
-                </a>
-
-                <div class="card-side-wrap">
-                    <a href="#curated-grid" class="card card-side">
-                        <span class="tag">Button</span>
-                        <h3>Curated Selection</h3>
-                        <p>Jump straight to the curated tracks and topic playlists.</p>
                     </a>
 
-                    <div class="card-side-bottom">
-                        <a href="neuroscience-news.html" class="card card-small">
-                            <span class="tag">Research Hub</span>
-                            <h4>Neuroscience News</h4>
-                            <p>Open the latest research and neuroscience updates.</p>
+                    <div class="card-side-wrap">
+                        <a href="#curated-grid" class="card card-side">
+                            <span class="tag">Button</span>
+                            <h3>Curated Selection</h3>
+                            <p>Jump straight to the curated tracks and topic playlists.</p>
                         </a>
 
-                        <a href="about.html#how-it-works" class="card card-small">
-                            <span class="tag">Guide</span>
-                            <h4>How to Use Sound</h4>
-                            <p>Get practical listening guidance and brainwave timing cues.</p>
-                        </a>
+                        <div class="card-side-bottom">
+                            <a href="neuroscience-news.html" class="card card-small">
+                                <span class="tag">Research Hub</span>
+                                <h4>Neuroscience News</h4>
+                                <p>Open the latest research and neuroscience updates.</p>
+                            </a>
+
+                            <a href="learn-more.html#how-it-works" class="card card-small">
+                                <span class="tag">Guide</span>
+                                <h4>How to Use Sound</h4>
+                                <p>Get practical listening guidance and brainwave timing cues.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="curated-grid" style="margin-top: 80px;">
+                    <div class="curated-title">Curated Selection</div>
+                    <p class="curated-subtitle">Explore our hand-picked rotation of tracks engineered to complement specific neurological targets and cultural soundscapes.</p>
+
+                    <div class="mosaic-grid">
+
+                        <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Deep Focus</span><h3>The ASSR Rotation</h3><p>Auditory Steady-State Response tracks using 40Hz Gamma pulses for sustained cognitive focus.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Nervous System</span><h3>Calm the Vagus Nerve</h3><p>Slow-wave delta ramps for post-stress recovery.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Study Tool</span><h3>What is Lofi?</h3><p>Soft sonic landscapes that mask distractions during focused work.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Cultural Research</span><h3>African Percussion</h3><p>Traditional polyrhythms that support hemispheric balance and gamma synchronization.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb cinematic" style="background-image:url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep Tech</span><h3>Sleep Deep</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Emotional Flow</span><h3>Mood Elevation</h3><p>High-beta and gamma profiles to lift arousal and attention.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');"></div><span class="mosaic-card__tag">8D Research</span><h3>Spatial Clarity</h3><p>360-degree auditory textures that expand the perceived mental workspace.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Cognitive Health</span><h3>Plasticity Flow</h3><p>Structured frequency-following responses to support neural adaptation.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=5qap5aO4i9A" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/5qap5aO4i9A/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Brown Noise</span><h3>Deep Warmth</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=FjHGZj2IjBk" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/FjHGZj2IjBk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Theta Waves</span><h3>Creative State</h3><p>Theta-range entrainment for ideation and creative problem solving.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=lTRiuFIWV54" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/lTRiuFIWV54/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Alpha Bridge</span><h3>Relaxed Alertness</h3><p>10Hz alpha foundations for calm, present focus.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=wzjWIxXBs_s" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/wzjWIxXBs_s/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Nature Blend</span><h3>Rain Architecture</h3><p>Layered rain textures with embedded frequency ramps for overnight comfort.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=nMfPqeZjc2c" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb cinematic" style="background-image:url('https://img.youtube.com/vi/nMfPqeZjc2c/maxresdefault.jpg');"></div><span class="mosaic-card__tag">White Noise</span><h3>Flat Spectrum</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=aXItOY0sLRY" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/aXItOY0sLRY/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Binaural</span><h3>Hemispheric Sync</h3><p>Differential frequency processing for interaural coherence.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=OdIJ2x3nTzQ" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/OdIJ2x3nTzQ/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Ambient Drone</span><h3>Harmonic Depth</h3><p>Sustained harmonic overtones for deep immersion environments.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/rUxyKA_-grg/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Pink Noise</span><h3>Spectral Balance</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=WPni755-Krg" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/WPni755-Krg/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Gamma Pulse</span><h3>40Hz Cognitive Engine</h3><p>Isochronic 40Hz gamma stimulation for peak concentration and neural coherence.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=1ZYbU82GVz4" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Meditation</span><h3>Stillness Protocol</h3><p>Delta-theta blends for guided and unguided meditation practice.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=jOwjY6lSdMo" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb cinematic" style="background-image:url('https://img.youtube.com/vi/jOwjY6lSdMo/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Ocean</span><h3>Tidal Rhythm</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=bo_efYhYU2A" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/bo_efYhYU2A/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Work Mode</span><h3>Productivity Stack</h3><p>Multi-layered focus blend with brown noise base and subtle isochronic overtones.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=77ZozI0rw7w" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/77ZozI0rw7w/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Vagal Tone</span><h3>Nervous System Reset</h3><p>Low-frequency modulation for parasympathetic activation.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=lE6RYpe9IT0" target="_blank" rel="noopener" class="mosaic-card featured"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/lE6RYpe9IT0/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Indigenous Sound</span><h3>Didgeridoo Resonance</h3><p>Deep drone traditions from Aboriginal Australian sound practice.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=Dx5qFachd3A" target="_blank" rel="noopener" class="mosaic-card minimal"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/Dx5qFachd3A/maxresdefault.jpg');"></div><span class="mosaic-card__tag">ASMR Hybrid</span><h3>Whisper Texture</h3></a>
+
+                        <a href="https://www.youtube.com/watch?v=rBrd_3VMC3c" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/rBrd_3VMC3c/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Frequency Bath</span><h3>528Hz Harmonic</h3><p>Solfeggio-inspired frequency layering for tonal immersion.</p></a>
+
+                        <a href="https://www.youtube.com/watch?v=BlbWDylJHfk" target="_blank" rel="noopener" class="mosaic-card"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/BlbWDylJHfk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Wind Down</span><h3>Evening Protocol</h3><p>Beta-to-delta descent curve for structured sleep preparation.</p></a>
+
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="curated-grid" class="container curated-selection" aria-label="Curated sound selection">
-            <div class="curated-title">Curated Selection</div>
-            <p class="curated-subtitle">Explore our hand-picked rotation of tracks engineered to complement specific neurological targets and cultural soundscapes.</p>
-            <div class="recommendation-grid">
-                <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div><span class="rec-card__tag">Deep Focus</span><h3>The ASSR Rotation</h3><p>Auditory Steady-State Response tracks using 40Hz Gamma pulses for sustained cognitive focus.</p></a>
-                <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');"></div><span class="rec-card__tag">Nervous System</span><h3>Calm the Vagus Nerve</h3><p>Designed for post-stress recovery using slow-wave delta ramps and soothing textures.</p></a>
-                <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');"></div><span class="rec-card__tag">Study Tool</span><h3>What is Lofi?</h3><p>Predictable, soft sonic landscapes that help mask distractions during focused work.</p></a>
-                <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');"></div><span class="rec-card__tag">Cultural Research</span><h3>African Percussion</h3><p>Traditional polyrhythms that support hemispheric balance and gamma synchronization.</p></a>
-                <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');"></div><span class="rec-card__tag">Sleep Tech</span><h3>Sleep Deep</h3><p>Delta transitions designed to guide the brain into restorative sleep stages.</p></a>
-                <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');"></div><span class="rec-card__tag">Emotional Flow</span><h3>Mood Elevation</h3><p>High-beta and gamma profiles used to lift arousal and attention.</p></a>
-                <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');"></div><span class="rec-card__tag">8D Research</span><h3>Spatial Clarity</h3><p>360-degree auditory textures that expand the perceived mental workspace.</p></a>
-                <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" rel="noopener" class="rec-card"><div class="rec-card__thumb" style="background-image:url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');"></div><span class="rec-card__tag">Cognitive Health</span><h3>Plasticity Flow</h3><p>Structured frequency-following responses intended to support neural adaptation.</p></a>
-            </div>
-        </section>
-
-        <section class="container soundhub-signup" aria-label="Sound Hub early access signup">
-            <div class="signup-shell">
-                <h2>Sign up for free access to the Sound Hub in August 2026</h2>
-                <p>Reserve your place and get notified when Sound Hub access opens. We will send launch details and onboarding instructions to your email.</p>
-                <form class="join-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="signup-first-name">First name</label>
-                            <input id="signup-first-name" type="text" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signup-last-name">Last name</label>
-                            <input id="signup-last-name" type="text" required>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="signup-email">Email</label>
-                        <input id="signup-email" type="email" required>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="signup-goal">What will you use Sound Hub for?</label>
-                        <textarea id="signup-goal" rows="4"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Join Free Access List</button>
-                </form>
-            </div>
-        </section>
-
-        <section class="container coming-soon-footer" aria-label="Sound Hub status">
-            <div class="coming-soon-shell">
-                <h2>Sound Hub Coming Soon</h2>
-                <p>The full interactive Sound Hub experience is in active development. In the meantime, use the curated selections above and join the early access list for launch updates.</p>
-            </div>
-        </section>
     </main>
 
     <script src="assets/page-transitions.js"></script>
+    <script>
+        (function () {
+            var texts = document.querySelectorAll('.rotating-text');
+            if (texts.length < 2) return;
+            var current = 0;
+            setInterval(function () {
+                texts[current].classList.remove('active');
+                current = (current + 1) % texts.length;
+                texts[current].classList.add('active');
+            }, 3000);
+        })();
+    </script>
 </body>
 </html>
