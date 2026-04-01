@@ -46,6 +46,32 @@ function confidenceBg(tier) {
   return "rgba(160,160,160,0.12)";
 }
 
+const CATEGORIES = ["Focus", "Sleep", "Calm", "Other"];
+
+function categoryColor(cat) {
+  const c = (cat || "").toLowerCase();
+  if (c === "focus") return "#8ea3ff";
+  if (c === "sleep") return "#a78bfa";
+  if (c === "calm") return "#67e8f9";
+  return "#94a3b8";
+}
+
+function categoryBg(cat) {
+  const c = (cat || "").toLowerCase();
+  if (c === "focus") return "rgba(142,163,255,0.12)";
+  if (c === "sleep") return "rgba(167,139,250,0.12)";
+  if (c === "calm") return "rgba(103,232,249,0.12)";
+  return "rgba(148,163,184,0.12)";
+}
+
+function inferCategory(paper) {
+  const text = `${paper.title} ${paper.contentAngle} ${paper.series.join(" ")}`.toLowerCase();
+  if (/sleep|slow.wave|delta|circadian|insomnia|rest/i.test(text)) return "Sleep";
+  if (/focus|gamma|attention|cognit|concentration|40.?hz|beta|memory|alzheimer|amyloid/i.test(text)) return "Focus";
+  if (/calm|relax|anxi|stress|vagal|vagus|alpha|meditat|parasympathetic/i.test(text)) return "Calm";
+  return "Other";
+}
+
 // ── Extract property helpers ────────────────────────────
 
 function getProp(page, name) {
@@ -261,16 +287,12 @@ async function fetchDatabase() {
 // ── HTML templates ──────────────────────────────────────
 
 function listingPageHtml(papers) {
-  const seriesSet = new Set();
-  papers.forEach((p) => p.series.forEach((s) => seriesSet.add(s)));
-  const seriesList = [...seriesSet].sort();
+  // Category filter buttons
+  const categoryFilters = CATEGORIES.map(
+    (c) => `<button class="filter-btn" data-filter="cat-${slugify(c)}" style="border-color:${categoryColor(c)};">${escapeHtml(c)}</button>`
+  ).join("\n                    ");
 
-  const filterOptionsHtml = [
-    `<button class="filter-btn active" data-filter="all">All</button>`,
-    ...seriesList.map(
-      (s) =>
-        `<button class="filter-btn" data-filter="series-${slugify(s)}">${escapeHtml(s)}</button>`
-    ),
+  const confidenceFilters = [
     `<button class="filter-btn" data-filter="conf-high" style="border-color:${confidenceColor("high")};">High Confidence</button>`,
     `<button class="filter-btn" data-filter="conf-moderate" style="border-color:${confidenceColor("moderate")};">Moderate</button>`,
     `<button class="filter-btn" data-filter="conf-low" style="border-color:${confidenceColor("low")};">Low</button>`,
@@ -278,12 +300,13 @@ function listingPageHtml(papers) {
 
   const cardsHtml = papers
     .map((p) => {
-      const seriesClasses = p.series.map((s) => `series-${slugify(s)}`).join(" ");
+      const cat = p.category;
+      const catClass = `cat-${slugify(cat)}`;
       const confClass = `conf-${slugify(p.confidence)}`;
       return `
-                    <a href="research/${p.slug}.html" class="research-card ${seriesClasses} ${confClass}">
+                    <a href="research/${p.slug}.html" class="research-card ${catClass} ${confClass}">
                         <div class="card-top">
-                            <span class="research-card__source">${escapeHtml(p.series.join(" · ") || "Research")}</span>
+                            <span class="category-badge" style="color:${categoryColor(cat)};background:${categoryBg(cat)};">${escapeHtml(cat)}</span>
                             <span class="confidence-badge" style="color:${confidenceColor(p.confidence)};background:${confidenceBg(p.confidence)};">${escapeHtml(p.confidence || "—")}</span>
                         </div>
                         <h3 class="research-card__title">${escapeHtml(p.title)}</h3>
@@ -301,7 +324,7 @@ function listingPageHtml(papers) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroNest | Research Hub</title>
+    <title>NeuroNest | Research Hub &amp; Neuroscience News</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -326,9 +349,10 @@ function listingPageHtml(papers) {
         .hero::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.45); z-index: -1; }
         .hero h1 { font-size: clamp(34px, 7vw, 72px); line-height: 1.05; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
         .hero p { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 16px; }
-        .news-section { padding: 80px 0 110px; }
-        .news-heading { margin-bottom: 18px; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-grey); }
-        .news-title { max-width: 760px; margin-bottom: 24px; font-size: clamp(28px, 4.5vw, 52px); line-height: 1.1; text-transform: uppercase; }
+        .section-block { padding: 80px 0; }
+        .section-block + .section-block { border-top: 1px solid var(--glass-border); }
+        .section-label { margin-bottom: 18px; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-grey); }
+        .section-title { max-width: 760px; margin-bottom: 24px; font-size: clamp(28px, 4.5vw, 52px); line-height: 1.1; text-transform: uppercase; }
         .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
         .filter-btn { background: transparent; border: 1px solid var(--glass-border); color: var(--text-grey); padding: 7px 16px; border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s ease; }
         .filter-btn:hover, .filter-btn.active { color: var(--text-white); border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06); }
@@ -337,12 +361,13 @@ function listingPageHtml(papers) {
         .research-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
         .research-card.hidden { display: none; }
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
-        .research-card__source { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: #8ea3ff; }
+        .category-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+        .research-card__source { font-size: 11px; text-transform: uppercase; letter-spacing: 1.4px; color: #8ea3ff; display: block; margin-bottom: 10px; }
         .confidence-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
         .research-card__title { font-size: 23px; line-height: 1.3; margin-bottom: 12px; }
         .research-card__desc { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 15px; margin-bottom: 16px; flex: 1; }
         .research-card__meta { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--text-grey); text-transform: uppercase; letter-spacing: 1px; }
-        @media (max-width: 900px) { .research-grid { grid-template-columns: 1fr; } .news-section { padding-top: 56px; } }
+        @media (max-width: 900px) { .research-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -359,22 +384,131 @@ function listingPageHtml(papers) {
                 <source src="assets/hero_banner.mp4" type="video/mp4">
             </video>
             <div class="container">
-                <h1>Research Hub</h1>
-                <p>Deep investigations into peer-reviewed auditory neuroscience — powered by our Notion research database.</p>
+                <h1>Neuroscience News<br>&amp; Research Hub</h1>
+                <p>Peer-reviewed findings, clinical updates, and research insights in auditory neuroscience.</p>
             </div>
         </section>
 
-        <section class="news-section">
+        <!-- NeuroNest Research Database (from Notion) -->
+        <section class="section-block">
             <div class="container">
-                <span class="news-heading">Notion Research Database</span>
-                <h2 class="news-title">Deep Investigations</h2>
+                <span class="section-label">NeuroNest Research Database</span>
+                <h2 class="section-title">Research Insights</h2>
 
                 <div class="filters">
-                    ${filterOptionsHtml}
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    ${categoryFilters}
+                    ${confidenceFilters}
                 </div>
 
-                <div class="research-grid">
+                <div class="research-grid" id="notion-grid">
 ${cardsHtml}
+                </div>
+            </div>
+        </section>
+
+        <!-- Neuroscience News — curated external sources -->
+        <section class="section-block">
+            <div class="container">
+                <span class="section-label">Latest Research</span>
+                <h2 class="section-title">Neuroscience News</h2>
+                <div class="research-grid">
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11789498/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Brainwave Entrainment for Health: An Integrative Review</h3>
+                        <p class="research-card__desc">A comprehensive review of brainwave entrainment as a noninvasive neuromodulation technique, covering improvements in pain management, sleep disturbances, mood disorders, and cognitive function.</p>
+                        <div class="research-card__meta"><span>2025 · Integrative Review</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://mental.jmir.org/2025/1/e63498" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">JMIR Mental Health</span>
+                        <h3 class="research-card__title">Auditory Beat Stimulation for Anxiety Reduction</h3>
+                        <p class="research-card__desc">Alpha-range (10 Hz) auditory beat stimulation demonstrates measurable anxiolytic effects. The study identifies 24-minute sessions with music-combined ABS as the optimal protocol.</p>
+                        <div class="research-card__meta"><span>2025 · PLOS Mental Health</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/38566357/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PubMed · NIH.gov</span>
+                        <h3 class="research-card__title">A Review of Binaural Beats and the Brain</h3>
+                        <p class="research-card__desc">Examines ASSR responses to binaural beats originating in the auditory cortex during gamma-frequency stimulation. Demonstrates cortical activity synchronization via auditory stimuli.</p>
+                        <div class="research-card__meta"><span>2024 · Peer-Reviewed</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://www.jmir.org/2025/1/e57457" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">JMIR · Peer-Reviewed</span>
+                        <h3 class="research-card__title">Sound Interventions and Physiological Stress Reduction</h3>
+                        <p class="research-card__desc">Systematic review showing music, natural sounds, and speech can lower cortisol, improve heart rate variability, and decrease blood pressure in stressed adults.</p>
+                        <div class="research-card__meta"><span>2025 · Systematic Review</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://www.neurosciencenews.com/sound-alpha-brainwaves-sleep-27808/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">Neuroscience News</span>
+                        <h3 class="research-card__title">Sound Can Stimulate Alpha Brain Waves to Improve Sleep</h3>
+                        <p class="research-card__desc">Alpha Closed-Loop Auditory Stimulation (aCLAS) can manipulate alpha rhythms, offering a non-invasive approach for sleep disturbances including dementia-related insomnia.</p>
+                        <div class="research-card__meta"><span>2024 · Neuroscience</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11612527/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">40 Hz Auditory Stimulation — Alzheimer's &amp; Cognition</h3>
+                        <p class="research-card__desc">40 Hz gamma auditory stimulation reduces amyloid-beta levels and improves cognitive performance. Human trials demonstrate enhanced memory and decreased amyloid plaques.</p>
+                        <div class="research-card__meta"><span>2024 · Clinical Research</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9245289/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Auditory Stimulation and Sleep Enhancement</h3>
+                        <p class="research-card__desc">Closed-loop auditory stimulation during slow-wave sleep strengthens memory consolidation. Demonstrates phase-locked pink noise pulses enhance slow oscillation amplitude in healthy adults.</p>
+                        <div class="research-card__meta"><span>2022 · Sleep Research</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10246882/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Gamma Sensory Stimulation in Dementia Patients</h3>
+                        <p class="research-card__desc">Non-invasive 40 Hz sensory stimulation shows safety and feasibility in dementia patients. Six-month daily exposure demonstrates improved sleep-wake patterns and daily activity function.</p>
+                        <div class="research-card__meta"><span>2023 · Alzheimer's &amp; Dementia</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/35219899/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PubMed · NIH.gov</span>
+                        <h3 class="research-card__title">Music Therapy for Depression: A Meta-Analysis</h3>
+                        <p class="research-card__desc">Meta-analysis of RCTs demonstrating music therapy significantly reduces depressive symptoms. Active music-making and receptive listening both show moderate-to-large effect sizes.</p>
+                        <div class="research-card__meta"><span>2022 · Meta-Analysis</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8395478/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Brown Noise and Attention in ADHD</h3>
+                        <p class="research-card__desc">Low-frequency noise exposure improves sustained attention and cognitive performance in individuals with attention deficits. Demonstrates stochastic resonance effects on suboptimal neural arousal.</p>
+                        <div class="research-card__meta"><span>2021 · Cognitive Science</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7382600/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">Frontiers in Neuroscience</span>
+                        <h3 class="research-card__title">Isochronic Tones and Cortical Entrainment</h3>
+                        <p class="research-card__desc">Isochronic auditory stimulation drives cortical frequency-following responses more reliably than binaural beats. EEG-measured entrainment strongest at gamma (40 Hz) frequencies.</p>
+                        <div class="research-card__meta"><span>2020 · Neuroscience</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pubmed.ncbi.nlm.nih.gov/36208890/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PubMed · NIH.gov</span>
+                        <h3 class="research-card__title">Nature Sounds Reduce Stress and Anxiety</h3>
+                        <p class="research-card__desc">Natural soundscapes significantly reduce cortisol levels and self-reported anxiety scores. Running water and birdsong show the strongest parasympathetic nervous system activation.</p>
+                        <div class="research-card__meta"><span>2022 · Environmental Psychology</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10025005/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">White Noise Improves Sleep Quality in Hospital ICU</h3>
+                        <p class="research-card__desc">White noise machines improve sleep quality scores in ICU patients. Reduces nighttime awakenings and perceived noise disruption compared to controls in randomised trial.</p>
+                        <div class="research-card__meta"><span>2023 · Clinical Sleep Medicine</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9516372/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Theta-Range Binaural Beats Enhance Creative Thinking</h3>
+                        <p class="research-card__desc">Theta-frequency binaural beats (6 Hz) enhance divergent thinking on creative tasks. EEG confirms increased frontal theta power correlated with improved ideation fluency.</p>
+                        <div class="research-card__meta"><span>2022 · Creativity Research</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10574508/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">PMC · NIH.gov</span>
+                        <h3 class="research-card__title">Heart Rate Variability Response to Sound Frequencies</h3>
+                        <p class="research-card__desc">Specific auditory frequencies modulate autonomic nervous system function. Low-frequency tones increase vagal tone and HRV, supporting parasympathetic recovery protocols.</p>
+                        <div class="research-card__meta"><span>2023 · Psychophysiology</span><span>Read →</span></div>
+                    </a>
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9321296/" target="_blank" rel="noopener" class="research-card">
+                        <span class="research-card__source">Frontiers in Psychology</span>
+                        <h3 class="research-card__title">Neuroplasticity and Repeated Auditory Stimulation</h3>
+                        <p class="research-card__desc">Repeated exposure to structured auditory stimuli drives measurable cortical reorganisation. Long-term sound-based training enhances auditory processing speed and cross-frequency coupling.</p>
+                        <div class="research-card__meta"><span>2022 · Neuroplasticity</span><span>Read →</span></div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -383,7 +517,7 @@ ${cardsHtml}
     <script>
         (function () {
             var btns = document.querySelectorAll('.filter-btn');
-            var cards = document.querySelectorAll('.research-card');
+            var cards = document.querySelectorAll('#notion-grid .research-card');
             btns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     btns.forEach(function (b) { b.classList.remove('active'); });
@@ -440,10 +574,12 @@ function paperPageHtml(paper, bodyHtml) {
     </header>
     <article class="article">
         <div class="meta-bar">
+            <span class="confidence-badge" style="color:${categoryColor(paper.category)};background:${categoryBg(paper.category)};">${escapeHtml(paper.category)}</span>
             ${paper.series.map((s) => `<span class="meta-tag">${escapeHtml(s)}</span>`).join("")}
             <span class="confidence-badge" style="color:${confidenceColor(paper.confidence)};background:${confidenceBg(paper.confidence)};">${escapeHtml(paper.confidence || "—")}</span>
             ${paper.studyYear ? `<span class="meta-tag">${escapeHtml(paper.studyYear)}</span>` : ""}
         </div>
+        <span style="display:block;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--text-grey);margin-bottom:12px;">Research Insight</span>
         <h1>${escapeHtml(paper.title)}</h1>
         <p class="authors">${escapeHtml(paper.authors)}</p>
         <div class="body-content">
@@ -481,6 +617,7 @@ async function main() {
     const slug = slugify(title) || page.id;
 
     const paper = { title, authors, contentAngle, confidence, dateAdded, series, status, studyYear, slug, id: page.id };
+    paper.category = inferCategory(paper);
     papers.push(paper);
 
     // Fetch page body blocks
