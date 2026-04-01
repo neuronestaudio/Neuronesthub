@@ -1,7 +1,12 @@
-require("dotenv").config({ path: require("path").join(__dirname, "..", ".env") });
+require("dotenv").config({ path: require("path").join(__dirname, "..", ".env"), override: false });
 const { Client } = require("@notionhq/client");
 const fs = require("fs");
 const path = require("path");
+
+if (!process.env.NOTION_API_KEY) {
+  console.error("Missing NOTION_API_KEY environment variable.");
+  process.exit(1);
+}
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const DATABASE_ID = "455210ca3a1e4ee38a436668fbef6a11";
