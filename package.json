@@ -1,4 +1,9 @@
 {
+  "name": "neuronesthub",
+  "private": true,
+  "scripts": {
+    "build-research": "node scripts/build-research.js"
+  },
   "dependencies": {
     "@notionhq/client": "^5.16.0"
   }
