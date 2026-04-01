@@ -617,24 +617,29 @@
                 <h2 class="community-title">STAY CONNECTED | JOIN THE COMMUNITY</h2>
                 <p class="community-subtitle">Our Research team is collaborating with institutional sources across the world to stay up to date with the science and provide access to the NeuroNest community. Meanwhile our Sound Engineers are working closely with R&D and AI Development to modulate precise auditory stimulation for the most effective soundscapes to help you improve your productivity. Follow along to stay up to date the latest research and stay up to date the latest releases.</p>
                 
-                <form class="join-form">
+                <form class="join-form" action="https://formsubmit.co/neuronestaudio@gmail.com" method="POST">
+                    <input type="hidden" name="_cc" value="dion@neuronesthub.org">
+                    <input type="hidden" name="_subject" value="New NeuroNest Community Signup">
+                    <input type="hidden" name="_captcha" value="true">
+                    <input type="hidden" name="_next" value="https://neuronesthub.org">
+                    <input type="hidden" name="_template" value="table">
                     <div class="form-row">
                         <div class="form-group">
                             <label>First name</label>
-                            <input type="text" required>
+                            <input type="text" name="first_name" required>
                         </div>
                         <div class="form-group">
                             <label>Last name</label>
-                            <input type="text" required>
+                            <input type="text" name="last_name" required>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 30px;">
                         <label>Email</label>
-                        <input type="email" required>
+                        <input type="email" name="email" required>
                     </div>
                     <div class="form-group" style="margin-bottom: 30px;">
                         <label>What are you looking to work on, using NeuroNest?</label>
-                        <textarea rows="4"></textarea>
+                        <textarea rows="4" name="message"></textarea>
                     </div>
                     <button type="submit" class="submit-btn">Submit</button>
                 </form>
