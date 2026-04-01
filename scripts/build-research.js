@@ -365,7 +365,13 @@ function listingPageHtml(papers) {
         .research-card__title { font-size: 20px; line-height: 1.3; margin-bottom: 6px; }
         .research-card__desc { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 14px; margin-bottom: 0; }
         .research-card__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; font-size: 12px; color: var(--text-grey); text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0; white-space: nowrap; }
-        @media (max-width: 900px) { .research-card { flex-direction: column; align-items: flex-start; } .research-card__meta { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; } }
+        .news-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+        .news-grid .research-card { flex-direction: column; align-items: stretch; padding: 24px; border-radius: 16px; gap: 0; }
+        .news-grid .research-card__source { margin-bottom: 10px; }
+        .news-grid .research-card__title { font-size: 22px; margin-bottom: 12px; }
+        .news-grid .research-card__desc { font-size: 15px; margin-bottom: 16px; flex: 1; }
+        .news-grid .research-card__meta { flex-direction: row; align-items: center; justify-content: space-between; white-space: normal; }
+        @media (max-width: 900px) { .research-card { flex-direction: column; align-items: flex-start; } .research-card__meta { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; } .news-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -416,133 +422,101 @@ ${cardsHtml}
             <div class="container">
                 <span class="section-label">Latest Research</span>
                 <h2 class="section-title">Neuroscience News</h2>
-                <div class="research-grid">
+                <div class="news-grid">
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11789498/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Brainwave Entrainment for Health: An Integrative Review</h3>
-                            <p class="research-card__desc">A comprehensive review of brainwave entrainment as a noninvasive neuromodulation technique, covering improvements in pain management, sleep disturbances, mood disorders, and cognitive function.</p>
-                        </div>
+                        <h3 class="research-card__title">Brainwave Entrainment for Health: An Integrative Review</h3>
+                        <p class="research-card__desc">A comprehensive review of brainwave entrainment as a noninvasive neuromodulation technique, covering improvements in pain management, sleep disturbances, mood disorders, and cognitive function.</p>
                         <div class="research-card__meta"><span>2025 · Integrative Review</span><span>Read →</span></div>
                     </a>
                     <a href="https://mental.jmir.org/2025/1/e63498" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">JMIR Mental Health</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Auditory Beat Stimulation for Anxiety Reduction</h3>
-                            <p class="research-card__desc">Alpha-range (10 Hz) auditory beat stimulation demonstrates measurable anxiolytic effects. The study identifies 24-minute sessions with music-combined ABS as the optimal protocol.</p>
-                        </div>
+                        <h3 class="research-card__title">Auditory Beat Stimulation for Anxiety Reduction</h3>
+                        <p class="research-card__desc">Alpha-range (10 Hz) auditory beat stimulation demonstrates measurable anxiolytic effects. The study identifies 24-minute sessions with music-combined ABS as the optimal protocol.</p>
                         <div class="research-card__meta"><span>2025 · PLOS Mental Health</span><span>Read →</span></div>
                     </a>
                     <a href="https://pubmed.ncbi.nlm.nih.gov/38566357/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PubMed · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">A Review of Binaural Beats and the Brain</h3>
-                            <p class="research-card__desc">Examines ASSR responses to binaural beats originating in the auditory cortex during gamma-frequency stimulation. Demonstrates cortical activity synchronization via auditory stimuli.</p>
-                        </div>
+                        <h3 class="research-card__title">A Review of Binaural Beats and the Brain</h3>
+                        <p class="research-card__desc">Examines ASSR responses to binaural beats originating in the auditory cortex during gamma-frequency stimulation. Demonstrates cortical activity synchronization via auditory stimuli.</p>
                         <div class="research-card__meta"><span>2024 · Peer-Reviewed</span><span>Read →</span></div>
                     </a>
                     <a href="https://www.jmir.org/2025/1/e57457" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">JMIR · Peer-Reviewed</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Sound Interventions and Physiological Stress Reduction</h3>
-                            <p class="research-card__desc">Systematic review showing music, natural sounds, and speech can lower cortisol, improve heart rate variability, and decrease blood pressure in stressed adults.</p>
-                        </div>
+                        <h3 class="research-card__title">Sound Interventions and Physiological Stress Reduction</h3>
+                        <p class="research-card__desc">Systematic review showing music, natural sounds, and speech can lower cortisol, improve heart rate variability, and decrease blood pressure in stressed adults.</p>
                         <div class="research-card__meta"><span>2025 · Systematic Review</span><span>Read →</span></div>
                     </a>
                     <a href="https://www.neurosciencenews.com/sound-alpha-brainwaves-sleep-27808/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">Neuroscience News</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Sound Can Stimulate Alpha Brain Waves to Improve Sleep</h3>
-                            <p class="research-card__desc">Alpha Closed-Loop Auditory Stimulation (aCLAS) can manipulate alpha rhythms, offering a non-invasive approach for sleep disturbances including dementia-related insomnia.</p>
-                        </div>
+                        <h3 class="research-card__title">Sound Can Stimulate Alpha Brain Waves to Improve Sleep</h3>
+                        <p class="research-card__desc">Alpha Closed-Loop Auditory Stimulation (aCLAS) can manipulate alpha rhythms, offering a non-invasive approach for sleep disturbances including dementia-related insomnia.</p>
                         <div class="research-card__meta"><span>2024 · Neuroscience</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11612527/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">40 Hz Auditory Stimulation — Alzheimer's &amp; Cognition</h3>
-                            <p class="research-card__desc">40 Hz gamma auditory stimulation reduces amyloid-beta levels and improves cognitive performance. Human trials demonstrate enhanced memory and decreased amyloid plaques.</p>
-                        </div>
+                        <h3 class="research-card__title">40 Hz Auditory Stimulation — Alzheimer's &amp; Cognition</h3>
+                        <p class="research-card__desc">40 Hz gamma auditory stimulation reduces amyloid-beta levels and improves cognitive performance. Human trials demonstrate enhanced memory and decreased amyloid plaques.</p>
                         <div class="research-card__meta"><span>2024 · Clinical Research</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9245289/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Auditory Stimulation and Sleep Enhancement</h3>
-                            <p class="research-card__desc">Closed-loop auditory stimulation during slow-wave sleep strengthens memory consolidation. Demonstrates phase-locked pink noise pulses enhance slow oscillation amplitude in healthy adults.</p>
-                        </div>
+                        <h3 class="research-card__title">Auditory Stimulation and Sleep Enhancement</h3>
+                        <p class="research-card__desc">Closed-loop auditory stimulation during slow-wave sleep strengthens memory consolidation. Demonstrates phase-locked pink noise pulses enhance slow oscillation amplitude in healthy adults.</p>
                         <div class="research-card__meta"><span>2022 · Sleep Research</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10246882/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Gamma Sensory Stimulation in Dementia Patients</h3>
-                            <p class="research-card__desc">Non-invasive 40 Hz sensory stimulation shows safety and feasibility in dementia patients. Six-month daily exposure demonstrates improved sleep-wake patterns and daily activity function.</p>
-                        </div>
+                        <h3 class="research-card__title">Gamma Sensory Stimulation in Dementia Patients</h3>
+                        <p class="research-card__desc">Non-invasive 40 Hz sensory stimulation shows safety and feasibility in dementia patients. Six-month daily exposure demonstrates improved sleep-wake patterns and daily activity function.</p>
                         <div class="research-card__meta"><span>2023 · Alzheimer's &amp; Dementia</span><span>Read →</span></div>
                     </a>
                     <a href="https://pubmed.ncbi.nlm.nih.gov/35219899/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PubMed · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Music Therapy for Depression: A Meta-Analysis</h3>
-                            <p class="research-card__desc">Meta-analysis of RCTs demonstrating music therapy significantly reduces depressive symptoms. Active music-making and receptive listening both show moderate-to-large effect sizes.</p>
-                        </div>
+                        <h3 class="research-card__title">Music Therapy for Depression: A Meta-Analysis</h3>
+                        <p class="research-card__desc">Meta-analysis of RCTs demonstrating music therapy significantly reduces depressive symptoms. Active music-making and receptive listening both show moderate-to-large effect sizes.</p>
                         <div class="research-card__meta"><span>2022 · Meta-Analysis</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8395478/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Brown Noise and Attention in ADHD</h3>
-                            <p class="research-card__desc">Low-frequency noise exposure improves sustained attention and cognitive performance in individuals with attention deficits. Demonstrates stochastic resonance effects on suboptimal neural arousal.</p>
-                        </div>
+                        <h3 class="research-card__title">Brown Noise and Attention in ADHD</h3>
+                        <p class="research-card__desc">Low-frequency noise exposure improves sustained attention and cognitive performance in individuals with attention deficits. Demonstrates stochastic resonance effects on suboptimal neural arousal.</p>
                         <div class="research-card__meta"><span>2021 · Cognitive Science</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7382600/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">Frontiers in Neuroscience</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Isochronic Tones and Cortical Entrainment</h3>
-                            <p class="research-card__desc">Isochronic auditory stimulation drives cortical frequency-following responses more reliably than binaural beats. EEG-measured entrainment strongest at gamma (40 Hz) frequencies.</p>
-                        </div>
+                        <h3 class="research-card__title">Isochronic Tones and Cortical Entrainment</h3>
+                        <p class="research-card__desc">Isochronic auditory stimulation drives cortical frequency-following responses more reliably than binaural beats. EEG-measured entrainment strongest at gamma (40 Hz) frequencies.</p>
                         <div class="research-card__meta"><span>2020 · Neuroscience</span><span>Read →</span></div>
                     </a>
                     <a href="https://pubmed.ncbi.nlm.nih.gov/36208890/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PubMed · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Nature Sounds Reduce Stress and Anxiety</h3>
-                            <p class="research-card__desc">Natural soundscapes significantly reduce cortisol levels and self-reported anxiety scores. Running water and birdsong show the strongest parasympathetic nervous system activation.</p>
-                        </div>
+                        <h3 class="research-card__title">Nature Sounds Reduce Stress and Anxiety</h3>
+                        <p class="research-card__desc">Natural soundscapes significantly reduce cortisol levels and self-reported anxiety scores. Running water and birdsong show the strongest parasympathetic nervous system activation.</p>
                         <div class="research-card__meta"><span>2022 · Environmental Psychology</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10025005/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">White Noise Improves Sleep Quality in Hospital ICU</h3>
-                            <p class="research-card__desc">White noise machines improve sleep quality scores in ICU patients. Reduces nighttime awakenings and perceived noise disruption compared to controls in randomised trial.</p>
-                        </div>
+                        <h3 class="research-card__title">White Noise Improves Sleep Quality in Hospital ICU</h3>
+                        <p class="research-card__desc">White noise machines improve sleep quality scores in ICU patients. Reduces nighttime awakenings and perceived noise disruption compared to controls in randomised trial.</p>
                         <div class="research-card__meta"><span>2023 · Clinical Sleep Medicine</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9516372/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Theta-Range Binaural Beats Enhance Creative Thinking</h3>
-                            <p class="research-card__desc">Theta-frequency binaural beats (6 Hz) enhance divergent thinking on creative tasks. EEG confirms increased frontal theta power correlated with improved ideation fluency.</p>
-                        </div>
+                        <h3 class="research-card__title">Theta-Range Binaural Beats Enhance Creative Thinking</h3>
+                        <p class="research-card__desc">Theta-frequency binaural beats (6 Hz) enhance divergent thinking on creative tasks. EEG confirms increased frontal theta power correlated with improved ideation fluency.</p>
                         <div class="research-card__meta"><span>2022 · Creativity Research</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10574508/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">PMC · NIH.gov</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Heart Rate Variability Response to Sound Frequencies</h3>
-                            <p class="research-card__desc">Specific auditory frequencies modulate autonomic nervous system function. Low-frequency tones increase vagal tone and HRV, supporting parasympathetic recovery protocols.</p>
-                        </div>
+                        <h3 class="research-card__title">Heart Rate Variability Response to Sound Frequencies</h3>
+                        <p class="research-card__desc">Specific auditory frequencies modulate autonomic nervous system function. Low-frequency tones increase vagal tone and HRV, supporting parasympathetic recovery protocols.</p>
                         <div class="research-card__meta"><span>2023 · Psychophysiology</span><span>Read →</span></div>
                     </a>
                     <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9321296/" target="_blank" rel="noopener" class="research-card">
                         <span class="research-card__source">Frontiers in Psychology</span>
-                        <div class="research-card__body">
-                            <h3 class="research-card__title">Neuroplasticity and Repeated Auditory Stimulation</h3>
-                            <p class="research-card__desc">Repeated exposure to structured auditory stimuli drives measurable cortical reorganisation. Long-term sound-based training enhances auditory processing speed and cross-frequency coupling.</p>
-                        </div>
+                        <h3 class="research-card__title">Neuroplasticity and Repeated Auditory Stimulation</h3>
+                        <p class="research-card__desc">Repeated exposure to structured auditory stimuli drives measurable cortical reorganisation. Long-term sound-based training enhances auditory processing speed and cross-frequency coupling.</p>
                         <div class="research-card__meta"><span>2022 · Neuroplasticity</span><span>Read →</span></div>
                     </a>
                 </div>
