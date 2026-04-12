@@ -16,6 +16,7 @@
             --glass-border: rgba(255, 255, 255, 0.12);
             --card-bg: rgba(255, 255, 255, 0.03);
         }
+<<<<<<< HEAD
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-white); line-height: 1.6; }
         a { color: inherit; }
@@ -57,6 +58,637 @@
         .news-grid .research-card__desc { font-size: 15px; margin-bottom: 16px; flex: 1; }
         .news-grid .research-card__meta { flex-direction: row; align-items: center; justify-content: space-between; white-space: normal; }
         @media (max-width: 900px) { .research-card { flex-direction: column; align-items: flex-start; } .research-card__meta { flex-direction: row; align-items: center; width: 100%; justify-content: space-between; } .news-grid { grid-template-columns: 1fr; } }
+=======
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent);
+        }
+
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.85;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 64vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.6);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 7vw, 72px);
+            line-height: 1.05;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .hero p {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-grey);
+            font-size: 16px;
+        }
+
+        .section-block {
+            padding: 80px 0;
+        }
+
+        .section-block+.section-block {
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .section-label {
+            margin-bottom: 18px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-grey);
+        }
+
+        .section-title {
+            max-width: 760px;
+            margin-bottom: 24px;
+            font-size: clamp(28px, 4.5vw, 52px);
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-grey);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: var(--text-white);
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Select Mode Controls */
+        .synth-ctrl-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-synth-toggle {
+            background: rgba(142, 163, 255, 0.1);
+            border: 1px solid rgba(142, 163, 255, 0.3);
+            color: #8ea3ff;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .btn-synth-toggle.is-active {
+            background: #8ea3ff;
+            color: #000;
+        }
+
+        .research-card.selectable {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .research-card.is-selected {
+            border-color: #8ea3ff;
+            background: rgba(142, 163, 255, 0.05);
+            box-shadow: 0 0 20px rgba(142, 163, 255, 0.1);
+        }
+
+        .card-checkbox {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .is-selecting .research-card {
+            padding-left: 90px;
+            cursor: copy !important;
+        }
+
+        .is-selecting .card-checkbox {
+            display: flex;
+        }
+
+        .is-selecting .articulate-btn {
+            display: none !important;
+        }
+
+        .research-card.is-selected .card-checkbox {
+            background: #8ea3ff;
+            border-color: #8ea3ff;
+        }
+
+        .research-card.is-selected .card-checkbox::after {
+            content: "✓";
+            color: #000;
+            font-size: 28px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Action Bar */
+        .synth-action-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1500;
+            transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .synth-action-bar.visible {
+            bottom: 30px;
+        }
+
+        .selection-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .btn-generate-group {
+            background: #8ea3ff;
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-generate-group:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-cancel-selection {
+            background: transparent;
+            border: none;
+            color: #666;
+            font-size: 11px;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0 15px;
+        }
+
+        .sticky-subnav {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 14px 0;
+        }
+
+        .sticky-subnav .container {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .subnav-link {
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            color: var(--text-grey);
+            transition: color 0.2s ease;
+        }
+
+        .subnav-link:hover,
+        .subnav-link.active {
+            color: var(--text-white);
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .research-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            padding: 20px 28px;
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            background: var(--card-bg);
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            gap: 24px;
+            position: relative;
+            /* CRITICAL for checkbox positioning */
+        }
+
+        .research-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .research-card.hidden {
+            display: none;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+
+        .category-badge {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .research-card__source {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #8ea3ff;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .research-card__body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .research-card__title {
+            font-size: 20px;
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .research-card__desc {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-grey);
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .research-card__meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .news-grid .research-card {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 24px;
+            border-radius: 16px;
+            gap: 0;
+        }
+
+        .news-grid .research-card__source {
+            margin-bottom: 10px;
+        }
+
+        .news-grid .research-card__title {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .news-grid .research-card__desc {
+            font-size: 15px;
+            margin-bottom: 16px;
+            flex: 1;
+        }
+
+        .news-grid .research-card__meta {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            white-space: normal;
+        }
+
+        @media (max-width: 900px) {
+            .research-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .research-card__meta {
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Neural Articulation Terminal */
+        .neural-terminal {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 2000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .neural-terminal.is-active {
+            display: block;
+            opacity: 1;
+        }
+
+        .terminal-header {
+            padding: 30px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-title {
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 14px;
+            color: #8ea3ff;
+        }
+
+        .close-terminal {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .terminal-content {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 40px;
+        }
+
+        .processing-grid {
+            margin-bottom: 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .process-bar {
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: #8ea3ff;
+            box-shadow: 0 0 10px #8ea3ff;
+            transition: width 0.5s ease;
+        }
+
+        .process-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .articulation-section {
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+        }
+
+        .articulation-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .articulation-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-left: 2px solid #8ea3ff;
+            padding-left: 20px;
+        }
+
+        .articulation-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8ea3ff;
+        }
+
+        .articulation-body {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        .articulation-body b {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .scanner-beam {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #8ea3ff, transparent);
+            box-shadow: 0 0 20px #8ea3ff;
+            z-index: 2005;
+            pointer-events: none;
+            display: none;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+
+        .articulate-btn {
+            background: rgba(142, 163, 255, 0.1);
+            border: 1px solid rgba(142, 163, 255, 0.3);
+            color: #8ea3ff;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .articulate-btn:hover {
+            background: #8ea3ff;
+            color: #000;
+        }
+>>>>>>> fe104b4 (Bulletproof Research Synthesis Flow: Implemented Href-neutralization during Select Mode to prevent navigation conflicts, fixed checkbox positioning, and enlarged selection indicators for superior ergonomics.)
     </style>
 </head>
 <body>
@@ -395,6 +1027,224 @@
                     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             });
+<<<<<<< HEAD
+=======
+
+            // Auto-inject Articulate Buttons and Checkboxes
+            document.querySelectorAll('.research-card').forEach((card, idx) => {
+                const meta = card.querySelector('.research-card__meta');
+                if (meta && !meta.querySelector('.articulate-btn')) {
+                    const btn = document.createElement('button');
+                    btn.className = 'articulate-btn';
+                    btn.innerText = 'Articulate';
+                    btn.onclick = (e) => articulateResearch(e, [idx]);
+                    meta.insertBefore(btn, meta.firstChild);
+                }
+
+                // Checkbox for selection
+                if (!card.querySelector('.card-checkbox')) {
+                    const cb = document.createElement('div');
+                    cb.className = 'card-checkbox';
+                    card.appendChild(cb);
+                }
+
+                card.addEventListener('click', (e) => {
+                    if (document.body.classList.contains('is-selecting')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+
+                        // Toggle logic
+                        const isSelected = card.classList.toggle('is-selected');
+                        if (isSelected) selectedIndices.add(idx);
+                        else selectedIndices.delete(idx);
+                        updateActionBar();
+
+                        return false;
+                    }
+                }, true); // Use capture phase to intercept before navigation
+
+                // Additional safeguard to prevent nested anchor clicks
+                card.querySelectorAll('a, button').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        if (document.body.classList.contains('is-selecting')) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        }
+                    });
+                });
+            });
+
+            let selectedIndices = new Set();
+
+            window.toggleSelectMode = function () {
+                const isSelecting = document.body.classList.toggle('is-selecting');
+                const btn = document.getElementById('toggleSelectMode');
+                const bar = document.getElementById('synthActionBar');
+                const cards = document.querySelectorAll('.research-card');
+
+                if (isSelecting) {
+                    btn.innerText = "Exit Select Mode";
+                    btn.classList.add('is-active');
+                    selectedIndices.clear();
+                    updateActionBar();
+
+                    // Neutralize Hrefs
+                    cards.forEach(card => {
+                        const href = card.getAttribute('href');
+                        if (href && href !== 'javascript:void(0)') {
+                            card.setAttribute('data-prev-href', href);
+                            card.setAttribute('href', 'javascript:void(0)');
+                        }
+                    });
+                } else {
+                    btn.innerText = "Synthesize Research Mode";
+                    btn.classList.remove('is-active');
+                    bar.classList.remove('visible');
+                    document.querySelectorAll('.research-card.is-selected').forEach(c => c.classList.remove('is-selected'));
+
+                    // Restore Hrefs
+                    cards.forEach(card => {
+                        const prevHref = card.getAttribute('data-prev-href');
+                        if (prevHref) {
+                            card.setAttribute('href', prevHref);
+                            card.removeAttribute('data-prev-href');
+                        }
+                    });
+                }
+            };
+
+            function toggleCardSelection(card, idx) {
+                const isSelected = card.classList.toggle('is-selected');
+                if (isSelected) selectedIndices.add(idx);
+                else selectedIndices.delete(idx);
+                updateActionBar();
+            }
+
+            function updateActionBar() {
+                const bar = document.getElementById('synthActionBar');
+                const count = document.getElementById('selectedCount');
+                count.innerText = selectedIndices.size;
+
+                if (selectedIndices.size > 0) bar.classList.add('visible');
+                else bar.classList.remove('visible');
+            }
+
+            window.generateGroupSynergy = function () {
+                if (selectedIndices.size === 0) return;
+                articulateResearch(null, Array.from(selectedIndices));
+                toggleSelectMode(); // Exit selection mode
+            };
+
+            // Complex Articulation Logic
+            const researchData = [
+                // ... same data ...
+                {
+                    title: "Autonomic Cardiovascular Rhythms",
+                    synergy: "Rhythmic reciting of prayer or mantras induces a specific frequency of 6 cycles per minute, which perfectly aligns with biological cardiovascular rhythms, enhancing heart rate variability (HRV).",
+                    protocol: "<b>Practice:</b> Engage in 10 minutes of rhythmic vocalization at 6 breath-cycles per minute (approx. 5s inhale, 5s exhale) to optimize autonomic balance.",
+                    hypothesis: "Synchronized oscillating auditory-respiratory loops may act as a 'reset' for the vagal tone, potentially mitigating chronic cortisol elevation in high-stress populations."
+                },
+                {
+                    title: "Neurohemodynamic 'OM' Chanting",
+                    synergy: "Vocal chanting of 'OM' produces a unique vibration that stimulates the vagus nerve and deactivates the amygdala and limbic system, as evidenced by fMRI data.",
+                    protocol: "<b>Exposure:</b> 15 minutes of low-frequency resonant humming during morning recovery sessions to stabilize neural hemodynamics.",
+                    hypothesis: "Targeted sub-vocal resonant frequencies could theoretically be mapped to individual neural signatures to bypass cognitive resistance and directly modulate the parasympathetic nervous system."
+                }
+                // ... Fallback logic handles others
+            ];
+
+            window.articulateResearch = function (e, indices) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                const cards = document.querySelectorAll('.research-card');
+                let titles = [];
+                let synergies = [];
+                let protocols = [];
+                let hypotheses = [];
+
+                indices.forEach(index => {
+                    const card = cards[index];
+                    const titleStr = card.querySelector('.research-card__title').innerText;
+
+                    const data = researchData[index] || {
+                        title: titleStr,
+                        synergy: `This research highlights the intersection of ${titleStr.toLowerCase()} and neuro-auditory synchronization.`,
+                        protocol: `<b>Implementation:</b> Integrate auditory pulses matched to these findings into daily focus blocks.`,
+                        hypothesis: `Persistent exposure to these auditory architectures may drive significant cross-modal neuroplasticity.`
+                    };
+
+                    titles.push(data.title);
+                    synergies.push(data.synergy);
+                    protocols.push(data.protocol);
+                    hypotheses.push(data.hypothesis);
+                });
+
+                const modal = document.getElementById('neuralTerminal');
+                const scanner = document.getElementById('scannerBeam');
+                const status = document.getElementById('terminalStatus');
+
+                document.getElementById('articulationTitle').innerText = indices.length > 1 ? "Integrated Synergy Report" : titles[0];
+                modal.classList.add('is-active');
+                scanner.style.display = 'block';
+                scanner.style.animation = 'scan 2s linear infinite';
+                status.innerText = "Neural Processing: Scanning Data Pool...";
+
+                // Combined Text
+                const finalSynergy = indices.length > 1 ? `Synthesis of ${indices.length} research sources: ` + synergies.join(" ") : synergies[0];
+                const finalProtocol = indices.length > 1 ? `Combined Protocol: ` + protocols.join(" ") : protocols[0];
+                const finalHypothesis = indices.length > 1 ? `Aggregated Hypothesis: ` + hypotheses.join(" ") : hypotheses[0];
+
+                // Animation Sequence
+                setTimeout(() => {
+                    document.getElementById('bar1').style.width = '100%';
+                    status.innerText = "Neural Processing: Synthesizing Synergy...";
+                    showSection('sectionSynergy', 'textSynergy', finalSynergy);
+                }, 2000);
+
+                setTimeout(() => {
+                    document.getElementById('bar2').style.width = '100%';
+                    status.innerText = "Neural Processing: Mapping Protocols...";
+                    showSection('sectionProtocol', 'textProtocol', finalProtocol);
+                }, 4500);
+
+                setTimeout(() => {
+                    document.getElementById('bar3').style.width = '100%';
+                    status.innerText = "Neural Processing: Extrapolating Logic...";
+                    showSection('sectionHypothesis', 'textHypothesis', finalHypothesis);
+                    scanner.style.display = 'none';
+                    status.innerText = "Neural Processing: Articulation Complete";
+                }, 7000);
+            };
+
+            function showSection(id, textId, content) {
+                const section = document.getElementById(id);
+                const textContainer = document.getElementById(textId);
+                section.classList.add('visible');
+
+                // Typewriter
+                let i = 0;
+                textContainer.innerHTML = "";
+                const type = () => {
+                    if (i < content.length) {
+                        textContainer.innerHTML = content.substring(0, i + 1);
+                        i++;
+                        setTimeout(type, 15);
+                    }
+                };
+                type();
+            }
+
+            window.closeTerminal = function () {
+                const modal = document.getElementById('neuralTerminal');
+                modal.classList.remove('is-active');
+                document.querySelectorAll('.process-fill').forEach(b => b.style.width = '0%');
+                document.querySelectorAll('.articulation-section').forEach(s => s.classList.remove('visible'));
+            };
+>>>>>>> fe104b4 (Bulletproof Research Synthesis Flow: Implemented Href-neutralization during Select Mode to prevent navigation conflicts, fixed checkbox positioning, and enlarged selection indicators for superior ergonomics.)
         })();
     </script>
 </body>
