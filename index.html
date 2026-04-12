@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroNest — Soundscapes for Focus, Sleep & Healing</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
@@ -78,7 +81,7 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
         }
 
         .header-left {
@@ -87,6 +90,15 @@
             letter-spacing: 2px;
             color: var(--text-grey);
             max-width: 200px;
+        }
+
+        #sound-hub {
+            background: #000;
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 20px 20px;
         }
 
         .menu-btn {
@@ -147,7 +159,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+                transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .menu-wrap.is-open .menu-dropdown {
@@ -157,8 +169,15 @@
         }
 
         @keyframes menuItemIn {
-            from { opacity: 0; transform: translateX(10px); }
-            to   { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .menu-dropdown a {
@@ -183,11 +202,25 @@
             animation: menuItemIn 0.22s ease forwards;
         }
 
-        .menu-wrap.is-open .menu-dropdown a:nth-child(1) { animation-delay: 0.07s; }
-        .menu-wrap.is-open .menu-dropdown a:nth-child(2) { animation-delay: 0.12s; }
-        .menu-wrap.is-open .menu-dropdown a:nth-child(3) { animation-delay: 0.17s; }
-        .menu-wrap.is-open .menu-dropdown a:nth-child(4) { animation-delay: 0.22s; }
-        .menu-wrap.is-open .menu-dropdown a:nth-child(5) { animation-delay: 0.27s; }
+        .menu-wrap.is-open .menu-dropdown a:nth-child(1) {
+            animation-delay: 0.07s;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a:nth-child(2) {
+            animation-delay: 0.12s;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a:nth-child(3) {
+            animation-delay: 0.17s;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a:nth-child(4) {
+            animation-delay: 0.22s;
+        }
+
+        .menu-wrap.is-open .menu-dropdown a:nth-child(5) {
+            animation-delay: 0.27s;
+        }
 
         .menu-dropdown a:hover {
             background: rgba(255, 255, 255, 0.08);
@@ -396,7 +429,8 @@
             color: var(--text-grey);
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input,
+        .form-group textarea {
             background: none;
             border: none;
             border-bottom: 1px solid var(--text-grey);
@@ -407,7 +441,8 @@
             transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus, .form-group textarea:focus {
+        .form-group input:focus,
+        .form-group textarea:focus {
             border-bottom-color: var(--text-white);
         }
 
@@ -422,6 +457,59 @@
             text-transform: uppercase;
             cursor: pointer;
             margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent-blue);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 123, 255, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- Toast Notification --- */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast--success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .toast--error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.3);
         }
 
         /* --- Footer Animation Banner --- */
@@ -541,18 +629,22 @@
             .research-hub {
                 flex-direction: column;
             }
+
             .form-row {
                 flex-direction: column;
             }
+
             header {
                 padding: 20px;
             }
+
             .hero-actions {
                 flex-direction: column;
             }
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -560,7 +652,8 @@
             THE FUTURE OF<br>SOUNDSCAPES<br>SUPPORTED BY<br>NEUROSCIENCE.
         </div>
         <div class="menu-wrap" id="menuWrap">
-            <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuDropdown">Menu <span class="chevron">▾</span></button>
+            <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuDropdown">Menu <span
+                    class="chevron">▾</span></button>
             <div class="menu-dropdown" id="menuDropdown">
                 <a href="index.html" class="menu-option">Home</a>
                 <a href="radio.html" class="menu-option">Sound Hub</a>
@@ -593,7 +686,10 @@
             <div class="container">
                 <h2 class="intro-title">Redefining the way we utilise sound.</h2>
                 <div class="intro-text">
-                    <p>NeuroNest is dedicated to pioneering the fusion of neuroscience, sound design, and wellness to elevate focus, sleep, and improve cognitive balance. Our mission is to redefine sound wellness, empower individuals with science-backed tools, and foster a community dedicated to holistic well-being and productivity - It's time to lock-in!</p>
+                    <p>NeuroNest is dedicated to pioneering the fusion of neuroscience, sound design, and wellness to
+                        elevate focus, sleep, and improve cognitive balance. Our mission is to redefine sound wellness,
+                        empower individuals with science-backed tools, and foster a community dedicated to holistic
+                        well-being and productivity - It's time to lock-in!</p>
                 </div>
             </div>
         </section>
@@ -613,33 +709,43 @@
         <section class="community-section">
             <div class="container">
                 <h2 class="community-title">STAY CONNECTED | JOIN THE COMMUNITY</h2>
-                <p class="community-subtitle">Our Research team is collaborating with institutional sources across the world to stay up to date with the science and provide access to the NeuroNest community. Meanwhile our Sound Engineers are working closely with R&D and AI Development to modulate precise auditory stimulation for the most effective soundscapes to help you improve your productivity. Follow along to stay up to date the latest research and stay up to date the latest releases.</p>
-                
-                <form class="join-form" action="https://formsubmit.co/neuronestaudio@gmail.com" method="POST">
+                <p class="community-subtitle">Our Research team is collaborating with institutional sources across the
+                    world to stay up to date with the science and provide access to the NeuroNest community. Meanwhile
+                    our Sound Engineers are working closely with R&D and AI Development to modulate precise auditory
+                    stimulation for the most effective soundscapes to help you improve your productivity. Follow along
+                    to stay up to date the latest research and stay up to date the latest releases.</p>
+
+                <form class="join-form" id="communityForm" action="https://formsubmit.co/neuronestaudio@gmail.com"
+                    method="POST">
                     <input type="hidden" name="_cc" value="dion@neuronesthub.org">
                     <input type="hidden" name="_subject" value="New NeuroNest Community Signup">
-                    <input type="hidden" name="_captcha" value="true">
-                    <input type="hidden" name="_next" value="https://neuronesthub.org/thank-you">
+                    <input type="hidden" name="_captcha" value="false">
                     <input type="hidden" name="_template" value="table">
+                    <input type="text" name="_honey" style="display:none">
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label>First name</label>
-                            <input type="text" name="first_name" required>
+                            <label for="firstName">First name</label>
+                            <input type="text" id="firstName" name="first_name" required>
                         </div>
                         <div class="form-group">
-                            <label>Last name</label>
-                            <input type="text" name="last_name" required>
+                            <label for="lastName">Last name</label>
+                            <input type="text" id="lastName" name="last_name" required>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 30px;">
-                        <label>Email</label>
-                        <input type="email" name="email" required>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
+                    <h2 style="font-family: 'Outfit', sans-serif; font-size: 3.5rem; margin-bottom: 20px;">Sound Hub
+                    </h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 40px; color: #888;">Annual Subscription $99/Year<br>Sign
+                        up for 1 Year Free Access to explore the potential.</p>
                     <div class="form-group" style="margin-bottom: 30px;">
-                        <label>What are you looking to work on, using NeuroNest?</label>
-                        <textarea rows="4" name="message"></textarea>
+                        <label for="message">What are you looking to work on, using NeuroNest?</label>
+                        <textarea id="message" rows="4" name="message"></textarea>
                     </div>
-                    <button type="submit" class="submit-btn">Submit</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Submit</button>
                 </form>
             </div>
         </section>
@@ -657,14 +763,26 @@
     <footer>
         <h4 class="footer-title">ENTER<br>YOUR<br>FLOW<br>STATE</h4>
         <div class="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61580600726800" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+            <a href="https://www.facebook.com/profile.php?id=61580600726800" target="_blank" rel="noopener noreferrer"
+                aria-label="Facebook">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                </svg>
             </a>
-            <a href="https://www.linkedin.com/company/108409122/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <a href="https://www.linkedin.com/company/108409122/" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
             </a>
-            <a href="https://www.youtube.com/@NeuroNestLibrary" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <a href="https://www.youtube.com/@NeuroNestLibrary" target="_blank" rel="noopener noreferrer"
+                aria-label="YouTube">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
             </a>
         </div>
         <p class="footer-copy">NeuroNest Hub Australia &copy; 2025</p>
@@ -682,7 +800,7 @@
         function setMenuOpen(isOpen) {
             if (isOpen) {
                 // Reset item animations so they replay each open
-                menuDropdown.querySelectorAll('a').forEach(function(a) {
+                menuDropdown.querySelectorAll('a').forEach(function (a) {
                     a.style.animation = 'none';
                     void a.offsetWidth;
                     a.style.animation = '';
@@ -742,8 +860,58 @@
                 clearCloseTimer();
             }
         });
+
+        // --- Form AJAX Submission ---
+        (function () {
+            const form = document.getElementById('communityForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const toast = document.getElementById('toast');
+
+            function showToast(message, type) {
+                const toast = document.getElementById('toast');
+                if (!toast) return;
+                toast.textContent = message;
+                toast.className = 'toast toast--' + type;
+                void toast.offsetWidth;
+                toast.classList.add('visible');
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                }, 4000);
+            }
+
+            if (form) {
+                form.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    submitBtn.disabled = true;
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = 'Sending...';
+                    const formData = new FormData(form);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (response.ok) {
+                            showToast('✓ Thanks for joining the NeuroNest community!', 'success');
+                            form.reset();
+                        } else {
+                            showToast('Something went wrong. Please try again.', 'error');
+                        }
+                    } catch (error) {
+                        showToast('Network error. Please check your connection.', 'error');
+                    }
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                });
+            }
+        })();
     </script>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
     <script src="assets/page-transitions.js"></script>
 
 </body>
+
 </html>
