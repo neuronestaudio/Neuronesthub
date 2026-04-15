@@ -545,15 +545,16 @@
         .mosaic-card {
             break-inside: avoid;
             margin-bottom: 14px;
-            background: linear-gradient(180deg, rgba(18, 40, 63, 0.5) 0%, rgba(10, 25, 41, 0.5) 100%);
+            background: linear-gradient(180deg, rgba(18, 40, 63, 0.42) 0%, rgba(10, 25, 41, 0.42) 100%);
             border: 1px solid var(--line);
             border-radius: 18px;
             color: var(--text);
             padding: 14px;
             text-decoration: none;
             transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
-            box-shadow: 0 14px 28px rgba(2, 10, 20, 0.26);
-            backdrop-filter: blur(10px) saturate(118%);
+            box-shadow: none;
+            backdrop-filter: blur(0.14px) saturate(118%);
+            -webkit-backdrop-filter: blur(0.14px) saturate(118%);
             display: block;
             overflow: hidden;
         }
@@ -565,12 +566,30 @@
         }
 
         .mosaic-card__thumb {
+            position: relative;
             width: 100%;
             border-radius: 12px;
             background-size: cover;
             background-position: center;
             margin-bottom: 12px;
             border: 1px solid rgba(193, 222, 255, 0.22);
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.002);
+            backdrop-filter: blur(0.3px) saturate(120%);
+            -webkit-backdrop-filter: blur(0.3px) saturate(120%);
+        }
+
+        .mosaic-card__thumb::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.003);
+            backdrop-filter: blur(0.4px) saturate(120%);
+            -webkit-backdrop-filter: blur(0.4px) saturate(120%);
+            pointer-events: none;
+            mix-blend-mode: normal;
+            transition: background 0.22s ease, backdrop-filter 0.22s ease, opacity 0.22s ease;
         }
 
         .mosaic-card__thumb.tall {
@@ -622,6 +641,12 @@
         .mosaic-card.featured {
             padding: 18px;
         }
+
+        /* Colored hover tint per category */
+        .mosaic-card.category-focus:hover .mosaic-card__thumb::after { background: rgba(96,211,133,0.12); }
+        .mosaic-card.category-sleep:hover .mosaic-card__thumb::after { background: rgba(167,139,250,0.12); }
+        .mosaic-card.category-calm:hover .mosaic-card__thumb::after { background: rgba(56,189,248,0.12); }
+        .mosaic-card.category-other:hover .mosaic-card__thumb::after { background: rgba(248,230,122,0.12); }
 
         .mosaic-card.minimal {
             padding: 12px;

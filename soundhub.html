@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroNest | Sound Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/page-transitions.css">
+    <style>
+        :root {
+            --bg: #061226;
+            --bg-soft: #0b2338;
+            --text: #f4f8ff;
+            --muted: #b5c3d8;
+            --line: rgba(186, 218, 255, 0.2);
+            --line-strong: rgba(208, 231, 255, 0.42);
+            --card: rgba(12, 24, 42, 0.48);
+            --card-2: rgba(8, 19, 34, 0.56);
+            --accent: #8fd4ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: #ffffff; /* make background white so HTML is visible */
+            min-height: 100vh;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* disable decorative page grid and starfield so content is clearly visible */
+        body::before, body::after { display: none !important; }
+
+        @keyframes page-stars-move {
+            0% { transform: translate(0, 0); opacity: 0.95; }
+            50% { transform: translate(18px, -10px); opacity: 1; }
+            100% { transform: translate(0, 0); opacity: 0.95; }
+        }
+
+        .container {
+            width: min(1180px, 94vw);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            color: #000000;
+            white-space: nowrap;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            flex-shrink: 0;
+        }
+
+        .header-nav-btns {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .header-nav-btn {
+            text-decoration: none;
+            color: rgba(200, 220, 245, 0.8);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 7px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(6px);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .header-nav-btn:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.12);
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+        }
+
+        .nav-pill {
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(17, 34, 56, 0.58) 0%, rgba(8, 18, 31, 0.6) 100%);
+            border: 1px solid var(--line);
+            box-shadow: 0 12px 32px rgba(2, 10, 20, 0.42);
+            backdrop-filter: blur(14px) saturate(120%);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .nav-pill a {
+            text-decoration: none;
+            color: rgba(246, 246, 255, 0.74);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .nav-pill a:hover {
+            color: #ffffff;
+        }
+
+        .brand {
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            padding: 0 12px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        .brand strong {
+            display: block;
+            font-size: 27px;
+            line-height: 1;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .brand span {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.38em;
+            color: rgba(238, 238, 246, 0.56);
+            text-transform: uppercase;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(180deg, rgba(17, 34, 56, 0.98) 0%, rgba(8, 18, 31, 0.98) 100%);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            backdrop-filter: blur(14px) saturate(120%);
+            padding: 8px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50%) translateY(-8px);
+            transition: opacity 0.28s ease, visibility 0.28s ease, transform 0.28s ease;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .brand:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 16px;
+            color: rgba(246, 246, 255, 0.74);
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            transition: all 0.24s ease;
+            border-radius: 8px;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(143, 212, 255, 0.12);
+            color: #8fd4ff;
+        }
+
+        .hero {
+            position: relative;
+            margin-top: 0;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(580px 220px at 50% 8%, rgba(210, 238, 255, 0.2), rgba(210, 238, 255, 0) 70%),
+                linear-gradient(180deg, rgba(5, 12, 22, 0.06) 0%, rgba(6, 14, 24, 0.36) 54%, rgba(5, 12, 22, 0.68) 100%);
+            pointer-events: none;
+        }
+
+        /* hide obstructive hero background video so interactive HTML is visible */
+        .hero video { display: none !important; }
+
+        .hero > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(48px, 6vw, 72px);
+            text-transform: none;
+            letter-spacing: -0.01em;
+            color: rgba(245, 250, 255, 0.92);
+            margin-bottom: 16px;
+            font-weight: 400;
+            text-shadow: none;
+        }
+
+        .hero-subtitle {
+            margin: 0 auto 24px;
+            max-width: 740px;
+            color: rgba(220, 236, 255, 0.76);
+            font-size: 17px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            border: 1px solid var(--line-strong);
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            background: rgba(11, 25, 41, 0.52);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.75fr) minmax(280px, 0.85fr);
+            gap: 28px;
+            align-items: start;
+            margin-top: 32px;
+        }
+
+        /* Make the main animation shell span the full banner width so the black grid box fills the banner */
+        .hero-layout { position: relative; }
+        .hero-animation-shell { grid-column: 1 / -1; }
+
+        .hero-animation-shell {
+            position: relative;
+            width: 100%;
+            min-height: 620px;
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.18);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(18px);
+        }
+
+        .hero-starfield {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.18) 0.5px, transparent 0.55px),
+                        radial-gradient(circle at 25% 35%, rgba(255,255,255,0.14) 0.5px, transparent 0.55px),
+                        radial-gradient(circle at 70% 15%, rgba(255,255,255,0.12) 0.5px, transparent 0.55px),
+                        radial-gradient(circle at 85% 60%, rgba(255,255,255,0.22) 0.5px, transparent 0.55px),
+                        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 0.5px, transparent 0.55px),
+                        rgba(0,0,0,0.98);
+            background-size: 160px 160px, 100px 100px, 220px 220px, 140px 140px, 180px 180px, auto;
+            animation: star-twinkle 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .hero-starfield::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0.5px, transparent 0.7px) 0 0 / 8px 8px,
+                        radial-gradient(circle, rgba(255,255,255,0.06) 0.5px, transparent 0.8px) 4px 4px / 8px 8px;
+            opacity: 0.8;
+            filter: blur(0.5px);
+        }
+
+        .hero-grid-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background-image: linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px);
+            background-size: calc(100% / 25) calc(100% / 25);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-animation-shell canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: relative;
+            z-index: 0;
+        }
+
+        .hero-side-tab {
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .hero-side-tab .coming-soon-shell {
+            width: 100%;
+            position: sticky;
+            top: 110px;
+            align-self: flex-start;
+            margin-top: 0;
+            background: rgba(0, 0, 0, 0.94);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 28px;
+            border-radius: 28px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-side-tab .coming-soon-shell h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(40px, 4vw, 56px);
+            letter-spacing: -0.03em;
+            margin-bottom: 18px;
+            color: #fff;
+            font-weight: 400;
+        }
+
+        .hero-side-tab .coming-soon-shell p {
+            color: rgba(235, 241, 255, 0.82);
+            margin-bottom: 18px;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .hero-side-tab .coming-soon-shell .signup-subtitle {
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(163, 181, 213, 0.82);
+            margin-bottom: 14px;
+        }
+
+        .hero-side-tab .join-form {
+            width: 100%;
+        }
+
+        .hero-side-tab .form-row {
+            flex-direction: column;
+        }
+
+        .hero-side-tab .form-group label {
+            color: rgba(183, 193, 212, 0.85);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .hero-side-tab .form-group input,
+        .hero-side-tab .form-group textarea {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-radius: 16px;
+            padding: 16px 18px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .hero-side-tab .form-group textarea {
+            min-height: 160px;
+        }
+
+        .hero-side-tab .submit-btn {
+            width: 100%;
+            margin-top: 18px;
+            background: #ffffff;
+            color: #050712;
+            border: none;
+            border-radius: 999px;
+            padding: 18px 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+        }
+
+        @media (max-width: 980px) {
+            .hero-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-side-tab {
+                order: -1;
+            }
+
+            .hero-side-tab .coming-soon-shell {
+                position: relative;
+                top: 0;
+                margin-bottom: 24px;
+            }
+
+            .hero-animation-shell {
+                min-height: 460px;
+            }
+        }
+
+        /* Desktop: make the enquiry form sticky to the right side of the viewport */
+        @media (min-width: 981px) {
+            .hero-side-tab .coming-soon-shell {
+                position: fixed;
+                right: 28px;
+                top: 80px;
+                width: 340px;
+                max-width: calc(36vw);
+                z-index: 220;
+                max-height: calc(100vh - 160px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Ensure the hero content has enough right padding so the fixed panel doesn't overlap */
+            .hero .container { padding-right: calc(340px + 48px); }
+        }
+
+        /* When we move the panel to <body>, use this class to keep the same fixed behavior */
+        .fixed-body-panel {
+            position: fixed !important;
+            right: 28px !important;
+            top: 80px !important;
+            width: 340px !important;
+            max-width: calc(36vw) !important;
+            z-index: 220 !important;
+            max-height: calc(100vh - 160px) !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        @keyframes star-twinkle {
+            0%, 100% { opacity: 0.95; transform: translateZ(0) scale(1); }
+            50% { opacity: 1; transform: translateZ(0) scale(1.01); }
+        }
+
+
+        .hero-feature-card {
+            margin: 46px auto 36px;
+            max-width: 980px;
+            padding: 34px;
+            border-radius: 32px;
+            border: 1px solid rgba(143, 212, 255, 0.16);
+            background: rgba(7, 15, 28, 0.78);
+            box-shadow: 0 28px 68px rgba(7, 10, 16, 0.24);
+            backdrop-filter: blur(18px);
+            text-align: left;
+        }
+
+        .hero-feature-meta {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .hero-feature-card h3 {
+            font-size: clamp(32px, 4vw, 50px);
+            line-height: 1.05;
+            margin: 18px 0 12px;
+            color: rgba(246, 250, 255, 0.96);
+        }
+
+        .hero-feature-card p {
+            color: rgba(218, 229, 243, 0.78);
+            font-size: 16px;
+            max-width: 820px;
+            margin: 0;
+        }
+
+        .hero-feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .feature-chip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(143, 212, 255, 0.18);
+            background: rgba(13, 28, 48, 0.7);
+            color: rgba(176, 229, 255, 0.92);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+        }
+
+        .hero-feature-note {
+            margin-top: 20px;
+            color: rgba(186, 210, 235, 0.7);
+            font-size: 15px;
+            max-width: 760px;
+        }
+
+        .latest-release-section {
+            padding: 12px 0 34px;
+        }
+
+        .latest-release-kicker {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(16px, 2.2vw, 40px);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(236, 244, 255, 0.56);
+            margin-bottom: 18px;
+        }
+
+        .latest-release-heading {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 40px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(244, 249, 255, 0.96);
+            margin-bottom: 16px;
+        }
+
+        .latest-release-section .layout {
+            padding-bottom: 0;
+        }
+
+        .latest-play-btn {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            border: 1px solid rgba(236, 246, 255, 0.42);
+            background: rgba(13, 27, 44, 0.64);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            backdrop-filter: blur(8px);
+        }
+
+        .latest-play-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #eaf6ff;
+            margin-left: 2px;
+        }
+
+        .layout {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 16px;
+            padding-bottom: 54px;
+        }
+
+        .card {
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--card);
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(196, 180, 255, 0.56);
+            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-main {
+            min-height: 420px;
+            position: relative;
+        }
+
+        .card-main__image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            filter: grayscale(100%) contrast(0.9) brightness(0.88) saturate(0.2);
+        }
+
+        .card-main__shade {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.9) 74%);
+        }
+
+        .card-main__content {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: 22px;
+            z-index: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .card-main h2 {
+            font-size: clamp(28px, 4vw, 78px);
+            line-height: 0.95;
+            letter-spacing: -0.01em;
+            text-transform: lowercase;
+        }
+
+        .card-main p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: rgba(226, 226, 236, 0.8);
+            max-width: 74%;
+        }
+
+        .card-main h2 {
+            font-size: clamp(40px, 5.2vw, 82px);
+            line-height: 0.95;
+            letter-spacing: -0.015em;
+            text-transform: none;
+        }
+
+        .card-side-wrap {
+            display: grid;
+            gap: 16px;
+            grid-template-rows: 1.2fr 1fr;
+        }
+
+        .card-side {
+            padding: 22px 20px;
+            background: var(--card-2);
+            min-height: 158px;
+        }
+
+        .card-side h3 {
+            font-size: clamp(24px, 2vw, 36px);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .card-side p {
+            color: var(--muted);
+            font-size: 15px;
+            max-width: 95%;
+        }
+
+        .card-side-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .card-small {
+            min-height: 164px;
+            padding: 20px;
+            background: rgba(15, 13, 22, 0.84);
+        }
+
+        .card-small h4 {
+            font-size: clamp(20px, 1.4vw, 32px);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .card-small p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            padding-bottom: 56px;
+        }
+
+        .extra-card {
+            padding: 16px;
+            min-height: 140px;
+            border-radius: 16px;
+            background: rgba(12, 12, 18, 0.74);
+            border: 1px solid var(--line);
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .extra-card:hover {
+            border-color: rgba(196, 180, 255, 0.56);
+        }
+
+        .extra-card h5 {
+            font-size: 22px;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .extra-card p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .radio-hub {
+            padding-bottom: 56px;
+        }
+
+        .curated-selection {
+            padding: 8px 0 44px;
+        }
+
+        .curated-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 40px;
+            letter-spacing: 0.18em;
+            text-transform: none;
+            color: rgba(244, 249, 255, 0.96);
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .curated-subtitle {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 760px;
+            margin: 0 auto 20px;
+            text-align: center;
+        }
+
+        .curated-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            max-width: 860px;
+            margin: 0 auto 32px;
+            padding: 0 10px;
+        }
+
+        .filter-chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .filter-chip {
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(186, 218, 255, 0.16);
+            background: rgba(12, 24, 42, 0.78);
+            color: rgba(222, 235, 255, 0.92);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            position: relative;
+            padding-left: 38px;
+        }
+
+        .filter-chip::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+
+        .filter-chip:hover {
+            transform: translateY(-1px);
+            border-color: rgba(143, 212, 255, 0.32);
+        }
+
+        .filter-chip.active {
+            color: #ffffff;
+        }
+
+        .filter-chip.all.active {
+            background: rgba(102, 132, 255, 0.2);
+            border-color: rgba(132, 158, 255, 0.5);
+        }
+
+        .filter-chip.focus.active {
+            background: rgba(142, 235, 141, 0.22);
+            border-color: rgba(142, 235, 141, 0.45);
+            color: #d7ffdf;
+        }
+
+        .filter-chip.focus::before { background: linear-gradient(180deg,#9ef2a4,#52b848); border: 1px solid rgba(142,235,141,0.35); }
+
+        .filter-chip.sleep.active {
+            background: rgba(205, 164, 255, 0.22);
+            border-color: rgba(205, 164, 255, 0.45);
+            color: #f0e1ff;
+        }
+
+        .filter-chip.sleep::before { background: linear-gradient(180deg,#d8b7ff,#8a5de9); border: 1px solid rgba(205,164,255,0.35); }
+
+        .filter-chip.calm.active {
+            background: rgba(120, 215, 255, 0.22);
+            border-color: rgba(120, 215, 255, 0.45);
+            color: #e8f7ff;
+        }
+
+        .filter-chip.calm::before { background: linear-gradient(180deg,#bff0ff,#2fb8e6); border: 1px solid rgba(120,215,255,0.35); }
+
+        .filter-chip.other.active {
+            background: rgba(248, 230, 122, 0.22);
+            border-color: rgba(248, 230, 122, 0.45);
+            color: #fff9d9;
+        }
+
+        .filter-chip.other::before { background: linear-gradient(180deg,#fff1a8,#f0c42a); border: 1px solid rgba(248,230,122,0.35); }
+
+        .filter-status {
+            color: rgba(206, 221, 237, 0.78);
+            font-size: 13px;
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            min-width: 170px;
+        }
+
+        .mosaic-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+
+        /* Curated section: force square thumbnails */
+        #curated-grid .mosaic-card__thumb,
+        #curated-grid .mosaic-card__thumb.tall,
+        #curated-grid .mosaic-card__thumb.wide,
+        #curated-grid .mosaic-card__thumb.portrait {
+            aspect-ratio: 1 / 1 !important;
+            min-height: 220px;
+        }
+
+        /* Album preview grid (first album) */
+        #album-grid { margin-top: 40px; }
+        #album-grid .album-title { font-family: 'DM Serif Display', serif; font-size: 32px; margin-bottom: 12px; color: rgba(20,24,28,0.92); }
+        #album-grid .mosaic-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+        #album-grid .mosaic-card { background: transparent; border: none; padding: 0; }
+        #album-grid .mosaic-card__thumb { border-radius: 16px; border: 1px solid rgba(0,0,0,0.35); min-height: 220px; }
+
+        .mosaic-card {
+            position: relative;
+            margin-bottom: 0;
+            background: rgba(12, 24, 38, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            color: var(--text);
+            padding: 14px;
+            text-decoration: none;
+            transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
+            box-shadow: none;
+            backdrop-filter: blur(0.14px) saturate(120%);
+            -webkit-backdrop-filter: blur(0.14px) saturate(120%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            overflow: hidden;
+            min-height: auto;
+        }
+
+        .mosaic-card__thumb {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.003);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.012);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.003);
+            backdrop-filter: blur(0.4px) saturate(120%);
+            -webkit-backdrop-filter: blur(0.4px) saturate(120%);
+            background-blend-mode: overlay;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+            min-height: 240px;
+        }
+
+        .mosaic-card__thumb::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.16), transparent 28%), radial-gradient(circle at bottom right, rgba(255,255,255,0.08), transparent 40%);
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        .mosaic-card__thumb::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.003);
+            backdrop-filter: blur(0.4px) saturate(130%);
+            -webkit-backdrop-filter: blur(0.4px) saturate(130%);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 14px;
+            mix-blend-mode: normal;
+            transition: background 0.22s ease, backdrop-filter 0.22s ease, opacity 0.22s ease;
+        }
+
+        .mosaic-card__duration,
+        .mosaic-card__creator {
+            position: absolute;
+            z-index: 2;
+            left: 16px;
+            right: 16px;
+            color: rgba(245, 250, 255, 0.92);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .mosaic-card__duration {
+            top: 14px;
+            right: 14px;
+            left: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 64px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 11px;
+        }
+
+        .mosaic-card__creator {
+            bottom: 18px;
+            left: 18px;
+            right: 18px;
+            font-size: 14px;
+            line-height: 1.2;
+            text-align: left;
+            color: rgba(231, 239, 255, 0.95);
+            text-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        .mosaic-card__hover-keywords,
+        .mosaic-card__overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 18px;
+            pointer-events: none;
+            transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+
+        .mosaic-card__overlay {
+            background: rgba(6, 12, 20, 0.38);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .mosaic-card__hover-keywords {
+            display: flex;
+            align-items: flex-end;
+            padding: 18px;
+            opacity: 0;
+            transform: translateY(12px);
+            z-index: 2;
+            color: rgba(244, 249, 255, 0.94);
+            font-size: 13px;
+            line-height: 1.5;
+            text-align: left;
+            font-family: 'DM Sans', sans-serif;
+            white-space: pre-wrap;
+            letter-spacing: 0.01em;
+        }
+
+        .mosaic-card:hover .mosaic-card__thumb {
+            transform: scale(1.01);
+        }
+
+        .mosaic-card .mosaic-card__creator {
+            opacity: 0.96;
+        }
+
+        .mosaic-card:hover .mosaic-card__overlay,
+        .mosaic-card:hover .mosaic-card__hover-keywords {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mosaic-card.category-focus::before {
+            background: linear-gradient(180deg, rgba(96, 211, 133, 0.22), rgba(96, 211, 133, 0));
+        }
+
+        .mosaic-card.category-sleep::before {
+            background: linear-gradient(180deg, rgba(167, 139, 250, 0.22), rgba(167, 139, 250, 0));
+        }
+
+        .mosaic-card.category-calm::before {
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0));
+        }
+
+        .mosaic-card.category-other::before {
+            background: linear-gradient(180deg, rgba(148, 163, 184, 0.22), rgba(148, 163, 184, 0));
+        }
+
+        .mosaic-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(197, 229, 255, 0.7);
+            background: linear-gradient(180deg, rgba(28, 56, 86, 0.58) 0%, rgba(14, 31, 50, 0.62) 100%);
+        }
+
+        /* Colored hover tint per category */
+        .mosaic-card.category-focus:hover .mosaic-card__thumb::after { background: rgba(96,211,133,0.12); }
+        .mosaic-card.category-sleep:hover .mosaic-card__thumb::after { background: rgba(167,139,250,0.12); }
+        .mosaic-card.category-calm:hover .mosaic-card__thumb::after { background: rgba(56,189,248,0.12); }
+        .mosaic-card.category-other:hover .mosaic-card__thumb::after { background: rgba(248,230,122,0.12); }
+
+        .mosaic-card__thumb {
+            width: 100%;
+            height: 240px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 14px;
+            border: 1px solid rgba(193, 222, 255, 0.22);
+            display: block;
+        }
+
+        .mosaic-card__thumb.tall,
+        .mosaic-card__thumb.wide,
+        .mosaic-card__thumb.square,
+        .mosaic-card__thumb.cinematic,
+        .mosaic-card__thumb.portrait {
+            aspect-ratio: auto !important;
+            height: 240px;
+        }
+
+        .mosaic-card__tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* hide the old tag UI (we'll replace with a colored outline) */
+        .mosaic-card__tag { display: none !important; }
+
+        .mosaic-card h3,
+        .mosaic-card p {
+            display: none !important;
+        }
+
+        .mosaic-card.category-focus .mosaic-card__tag {
+            color: #8EEB8D;
+            border-color: rgba(142, 235, 141, 0.3);
+            background: rgba(142, 235, 141, 0.12);
+        }
+
+        .mosaic-card.category-sleep .mosaic-card__tag {
+            color: #CDA4FF;
+            border-color: rgba(205, 164, 255, 0.3);
+            background: rgba(205, 164, 255, 0.12);
+        }
+
+        .mosaic-card.category-calm .mosaic-card__tag {
+            color: #78D7FF;
+            border-color: rgba(120, 215, 255, 0.3);
+            background: rgba(120, 215, 255, 0.12);
+        }
+
+        .mosaic-card.category-other .mosaic-card__tag {
+            color: #F8E67A;
+            border-color: rgba(248, 230, 122, 0.28);
+            background: rgba(248, 230, 122, 0.12);
+        }
+
+        /* New colored outline glow per category */
+        .mosaic-card.category-focus {
+            --accent-color: #8EEB8D;
+            --accent-glow: rgba(142,235,141,0.18);
+            border-color: rgba(142, 235, 141, 0.22);
+            box-shadow: 0 10px 30px rgba(14, 40, 26, 0.35), 0 0 24px rgba(142,235,141,0.06) inset;
+        }
+        .mosaic-card.category-sleep {
+            --accent-color: #CDA4FF;
+            --accent-glow: rgba(205,164,255,0.18);
+            border-color: rgba(205, 164, 255, 0.22);
+            box-shadow: 0 10px 30px rgba(34, 20, 56, 0.35), 0 0 24px rgba(205,164,255,0.06) inset;
+        }
+        .mosaic-card.category-calm {
+            --accent-color: #78D7FF;
+            --accent-glow: rgba(120,215,255,0.18);
+            border-color: rgba(120, 215, 255, 0.22);
+            box-shadow: 0 10px 30px rgba(10, 36, 54, 0.35), 0 0 24px rgba(120,215,255,0.06) inset;
+        }
+        .mosaic-card.category-other {
+            --accent-color: #F8E67A;
+            --accent-glow: rgba(248,230,122,0.18);
+            border-color: rgba(248, 230, 122, 0.22);
+            box-shadow: 0 10px 30px rgba(44, 40, 16, 0.35), 0 0 24px rgba(248,230,122,0.06) inset;
+        }
+
+        /* Add colored outer glow on hover using the category variable */
+        .mosaic-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(197, 229, 255, 0.7);
+            background: linear-gradient(180deg, rgba(28, 56, 86, 0.58) 0%, rgba(14, 31, 50, 0.62) 100%);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.45), 0 0 40px var(--accent-glow), 0 0 24px calc(1px) var(--accent-glow);
+        }
+
+        .mosaic-card:hover .mosaic-card__overlay {
+            background: linear-gradient(180deg, var(--accent-glow), rgba(6,12,20,0.2));
+        }
+
+        .mosaic-card h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+            line-height: 1.15;
+        }
+
+        .mosaic-card.featured h3 {
+            font-size: 28px;
+        }
+
+        .mosaic-card p {
+            display: none;
+            color: rgba(220, 236, 255, 0.76);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .mosaic-card.featured {
+            padding: 18px;
+        }
+
+        .mosaic-card.minimal {
+            padding: 12px;
+        }
+
+        .mosaic-card.minimal h3 {
+            font-size: 16px;
+        }
+
+        .mosaic-card.minimal p {
+            display: none;
+        }
+
+        @media (max-width: 1040px) {
+            .mosaic-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        @media (max-width: 760px) {
+            .mosaic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 480px) {
+            .mosaic-grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        }
+
+        .coming-soon-shell {
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(15, 32, 52, 0.54) 0%, rgba(8, 20, 34, 0.58) 100%);
+            box-shadow: 0 14px 34px rgba(4, 14, 26, 0.34);
+            backdrop-filter: blur(12px) saturate(122%);
+            padding: clamp(18px, 3vw, 28px);
+            text-align: center;
+        }
+
+        .coming-soon-shell h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(22px, 3vw, 34px);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: #eef8ff;
+        }
+
+        .coming-soon-shell p {
+            color: var(--muted);
+            max-width: 820px;
+            margin: 0 auto;
+            font-size: 16px;
+        }
+
+        .signup-subtitle {
+            font-size: clamp(16px, 2vw, 22px);
+            color: #c8dff4;
+            margin: 28px 0 18px;
+            font-weight: 400;
+        }
+
+        .join-form {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(5, 14, 24, 0.56);
+            border: 1px solid var(--line);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: rgba(196, 180, 255, 0.62);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(180deg, rgba(234, 246, 255, 0.96) 0%, rgba(213, 236, 255, 0.94) 100%);
+            color: #07253f;
+            border: none;
+            border-radius: 999px;
+            padding: 13px 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            opacity: 1;
+        }
+
+        .tab-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .tab-btn {
+            border: 1px solid var(--line);
+            background: rgba(11, 11, 15, 0.82);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .tab-btn.is-active {
+            border-color: var(--line-strong);
+            background: rgba(35, 28, 52, 0.92);
+            color: #ffffff;
+        }
+
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+        }
+
+        .hub-panel {
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: rgba(14, 13, 21, 0.84);
+            padding: 18px;
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .track-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .track-item {
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(10, 10, 14, 0.78);
+            color: var(--text);
+            padding: 12px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .track-item:hover,
+        .track-item.is-active {
+            border-color: rgba(196, 180, 255, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .track-item strong {
+            display: block;
+            font-size: 18px;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .track-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .player {
+            border: 1px solid var(--line-strong);
+            border-radius: 16px;
+            background: rgba(20, 16, 30, 0.84);
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .player h3 {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .player p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .player audio {
+            width: 100%;
+        }
+
+        .queue-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .queue-item {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 13px;
+            color: var(--muted);
+            background: rgba(10, 10, 14, 0.68);
+        }
+
+        @media (max-width: 1040px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .latest-release-heading {
+                font-size: clamp(22px, 5vw, 34px);
+            }
+
+            .card-main p {
+                max-width: 100%;
+            }
+
+            .extra-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .recommendation-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hub-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .topbar {
+                position: static;
+                padding-top: 14px;
+            }
+
+            .nav-pill {
+                border-radius: 20px;
+                flex-direction: column;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .brand strong {
+                font-size: 23px;
+            }
+
+            .hero {
+                margin-top: 20px;
+                padding-top: 56px;
+            }
+
+            .hero h1 {
+                letter-spacing: 0.08em;
+            }
+
+            .hero-subtitle {
+                font-size: 15px;
+            }
+
+            .card-side-bottom {
+                grid-template-columns: 1fr;
+            }
+
+            .extra-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .header-nav-btns {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="header-row container">
+            <nav class="nav-pill">
+                <a class="brand" href="index.html" aria-label="Neuronest Australia">
+                    <strong>NeuroNest</strong>
+                    <span>Australia</span>
+                    <div class="dropdown-menu">
+                        <a href="index.html">Home</a>
+                        <a href="learn-more.html">Learn More</a>
+                        <a href="soundhub.html">Sound Hub</a>
+                        <a href="neuroscience-news.html">Latest News</a>
+                        <a href="mailto:contact@neuronest.au">Contact</a>
+                    </div>
+                </a>
+            </nav>
+            <div class="header-title">Sound Hub</div>
+            <nav class="header-nav-btns">
+                <a href="#latest-release" class="header-nav-btn">Latest Releases</a>
+                <a href="#curated-grid" class="header-nav-btn">Curated Selection</a>
+            </nav>
+            <div class="rotating-text-wrap">
+                <span class="rotating-text active">Sound Engineering Collaborations</span>
+                <span class="rotating-text">Latest Neuroscience News</span>
+                <span class="rotating-text">Sound Engineering</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+
+                <p class="hero-subtitle">Explore curated selections and latest releases while we continue building the full interactive hub experience.</p>
+                <span class="hero-badge">Curated Listening · Live Now</span>
+
+                <div class="hero-layout">
+                    <div class="hero-animation-shell">
+                        <div class="hero-starfield"></div>
+                        <div class="hero-grid-overlay"></div>
+                        <canvas id="hero-animation"></canvas>
+                    </div>
+                    <aside class="hero-side-tab">
+                        <div class="coming-soon-shell">
+                            <h2>Sound Hub</h2>
+                            <p>Annual Subscription $99/Year</p>
+                            <p>Sign up for 1 Year Free Access to explore the potential of Sound Environments</p>
+
+                            <h3 class="signup-subtitle">WHAT ARE YOU LOOKING TO WORK ON, USING NEURONEST?</h3>
+                            <form class="join-form" action="https://formsubmit.co/neuronestaudio@gmail.com" method="POST">
+                                <input type="hidden" name="_cc" value="dion@neuronesthub.org">
+                                <input type="hidden" name="_subject" value="New Sound Hub Free Access Signup">
+                                <input type="hidden" name="_captcha" value="true">
+                                <input type="hidden" name="_next" value="https://neuronesthub.org/thank-you">
+                                <input type="hidden" name="_template" value="table">
+                                <div class="form-group">
+                                    <label for="signup-email">Email</label>
+                                    <input id="signup-email" type="email" name="email" required placeholder="you@domain.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="signup-goal">Your goal</label>
+                                    <textarea id="signup-goal" rows="5" name="message" placeholder="Describe what you're looking to work on with NeuroNest"></textarea>
+                                </div>
+                                <button type="submit" class="submit-btn">Submit</button>
+                            </form>
+                        </div>
+                    </aside>
+                </div>
+
+                <div id="latest-release" style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: 0.18em; text-transform: none; color: rgba(244, 249, 255, 0.96); margin-bottom: 40px; text-align: center; font-weight: 400; margin-top: 72px;">Latest Release</div>
+
+                <div class="layout">
+                    <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener" class="card card-main">
+                        <div class="card-main__image" style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div>
+                        <div class="card-main__shade"></div>
+                        <div class="card-main__content">
+                            <div class="latest-play-btn" aria-hidden="true">
+                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
+                            </div>
+                            <span class="tag">Latest Drop · 40 Hz Gamma</span>
+                            <h2>Deep Focus Architecture</h2>
+                            <p>Engineered isochronic tones layered with brown noise. Designed for sustained cognitive performance.</p>
+                        </div>
+                    </a>
+
+                    <div class="card-side-wrap">
+                        <a href="#curated-grid" class="card card-side">
+                            <span class="tag">Button</span>
+                            <h3>Curated Selection</h3>
+                            <p>Jump straight to the curated tracks and topic playlists.</p>
+                        </a>
+
+                        <div class="card-side-bottom">
+                            <a href="neuroscience-news.html" class="card card-small">
+                                <span class="tag">Research Hub</span>
+                                <h4>Neuroscience News</h4>
+                                <p>Open the latest research and neuroscience updates.</p>
+                            </a>
+
+                            <a href="learn-more.html#how-it-works" class="card card-small">
+                                <span class="tag">Guide</span>
+                                <h4>How to Use Sound</h4>
+                                <p>Get practical listening guidance and brainwave timing cues.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Album preview: NeuroNest first album (meditation soundscapes) -->
+                <div id="album-grid" style="margin-top: 40px;">
+                    <div class="album-title">NeuroNest — Meditation Soundscapes (Album Preview)</div>
+                    <div class="mosaic-grid">
+                        <a href="https://www.youtube.com/watch?v=6vez9LT68SQ&t=211s" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 1</h3></a>
+                        <a href="https://www.youtube.com/watch?v=GNVdfQyKsWk&t=79s" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/GNVdfQyKsWk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 2</h3></a>
+                        <a href="https://www.youtube.com/watch?v=nEDq7MMmxSk&t=22s" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/nEDq7MMmxSk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 3</h3></a>
+                        <a href="https://www.youtube.com/watch?v=5-Uj9lU3-2Q&t=227s" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/5-Uj9lU3-2Q/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 4</h3></a>
+                        <a href="https://www.youtube.com/watch?v=xDTYFBMJdXs&t=277s" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/xDTYFBMJdXs/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 5</h3></a>
+                        <a href="https://www.youtube.com/watch?v=iU630JQqIKA" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/iU630JQqIKA/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 6</h3></a>
+                        <a href="https://www.youtube.com/watch?v=FNDaPf6qUEA" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/FNDaPf6qUEA/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 7</h3></a>
+                        <a href="https://www.youtube.com/watch?v=wLw7ylH9p88" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/wLw7ylH9p88/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 8</h3></a>
+                        <a href="https://www.youtube.com/watch?v=Iv1MeWyYGIQ" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb" style="background-image:url('https://img.youtube.com/vi/Iv1MeWyYGIQ/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Album</span><h3>Track 9</h3></a>
+                    </div>
+                </div>
+
+                <div id="curated-grid" style="margin-top: 80px;">
+                    <div class="curated-title">Curated Selection</div>
+                    <p class="curated-subtitle">Curated directly from the Sound Hub Library in Notion.</p>
+                    <div class="curated-filter-bar">
+                        <div class="filter-chip-group">
+                            <button class="filter-chip active all" data-filter="all">All</button>
+                            <button class="filter-chip focus" data-filter="category-focus">Focus</button>
+                            <button class="filter-chip sleep" data-filter="category-sleep">Sleep</button>
+                            <button class="filter-chip calm" data-filter="category-calm">Calm</button>
+                            <button class="filter-chip other" data-filter="category-other">Other</button>
+                        </div>
+                        <div class="filter-status" id="curated-filter-status">Showing all curated selections</div>
+                    </div>
+                    <div class="mosaic-grid">
+                        <a href="https://www.youtube.com/watch?v=v4C4keiF0tQ" target="_blank" rel="noopener" class="mosaic-card featured category-calm"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/v4C4keiF0tQ/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>nature soundscapes, masking, rain sounds, ocean waves, parasympathetic activation, environmental immersion, white noise blend, distraction blocking, sensory grounding, low attention load</h3><p>Nature Immersion, Block Distractions, Stress Relief, Body Relaxation</p></a>
+                        <a href="https://www.youtube.com/watch?v=UPrQdaixz-4" target="_blank" rel="noopener" class="mosaic-card wide category-calm"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/UPrQdaixz-4/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>jazz funk, gentle arousal, nature soundscapes, low attention load, dopaminergic warmth, mood elevation, rhythmic ease, parasympathetic emphasis, playful texture, soul-soothing</h3><p>Mood Boost, Wind Down, Gentle Productivity, Feel-Good Listening</p></a>
+                        <a href="https://www.youtube.com/watch?v=--h6buReAvw" target="_blank" rel="noopener" class="mosaic-card square category-calm"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/--h6buReAvw/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>444Hz tuning, grounding, meditative state, downregulation, parasympathetic activation, slow harmonic movement, interoception, somatic settling, contemplative depth, frequency-specific resonance</h3><p>Meditation, Grounding, Inner Peace, Calm Your Nervous System</p></a>
+                        <a href="https://www.youtube.com/watch?v=woTWj6iN_aY" target="_blank" rel="noopener" class="mosaic-card portrait category-calm"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/woTWj6iN_aY/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>parasympathetic activation, handpan resonance, vagal tone, nervous system calming, harmonic overtones, downregulation, somatic settling, slow tempo, acoustic warmth, embodied listening</h3><p>Calm Your Nervous System, Stress Relief, Body Relaxation, Inner Peace</p></a>
+                        <a href="https://www.youtube.com/watch?v=-KAxNNhyfSY&t=2684s" target="_blank" rel="noopener" class="mosaic-card minimal category-calm"><div class="mosaic-card__thumb minimal" style="background-image:url('https://img.youtube.com/vi/-KAxNNhyfSY/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>alpha entrainment, neural oscillation, downregulation, relaxed alertness, brainwave promotion, parasympathetic emphasis, calm focus, frequency layering, tonal stability, stress buffering</h3><p>Calm Your Nervous System, Relaxed Focus, Stress Relief, Wind Down</p></a>
+                        <a href="https://www.youtube.com/watch?v=PDI3mdiQuG0" target="_blank" rel="noopener" class="mosaic-card tall category-calm"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/PDI3mdiQuG0/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>singing bowl resonance, nervous system reset, vagal tone, harmonic overtones, parasympathetic activation, somatic release, vibroacoustic stimulation, stress relief, meditative state, embodied listening</h3><p>Calm Your Nervous System, Stress Relief, Meditation, Emotional Release</p></a>
+                        <a href="https://www.youtube.com/watch?v=BXbsO8exZns" target="_blank" rel="noopener" class="mosaic-card featured category-calm"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/BXbsO8exZns/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>downregulation, meditation music, slow tempo, parasympathetic activation, cortisol reduction, acoustic simplicity, relaxation response, low attention load, contemplative depth, ambient warmth</h3><p>Meditation, Wind Down, Stress Relief, Inner Peace</p></a>
+                        <a href="https://www.youtube.com/watch?v=qIW2Fu2SN0U&t=26247s" target="_blank" rel="noopener" class="mosaic-card wide category-calm"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/qIW2Fu2SN0U/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Calm</span><h3>pink noise, memory consolidation, brain restoration, spectral balance, sleep-stage linked, masking, neural repair, slow-wave enhancement, long-duration exposure, engineered soundscape</h3><p>Brain Restoration, Deep Sleep, Sharpen Memory, Noise Masking</p></a>
+                        <a href="https://www.youtube.com/watch?v=Yi7BM8XPTfA" target="_blank" rel="noopener" class="mosaic-card square category-sleep"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/Yi7BM8XPTfA/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>theta/delta entrainment, sleep-stage linked, brainwave induction, deep sleep support, neural oscillation, slow-wave promotion, sleep architecture, frequency layering, hypnagogic transition, restorative sleep</h3><p>Deep Sleep, Brain Restoration, Fall Asleep Faster, Restorative Rest</p></a>
+                        <a href="https://www.youtube.com/watch?v=lh4JdZTJe7k" target="_blank" rel="noopener" class="mosaic-card portrait category-sleep"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/lh4JdZTJe7k/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>downregulation, slow tempo, sleep music, stress relief, parasympathetic activation, melodic simplicity, cortisol reduction, relaxation response, meditative state, low arousal</h3><p>Stress Relief, Deep Sleep, Meditation, Wind Down</p></a>
+                        <a href="https://www.youtube.com/watch?v=XntSTiJBauM" target="_blank" rel="noopener" class="mosaic-card minimal category-sleep"><div class="mosaic-card__thumb minimal" style="background-image:url('https://img.youtube.com/vi/XntSTiJBauM/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>guided meditation, sleep onset, theta induction, visualization, parasympathetic activation, hypnagogic state, subconscious access, relaxation response, sleep transition, mind-body integration</h3><p>Fall Asleep Faster, Guided Relaxation, Mental Clarity, Inner Peace</p></a>
+                        <a href="https://www.youtube.com/watch?v=FdN1pnEaJs0" target="_blank" rel="noopener" class="mosaic-card tall category-sleep"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/FdN1pnEaJs0/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>masking, white noise, sleep maintenance, spectral broadband, distraction blocking, sleep continuity, environmental noise reduction, sensory uniformity, arousal suppression, night-long coverage</h3><p>Stay Asleep All Night, Block Distractions, Deep Sleep, Noise Masking</p></a>
+                        <a href="https://www.youtube.com/watch?v=aOPXARjP1hM&t=10868s" target="_blank" rel="noopener" class="mosaic-card featured category-sleep"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/aOPXARjP1hM/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>parasympathetic activation, downregulation, somatic release, underwater acoustics, fascial release, vagal tone, deep relaxation, interoception, grief processing, noise blanket</h3><p>Deep Sleep, Calm Your Nervous System, Emotional Release, Body Relaxation</p></a>
+                        <a href="https://www.youtube.com/watch?v=_SsYljnOsU8&t=4791s" target="_blank" rel="noopener" class="mosaic-card wide category-sleep"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/_SsYljnOsU8/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Sleep</span><h3>brown noise, masking, low-frequency immersion, sleep onset, deep relaxation, spectral warmth, distraction blocking, parasympathetic emphasis, sensory cocooning, arousal dampening</h3><p>Deep Sleep, Block Distractions, Fall Asleep Faster, Total Immersion</p></a>
+                        <a href="https://www.youtube.com/watch?v=NQk2mX5Z36k" target="_blank" rel="noopener" class="mosaic-card square category-focus"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/NQk2mX5Z36k/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>isochronic tones, memory consolidation, alpha entrainment, jazzhop, low attention load, neural entrainment, study aid, working memory, rhythmic stimulation, cognitive enhancement</h3><p>Sharpen Memory, Study Sessions, Deep Focus, Brain Boost</p></a>
+                        <a href="https://www.youtube.com/watch?v=rKxRHZec67M" target="_blank" rel="noopener" class="mosaic-card portrait category-focus"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/rKxRHZec67M/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>alpha/beta entrainment, isochronic tones, memory consolidation, jazz harmony, low attention load, neural entrainment, working memory, cognitive flexibility, tonal richness, study aid</h3><p>Sharpen Memory, Deep Focus, Study Sessions, Mental Clarity</p></a>
+                        <a href="https://www.youtube.com/watch?v=yLOM8R6lbzg" target="_blank" rel="noopener" class="mosaic-card minimal category-focus"><div class="mosaic-card__thumb minimal" style="background-image:url('https://img.youtube.com/vi/yLOM8R6lbzg/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>masking, white noise, attentional filtering, distraction blocking, study aid, spectral broadband, cognitive anchoring, sustained attention, environmental noise reduction, sensory uniformity</h3><p>Study Sessions, Block Distractions, Exam Prep, Sustained Focus</p></a>
+                        <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" rel="noopener" class="mosaic-card tall category-focus"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>low attention load, ambient hip-hop, masking, steady-state tempo, relaxed alertness, lo-fi texture, gentle arousal, study aid, background soundscape, cognitive ease</h3><p>Relaxed Focus, Study Sessions, Background Listening, Gentle Productivity</p></a>
+                        <a href="https://www.youtube.com/watch?v=qlM39cB_5hk" target="_blank" rel="noopener" class="mosaic-card featured category-focus"><div class="mosaic-card__thumb tall" style="background-image:url('https://img.youtube.com/vi/qlM39cB_5hk/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>low attention load, dark ambient, masking, coding flow, minimal stimulation, sensory anchoring, sustained focus, deep work, atmospheric texture, cognitive isolation</h3><p>Deep Work, Block Distractions, Coding Flow, Sustained Focus</p></a>
+                        <a href="https://www.youtube.com/watch?v=A6dzSX62gEY&t=362s" target="_blank" rel="noopener" class="mosaic-card wide category-focus"><div class="mosaic-card__thumb wide" style="background-image:url('https://img.youtube.com/vi/A6dzSX62gEY/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>arousal regulation, ADHD support, ambient techno, sustained focus, low attention load, masking, beta entrainment, executive function, cognitive endurance, sensory anchoring</h3><p>ADHD Support, Deep Focus, Block Distractions, Mental Clarity</p></a>
+                        <a href="https://www.youtube.com/watch?v=U5kH5VE31Rc" target="_blank" rel="noopener" class="mosaic-card square category-focus"><div class="mosaic-card__thumb square" style="background-image:url('https://img.youtube.com/vi/U5kH5VE31Rc/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>masking, brown noise, ADHD support, attentional filtering, mind wandering suppression, spectral smoothing, sensory anchoring, cognitive stability, low-frequency noise, distraction blocking</h3><p>ADHD Support, Block Distractions, Quiet Your Mind, Deep Focus</p></a>
+                        <a href="https://www.youtube.com/watch?v=74cOUSKXMz0&t=543s" target="_blank" rel="noopener" class="mosaic-card portrait category-focus"><div class="mosaic-card__thumb portrait" style="background-image:url('https://img.youtube.com/vi/74cOUSKXMz0/maxresdefault.jpg');"></div><span class="mosaic-card__tag">Focus</span><h3>arousal regulation, pomodoro structure, time-blocked focus, sustained attention, low attention load, study aid, work-rest cycling, cognitive stamina, task anchoring, ultradian rhythm</h3><p>Study Sessions, Sustained Work, Time-Blocked Focus, Productivity</p></a>
+                    </div>
+                </div>
+</div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="assets/page-transitions.js"></script>
+    <style>
+        /* Demon Slayer overlay styles */
+        #demon-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99999;
+        }
+
+        #demon-overlay canvas { display: block; width: 100%; height: 100%; }
+
+        #demon-info {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(0, 255, 136, 0.6);
+            font-family: 'DM Sans', system-ui, sans-serif;
+            font-size: 14px;
+            text-align: center;
+            pointer-events: auto;
+            z-index: 100000;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        #demon-info .title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+        #demon-info .subtitle { font-size: 12px; opacity: 0.5; }
+    </style>
+    <script>
+        (function () {
+            var texts = document.querySelectorAll('.rotating-text');
+            if (texts.length < 2) return;
+            var current = 0;
+            setInterval(function () {
+                texts[current].classList.remove('active');
+                current = (current + 1) % texts.length;
+                texts[current].classList.add('active');
+            }, 3000);
+        })();
+
+        // Populate mosaic cards with data from build output (soundhub-data.json)
+        (function () {
+            fetch('/assets/soundhub-data.json').then(function (res) {
+                if (!res.ok) throw new Error('no data');
+                return res.json();
+            }).then(function (items) {
+                if (!Array.isArray(items)) return;
+                items.forEach(function (it) {
+                    // find a card whose title matches (best-effort) or slug matches
+                    var cards = document.querySelectorAll('.mosaic-card');
+                    for (var i = 0; i < cards.length; i++) {
+                        var c = cards[i];
+                        var h = c.querySelector('h3');
+                        var titleText = h ? h.textContent.trim() : '';
+                        var matchTitle = (it.hubTitle || it.title || '').trim();
+                        if (!titleText) continue;
+                        // prefer matching by YouTube ID if available
+                        var cardHref = (c.getAttribute('href') || '');
+                        function extractYtId(url) {
+                            try { var u = new URL(url); if (u.hostname.indexOf('youtu.be')>-1) return u.pathname.slice(1); if (u.hostname.indexOf('youtube.com')>-1) return u.searchParams.get('v') || ''; } catch(e) {}
+                            var m = url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/); return m?m[1]:'';
+                        }
+                        var cardYt = extractYtId(cardHref);
+                        if ( (it.youtubeId && cardYt && it.youtubeId === cardYt) || titleText.toLowerCase() === matchTitle.toLowerCase() || (c.getAttribute('href') || '').indexOf(it.slug) !== -1) {
+                            c.dataset.duration = it.duration || '';
+                            c.dataset.keywords = it.keywords || '';
+                            c.dataset.hubTitle = it.hubTitle || it.title || '';
+                            c.dataset.hubDescription = it.hubDescription || '';
+                            // set duration badge text if present
+                            var dBadge = c.querySelector('.mosaic-card__duration');
+                            if (dBadge) dBadge.textContent = it.duration || dBadge.textContent || '';
+                            // populate hover area text (Title + description)
+                            var hover = c.querySelector('.mosaic-card__hover-keywords');
+                            if (hover) hover.dataset.fullText = (it.hubTitle ? it.hubTitle + '\n\n' : '') + (it.hubDescription || '') + (it.duration ? '\n\nDuration: ' + it.duration : '');
+                            break;
+                        }
+                    }
+                });
+            }).catch(function () {
+                // fail silently if file not found
+            });
+        })();
+
+        /* Demon Slayer overlay: adapted from provided demo and using global THREE */
+        (function () {
+            // create overlay container
+            var overlay = document.createElement('div');
+            overlay.id = 'demon-overlay';
+            var canvas = document.createElement('canvas');
+            canvas.id = 'demon-canvas';
+            overlay.appendChild(canvas);
+            document.body.appendChild(overlay);
+
+            var info = document.createElement('div');
+            info.id = 'demon-info';
+            info.innerHTML = '<div class="title">Infinity Breathing</div><div class="subtitle">Scroll to zoom · Drag to orbit</div>';
+            document.body.appendChild(info);
+
+            if (typeof THREE === 'undefined') return;
+
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            var scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.01);
+
+            var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+            camera.position.set(0, 0, 100);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.5;
+
+            var composer = new THREE.EffectComposer(renderer);
+            composer.addPass(new THREE.RenderPass(scene, camera));
+            var bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.8, 0.4, 0.0);
+            composer.addPass(bloomPass);
+
+            var COUNT = 20000;
+            var geometry = new THREE.TetrahedronGeometry(0.25);
+            var material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            var mesh = new THREE.InstancedMesh(geometry, material, COUNT);
+            mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+            scene.add(mesh);
+
+            var dummy = new THREE.Object3D();
+            var color = new THREE.Color();
+            var positions = [];
+            for (var i = 0; i < COUNT; i++) {
+                positions.push(new THREE.Vector3((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100));
+                mesh.setColorAt(i, color.setHex(0x00ff88));
+            }
+
+            var clock = new THREE.Clock();
+
+            function resizeOverlay() {
+                var w = window.innerWidth;
+                var h = window.innerHeight;
+                camera.aspect = w / h; camera.updateProjectionMatrix();
+                renderer.setSize(w, h); composer.setSize(w, h);
+            }
+
+            window.addEventListener('resize', resizeOverlay);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                var time = clock.getElapsedTime() * 1.0;
+                controls.update();
+                var zoom = 0.625, swirl = 0.5, layers = 3.2;
+                var t = time * 0.6;
+                for (var i = 0; i < COUNT; i++) {
+                    var x = 0, y = 0, scale = 1;
+                    for (var j = 0; j < layers; j++) {
+                        var angle = i * 0.1 * scale + t * swirl;
+                        var r = Math.sqrt(i / COUNT) * 120 / scale;
+                        x += Math.cos(angle) * r;
+                        y += Math.sin(angle) * r;
+                        scale *= zoom;
+                    }
+                    var pulse = Math.sin(t * 2) * 20;
+                    x += pulse; y += pulse * 0.5;
+                    var target = new THREE.Vector3(x, y, 0);
+                    var hue = (0.5 + Math.sin(i * 0.01 + t) * 0.1) % 1;
+                    var light = 0.5 + Math.sin(t + i * 0.02) * 0.2;
+                    color.setHSL(hue, 0.9, light);
+                    positions[i].lerp(target, 0.1);
+                    dummy.position.copy(positions[i]); dummy.updateMatrix();
+                    mesh.setMatrixAt(i, dummy.matrix); mesh.setColorAt(i, color);
+                }
+                mesh.instanceMatrix.needsUpdate = true; if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+                composer.render();
+            }
+
+            animate();
+        })();
+
+        (function () {
+            var canvas = document.getElementById('hero-animation');
+            if (!canvas || typeof THREE === 'undefined') return;
+
+            var scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000000, 0.01);
+
+            var camera = new THREE.PerspectiveCamera(60, 1, 0.1, 2000);
+            camera.position.set(0, 0, 100);
+
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0x000000, 0);
+
+            var controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1.8;
+            controls.enablePan = false;
+            controls.enableZoom = false;
+            controls.minPolarAngle = Math.PI / 6;
+            controls.maxPolarAngle = Math.PI / 1.6;
+
+            var ambient = new THREE.AmbientLight(0xffffff, 0.55);
+            var point = new THREE.PointLight(0xff88cc, 1.2);
+            point.position.set(80, 80, 100);
+            scene.add(ambient, point);
+
+            var composer = new THREE.EffectComposer(renderer);
+            composer.addPass(new THREE.RenderPass(scene, camera));
+            var bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.strength = 1.8;
+            bloomPass.radius = 0.4;
+            bloomPass.threshold = 0;
+            composer.addPass(bloomPass);
+
+            var count = 20000;
+            var geometry = new THREE.TetrahedronGeometry(0.25);
+            var material = new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: true });
+            var mesh = new THREE.InstancedMesh(geometry, material, count);
+            mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+            scene.add(mesh);
+
+            var dummy = new THREE.Object3D();
+            var positions = [];
+            var color = new THREE.Color(0xff0055);
+
+            for (var i = 0; i < count; i++) {
+                positions.push(new THREE.Vector3((Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100, (Math.random() - 0.5) * 100));
+                mesh.setColorAt(i, color);
+            }
+
+            function resize() {
+                var rect = canvas.parentElement.getBoundingClientRect();
+                camera.aspect = rect.width / rect.height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(rect.width, rect.height, false);
+                composer.setSize(rect.width, rect.height);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                var time = performance.now() * 0.0009;
+                for (var i = 0; i < count; i++) {
+                    var u = (i / count) * Math.PI * 2 * 40;
+                    var v = (i / count) * Math.PI * 2;
+                    var targetX = (25 + 8 * Math.cos(u)) * Math.cos(v);
+                    var targetY = (25 + 8 * Math.cos(u)) * Math.sin(v);
+                    var targetZ = 8 * Math.sin(u);
+                    var pos = positions[i];
+                    pos.lerp(new THREE.Vector3(targetX, targetY, targetZ), 0.1);
+                    dummy.position.copy(pos);
+                    dummy.updateMatrix();
+                    mesh.setMatrixAt(i, dummy.matrix);
+                }
+                mesh.instanceMatrix.needsUpdate = true;
+                if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+                controls.update();
+                composer.render();
+            }
+
+            animate();
+        })();
+
+        (function () {
+            var filterButtons = document.querySelectorAll('.filter-chip');
+            var curatedCards = document.querySelectorAll('.mosaic-card');
+            var status = document.getElementById('curated-filter-status');
+
+            function updateStatus(filter) {
+                if (!status) return;
+                if (filter === 'all') {
+                    status.textContent = 'Showing all curated selections';
+                } else {
+                    var label = filter.replace('category-', '');
+                    status.textContent = 'Showing ' + label.charAt(0).toUpperCase() + label.slice(1) + ' selections';
+                }
+            }
+
+            function applyFilter(filter) {
+                curatedCards.forEach(function (card) {
+                    var normalizedFilter = filter.replace(/^category-/, '');
+                    var cardCategory = card.dataset.category || Array.from(card.classList).find(function (c) {
+                        return c.indexOf('category-') === 0;
+                    }) || '';
+                    var isVisible = filter === 'all' || card.classList.contains(filter) || cardCategory === normalizedFilter;
+                    // leave layout to grid; hide by clearing display or setting none
+                    card.style.display = isVisible ? '' : 'none';
+                });
+                filterButtons.forEach(function (button) {
+                    button.classList.toggle('active', button.dataset.filter === filter);
+                });
+                updateStatus(filter);
+            }
+
+            filterButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    applyFilter(button.dataset.filter);
+                });
+            });
+
+            if (filterButtons.length && curatedCards.length) {
+                applyFilter('all');
+            }
+
+            curatedCards.forEach(function (card) {
+                var title = card.querySelector('h3');
+                var body = card.querySelector('p');
+                if (!title || !body) return;
+
+                var keywordText = title.textContent.trim();
+                var hubTitleText = card.dataset.hubTitle || body.textContent.trim() || 'Title for hub';
+                // keep source DOM for matching but hide visually; populate hover full text below
+                title.textContent = hubTitleText;
+                body.textContent = keywordText;
+
+                var overlay = document.createElement('div');
+                overlay.className = 'mosaic-card__overlay';
+                card.appendChild(overlay);
+
+                var hoverCopy = document.createElement('div');
+                hoverCopy.className = 'mosaic-card__hover-keywords';
+                hoverCopy.textContent = '';
+                // build full hover text: Title (col 2), Description (col 5), Duration (col 7)
+                var hoverTitle = card.dataset.hubTitle || hubTitleText || '';
+                var hoverDesc = card.dataset.hubDescription || body.textContent || '';
+                var hoverDur = card.dataset.duration || '';
+                var fullHover = '';
+                if (hoverTitle) fullHover += hoverTitle + '\n\n';
+                if (hoverDesc) fullHover += hoverDesc + '\n\n';
+                if (hoverDur) fullHover += 'Duration: ' + hoverDur;
+                hoverCopy.dataset.fullText = fullHover;
+                card.appendChild(hoverCopy);
+
+                var thumb = card.querySelector('.mosaic-card__thumb');
+                if (thumb) {
+                    var creatorName = card.dataset.creator || 'Notion API creator';
+                    var durationText = card.dataset.duration || 'TBD';
+
+                    var durationBadge = document.createElement('span');
+                    durationBadge.className = 'mosaic-card__duration';
+                    durationBadge.textContent = durationText;
+                    thumb.appendChild(durationBadge);
+
+                    var creatorLabel = document.createElement('span');
+                    creatorLabel.className = 'mosaic-card__creator';
+                    creatorLabel.textContent = creatorName;
+                    thumb.appendChild(creatorLabel);
+                }
+                // remove old tag element if present
+                var oldTag = card.querySelector('.mosaic-card__tag');
+                if (oldTag) oldTag.remove();
+
+                card.addEventListener('mouseenter', function () {
+                    // show overlay text immediately (Title / Description / Duration)
+                    var full = hoverCopy.dataset.fullText || '';
+                    hoverCopy.textContent = full;
+
+                    // animate duration badge (column 7) with a little pop
+                    var d = card.querySelector('.mosaic-card__duration');
+                    if (d) {
+                        d.style.transform = 'scale(1.06)';
+                        d.style.transition = 'transform 160ms ease';
+                        setTimeout(function () { d.style.transform = ''; }, 220);
+                    }
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    hoverCopy.textContent = '';
+                });
+            });
+        })();
+    </script>
+    <script>
+    // Ensure the coming-soon panel is moved to <body> for a reliable fixed position across browsers.
+    (function(){
+        const PANEL_SELECTOR = '.hero-side-tab .coming-soon-shell';
+        const PLACEHOLDER_ID = 'coming-soon-placeholder';
+        let placeholder = null;
+        let moved = false;
+
+        function ensurePlaceholder(el){
+            if (!placeholder && el && el.parentNode){
+                placeholder = document.createElement('div');
+                placeholder.id = PLACEHOLDER_ID;
+                el.parentNode.insertBefore(placeholder, el);
+            }
+        }
+
+        function moveToBody(){
+            const el = document.querySelector(PANEL_SELECTOR);
+            if (!el || moved) return;
+            ensurePlaceholder(el);
+            document.body.appendChild(el);
+            el.classList.add('fixed-body-panel');
+            moved = true;
+        }
+
+        function moveBack(){
+            const el = document.querySelector('.fixed-body-panel') || document.querySelector(PANEL_SELECTOR);
+            const ph = document.getElementById(PLACEHOLDER_ID);
+            if (!el || !ph) return;
+            ph.parentNode.replaceChild(el, ph);
+            el.classList.remove('fixed-body-panel');
+            moved = false;
+            placeholder = null;
+        }
+
+        function check(){
+            if (window.innerWidth >= 981){
+                moveToBody();
+            } else {
+                moveBack();
+            }
+        }
+
+        window.addEventListener('resize', check);
+        document.addEventListener('DOMContentLoaded', check);
+        if (document.readyState === 'complete' || document.readyState === 'interactive') check();
+    })();
+    </script>
+</body>
+</html>
