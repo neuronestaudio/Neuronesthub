@@ -1,4 +1,5 @@
 import { Protocol } from '../../types/soundHub';
+import { Apple, Play } from 'lucide-react';
 
 interface HeroPanelProps {
   protocol: Protocol;
@@ -33,12 +34,32 @@ export default function HeroPanel({ protocol, onExecute }: HeroPanelProps) {
           {protocol.body}
         </p>
 
-        <button 
-          onClick={onExecute}
-          className="h-[48px] px-8 bg-accent-signal text-obsidian font-mono text-[12px] uppercase font-bold hover:border-2 hover:border-obsidian focus:outline-none focus:ring-2 focus:ring-accent-signal focus:ring-offset-2 focus:ring-offset-panel transition-all"
-        >
-          {protocol.ctaLabel}
-        </button>
+        <div className="flex items-center gap-6">
+          <button 
+            onClick={onExecute}
+            className="h-[48px] px-8 bg-accent-signal text-obsidian font-mono text-[12px] uppercase font-bold hover:border-2 hover:border-obsidian focus:outline-none focus:ring-2 focus:ring-accent-signal focus:ring-offset-2 focus:ring-offset-panel transition-all shrink-0"
+          >
+            {protocol.ctaLabel}
+          </button>
+          
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 px-4 py-2 bg-obsidian/40 border border-border-hairline backdrop-blur-md hover:bg-panel transition-colors cursor-pointer group rounded-sm opacity-80 hover:opacity-100">
+              <Apple size={20} className="text-bone group-hover:text-white transition-colors" />
+              <div className="flex flex-col">
+                <span className="text-[7px] text-ash tracking-widest uppercase leading-none font-mono mb-0.5">Download on the</span>
+                <span className="text-[13px] text-bone font-sans font-semibold leading-none tracking-tight">App Store</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 px-4 py-2 bg-obsidian/40 border border-border-hairline backdrop-blur-md hover:bg-panel transition-colors cursor-pointer group rounded-sm opacity-80 hover:opacity-100">
+              <Play size={18} className="text-bone group-hover:text-accent-signal transition-colors" />
+              <div className="flex flex-col">
+                <span className="text-[7px] text-ash tracking-widest uppercase leading-none font-mono mb-0.5">Get it on</span>
+                <span className="text-[13px] text-bone font-sans font-semibold leading-none tracking-tight">Google Play</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
