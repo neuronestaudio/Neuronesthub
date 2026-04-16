@@ -1,10 +1,10 @@
 import { Category, LogEntry, Metric, Protocol } from '../types/soundHub';
 
 export const MOCK_PROTOCOL: Protocol = {
-  id: 'neuronest-app',
+  id: 'neuronest-radio',
   label: '▸ PRE-REGISTRATION',
-  title: 'NEURONEST\nHUB APP',
-  body: 'Launching in October 2026, Sign up for 1 Year Free Access to Premium Features - staying up to date with research and using the Neuronest Radio Anywhere on the go!',
+  title: 'NEURONEST RADIO',
+  body: '- Coming soon to app store and google playstore',
   ctaLabel: 'PRE-REGISTER NOW'
 };
 
