@@ -25,19 +25,6 @@ export default function Sidebar() {
           const Icon = link.icon;
           const classes = `group relative flex items-center justify-center w-12 h-12 rounded hover:bg-panel transition-colors ${isActive ? 'text-bone' : 'text-ash hover:text-bone'}`;
 
-          if (link.isExternal) {
-            return (
-              <a 
-                key={i} 
-                href={link.path}
-                title={link.label || link.path}
-                aria-label={link.label || link.path}
-                className={classes}
-              >
-                <Icon size={24} />
-              </a>
-            );
-          }
 
           return (
             <Link 

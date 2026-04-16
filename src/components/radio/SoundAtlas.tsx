@@ -1,4 +1,4 @@
-import { Play, PlayCircle, MoreHorizontal } from 'lucide-react';
+import { Play, MoreHorizontal } from 'lucide-react';
 import { UPLOADED_TRACKS } from '../../data/soundHub.mock';
 
 interface SoundAtlasProps {

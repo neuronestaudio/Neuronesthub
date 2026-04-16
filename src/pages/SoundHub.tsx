@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/soundhub/Sidebar';
-import Topbar from '../components/soundhub/Topbar';
 import HeroPanel from '../components/soundhub/HeroPanel';
 import FeatureCards from '../components/soundhub/FeatureCards';
 import UploadsLog from '../components/soundhub/UploadsLog';
@@ -13,7 +12,7 @@ import ArchiveView from './ArchiveView';
 import UnderConstruction from './UnderConstruction';
 import TrackListView from './TrackListView';
 import TheoryView from './TheoryView';
-import { MOCK_PROTOCOL, MOCK_METRICS, MOCK_CATEGORIES } from '../data/soundHub.mock';
+import { MOCK_PROTOCOL, MOCK_CATEGORIES } from '../data/soundHub.mock';
 import { useLocation } from 'react-router-dom';
 
 // Hook for searching with debounce
