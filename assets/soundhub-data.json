@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "id": "trk-001",
+    "title": "Deep Focus Alpha Beats",
+    "category": "Focus",
+    "description": "Isochronic tones combined with ambient rain to stimulate alpha waves for deep work.",
+    "youtubeId": "5qap5aO4i9A",
+    "coverArt": "https://images.unsplash.com/photo-1542382257-80dedb725088?w=400&q=80",
+    "bpm": 60
+  },
+  {
+    "id": "trk-002",
+    "title": "Delta Sleep Downshift",
+    "category": "Sleep",
+    "description": "Low-frequency drone masks environment and promotes slow-wave delta continuity.",
+    "youtubeId": "1ZYbU82GVz4",
+    "coverArt": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&q=80",
+    "bpm": 40
+  },
+  {
+    "id": "trk-003",
+    "title": "Pink Noise Stabilizer",
+    "category": "Calm",
+    "description": "Textured pink noise envelope for nervous system containment and recovery.",
+    "youtubeId": "zx_d1X51D5Q",
+    "coverArt": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=400&q=80",
+    "bpm": 50
+  },
+  {
+    "id": "trk-004",
+    "title": "Theta Neural Entrainment",
+    "category": "Focus",
+    "description": "Sustained theta stimulation for planning and structured creative work.",
+    "youtubeId": "w3yE22P8g7c",
+    "coverArt": "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=400&q=80",
+    "bpm": 65
+  },
+  {
+    "id": "trk-005",
+    "title": "Vagal Tone Recovery",
+    "category": "Calm",
+    "description": "Soundscapes mirroring nature to activate the parasympathetic down-shift.",
+    "youtubeId": "lFcSrYw-ARY",
+    "coverArt": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&q=80",
+    "bpm": 45
+  }
+]
