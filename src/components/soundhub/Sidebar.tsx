@@ -10,6 +10,12 @@ export default function Sidebar() {
     { icon: Shield, path: '/sound-hub/security' },
     { icon: Brain, path: '/sound-hub/experiments', label: 'AI Studio' },
     { icon: Lightbulb, path: '/sound-hub/theory', label: 'Theory Engine' },
+    { 
+      icon: () => <div className="w-[18px] h-[18px] bg-accent-signal rounded-sm shadow-[0_0_8px_rgba(224,177,0,0.5)] group-hover:scale-110 transition-transform"></div>, 
+      path: '/radio.html', 
+      label: 'NeuroNest Radio',
+      isExternal: true
+    },
   ];
 
   return (
@@ -18,13 +24,29 @@ export default function Sidebar() {
         {primaryLinks.map((link, i) => {
           const isActive = pathname === link.path || pathname.startsWith(link.path) && link.path !== '/sound-hub';
           const Icon = link.icon;
+          const classes = `group relative flex items-center justify-center w-12 h-12 rounded hover:bg-panel transition-colors ${isActive ? 'text-bone' : 'text-ash hover:text-bone'}`;
+
+          if (link.isExternal) {
+            return (
+              <a 
+                key={i} 
+                href={link.path}
+                title={link.label || link.path}
+                aria-label={link.label || link.path}
+                className={classes}
+              >
+                <Icon size={24} />
+              </a>
+            );
+          }
+
           return (
             <Link 
               key={i} 
               to={link.path}
               title={link.label || link.path}
               aria-label={link.label || link.path}
-              className={`relative flex items-center justify-center w-12 h-12 rounded hover:bg-panel transition-colors ${isActive ? 'text-bone' : 'text-ash hover:text-bone'}`}
+              className={classes}
             >
               <Icon size={24} />
               {isActive && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-6 bg-accent-signal" />}
