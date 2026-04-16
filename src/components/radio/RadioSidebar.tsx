@@ -6,8 +6,8 @@ export default function RadioSidebar() {
 
   const links = [
     { icon: Home, label: 'Home', path: '/sound-hub' },
-    { icon: Music, label: 'Sound Hub', path: '/radio' },
-    { icon: BookOpen, label: 'Research Hub', path: '/sound-hub/theory' },
+    { icon: Music, label: 'Sound Hub', path: '/sound-hub' },
+    { icon: BookOpen, label: 'Research Hub', path: '/research-hub' },
     { icon: Info, label: 'Learn More', path: '#' },
   ];
 

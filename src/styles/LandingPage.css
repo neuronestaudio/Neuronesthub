@@ -1,0 +1,124 @@
+/* Scoped landing page styles to prevent dashboard pollution */
+.landing-page-root {
+    --bg-pure: #000;
+    --text-main: #fff;
+    --accent: #00f2ff;
+    --font-modern: 'Outfit', sans-serif;
+}
+
+.landing-page-root {
+    background-color: #000;
+    color: #fff;
+    font-family: var(--font-modern);
+}
+
+.landing-page-root .top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 24px 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    transition: background 0.3s ease;
+}
+
+.landing-page-root .hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.landing-page-root .hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 110%;
+    width: auto;
+    height: auto;
+    z-index: -2;
+    object-fit: cover;
+    filter: brightness(0.65) contrast(1.1);
+}
+
+.landing-page-root .hero h1 {
+    font-size: clamp(40px, 8vw, 120px);
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+}
+
+.landing-page-root .hero p {
+    font-size: clamp(16px, 2vw, 22px);
+    color: #bbb;
+    max-width: 600px;
+    margin: 0 auto 40px;
+}
+
+/* ... (I will include the rest of the essential styles here) */
+.landing-page-root .section-block {
+    padding: 100px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.landing-page-root .footer-banner {
+    position: relative;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.landing-page-root .footer-banner-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 105%;
+    height: 105%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.5);
+}
+
+.landing-page-root .footer-banner-text {
+    font-size: clamp(24px, 4vw, 54px);
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+/* Sidebar and menu styles from original index.html */
+.landing-page-root .menu-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.landing-page-root .is-open .menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}

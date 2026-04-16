@@ -9,7 +9,7 @@ export default function Sidebar() {
     { icon: Disc3, path: '/sound-hub/archive' },
     { icon: Shield, path: '/sound-hub/security' },
     { icon: Brain, path: '/sound-hub/experiments', label: 'AI Studio' },
-    { icon: Lightbulb, path: '/sound-hub/theory', label: 'Theory Engine' },
+    { icon: Lightbulb, path: '/research-hub', label: 'Research Hub' },
     { 
       icon: () => <div className="w-[18px] h-[18px] bg-accent-signal rounded-sm shadow-[0_0_8px_rgba(224,177,0,0.5)] group-hover:scale-110 transition-transform"></div>, 
       path: '/radio', 
