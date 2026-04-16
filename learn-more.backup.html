@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Learn More — NeuroNest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0d;--card:#131318;--muted:rgba(255,255,255,0.55);--dim:rgba(255,255,255,0.35);
+      --text:#e8e6e1;--gold:#c9a96e;--teal:#5a9e9e;--sage:#7fb68f;--lavender:#bfa3d1;--rose:#d08a94;
+      --max:1100px;--gap:2.2rem;
+    }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,Segoe UI,Roboto,Arial;margin:0;line-height:1.7}
+    a{color:var(--gold)}
+    .container{max-width:var(--max);margin:0 auto;padding:4rem 1.25rem}
+    header{position:fixed;inset:0 0 auto 0;z-index:60;background:transparent;backdrop-filter:blur(6px);transition:background .25s;border-bottom:1px solid rgba(255,255,255,0.03)}
+    header.scrolled{background:linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.15))}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;max-width:1300px;margin:0 auto}
+    .brand{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--text);letter-spacing:0.4px}
+    nav a{margin-left:1.1rem;color:var(--muted);text-decoration:none;font-size:0.95rem}
+    .hamburger{display:none;background:transparent;border:0;color:var(--text)}
+    main{padding-top:84px}
+    /* HERO */
+    .hero{min-height:calc(100vh - 84px);display:grid;align-items:center}
+    .hero-inner{display:grid;grid-template-columns:1fr 380px;gap:3rem;align-items:start}
+    .eyebrow{font-family:'JetBrains Mono',monospace;color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-size:0.8rem}
+    h1{font-family:'DM Serif Display',serif;font-size:2.6rem;margin:0;color:var(--text)}
+    h1 em{font-style:italic;color:var(--gold);font-family:'DM Serif Display',serif}
+    .hero-sub{color:var(--muted);margin-top:0.8rem}
+    .goals{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1.6rem}
+    .goal{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:1rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04)}
+    .hero-decor{position:absolute;right:6%;top:26%;width:420px;height:420px;border-radius:50%;filter:blur(36px);background:radial-gradient(circle at 40% 30%,rgba(201,169,110,0.08),transparent 30%);pointer-events:none}
+    /* Section label */
+    .section{padding:7rem 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+    .label{font-family:'JetBrains Mono',monospace;color:var(--gold);text-transform:uppercase;letter-spacing:2px;font-size:0.78rem;margin-bottom:0.6rem}
+    .card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+    .card{background:var(--card);padding:1.25rem;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+    .center-card{text-align:center}
+    /* Mechanism flow */
+    .flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .flow-item{background:rgba(255,255,255,0.02);padding:.5rem .8rem;border-radius:6px;font-size:0.9rem}
+    /* Practical outcomes table */
+    .outcomes{display:grid;gap:1rem}
+    .outcome-row{display:grid;grid-template-columns:1fr 2fr 1fr;padding:1rem;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.03)}
+    /* Tabs */
+    .tabs{display:grid;grid-template-columns:200px 1fr;gap:1rem}
+    .tablist{display:flex;flex-direction:column;gap:.6rem}
+    .tab{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:.6rem .8rem;border-radius:6px;color:var(--muted);cursor:pointer;text-align:left}
+    .tab.active{background:linear-gradient(90deg,rgba(201,169,110,0.05),transparent);color:var(--text);border-color:rgba(201,169,110,0.14)}
+    .family{padding:1rem;border-radius:8px;border-top:3px solid rgba(255,255,255,0.03);margin-bottom:1rem}
+    .badge{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-family:'JetBrains Mono';font-size:.72rem}
+    .badge.strong{background:rgba(127,182,143,0.12);color:var(--sage);border:1px solid rgba(127,182,143,0.06)}
+    .badge.practical{background:rgba(201,169,110,0.08);color:var(--gold)}
+    .badge.exploratory{background:rgba(191,163,209,0.08);color:var(--lavender)}
+    .family-header{display:flex;justify-content:space-between;align-items:center}
+    /* Accordions */
+    .accordion-item{border:1px solid rgba(255,255,255,0.03);border-radius:8px;margin-bottom:.6rem;overflow:hidden}
+    .acc-head{background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);padding:.8rem 1rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+    .acc-body{padding:1rem;border-top:1px solid rgba(255,255,255,0.02);display:none}
+    .acc-body.open{display:block}
+    /* CTA cards */
+    .paths{display:flex;gap:1rem;flex-wrap:wrap}
+    .path{flex:1;min-width:200px;padding:1rem;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.03);text-align:center}
+    footer{padding:3rem 1.25rem;border-top:1px solid rgba(255,255,255,0.02);text-align:center;color:var(--dim)}
+    /* small screens */
+    @media (max-width:900px){
+      .hero-inner{grid-template-columns:1fr}
+      .tabs{grid-template-columns:1fr}
+      .tablist{flex-direction:row;overflow:auto}
+      .hamburger{display:inline-block}
+      nav .links{display:none}
+      header.scrolled{border-bottom:1px solid rgba(255,255,255,0.04)}
+    }
+    /* animations */
+    .fade-up{opacity:0;transform:translateY(10px);animation:fadeUp .7s ease forwards}
+    .fade-up.delay{animation-delay:.12s}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+
+    /* SVG & icon animations (adapted from react components) */
+    .icon-svg {width:100%;height:auto;max-width:380px;color:var(--gold);display:block}
+    .animate-brain-pulse{animation:brainPulse 3.6s ease-in-out infinite;transform-origin:center}
+    .animate-brain-glow{animation:glow 4s ease-in-out infinite}
+    @keyframes brainPulse{0%{opacity:0;transform:scale(.85)}30%{opacity:1;transform:scale(1)}70%{opacity:0.6;transform:scale(1.05)}100%{opacity:0}}
+    @keyframes glow{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+
+    .delay-0{animation-delay:0s}.delay-1500{animation-delay:1.5s}.delay-3000{animation-delay:3s}.delay-4500{animation-delay:4.5s}
+
+    /* Wave stabilise + check draw */
+    .animate-wave-stabilize{stroke-dasharray:200;stroke-dashoffset:200;animation:waveIn 1.2s ease forwards}
+    @keyframes waveIn{to{stroke-dashoffset:0}}
+    .animate-check-draw{stroke-dasharray:40;stroke-dashoffset:40;opacity:0;animation:checkDraw 2s 1s ease forwards}
+    @keyframes checkDraw{50%{opacity:1}to{stroke-dashoffset:0;opacity:1}}
+
+    /* Orbit + hub */
+    .animate-orbit-ring{animation:rotateSlow 18s linear infinite;transform-origin:center}
+    @keyframes rotateSlow{to{transform:rotate(360deg)}}
+    .animate-orbit-n1{animation:orbitMove 8s ease-in-out infinite}
+    .animate-orbit-n2{animation:orbitMove 8s ease-in-out 1.2s infinite}
+    .animate-orbit-n3{animation:orbitMove 8s ease-in-out 2.4s infinite}
+    .animate-orbit-n4{animation:orbitMove 8s ease-in-out 3.6s infinite}
+    @keyframes orbitMove{0%{transform:translateY(0)}50%{transform:translateY(2px)}100%{transform:translateY(0)}}
+
+    /* Signal flow */
+    .animate-signal-flow{stroke-dasharray:8 8;animation:flow 2s linear infinite}
+    @keyframes flow{to{stroke-dashoffset:-16}}
+
+    /* hub pulse */
+    .animate-hub-glow{animation:hubPulse 2.6s ease-in-out infinite}
+    @keyframes hubPulse{0%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}100%{opacity:.6;transform:scale(1)}}
+  </style>
+</head>
+<body>
+  <header id="site-header" role="banner">
+    <div class="nav">
+      <div class="brand"><a href="index.html" style="color:var(--text);text-decoration:none">NeuroNest</a></div>
+      <div class="links" aria-hidden="false">
+        <a href="index.html">Home</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#science">Science</a>
+        <a href="#atlas">Sound Atlas</a>
+        <a href="#listening">Listening Guide</a>
+        <a href="#faq">FAQ</a>
+        <a href="radio.html">Sound Hub</a>
+      </div>
+      <button class="hamburger" aria-label="Open menu" id="hamburger">☰</button>
+    </div>
+  </header>
+  <main>
+        <section class="hero container" aria-labelledby="hero-heading">
+            <!-- animated hero svg (combined icon inspiration) -->
+            <svg class="hero-decor icon-svg" viewBox="0 0 120 120" aria-hidden="true" role="img" style="position:absolute;right:4%;top:10%;width:420px;height:420px;pointer-events:none;filter:blur(18px);">
+                <defs>
+                    <filter id="f1" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <!-- orbit ring -->
+                <g transform="translate(60,60)">
+                    <circle class="animate-orbit-ring" cx="0" cy="0" r="36" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="6 4" opacity="0.12"/>
+                    <g>
+                        <circle class="animate-orbit-n1" cx="-20" cy="-24" r="3.4" fill="#6366F1" opacity="0.95" filter="url(#f1)"/>
+                        <circle class="animate-orbit-n2" cx="22" cy="-20" r="3" fill="#6366F1" opacity="0.8"/>
+                        <circle class="animate-orbit-n3" cx="-22" cy="20" r="3" fill="#ffffff" opacity="0.85"/>
+                        <circle class="animate-orbit-n4" cx="20" cy="22" r="3.4" fill="#6366F1" opacity="0.95" filter="url(#f1)"/>
+                    </g>
+                    <circle class="animate-hub-glow" cx="0" cy="0" r="6" fill="none" stroke="#6366F1" stroke-width="1.6" opacity="0.9" filter="url(#f1)"/>
+                    <circle cx="0" cy="0" r="2.6" fill="#6366F1"/>
+                </g>
+            </svg>
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">NeuroNest Introduction Guide</div>
+          <h1 id="hero-heading">Sound as <em>cognitive environment</em> design.</h1>
+          <p class="hero-sub">Not magic. Not background noise. Sound is a practical, research-aware tool for shaping focus, rest, sleep, and recovery. NeuroNest helps you understand how it works — and discover what works for your brain.</p>
+          <div class="goals" role="list">
+            <div class="goal fade-up"> <strong>Focus</strong><div class="muted">Structured sound to scaffold sustained attention.</div></div>
+            <div class="goal fade-up delay"> <strong>Sleep</strong><div class="muted">Sound that protects, conditions, and supports slow-wave sleep.</div></div>
+            <div class="goal fade-up"> <strong>Calm</strong><div class="muted">Design-led audio for autonomic downshift and recovery.</div></div>
+            <div class="goal fade-up delay"> <strong>Explore</strong><div class="muted">Experiment with science-informed listening families.</div></div>
+          </div>
+          <p style="color:var(--dim);margin-top:1.25rem">Explore the principles below, or jump straight into listening in the Sound Hub.</p>
+        </div>
+                <aside class="card center-card" aria-hidden="false">
+          <h3 style="margin:0 0 .6rem 0">Get started</h3>
+          <p style="color:var(--muted);margin:0 0 1rem 0">Choose a path tuned to your goal.</p>
+          <div style="display:flex;gap:.6rem;flex-direction:column">
+            <a class="path" href="radio.html#focus" style="text-decoration:none;color:var(--text);display:block">Focus Path</a>
+            <a class="path" href="radio.html#sleep" style="text-decoration:none;color:var(--text);display:block">Sleep Path</a>
+            <a class="path" href="radio.html#calm" style="text-decoration:none;color:var(--text);display:block">Calm Path</a>
+          </div>
+                    <div style="margin-top:1rem;display:flex;gap:.6rem;justify-content:center;align-items:center">
+                        <!-- inline evidence icon -->
+                        <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true" style="color:var(--gold)">
+                            <path d="M8 52h48M8 42h48M8 32h48" stroke="currentColor" stroke-width="0.6" opacity="0.12" fill="none"/>
+                            <path class="animate-wave-stabilize" d="M8,32 Q20,18 32,32 T56,32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
+                            <path class="animate-check-draw" d="M44,18 L48,24 L56,12" fill="none" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 01 Philosophy -->
+    <section id="philosophy" class="section container">
+      <div class="label">01 — Philosophy</div>
+      <h2>We treat sound as <em>environmental design</em> for the nervous system</h2>
+      <p class="muted">NeuroNest is education-first, evidence-aware, and curious rather than preachy. We describe what research suggests, and provide tools to explore what works for you.</p>
+      <div class="card-grid" style="margin-top:1.25rem">
+        <div class="card"><strong>Curious, not preachy</strong><p style="color:var(--muted)">We present what research suggests. Where evidence is strong, we say so. Where it's mixed, we say that too.</p></div>
+        <div class="card"><strong>Personal, not universal</strong><p style="color:var(--muted)">Outcomes vary by preference, sensory profile, task, and neurodivergent differences.</p></div>
+        <div class="card"><strong>Exploration over hype</strong><p style="color:var(--muted)">We help people experiment and discover what genuinely shifts their state.</p></div>
+        <div class="card"><strong>Calm without cliché</strong><p style="color:var(--muted)">Tasteful, research-led audio that avoids spiritual or commercial wellness trappings.</p></div>
+      </div>
+      <div class="card center-card" style="margin-top:1.25rem;max-width:700px;margin-left:auto;margin-right:auto"><em>"Auditory design for real life. Built for focus, rest, and nervous system pacing."</em></div>
+    </section>
+
+    <!-- 02 Science -->
+    <section id="science" class="section container">
+      <div class="label">02 — The Science of Sound</div>
+      <h2>Your brain is <em>always</em> listening</h2>
+      <p class="muted">Sound reaches deep into sensory and regulatory systems. Below are the primary user-facing mechanisms and the deeper neural pathways that mediate them.</p>
+      <div class="card-grid" style="margin-top:1rem">
+        <div class="card"><strong>Arousal regulation</strong><p style="color:var(--muted)">Tempo, complexity, and rhythm shift activation levels.</p></div>
+        <div class="card"><strong>Masking</strong><p style="color:var(--muted)">Stable sound can cover distracting variability, improving continuity.</p></div>
+        <div class="card"><strong>Attention load</strong><p style="color:var(--muted)">High novelty and lyrical content compete with cognition; low-load textures don't.</p></div>
+        <div class="card"><strong>Restoration</strong><p style="color:var(--muted)">Nature-like, softly engaging soundscapes support attentional recovery.</p></div>
+      </div>
+
+      <h3 style="margin-top:1.25rem">Auditory pathway</h3>
+      <div class="card" style="display:flex;flex-direction:column;gap:.6rem">
+        <div class="flow" aria-hidden="false">
+          <div class="flow-item">Sound → Cochlea</div>
+          <div class="flow-item">Auditory Nerve</div>
+          <div class="flow-item">Brainstem</div>
+          <div class="flow-item">Thalamus</div>
+          <div class="flow-item">Auditory Cortex</div>
+          <div class="flow-item">Amygdala / Hippocampus / Vagus / Reticular</div>
+        </div>
+        <div style="color:var(--muted);font-size:.95rem">This simple flow demonstrates how sound can access emotion, memory, and autonomic state.</div>
+      </div>
+
+      <div class="card-grid" style="margin-top:1rem">
+        <div class="card"><strong>Neural entrainment</strong><p style="color:var(--muted)">External rhythms can align internal oscillations (delta → sleep, alpha → relaxed alertness).</p></div>
+        <div class="card"><strong>Autonomic tone</strong><p style="color:var(--muted)">Stable sound can cue parasympathetic down-regulation; HRV is a useful proxy.</p></div>
+        <div class="card"><strong>Thalamic gateway</strong><p style="color:var(--muted)">Predictable input supports sensory gating for sleep transitions.</p></div>
+        <div class="card"><strong>Stochastic facilitation</strong><p style="color:var(--muted)">Controlled noise can improve neural detection in some contexts.</p></div>
+      </div>
+    </section>
+
+    <!-- 03 Practical Outcomes -->
+    <section id="outcomes" class="section container">
+      <div class="label">03 — Practical Outcomes</div>
+      <h2>Designed for real results, <em>not abstract promises</em></h2>
+      <div class="outcomes" style="margin-top:1rem">
+        <div class="outcome-row"><div><strong>Sleep</strong><div style="color:var(--muted)">Delta / Pink Noise</div></div><div style="color:var(--muted)">Masking and promotion of slow-wave continuity.</div><div style="color:var(--muted)">Research: continuity + moderate</div></div>
+        <div class="outcome-row"><div><strong>Focus</strong><div style="color:var(--muted)">Alpha / Beta / Rhythmic</div></div><div style="color:var(--muted)">Sustained attention and pacing.</div><div style="color:var(--muted)">Indicators: entrainment, behavioral gains</div></div>
+        <div class="outcome-row"><div><strong>Calm</strong><div style="color:var(--muted)">Low-frequency, nature-like</div></div><div style="color:var(--muted)">Autonomic downshift and recovery.</div><div style="color:var(--muted)">Indicators: HRV, subjective relaxation</div></div>
+        <div class="outcome-row"><div><strong>Environment</strong><div style="color:var(--muted)">Masking layers</div></div><div style="color:var(--muted)">Reduce distraction in noisy contexts.</div><div style="color:var(--muted)">Indicators: performance, complaints</div></div>
+      </div>
+    </section>
+
+    <!-- 04 Genre Atlas -->
+    <section id="atlas" class="section container">
+      <div class="label">04 — The Genre Atlas</div>
+      <h2>Sound families, <em>not just playlists</em></h2>
+      <p class="muted">Each sound family is presented through a science lens, a practical lens, and guidance on who it suits.</p>
+      <div class="tabs" style="margin-top:1rem">
+        <div class="tablist" role="tablist" aria-orientation="vertical">
+          <button class="tab active" data-tab="focus" role="tab" aria-selected="true">Focus</button>
+          <button class="tab" data-tab="relax" role="tab">Relaxation</button>
+          <button class="tab" data-tab="sleep" role="tab">Sleep</button>
+          <button class="tab" data-tab="neuro" role="tab">Neuro-Curious</button>
+        </div>
+        <div class="tabpanel" style="min-height:160px">
+          <div class="tab-content" id="focus">
+            <!-- Focus families -->
+            <div class="family"><div class="family-header"><strong>Low-Key Ambient</strong><span class="badge strong">Strong default</span></div><p style="color:var(--muted)">Low surprise, light rhythmic demand. Best for writing, reading.</p><div style="border-top:1px solid rgba(255,255,255,0.03);padding-top:.6rem;color:var(--muted)"><strong>Best for:</strong> writing, research</div></div>
+            <div class="family"><div class="family-header"><strong>Minimal Electronic</strong><span class="badge practical">Structured</span></div><p style="color:var(--muted)">Subtle forward motion for planning and coding.</p></div>
+            <div class="family"><div class="family-header"><strong>Lo-Fi (No Busy Vocals)</strong><span class="badge practical">Accessible</span></div><p style="color:var(--muted)">Warmth, moderate rhythm without language interference.</p></div>
+            <div class="family"><div class="family-header"><strong>Brown/Pink Noise Layers</strong><span class="badge strong">Evidence-backed</span></div><p style="color:var(--muted)">Masking and stabilizing auditory field for ADHD-leaning users.</p></div>
+          </div>
+          <div class="tab-content" id="relax" style="display:none">
+            <div class="family"><div class="family-header"><strong>Nature Soundscapes</strong><span class="badge strong">Evidence-backed</span></div><p style="color:var(--muted)">Softly engaging environments for recovery.</p></div>
+            <div class="family"><div class="family-header"><strong>Ambient Drone</strong><span class="badge practical">Containment</span></div><p style="color:var(--muted)">Stable drone reduces variability and supports downshift.</p></div>
+            <div class="family"><div class="family-header"><strong>Slow Piano</strong><span class="badge practical">Emotional</span></div><p style="color:var(--muted)">For journaling and quiet evenings.</p></div>
+          </div>
+          <div class="tab-content" id="sleep" style="display:none">
+            <div class="family"><div class="family-header"><strong>Pink Noise</strong><span class="badge strong">Evidence-backed</span></div><p style="color:var(--muted)">Sleep continuity and masking.</p></div>
+            <div class="family"><div class="family-header"><strong>Brown Noise</strong><span class="badge practical">Comfort</span></div><p style="color:var(--muted)">Deeper, darker masking floor for subjective comfort.</p></div>
+          </div>
+          <div class="tab-content" id="neuro" style="display:none">
+            <div class="family"><div class="family-header"><strong>Binaural Beat Experiments</strong><span class="badge exploratory">Variable</span></div><p style="color:var(--muted)">Exploratory and variable effects; not guaranteed.</p></div>
+            <div class="family"><div class="family-header"><strong>Isochronic Rhythmic Stimulation</strong><span class="badge exploratory">Stronger</span></div><p style="color:var(--muted)">Overt pulse for experimental listening.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 Evidence Landscape -->
+    <section id="evidence" class="section container">
+      <div class="label">05 — What the Research Actually Says</div>
+      <h2>Evidence landscape: <em>honest distinctions</em></h2>
+      <div style="margin-top:1rem;display:grid;gap:.6rem">
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><strong>Nature Soundscapes</strong><div style="color:var(--muted)">Restorative effects</div></div><div class="badge strong">Strong</div></div>
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><strong>Auditory Masking</strong><div style="color:var(--muted)">Consistent practical benefits</div></div><div class="badge strong">Strong</div></div>
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><strong>Music & Stress</strong><div style="color:var(--muted)">Moderate evidence</div></div><div class="badge practical">Moderate</div></div>
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center"><div><strong>Binaural Beats</strong><div style="color:var(--muted)">Mixed results</div></div><div class="badge exploratory">Mixed</div></div>
+      </div>
+    </section>
+
+    <!-- 06 Design Principles -->
+    <section id="design" class="section container">
+      <div class="label">06 — This Is Not Music. This Is Not Random Noise.</div>
+      <h2>Intentional design, <em>not ambient content</em></h2>
+      <div class="card-grid" style="margin-top:1rem">
+        <div class="card"><strong>Noise types</strong><p style="color:var(--muted)">White, Pink, Brown, Grey — rolloff and primary uses vary; choose by masking and comfort.</p></div>
+        <div class="card"><strong>Isochronic vs Binaural</strong><p style="color:var(--muted)">Isochronic pulses are overt; binaural requires headphones and is subtler.</p></div>
+      </div>
+    </section>
+
+    <!-- 07 Listening Guide -->
+    <section id="listening" class="section container">
+      <div class="label">07 — Practical Listening Guide</div>
+      <h2>How to <em>actually use</em> sound as a tool</h2>
+      <div class="card-grid" style="margin-top:1rem">
+        <div class="card"><strong>Volume</strong><p style="color:var(--muted)">Aim for 40–55 dB for focus; below 70 dB for extended listening.</p></div>
+        <div class="card"><strong>Duration</strong><p style="color:var(--muted)">Focus: 25–90 min blocks. Sleep: 30–60 min. Calm: 10–30 min.</p></div>
+        <div class="card"><strong>Headphones vs Speakers</strong><p style="color:var(--muted)">Headphones for binaural; speakers for shared/sleep contexts.</p></div>
+        <div class="card"><strong>Active vs Background</strong><p style="color:var(--muted)">Active = intentional attention; background = masking/support.</p></div>
+      </div>
+    </section>
+
+    <!-- 08 Sound Experiments -->
+    <section id="experiments" class="section container">
+      <div class="label">08 — Sound Experiments</div>
+      <h2>Discover what works <em>for your brain</em></h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+        <div class="card"><strong>Task Type</strong><p style="color:var(--muted)">Match sound family to task demands.</p></div>
+        <div class="card"><strong>Energy State</strong><p style="color:var(--muted)">Tune tempo and novelty to current energy.</p></div>
+        <div class="card"><strong>Familiar vs Novel</strong><p style="color:var(--muted)">Familiarity often supports focus; novelty can re-engage attention.</p></div>
+        <div class="card"><strong>Rhythmic vs Arrhythmic</strong><p style="color:var(--muted)">Rhythmic pacing aids tasks; arrhythmic supports rest.</p></div>
+        <div class="card"><strong>Volume Micro-Tuning</strong><p style="color:var(--muted)">Small volume changes change perceived space.</p></div>
+        <div class="card"><strong>Post-Work Decompression</strong><p style="color:var(--muted)">Design a 10–20 minute exhale ritual.</p></div>
+      </div>
+    </section>
+
+    <!-- 09 Deep Dive -->
+    <section id="deep" class="section container">
+      <div class="label">09 — For the Curious, the Sceptical, and the Technical</div>
+      <h2>Full Mechanistic Taxonomy</h2>
+      <div class="accordion-item">
+        <div class="acc-head" data-acc="deep"><strong>Full Mechanistic Taxonomy</strong><span>+</span></div>
+        <div class="acc-body" id="deep-body">
+          <p style="color:var(--muted)">Entrainment, thalamo-cortical dynamics, autonomic/vagal mechanisms, neuroplasticity, stochastic facilitation, and additional hypotheses. Methods include AM/isochronic pulses, rhythmic beds, breath-coupled guidance, CLAS-like pulses, spindle coupling, binaural beats, spectral shaping, and spatial immersion.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 Safety & FAQ -->
+    <section id="faq" class="section container">
+      <div class="label">10 — Safety & Realistic Expectations</div>
+      <h2>Safety & Realistic Expectations</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem">
+        <div class="card"><strong>Realistic expectations</strong><p style="color:var(--muted)">Not a medical treatment; individual differences matter.</p></div>
+        <div class="card"><strong>Listening safety</strong><p style="color:var(--muted)">Keep volume safe; avoid prolonged high SPL.</p></div>
+        <div class="card"><strong>Medical disclaimer</strong><p style="color:var(--muted)">If you have a medical condition, consult a professional.</p></div>
+      </div>
+
+      <div style="margin-top:1rem">
+        <div class="label">11 — Frequently Asked Questions</div>
+        <div class="accordion-item">
+          <div class="acc-head" data-acc="q1"><strong>Is this scientifically proven?</strong><span>+</span></div>
+          <div class="acc-body">Research shows evidence in specific areas; results vary by use-case.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="acc-head" data-acc="q2"><strong>Do I need headphones?</strong><span>+</span></div>
+          <div class="acc-body">Headphones required for binaural beats; otherwise speakers are fine.</div>
+        </div>
+        <div class="accordion-item">
+          <div class="acc-head" data-acc="q3"><strong>What makes NeuroNest different?</strong><span>+</span></div>
+          <div class="acc-body">Design-led, evidence-aware, and curated as a learning environment.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 CTA + Appendix -->
+    <section id="start" class="section container">
+      <div class="label">12 — Start Listening</div>
+      <h2>Choose a path and start listening</h2>
+      <div class="paths" style="margin-top:1rem">
+        <a class="path" href="radio.html#sleep">Sleep Path</a>
+        <a class="path" href="radio.html#focus">Focus Path</a>
+        <a class="path" href="radio.html#calm">Calm Path</a>
+      </div>
+
+      <div style="margin-top:2rem" class="card">
+        <h3 style="margin:0 0 .6rem 0">Appendix</h3>
+        <p style="color:var(--muted);margin:0">Frequency bands: Delta (0.5–4 Hz), Theta (4–8 Hz), Alpha (8–12 Hz), Beta (13–30 Hz), Gamma (30–100 Hz). Acronyms: ASSR, FFR, HRV, PAC, DMN.</p>
+      </div>
+    </section>
+
+    <footer>
+      <div>Enter your flow state. NeuroNest Hub Australia © 2025</div>
+    </footer>
+  </main>
+
+  <script>
+    // Nav scroll
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll',()=>{if(window.scrollY>40)header.classList.add('scrolled');else header.classList.remove('scrolled')});
+    // Hamburger
+    const ham = document.getElementById('hamburger');
+    ham.addEventListener('click',()=>{const links=document.querySelector('.links'); if(links.style.display==='block'){links.style.display=''; ham.setAttribute('aria-expanded','false')} else {links.style.display='block'; ham.setAttribute('aria-expanded','true')}});
+    // Tabs
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',e=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      const id = e.currentTarget.getAttribute('data-tab');
+      document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+      const show = document.getElementById(id);
+      if(show) show.style.display='block';
+    }));
+    // Accordions (only one open at a time where applicable)
+    document.querySelectorAll('.acc-head').forEach(h=>{
+      h.addEventListener('click',()=>{
+        const body = h.nextElementSibling;
+        const open = body.classList.contains('open');
+        document.querySelectorAll('.acc-body').forEach(b=>b.classList.remove('open'));
+        if(!open) body.classList.add('open');
+      });
+    });
+    // Fade-in effects
+    document.querySelectorAll('.fade-up').forEach((el,i)=>{el.style.animationDelay=(i*120)+'ms'});
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href')); if(t) t.scrollIntoView({behavior:'smooth',block:'start'})}));
+  </script>
+</body>
+</html>
