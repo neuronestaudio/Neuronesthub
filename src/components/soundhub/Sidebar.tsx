@@ -12,9 +12,8 @@ export default function Sidebar() {
     { icon: Lightbulb, path: '/sound-hub/theory', label: 'Theory Engine' },
     { 
       icon: () => <div className="w-[18px] h-[18px] bg-accent-signal rounded-sm shadow-[0_0_8px_rgba(224,177,0,0.5)] group-hover:scale-110 transition-transform"></div>, 
-      path: '/radio.html', 
-      label: 'NeuroNest Radio',
-      isExternal: true
+      path: '/radio', 
+      label: 'NeuroNest Radio'
     },
   ];
 

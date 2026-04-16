@@ -1,10 +1,11 @@
 import { Bell } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Topbar() {
   return (
     <header className="h-[72px] border-b border-border-hairline flex items-center justify-between px-8 bg-obsidian">
       {/* Left - Neuronest Radio Link */}
-      <a href="/radio.html" className="group flex items-center gap-3 cursor-pointer">
+      <Link to="/radio" className="group flex items-center gap-3 cursor-pointer">
         <div className="w-6 h-6 bg-accent-signal ml-[-32px] md:ml-[0px] transition-shadow duration-300 shadow-[0_0_0_rgba(224,177,0,0)] group-hover:shadow-[0_0_12px_rgba(224,177,0,0.4)]"></div>
         <div className="relative font-mono text-[12px] tracking-brand uppercase hidden md:block w-[180px]">
            <span className="text-ash absolute inset-0 transition-opacity duration-300 opacity-100 group-hover:opacity-0 whitespace-nowrap">
@@ -14,7 +15,7 @@ export default function Topbar() {
              NEURONEST RADIO <span>→</span>
            </span>
         </div>
-      </a>
+      </Link>
 
       {/* Right */}
       <div className="flex items-center gap-3">
