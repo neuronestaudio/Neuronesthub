@@ -25,7 +25,7 @@ export default function ResearchHub() {
       </header>
 
       <div className="hero">
-        <video autoPlay loop muted playsinline className="absolute inset-0">
+        <video autoPlay loop muted playsInline className="absolute inset-0">
           <source src="/assets/hero_banner.mp4" type="video/mp4" />
         </video>
         <div className="relative z-10 px-6 max-w-[800px]">
