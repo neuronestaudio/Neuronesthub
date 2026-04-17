@@ -23,7 +23,7 @@ export default function LandingPage() {
       <main>
         {/* Hero Section */}
         <section className="hero">
-          <video className="hero-video" autoPlay loop muted playsinline>
+          <video className="hero-video" autoPlay loop muted playsInline>
             <source src="/assets/hero_banner.mp4" type="video/mp4" />
           </video>
           <div className="relative z-10 px-6">
@@ -62,7 +62,7 @@ export default function LandingPage() {
         </section>
 
         <section className="footer-banner">
-          <video className="footer-banner-video" autoPlay loop muted playsinline>
+          <video className="footer-banner-video" autoPlay loop muted playsInline>
             <source src="/assets/footer_animation.mp4" type="video/mp4" />
           </video>
           <div className="footer-banner-text relative z-10 px-6">
