@@ -8,7 +8,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
         <Route path="/research-hub" element={<ResearchHub />} />
         <Route path="/sound-hub" element={<SoundHub />} />
         <Route path="/radio" element={<RadioApp />} />
