@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SoundHub from './pages/SoundHub';
 import RadioApp from './pages/RadioApp';
-import LandingPage from './pages/LandingPage';
 import ResearchHub from './pages/ResearchHub';
 
 function App() {
