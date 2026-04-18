@@ -6,7 +6,7 @@
   <title>Learn More — NeuroNest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
   <script type="importmap">
   {
     "imports": {
@@ -32,7 +32,7 @@
       --gold-dim: rgba(201,169,110,0.12);
       --max: 1160px;
       --measure: 720px;
-      --h-font: 'Cormorant Garamond', Georgia, serif;
+      --h-font: 'Instrument Serif', Georgia, serif;
       --b-font: 'Syne', system-ui, sans-serif;
       --m-font: 'JetBrains Mono', monospace;
     }
@@ -1046,12 +1046,7 @@
           <h1>Sound, engineered for how<br>your brain <em>actually works.</em></h1>
           <p class="hero-sub">Not wellness hype. Not background noise. Evidence-informed sound design at the intersection of neuroscience, psychoacoustics, and precision engineering.</p>
 
-          <div id="heroLottie" style="position: relative; width: 100%; max-width: 960px; height: 600px; margin: 10px 0; pointer-events: none;">
-            <canvas id="torusCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; pointer-events: all; mix-blend-mode: screen;"></canvas>
-            <div style="position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-family: var(--m-font); font-size: 10px; color: rgba(74,158,142,0.35); letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; pointer-events: none; z-index: 2;">Drag to rotate · Scroll to zoom</div>
-          </div>
-
-          <a href="#why-sound" class="hero-cta">
+          <a href="#why-sound" class="hero-cta" style="margin-top: 56px;">
             Explore the science below
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 2v10M2 7l5 5 5-5"/></svg>
           </a>
@@ -2245,9 +2240,10 @@
 
     // Lottie hero
     (function () {
-      if (!window.lottie) return;
+      var c = document.querySelector('#heroLottie .lottie-container');
+      if (!window.lottie || !c) return;
       lottie.loadAnimation({
-        container: document.querySelector('#heroLottie .lottie-container'),
+        container: c,
         renderer: 'svg', loop: true, autoplay: true,
         path: 'assets/Grid%20wave%20flow.json',
         rendererSettings: { preserveAspectRatio: 'xMidYMid slice' }
@@ -2435,149 +2431,10 @@
   <!-- Three.js: Torus hero + background particles -->
   <script type="module">
     import * as THREE from 'three';
-    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
     import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
     import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-    // ─────────────────────────────────────────────────────────────
-    // 1. TORUS — interactive foreground hero graphic
-    // ─────────────────────────────────────────────────────────────
-    function initTorus() {
-      const wrap   = document.getElementById('heroLottie');
-      const canvas = document.getElementById('torusCanvas');
-      if (!wrap || !canvas) return;
-
-      const W = wrap.clientWidth  || 960;
-      const H = wrap.clientHeight || 600;
-
-      // Set explicit pixel dimensions on canvas element itself
-      canvas.width  = W * Math.min(window.devicePixelRatio, 2);
-      canvas.height = H * Math.min(window.devicePixelRatio, 2);
-      canvas.style.width  = W + 'px';
-      canvas.style.height = H + 'px';
-
-      const tRenderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: true,
-        premultipliedAlpha: false,
-        powerPreference: 'high-performance'
-      });
-      tRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      tRenderer.setSize(W, H, true);
-      tRenderer.setClearColor(0x000000, 0);
-      tRenderer.setClearAlpha(0);
-      tRenderer.autoClear = false;
-
-      const tScene  = new THREE.Scene();
-      const tCamera = new THREE.PerspectiveCamera(50, W / H, 0.1, 2000);
-      // Initial view — angled from above-right, showing the torus hole clearly
-      tCamera.position.set(33.6, 62.4, 69.6);
-
-      // OrbitControls — drag + zoom + auto-rotate
-      const controls = new OrbitControls(tCamera, canvas);
-      controls.enableDamping    = true;
-      controls.dampingFactor    = 0.06;
-      controls.autoRotate       = true;
-      controls.autoRotateSpeed  = 1.2;
-      controls.enableZoom       = true;
-      controls.minDistance      = 30;
-      controls.maxDistance      = 180;
-      controls.enablePan        = false;
-      controls.target.set(0, 0, 0);
-      controls.update(); // bake the initial angle so it loads exactly at this view
-
-      // Bloom post-processing
-      const tComposer = new EffectComposer(tRenderer);
-      tComposer.addPass(new RenderPass(tScene, tCamera));
-      tComposer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 2.0, 0.45, 0.0));
-
-      // Particle torus
-      const COUNT   = 20000;
-      const tDummy  = new THREE.Object3D();
-      const tColor  = new THREE.Color();
-      const tTarget = new THREE.Vector3();
-      const tPos    = [];
-
-      const tMesh = new THREE.InstancedMesh(
-        new THREE.TetrahedronGeometry(0.28),
-        new THREE.MeshBasicMaterial({ color: 0xffffff }),
-        COUNT
-      );
-      tMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-      tScene.add(tMesh);
-
-      for (let i = 0; i < COUNT; i++) {
-        tPos.push(new THREE.Vector3(
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100
-        ));
-        tMesh.setColorAt(i, tColor.setHex(0x4a9e8e));
-      }
-      if (tMesh.instanceColor) tMesh.instanceColor.needsUpdate = true;
-
-      const tClock = new THREE.Clock();
-
-      function animateTorus() {
-        requestAnimationFrame(animateTorus);
-        const time  = tClock.getElapsedTime();
-        const count = COUNT;
-
-        controls.update();
-
-        for (let i = 0; i < count; i++) {
-          // Torus knot math — R=major, r=minor, wrapping 40 times
-          const R      = 26;
-          const r      = 9;
-          const u      = (i / count) * Math.PI * 2 * 40;
-          const v      = (i / count) * Math.PI * 2;
-          const breathe = 1 + Math.sin(time * 0.7) * 0.1;
-
-          tTarget.set(
-            (R * breathe + r * Math.cos(u)) * Math.cos(v),
-            (R * breathe + r * Math.cos(u)) * Math.sin(v),
-            r * Math.sin(u)
-          );
-
-          // Teal → gold colour cycle along the ring
-          const hue = 0.47 + Math.sin(i * 0.00025 * Math.PI * 2 + time * 0.25) * 0.09;
-          const lit  = 0.42 + Math.sin(time * 1.1 + i * 0.001) * 0.14;
-          tColor.setHSL(hue, 0.92, lit);
-
-          tPos[i].lerp(tTarget, 0.1);
-          tDummy.position.copy(tPos[i]);
-          tDummy.updateMatrix();
-          tMesh.setMatrixAt(i, tDummy.matrix);
-          tMesh.setColorAt(i, tColor);
-        }
-
-        tMesh.instanceMatrix.needsUpdate = true;
-        tMesh.instanceColor.needsUpdate  = true;
-        tRenderer.clear();
-        tComposer.render();
-      }
-      animateTorus();
-
-      // Resize
-      new ResizeObserver(() => {
-        const w = wrap.clientWidth, h = wrap.clientHeight;
-        if (!w || !h) return;
-        canvas.width  = w * Math.min(window.devicePixelRatio, 2);
-        canvas.height = h * Math.min(window.devicePixelRatio, 2);
-        canvas.style.width  = w + 'px';
-        canvas.style.height = h + 'px';
-        tCamera.aspect = w / h;
-        tCamera.updateProjectionMatrix();
-        tRenderer.setSize(w, h, true);
-        tComposer.setSize(w, h);
-      }).observe(wrap);
-    }
-
-    // ─────────────────────────────────────────────────────────────
-    // 2. BACKGROUND — ambient particle swirl behind hero text
-    // ─────────────────────────────────────────────────────────────
     function initBg() {
       const bgCanvas = document.getElementById('particleCanvas');
       if (!bgCanvas) return;
@@ -2667,9 +2524,9 @@
 
     // Init both after full page load so layout dimensions are settled
     if (document.readyState === 'complete') {
-      initTorus(); initBg();
+      initBg();
     } else {
-      window.addEventListener('load', () => { initTorus(); initBg(); });
+      window.addEventListener('load', () => { initBg(); });
     }
   </script>
 </body>
