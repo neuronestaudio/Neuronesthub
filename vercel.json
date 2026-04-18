@@ -1,3 +1,17 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/soundhub-app/assets/:path*",
+      "destination": "/soundhub-app/dist/assets/:path*"
+    },
+    {
+      "source": "/soundhub-app",
+      "destination": "/soundhub-app/dist/index.html"
+    },
+    {
+      "source": "/soundhub-app/",
+      "destination": "/soundhub-app/dist/index.html"
+    }
+  ]
 }

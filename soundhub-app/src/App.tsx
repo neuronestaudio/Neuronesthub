@@ -3,7 +3,7 @@ import SoundHub from './pages/SoundHub';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/soundhub-app">
       <Routes>
         <Route path="/" element={<SoundHub />} />
         {/* Add more routes as needed */}
