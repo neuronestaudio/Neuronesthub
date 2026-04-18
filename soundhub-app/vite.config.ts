@@ -7,11 +7,16 @@ export default defineConfig({
   root: '.',
   base: '/soundhub-app/',
   build: {
-    outDir: 'dist',
-    emptyOutDir: true,
+    outDir: '.',
+    emptyOutDir: false,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+      },
+      output: {
+        entryFileNames: 'assets/main.js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/main.[ext]',
       },
     },
   },
