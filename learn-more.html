@@ -1012,7 +1012,70 @@
       transition: opacity 0.22s;
     }
     @media (max-width: 1100px) {
-      .timeline { display: none; }
+      .timeline {
+        /* Switch from fixed left sidebar → horizontal scroll bar at top */
+        position: fixed;
+        top: 66px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        transform: none;
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 12px;
+        background: rgba(8,10,15,0.88);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--line);
+        z-index: 900;
+        pointer-events: all;
+      }
+      .timeline::-webkit-scrollbar { display: none; }
+      /* Hide the vertical connector lines on mobile */
+      .tl-item:not(:last-child)::after { display: none; }
+      .tl-dot { display: none; }
+      /* Each item becomes a pill */
+      .tl-item {
+        flex-shrink: 0;
+        padding: 10px 14px;
+      }
+      .tl-label {
+        opacity: 1 !important;
+        transform: none !important;
+        position: static;
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 10px;
+        color: var(--text-2);
+        pointer-events: all;
+        backdrop-filter: none;
+      }
+      .tl-item.active .tl-label {
+        color: var(--accent);
+      }
+      .tl-item:hover .tl-label {
+        color: var(--text-0);
+      }
+    }
+    @media (max-width: 1100px) {
+      /* Active pill highlight */
+      .tl-item.active .tl-label {
+        color: var(--accent);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 2px;
+      }
+      /* Auto-scroll active item into view */
+      .tl-item { scroll-snap-align: start; }
+      .timeline { scroll-snap-type: x proximity; }
+    }
+    @media (max-width: 600px) {
+      /* Push hero marquee down to clear the mobile timeline bar */
+      .hero > .marquee-strip:first-of-type { margin-top: 116px; }
     }
   </style>
 </head>
@@ -2373,6 +2436,11 @@
         tlItems.forEach(function (item) {
           item.classList.toggle('active', item.getAttribute('data-section') === active);
         });
+        // On mobile: scroll active pill into view
+        var activeEl = document.querySelector('.tl-item.active');
+        if (activeEl && window.innerWidth <= 1100) {
+          activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
       }
 
       window.addEventListener('scroll', updateTimeline, { passive: true });
