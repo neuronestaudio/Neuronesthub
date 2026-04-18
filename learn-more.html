@@ -163,7 +163,15 @@
       opacity: 0;
       animation: fadeSlideUp 0.9s 0.2s ease forwards;
     }
-    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #312e81 0%, #4f46e5 35%, #7c3aed 65%, #c026d3 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero h1 .h1-sm { font-size: 0.5em; display: block; }
+    .hero h1 .h1-md { font-size: 0.7em; }
     .hero-sub {
       margin-top: 28px;
       font-size: clamp(15px, 1.6vw, 18px);
@@ -1043,7 +1051,7 @@
       <canvas id="particleCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.55;"></canvas>
       <div class="container" style="position: relative; z-index: 1;">
         <div class="hero-inner">
-          <h1>Sound,<br>engineered<br>for how your<br>brain <em>actually works.</em></h1>
+          <h1>Sound,<br><span class="h1-sm">engineered</span><span class="h1-md">for how your<br>brain </span><em>actually works.</em></h1>
           <p class="hero-sub">Not wellness hype. Not background noise. Evidence-informed sound design at the intersection of neuroscience, psychoacoustics, and precision engineering.</p>
 
           <a href="#why-sound" class="hero-cta" style="margin-top: 56px;">
