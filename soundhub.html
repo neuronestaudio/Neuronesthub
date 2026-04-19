@@ -428,10 +428,8 @@
   .sidebar-radio-tab:hover::before,
   .sidebar-radio-tab.active::before { opacity: 1; }
   .sidebar-radio-tab .nav-label {
-    background: linear-gradient(90deg, #f97316, #d946ef, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
     font-weight: 700;
   }
   /* Favourite button */
@@ -524,9 +522,9 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         <span class="nav-label">Home</span>
       </a>
-      <a class="sidebar-link active" onclick="showPage('dashboard')" title="Home">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-        <span class="nav-label">Home</span>
+      <a class="sidebar-link active" onclick="showPage('dashboard')" title="Sound Hub Dashboard" style="text-decoration:none;">
+        <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:15px;color:#E0B100;letter-spacing:-0.04em;line-height:1;">NN</div>
+        <span class="nav-label" style="font-size:8px;letter-spacing:0.06em;">Sound Hub</span>
       </a>
       <a class="sidebar-link" onclick="showPage('gallery')" title="Library">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
@@ -556,7 +554,10 @@
       </a>
     </div>
     <div class="sidebar-bottom">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B7680" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:16px;color:#E0B100;letter-spacing:-0.04em;">NN</div>
+        <div style="font-family:'DM Mono',monospace;font-size:7px;color:#6B7680;letter-spacing:0.1em;text-transform:uppercase;">Sound Hub</div>
+      </div>
       <div class="avatar"></div>
     </div>
   </aside>
@@ -709,10 +710,10 @@
         <div class="page" id="page-radio">
           <div class="radio-page">
             <div class="channel-tabs">
-              <button class="channel-tab active focus" onclick="setChannel('Focus',this)">Focus</button>
-              <button class="channel-tab" onclick="setChannel('Sleep',this)">Sleep</button>
-              <button class="channel-tab" onclick="setChannel('Calm',this)">Calm</button>
-              <button class="channel-tab" onclick="setChannel('Favourites',this)" id="fav-channel-tab" style="display:none;">♥ Favourites</button>
+              <button type="button" class="channel-tab active focus" onclick="setChannel('Focus',this)">Focus</button>
+              <button type="button" class="channel-tab" onclick="setChannel('Sleep',this)">Sleep</button>
+              <button type="button" class="channel-tab" onclick="setChannel('Calm',this)">Calm</button>
+              <button type="button" class="channel-tab" onclick="setChannel('Favourites',this)" id="fav-channel-tab" style="display:none;">♥ Favourites</button>
             </div>
 
             <div class="radio-player" id="radio-player">
@@ -1120,8 +1121,8 @@ function showPage(name) {
   document.getElementById('search-area').style.display = isRadio ? 'none' : 'flex';
   document.getElementById('radio-status').style.display = isRadio ? 'flex' : 'none';
 
-  // Sidebar active state — archive removed, gallery now sits at index 1
-  const idx = {dashboard:0, gallery:1, under:2, theory:3, radio:4};
+  // Sidebar active state — index 0 is the home link (href), so page links start at 1
+  const idx = {dashboard:1, gallery:2, under:3, theory:4, radio:5};
   const links = document.querySelectorAll('.sidebar-link');
   if (idx[name] !== undefined) links[idx[name]].classList.add('active');
 
@@ -1753,6 +1754,8 @@ let radioPlaying = false;
 function renderRadio() { setChannel(radioChannel, null); }
 
 function setChannel(ch, btn) {
+  const _content = document.querySelector('.content');
+  const _savedScroll = _content ? _content.scrollTop : 0;
   radioChannel = ch;
   document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active','focus','sleep','calm'));
   if (btn) { btn.classList.add('active', ch.toLowerCase()); }
@@ -1832,6 +1835,7 @@ function setChannel(ch, btn) {
   }).join('');
 
   updateRadioUI();
+  if (_content) _content.scrollTop = _savedScroll;
 }
 
 function selectRadioTrack(id, title) {
@@ -2013,7 +2017,7 @@ function heroAction() { if (heroSlideAction) heroSlideAction(); }
 let heroTimer = null;
 function startHeroTimer() {
   if (heroTimer) clearInterval(heroTimer);
-  heroTimer = setInterval(() => goToHeroSlide((heroSlideIndex + 1) % HERO_SLIDES.length), 5000);
+  heroTimer = setInterval(() => goToHeroSlide((heroSlideIndex + 1) % HERO_SLIDES.length), 10000);
 }
 function stepHeroSlide(dir) {
   goToHeroSlide((heroSlideIndex + dir + HERO_SLIDES.length) % HERO_SLIDES.length);
