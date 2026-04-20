@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SoundHub — Neuronest</title>
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;800;900&family=Playfair+Display:wght@700;900&family=Great+Vibes&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --obsidian: #050505;
+    --panel: #0f0f0f;
+    --panel-alt: #161616;
+    --bone: #F3F3F0;
+    --ash: #6B7680;
+    --accent: #E0B100;
+    --hairline: rgba(255,255,255,0.07);
+    --focus-color: #8E54E9;
+    --focus-gradient: linear-gradient(135deg, #f46b45 0%, #f9a825 45%, #ffd200 100%);
+    --sleep-color: #6B4FA8;
+    --sleep-gradient: linear-gradient(135deg, #1A1F71 0%, #3C2A78 100%);
+    --calm-color: #38F9D7;
+    --calm-gradient: linear-gradient(135deg, #11998e 0%, #43E97B 30%, #38F9D7 60%, #0ED2F7 80%, #74EBD5 100%);
+  }
+
+  html, body { height: 100%; color: var(--bone); font-family: 'Inter', sans-serif; overflow: hidden;
+    background-color: var(--obsidian);
+    background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .mono { font-family: 'DM Mono', monospace; }
+  .upper { text-transform: uppercase; }
+
+  /* Layout */
+  #app { display: flex; height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 80px; height: 100%;
+    background: linear-gradient(180deg, #111110 0%, #0a0a0a 50%, #080808 100%);
+    border-right: 1px solid rgba(224,177,0,0.07);
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between; padding: 24px 0; flex-shrink: 0;
+  }
+  .sidebar-links { display: flex; flex-direction: column; gap: 4px; align-items: center; }
+  .sidebar-link {
+    width: 68px; height: 58px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 4px;
+    border-radius: 6px; color: var(--ash); cursor: pointer; position: relative;
+    transition: all 0.15s; text-decoration: none;
+  }
+  .sidebar-link span.nav-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em;
+    text-transform: uppercase; line-height: 1;
+  }
+  .sidebar-link:hover { background: var(--panel); color: var(--bone); }
+  .sidebar-link.active { color: var(--bone); background: rgba(224,177,0,0.06); }
+  .sidebar-link.active span.nav-label { color: var(--accent); }
+  .sidebar-link.active::after {
+    content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    width: 2px; height: 28px; background: var(--accent);
+  }
+  .sidebar-bottom { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--panel); border: 1px solid var(--hairline); }
+  .radio-dot {
+    width: 18px; height: 18px; background: var(--accent); border-radius: 2px;
+    box-shadow: 0 0 8px rgba(224,177,0,0.5);
+  }
+
+  /* Main */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Header */
+  .topbar {
+    height: 72px; border-bottom: 1px solid rgba(224,177,0,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; flex-shrink: 0;
+    background: linear-gradient(90deg, #111110 0%, #0d0d0d 50%, #0a0a0a 100%);
+    box-shadow: 0 1px 0 rgba(224,177,0,0.05), 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .logo-sq { display: flex; align-items: center; }
+  .topbar-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+  .search-input {
+    width: 320px; background: var(--panel); border: 1px solid var(--hairline);
+    padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--bone);
+    outline: none; transition: all 0.2s;
+  }
+  .search-input::placeholder { color: var(--ash); }
+  .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(224,177,0,0.15); }
+  .notif-btn {
+    width: 32px; height: 32px; border: 1px solid var(--hairline); background: none;
+    display: flex; align-items: center; justify-content: center; color: var(--ash);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .notif-btn:hover { color: var(--bone); border-color: var(--accent); }
+
+  /* Content */
+  .content { flex: 1; overflow-y: auto; padding: 32px; }
+  .content-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+  /* Pages */
+  .page { display: none; }
+  .page.active { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Hero */
+  .hero {
+    position: relative; min-height: 380px; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 40px 48px;
+    background: linear-gradient(145deg, #1a1710 0%, #0f0e0c 40%, #080808 100%);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(224,177,0,0.08);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(224,177,0,0.18) 0%, rgba(224,177,0,0.06) 35%, transparent 65%),
+                radial-gradient(ellipse at 80% 50%, rgba(167,139,250,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 80%, rgba(224,177,0,0.10) 0%, transparent 40%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: linear-gradient(var(--bone) 1px, transparent 1px), linear-gradient(90deg, var(--bone) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, var(--obsidian) 30%, rgba(5,5,5,0.55) 60%, transparent); }
+  .hero-content { position: relative; z-index: 10; max-width: 55%; }
+  .hero-label {
+    display: inline-block; background: var(--accent); color: var(--obsidian);
+    font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase;
+    padding: 6px 10px; margin-bottom: 20px; letter-spacing: 0.1em;
+  }
+  .hero-title {
+    font-family: 'Inter', sans-serif; font-weight: 800; font-size: 56px;
+    line-height: 0.95; text-transform: uppercase; margin-bottom: 16px; letter-spacing: -0.02em;
+  }
+  .hero-body { font-size: 14px; color: var(--ash); max-width: 420px; margin-bottom: 28px; line-height: 1.6; }
+  .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .btn-primary {
+    height: 48px; padding: 0 28px; background: var(--accent); color: var(--obsidian);
+    font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase;
+    font-weight: 700; border: none; cursor: pointer; letter-spacing: 0.08em;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-primary.playing { background: var(--panel); color: var(--accent); border: 2px solid var(--accent); }
+
+  /* Hero slideshow */
+  .hero-slide-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1s ease;
+  }
+  /* Hero hover glow */
+  .hero { --slide-glow: #E0B100; }
+  .hero:hover { box-shadow: 0 0 0 1.5px var(--slide-glow), 0 0 32px rgba(255,255,255,0.04), 0 8px 48px rgba(0,0,0,0.6); transition: box-shadow 0.35s ease; }
+  /* Prev / Next nav arrows */
+  .hero-nav {
+    position: absolute; bottom: 20px; z-index: 30;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s ease; backdrop-filter: blur(8px);
+  }
+  .hero-prev { right: 68px; }
+  .hero-next { right: 24px; }
+  .hero-nav:hover { background: var(--slide-glow); border-color: transparent; transform: scale(1.1); box-shadow: 0 0 16px var(--slide-glow); color: #fff; }
+  .slide-dots {
+    position: absolute; bottom: 22px; left: 48px;
+    display: flex; gap: 8px; z-index: 20;
+  }
+  .slide-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.25); cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .slide-dot.active { background: var(--accent); transform: scale(1.4); }
+  .store-btn {
+    display: flex; align-items: center; gap: 10px; padding: 8px 16px;
+    background: rgba(5,5,5,0.4); border: 1px solid var(--hairline);
+    cursor: pointer; transition: all 0.15s; opacity: 0.8; border-radius: 2px;
+  }
+  .store-btn:hover { background: var(--panel); opacity: 1; }
+  .store-btn-text-top { font-family: 'DM Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--ash); display: block; }
+  .store-btn-text-main { font-size: 13px; font-weight: 600; color: var(--bone); display: block; letter-spacing: -0.01em; }
+
+  /* Feature Cards */
+  .feature-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature-card {
+    min-height: 160px; padding: 24px; display: flex; flex-direction: column;
+    justify-content: space-between; cursor: pointer; transition: all 0.2s;
+    background: linear-gradient(145deg, #1c1a14 0%, #111111 60%, #0d0d0d 100%);
+    border: 1px solid rgba(224,177,0,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .feature-card:hover { transform: translateY(-2px); border-color: rgba(224,177,0,0.35); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(224,177,0,0.08); }
+  .feature-card.highlight { background: linear-gradient(135deg, #f0c200 0%, #E0B100 50%, #c49200 100%); border-color: transparent; box-shadow: 0 8px 32px rgba(224,177,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .feature-card.highlight:hover { border-color: transparent; }
+  .fc-sub { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--ash); }
+  .feature-card.highlight .fc-sub { color: rgba(5,5,5,0.6); }
+  .fc-title { font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.1; letter-spacing: -0.01em; }
+  .feature-card.highlight .fc-title { color: var(--obsidian); }
+  .fc-desc { font-size: 13px; color: var(--ash); line-height: 1.4; }
+  .feature-card.highlight .fc-desc { color: rgba(5,5,5,0.7); }
+  .fc-link { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--accent); letter-spacing: 0.08em; }
+  .feature-card.highlight .fc-link { color: var(--obsidian); }
+
+  /* Grid */
+  .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  .left-col { display: flex; flex-direction: column; gap: 24px; }
+  .right-col { display: flex; flex-direction: column; gap: 24px; border-left: 1px solid var(--hairline); padding-left: 24px; }
+  .listeners-section, .research-section { background: linear-gradient(160deg, #161614 0%, #111111 55%, #0d0d0d 100%); border: 1px solid rgba(255,255,255,0.05); padding: 20px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 20px rgba(0,0,0,0.3); }
+
+  /* Section headers */
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; }
+
+  /* Uploads Log */
+  .uploads-log { background: linear-gradient(160deg, #161412 0%, #111111 50%, #0c0c0c 100%); border: 1px solid rgba(224,177,0,0.07); padding: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 20px rgba(0,0,0,0.3); }
+  .uploads-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .gallery-link { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--ash); cursor: pointer; letter-spacing: 0.1em; }
+  .gallery-link:hover { color: var(--bone); }
+  .track-list { height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+  .track-list::-webkit-scrollbar { width: 4px; }
+  .track-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+  .track-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer; transition: all 0.1s; gap: 12px;
+  }
+  .track-item:hover { background: var(--panel-alt); }
+  .track-item:last-child { border-bottom: none; }
+  .track-thumb { width: 40px; height: 24px; object-fit: cover; border: 1px solid var(--hairline); opacity: 0.6; flex-shrink: 0; transition: opacity 0.15s; }
+  .track-item:hover .track-thumb { opacity: 1; border-color: var(--accent); }
+  .track-name { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--bone); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .track-item:hover .track-name { color: var(--accent); }
+  .track-cat { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; }
+  .play-icon { width: 24px; height: 24px; border-radius: 50%; background: var(--obsidian); color: var(--ash); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .track-item:hover .play-icon { opacity: 1; }
+
+  /* Tracks / Gallery grid — 3-col, matches Library format */
+  #gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  #gallery-grid.list-view { display: flex; flex-direction: column; gap: 0; }
+
+  /* List view rows */
+  .lib-list-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 16px; border-bottom: 1px solid var(--hairline);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .lib-list-row:first-child { border-top: 1px solid var(--hairline); }
+  .lib-list-row:hover { background: linear-gradient(90deg, rgba(224,177,0,0.05) 0%, transparent 60%); }
+  .lib-list-thumb {
+    width: 48px; height: 48px; object-fit: cover; flex-shrink: 0;
+    filter: saturate(0.45) brightness(0.6);
+  }
+  .lib-list-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+  .lib-list-title {
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--bone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .lib-list-creator {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .lib-list-tags { display: flex; gap: 6px; flex-shrink: 0; align-items: center; }
+  .lib-list-tag {
+    font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--ash); border: 1px solid var(--hairline);
+    padding: 2px 8px;
+  }
+  .lib-list-dur {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash);
+    text-transform: uppercase; min-width: 52px; text-align: right; flex-shrink: 0;
+  }
+  .lib-list-cat { flex-shrink: 0; }
+  .lib-list-fav { flex-shrink: 0; }
+
+  /* Neuronest Library */
+  .archive-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cat-card {
+    height: 140px; background: linear-gradient(145deg, #181816 0%, #111111 55%, #0d0d0d 100%); padding: 20px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border: 1px solid transparent; cursor: pointer; transition: all 0.15s;
+  }
+  .cat-card:hover { border-color: var(--accent); }
+  .cat-name { font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: -0.01em; }
+  .cat-card:hover .cat-name { color: var(--accent); }
+  .cat-modality {
+    font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase;
+    border: 1px solid var(--hairline); padding: 4px 8px; border-radius: 2px;
+    color: var(--ash); width: fit-content;
+  }
+  .cat-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; display: flex; justify-content: space-between; }
+  .cat-evidence { opacity: 0.6; border-left: 1px solid var(--hairline); padding-left: 8px; }
+
+  /* Active Listeners */
+  .listeners-section { padding-top: 0; }
+  .listener-count { font-size: 28px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
+  .listener-subtitle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; margin-bottom: 12px; }
+  .listener-avatars { display: flex; flex-direction: column; gap: 6px; }
+  .listener-row { display: flex; align-items: center; gap: 8px; }
+  .listener-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .listener-name { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; }
+  .listener-track { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ash); opacity: 0.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+
+  /* Research Feed */
+  .research-section { display: flex; flex-direction: column; padding-top: 32px; }
+  .research-items { display: flex; flex-direction: column; gap: 18px; border-top: 1px solid var(--hairline); padding-top: 16px; }
+  .research-item { cursor: pointer; }
+  .research-title { font-size: 13px; color: var(--bone); font-weight: 500; margin-bottom: 4px; line-height: 1.4; }
+  .research-item:hover .research-title { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .research-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; display: flex; gap: 6px; }
+  .confidence-high { color: #4ade80; }
+
+  /* === RADIO VIEW === */
+  .radio-page { display: flex; flex-direction: column; gap: 28px; }
+  .channel-tabs { display: flex; border: 1px solid var(--hairline); width: fit-content; }
+  .channel-tab {
+    font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase;
+    padding: 10px 20px; cursor: pointer; color: var(--ash); transition: all 0.15s;
+    letter-spacing: 0.08em; background: none; border: none;
+  }
+  .channel-tab.active.focus { background: var(--focus-gradient); color: #fff; font-weight: 700; border-color: transparent; }
+  .channel-tab.active.sleep { background: var(--sleep-gradient); color: #fff; font-weight: 700; border-color: transparent; }
+  .channel-tab.active.calm { background: var(--calm-gradient); color: #050505; font-weight: 700; border-color: transparent; }
+  .channel-tab:not(.active):hover { color: var(--bone); background: var(--panel); }
+
+  .radio-player { display: flex; border: 1px solid var(--hairline); overflow: hidden; }
+  .radio-visual {
+    width: 38%; min-height: 260px; position: relative; background: #080808; flex-shrink: 0;
+  }
+  .radio-thumb { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.3) brightness(0.4); }
+  .radio-wave-overlay { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; align-items: flex-end; gap: 3px; height: 50px; }
+  .wave-bar { width: 3px; border-radius: 2px; transition: height 0.4s; }
+  .radio-glow { position: absolute; inset: 0; }
+
+  .radio-info { flex: 1; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #181614 0%, #111111 55%, #0d0d0d 100%); box-shadow: inset 1px 0 0 rgba(255,255,255,0.03); }
+  .radio-channel-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
+  .radio-track-title { font-weight: 800; font-size: 26px; text-transform: uppercase; line-height: 1.1; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .radio-creator { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ash); text-transform: uppercase; margin-bottom: 8px; }
+  .radio-desc { font-size: 13px; color: var(--ash); line-height: 1.6; max-width: 380px; margin-bottom: 20px; }
+  .radio-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+  .radio-tag { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; padding: 4px 10px; border: 1px solid; border-radius: 0; }
+  .radio-controls { display: flex; align-items: center; gap: 16px; }
+  .play-btn {
+    width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+    border: 2px solid; cursor: pointer; transition: all 0.15s; background: none;
+    flex-shrink: 0;
+  }
+  .play-btn:hover { transform: scale(1.05); }
+  .play-status { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--ash); }
+
+  .queue-section { display: flex; flex-direction: column; gap: 16px; }
+  .queue-header { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--ash); letter-spacing: 0.1em; }
+  .queue-list { border: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, #141414 0%, #0e0e0e 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+  .queue-item {
+    display: flex; align-items: center; gap: 16px; padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .queue-item:hover { background: linear-gradient(90deg, rgba(224,177,0,0.06) 0%, transparent 60%); box-shadow: inset 2px 0 0 rgba(224,177,0,0.3); }
+  .queue-item.current { background: linear-gradient(90deg, rgba(224,177,0,0.1) 0%, rgba(20,18,12,0.5) 50%, transparent 100%); box-shadow: inset 2px 0 0 var(--accent); }
+  .queue-item:last-child { border-bottom: none; }
+  .queue-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); width: 20px; flex-shrink: 0; }
+  .queue-thumb { width: 40px; height: 28px; object-fit: cover; border: 1px solid var(--hairline); flex-shrink: 0; }
+  .queue-info { flex: 1; min-width: 0; }
+  .queue-title { font-family: 'DM Mono', monospace; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+  .queue-creator { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; }
+  .queue-dur { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; flex-shrink: 0; }
+  .playing-indicator { display: flex; align-items: flex-end; gap: 2px; height: 14px; flex-shrink: 0; }
+  .playing-bar { width: 3px; border-radius: 2px; }
+
+  /* Archive View */
+  .archive-view { display: flex; flex-direction: column; gap: 32px; }
+  .view-header { display: flex; flex-direction: column; gap: 4px; }
+  .view-title { font-weight: 800; font-size: 28px; text-transform: uppercase; }
+  .view-subtitle { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.1em; }
+  .cat-section { display: flex; flex-direction: column; gap: 0; }
+  .cat-section-header { display: flex; align-items: center; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); margin-bottom: 0; }
+  .cat-section-title { font-weight: 800; font-size: 20px; text-transform: uppercase; }
+  .cat-section-badge { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; border: 1px solid var(--hairline); padding: 2px 8px; color: var(--ash); }
+  .cat-section-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); margin-left: auto; }
+  .track-row {
+    display: flex; align-items: center; gap: 16px; padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .track-row:hover { background: linear-gradient(90deg, rgba(224,177,0,0.06) 0%, rgba(22,20,18,0.8) 40%, transparent 100%); box-shadow: inset 2px 0 0 rgba(224,177,0,0.4); }
+  .track-row-thumb { width: 48px; height: 30px; object-fit: cover; border: 1px solid var(--hairline); flex-shrink: 0; }
+  .track-row:hover .track-row-thumb { border-color: var(--accent); }
+  .track-row-info { flex: 1; min-width: 0; }
+  .track-row-title { font-family: 'DM Mono', monospace; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+  .track-row:hover .track-row-title { color: var(--accent); }
+  .track-row-creator { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; }
+  .track-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .track-tag-sm { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; border: 1px solid var(--hairline); padding: 2px 6px; color: var(--ash); }
+  .track-row-dur { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; flex-shrink: 0; width: 80px; text-align: right; }
+  .row-play { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; color: var(--ash); opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
+  .track-row:hover .row-play { opacity: 1; }
+  /* Radio tab — aurora gradient highlight */
+  .sidebar-radio-tab {
+    position: relative;
+    background: linear-gradient(135deg,
+      rgba(234,88,12,0.18) 0%,
+      rgba(192,38,211,0.22) 35%,
+      rgba(99,102,241,0.20) 65%,
+      rgba(236,72,153,0.18) 100%);
+    border: 1px solid rgba(192,38,211,0.25) !important;
+    color: #fff !important;
+  }
+  .sidebar-radio-tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background: linear-gradient(135deg,
+      rgba(234,88,12,0.25),
+      rgba(192,38,211,0.30),
+      rgba(99,102,241,0.25),
+      rgba(236,72,153,0.25));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-radio-tab:hover::before,
+  .sidebar-radio-tab.active::before { opacity: 1; }
+  .sidebar-radio-tab .nav-label {
+    background: linear-gradient(90deg, #f97316, #d946ef, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+  }
+  /* Favourite button */
+  .fav-btn { background: none; border: none; cursor: pointer; color: var(--ash); padding: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: color 0.15s, transform 0.15s; }
+  .fav-btn:hover { color: var(--accent); transform: scale(1.25); }
+  .fav-btn.active { color: var(--accent); }
+  .fav-btn.active svg { fill: var(--accent); }
+  /* Home favourites widget */
+  .home-fav-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--hairline); cursor: pointer; transition: background 0.1s; }
+  .home-fav-item:last-child { border-bottom: none; }
+  .home-fav-item:hover .home-fav-title { color: var(--accent); }
+  .home-fav-thumb { width: 40px; height: 26px; object-fit: cover; flex-shrink: 0; border: 1px solid var(--hairline); }
+  .home-fav-title { font-family: 'DM Mono', monospace; font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.15s; }
+  .home-fav-cat { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; flex-shrink: 0; }
+
+  /* Now playing bar */
+  .now-playing {
+    position: fixed; bottom: 0; left: 80px; right: 0;
+    height: 60px;
+    background: linear-gradient(90deg, #1c1a12 0%, #131313 45%, #0f0f0f 100%);
+    border-top: 1px solid rgba(224,177,0,0.18);
+    box-shadow: 0 -4px 28px rgba(0,0,0,0.55), 0 -1px 0 rgba(224,177,0,0.06);
+    display: none; align-items: center; gap: 16px; padding: 0 24px;
+    z-index: 100;
+  }
+  .now-playing.visible { display: flex; }
+  .np-thumb { width: 36px; height: 24px; object-fit: cover; border: 1px solid var(--hairline); flex-shrink: 0; }
+  .np-info { flex: 1; min-width: 0; }
+  .np-title { font-family: 'DM Mono', monospace; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .np-cat { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ash); text-transform: uppercase; }
+  .np-controls { display: flex; align-items: center; gap: 12px; }
+  .np-play {
+    width: 32px; height: 32px; border: 1px solid var(--accent); display: flex;
+    align-items: center; justify-content: center; cursor: pointer; color: var(--accent);
+    background: none;
+  }
+  .np-wave { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+  .np-bar { width: 3px; border-radius: 1px; background: var(--accent); animation: npwave 0.8s ease-in-out infinite alternate; }
+  @keyframes npwave { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+
+  /* Scrollbar */
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-track { background: transparent; }
+  .content::-webkit-scrollbar-thumb { background: var(--hairline); }
+
+  /* YouTube embed (hidden) */
+  #yt-player { position: fixed; top: -9999px; left: -9999px; width: 1px; height: 1px; }
+
+  /* Animations */
+  @keyframes fadein { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadein 0.35s ease-out forwards; }
+
+  /* Radio waveform anim */
+  @keyframes waveanim { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
+  @keyframes aurora-shift { 0%,100% { filter: hue-rotate(0deg) brightness(1); } 50% { filter: hue-rotate(20deg) brightness(1.15); } }
+
+  /* Shine sweep animation for AI tab subheading */
+  @keyframes text-shine {
+    0%   { background-position: -250% center; }
+    100% { background-position: 250% center; }
+  }
+  .shine-text {
+    background: linear-gradient(
+      90deg,
+      #6B7680 0%,
+      #6B7680 30%,
+      rgba(255,255,255,0.95) 45%,
+      #ffffff 50%,
+      rgba(255,255,255,0.95) 55%,
+      #6B7680 70%,
+      #6B7680 100%
+    );
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: text-shine 3.5s linear infinite;
+    letter-spacing: 0.12em;
+  }
+  .sidebar-radio-tab { animation: aurora-shift 4s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-links">
+      <a class="sidebar-link active" onclick="showPage('dashboard')" title="Home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        <span class="nav-label">Home</span>
+      </a>
+      <a class="sidebar-link" onclick="showPage('gallery')" title="Library">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+        <span class="nav-label">Library</span>
+      </a>
+      <a class="sidebar-link" onclick="showPage('under')" title="Personalised">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"/>
+          <line x1="12" y1="4" x2="12" y2="8"/>
+          <line x1="12" y1="9.5" x2="12" y2="16"/>
+          <line x1="9" y1="11" x2="15" y2="14.5"/>
+          <line x1="9" y1="14.5" x2="15" y2="11"/>
+        </svg>
+        <span class="nav-label">AI</span>
+      </a>
+      <a class="sidebar-link" onclick="showPage('theory')" title="Research">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path><line x1="9" y1="21" x2="15" y2="21"></line><line x1="10" y1="17" x2="14" y2="17"></line></svg>
+        <span class="nav-label">Research</span>
+      </a>
+      <a class="sidebar-link sidebar-radio-tab" onclick="showPage('radio')" title="Radio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+        </svg>
+        <span class="nav-label">Radio</span>
+      </a>
+    </div>
+    <div class="sidebar-bottom">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B7680" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"></path></svg>
+      <div class="avatar"></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo-sq" style="font-family:'Inter',sans-serif;font-weight:900;font-size:18px;color:#E0B100;letter-spacing:-0.04em;">NN</div>
+        <span class="topbar-title">Neuronest Radio // The Sound Hub</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;" id="search-area">
+        <input class="search-input" type="text" placeholder="Query signal archive..." oninput="filterArchive(this.value)" />
+        <button class="notif-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        </button>
+      </div>
+      <div style="display:none;align-items:center;gap:8px;" id="radio-status">
+        <div id="header-wave" style="display:none;align-items:flex-end;gap:2px;height:16px;">
+          <div class="np-bar" style="height:8px;animation-delay:0s;"></div>
+          <div class="np-bar" style="height:12px;animation-delay:0.1s;"></div>
+          <div class="np-bar" style="height:6px;animation-delay:0.2s;"></div>
+          <div class="np-bar" style="height:14px;animation-delay:0.15s;"></div>
+        </div>
+        <span class="mono upper" style="font-size:10px;color:var(--ash);" id="stream-status">STANDBY</span>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="content-inner">
+
+        <!-- === DASHBOARD === -->
+        <div class="page active" id="page-dashboard">
+          <!-- Hero -->
+          <section class="hero fade-in">
+            <div class="hero-bg"></div>
+            <div class="hero-slide-bg" id="hero-slide-bg"></div>
+            <div class="hero-grid"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <div id="hero-content-inner" style="transition:opacity 0.4s ease;">
+                <div class="hero-label" id="hero-label">Active Protocol</div>
+                <h1 class="hero-title" id="hero-slide-title">Neuronest Radio.<br><span style="font-size:0.6em;letter-spacing:-0.01em;opacity:0.85;">The Sound Hub</span></h1>
+                <p id="hero-slide-sub" style="font-size:15px;font-weight:600;margin-bottom:6px;font-family:'Inter',sans-serif;color:#F3F3F0;">Using Sound as a Tool for Performance</p>
+                <p class="hero-body" id="hero-slide-desc">Neuroscience-backed audio protocols for focus, sleep, and calm — curated from peer-reviewed research and engineered for real-world use.</p>
+                <div class="hero-actions">
+                  <button class="btn-primary" id="hero-btn" onclick="heroAction()" style="cursor:pointer;border:none;">LEARN MORE</button>
+                </div>
+              </div>
+            </div>
+            <div class="slide-dots" id="slide-dots"></div>
+            <!-- Prev / Next arrows -->
+            <button class="hero-nav hero-prev" onclick="stepHeroSlide(-1)" aria-label="Previous slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="hero-nav hero-next" onclick="stepHeroSlide(1)" aria-label="Next slide">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </section>
+
+          <!-- Feature Cards -->
+          <div class="feature-cards fade-in">
+            <div class="feature-card" onclick="showPage('gallery')">
+              <div>
+                <p class="fc-sub">Newest Upload</p>
+                <h3 class="fc-title">Latest Release</h3>
+              </div>
+              <p class="fc-desc">Lofi Hip Hop Radio — Beats to Relax / Study To</p>
+              <span class="fc-link">Access Module →</span>
+            </div>
+            <div class="feature-card" onclick="showPage('gallery')">
+              <div>
+                <p class="fc-sub">From Database</p>
+                <h3 class="fc-title">Curated Selection</h3>
+              </div>
+              <p class="fc-desc">10 tracks engineered for focus, sleep, and nervous system calm.</p>
+              <span class="fc-link">Access Module →</span>
+            </div>
+            <div class="feature-card highlight" onclick="showPage('theory')">
+              <div>
+                <p class="fc-sub">Research Feed</p>
+                <h3 class="fc-title">Neuroscience News</h3>
+              </div>
+              <p class="fc-desc">Explore the latest findings in auditory cognitive stimulation.</p>
+              <span class="fc-link">Access Module →</span>
+            </div>
+          </div>
+
+          <!-- Grid -->
+          <div class="grid-layout">
+            <div class="left-col">
+              <!-- Uploads Log -->
+              <div class="uploads-log">
+                <div class="uploads-header">
+                  <span class="section-label">Curated Selection</span>
+                  <span class="gallery-link" onclick="showPage('gallery')">[ Mode ]</span>
+                </div>
+                <div class="track-list" id="uploads-list"></div>
+              </div>
+              <!-- Your Neuronest Hub -->
+              <div>
+                <div style="margin-bottom:6px;">
+                  <span class="section-label">Your Neuronest Hub</span>
+                </div>
+                <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);line-height:1.7;margin-bottom:16px;max-width:560px;">
+                  The more you listen, the smarter it gets. We track what resonates — your focus sessions, sleep patterns, the sounds that actually move you — and use that to surface tracks and curated mixes that genuinely fit where your mind is at. No algorithm noise. Just sound, matched to you.
+                </p>
+                <div class="archive-grid" id="cat-grid"></div>
+              </div>
+            </div>
+
+            <div class="right-col">
+              <!-- Favourites Quick Access -->
+              <div id="home-favs-section" style="display:none;margin-bottom:24px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                  <span class="section-label" style="display:flex;align-items:center;gap:6px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    Your Favourites
+                  </span>
+                  <span class="gallery-link" onclick="showPage('gallery')" style="font-size:10px;">[ View All ]</span>
+                </div>
+                <div id="home-favs-list"></div>
+              </div>
+              <!-- Active Listeners -->
+              <div class="listeners-section">
+                <div style="margin-bottom:4px;"><span class="section-label">Active Listeners</span></div>
+                <div class="listener-count" id="active-listener-count">1.2K</div>
+                <div class="listener-subtitle">Online Now</div>
+                <div class="listener-avatars" id="listener-list"></div>
+              </div>
+              <!-- Research Feed -->
+              <div class="research-section">
+                <div style="margin-bottom:24px;"><span class="section-label">Research Feed</span></div>
+                <div class="research-items" id="research-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === RADIO === -->
+        <div class="page" id="page-radio">
+          <div class="radio-page">
+            <div class="channel-tabs">
+              <button class="channel-tab active focus" onclick="setChannel('Focus',this)">Focus</button>
+              <button class="channel-tab" onclick="setChannel('Sleep',this)">Sleep</button>
+              <button class="channel-tab" onclick="setChannel('Calm',this)">Calm</button>
+              <button class="channel-tab" onclick="setChannel('Favourites',this)" id="fav-channel-tab" style="display:none;">♥ Favourites</button>
+            </div>
+
+            <div class="radio-player" id="radio-player">
+              <div class="radio-visual">
+                <img class="radio-thumb" id="radio-thumb" src="" alt="" />
+                <div class="radio-glow" id="radio-glow"></div>
+                <div class="radio-wave-overlay" id="wave-bars"></div>
+              </div>
+              <div class="radio-info">
+                <div>
+                  <div class="radio-channel-label" id="radio-channel-label">FOCUS CHANNEL</div>
+                  <h2 class="radio-track-title" id="radio-track-title">—</h2>
+                  <p class="radio-creator" id="radio-creator">—</p>
+                  <p class="radio-desc" id="radio-desc">Isochronic tones, lo-fi, and white noise engineered for sustained attention and memory consolidation.</p>
+                  <div class="radio-tags" id="radio-tags"></div>
+                </div>
+                <div class="radio-controls">
+                  <button class="play-btn" id="radio-play-btn" onclick="toggleRadioPlay()" style="border-color:var(--focus-color);color:var(--focus-color);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                  <div>
+                    <div class="play-status" id="play-status-text">READY TO PLAY</div>
+                    <div class="play-status" id="play-dur-text" style="opacity:0.5;font-size:9px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="queue-section">
+              <div class="queue-header" id="queue-header">FOCUS QUEUE — 0 TRACKS</div>
+              <div class="queue-list" id="queue-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- === ARCHIVE === -->
+        <!-- === GALLERY / LIBRARY === -->
+        <div class="page" id="page-gallery">
+          <div class="archive-view">
+            <!-- Header row: title + filters + view toggle -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+              <div class="view-header"><h2 class="view-title">Library</h2><p class="view-subtitle" id="gallery-subtitle">25 tracks</p></div>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;" id="gallery-filters"></div>
+                <!-- View toggle -->
+                <div style="display:flex;border:1px solid var(--hairline);overflow:hidden;flex-shrink:0;">
+                  <button id="view-grid-btn" onclick="setGalleryView('grid')" title="Grid view"
+                    style="width:32px;height:32px;background:rgba(224,177,0,0.08);border:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                  </button>
+                  <button id="view-list-btn" onclick="setGalleryView('list')" title="List view"
+                    style="width:32px;height:32px;background:none;border:none;color:var(--ash);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="gallery-grid"></div>
+          </div>
+        </div>
+
+        <!-- === THEORY / RESEARCH === -->
+        <div class="page" id="page-theory">
+          <div class="archive-view">
+            <!-- Header -->
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px;">
+              <div>
+                <h2 class="view-title">Research Foundation</h2>
+                <p class="view-subtitle">The science behind every sound — 4 categories · 28 sub-types</p>
+              </div>
+              <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener"
+                style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--obsidian);background:var(--accent);padding:14px 28px;text-decoration:none;transition:filter 0.15s;white-space:nowrap;"
+                onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
+                Neuronest Research Hub →
+              </a>
+            </div>
+            <!-- Category tabs -->
+            <div style="display:flex;border:1px solid var(--hairline);width:fit-content;margin-bottom:16px;">
+              <button class="channel-tab active focus" onclick="setFrameworkCat('Focus',this)" id="ftab-Focus" style="padding:10px 20px;">Focus</button>
+              <button class="channel-tab" onclick="setFrameworkCat('Relaxation',this)" id="ftab-Relaxation" style="padding:10px 20px;">Relaxation</button>
+              <button class="channel-tab" onclick="setFrameworkCat('Sleep',this)" id="ftab-Sleep" style="padding:10px 20px;">Sleep</button>
+              <button class="channel-tab" onclick="setFrameworkCat('Cognitive',this)" id="ftab-Cognitive" style="padding:10px 20px;">Cognitive</button>
+            </div>
+            <!-- Filters row -->
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+              <input id="fw-search" oninput="renderFrameworkCards()" type="text" placeholder="Search..."
+                style="background:var(--panel);border:1px solid var(--hairline);padding:7px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--bone);outline:none;width:220px;transition:border-color 0.15s;"
+                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--hairline)'" />
+              <div style="display:flex;gap:4px;flex-wrap:wrap;" id="evidence-filters"></div>
+              <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);margin-left:auto;" id="fw-count"></span>
+            </div>
+            <!-- Cards -->
+            <div id="framework-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
+          </div>
+        </div>
+
+        <!-- === UNDER CONSTRUCTION === -->
+        <div class="page" id="page-under" style="position:relative;overflow:hidden;height:100%;">
+          <!-- Lottie wave background — base64 embedded for standalone HTML compatibility -->
+          <dotlottie-player
+            src="data:application/zip;base64,UEsDBBQAAAAIAAAAAABcGXfZeQAAAJ4AAAANAAAAbWFuaWZlc3QuanNvbiXNOw7CMBAE0LtMHRDm0/gAVNwAUVjxChZiL1ovIBTl7ti4nNEbzYyQOQVjyQX+PIMjPNx2tz9gQJJINWbRFKaaIyuNzcK75TIgvOwmWsVJzJiOPFFpjMqo/OwQtbhSJg32p1Gs69W92Qd9P6Kxnjf4Ji195dYbLD9QSwMEFAAAAAgAAAAAAAu1pj0aBQAAiyAAABUAAABhbmltYXRpb25zLzEyMzQ1Lmpzb27tWe9vo0YQ/VcsPmO0v2DB39rrNarUSqdr1S9WVLkxjt3YxgLS9hTlf+97C9jGAadJHN1dzooIsDM7s/t25s2yvvP+9kZeGODP871Z7o1UEiRWCCGVElZo6XuLjTcSvpfhpk0AEYQ6NvzzvX/QQ+E+x93Evrdewd7VMoe16XTqOk6KIi0LbzS+8xZo8a6y1eYPAYXl5FOaV4JGd7HGHT7LT+7VWfuQp0P2GWj0ydPZT1sjEg0FxowON7Bz52X8N3Fdb7yR5eD/hVjeo2NLRFeUCEgwrz3JOFSxr5PQF5eVjoIKpPsqRgifV6NC+87/TiWygQ19ICJFoxXd0xKGCBXAFsMAYXP3oxgXpRP+CTAw3gOw1GcFS4dEQn4tYOnPCpYJVQuJLwysS8K1y1BC0JehddDBgsPx1/lkkw5+pvKA3coqiY8AiLE/CUGaqRiEDZCKINZYTS4mn6DqHDiJjGwtwRMk1SQ5DSVEYGWyhbhEp7GxgTGRX7fAwXgohUXfxLU5VJ7nlbp0a5I4CGGu7VYG2pqWW6WCEKNrvMKCaZbMJkqG9EB7kVBBHMW1vfv+cIL4WCjJSAU2ihhJPdFUcGWrAOCCe9ck9gUGxqVgJEDHCYo5BXTTLPjWjYNvzLFc+i/4j9ERtlPYQc0bjzUAVAqNKon9OOaDiKqWpmEoq3fEg25aklpnqOKobtO2adNW+1oneKR1PsHblTcq89sUoDarVJHPpJy7bFmt8fbdD9+/H/yeXpVZPqjSaTi4yLPbDRTmwHk2WRYwUS8D8tbZbS2mj5hUGuUrSXAxoGW9ottAPcwxAwEIY08QVoIQgiUcYDWXf7nbauny3VFFk/Zlnt2k3XO4yCeb+eIKs6i0OqcxWz6chgiMRPppIQx3HyKIrA0TUJnWUuPV2shYBCsus50g59FDMJxJxUP7Q/9xsVw+NnDqdA67ZBIccPtRVj+ehK3k41J10mHUP0WyTeESrWt9i/Zg9mBxSPyWT9bFLMtXHnlkj86JzppVA0vk5rVFsE7zDuj64jWf0hhtf8xu19PBuyxfo7A4H+3ZmjoACVTt9YEfLEyJSjMcfHzX8kYIT741UKxn6IgJt3YIbD9hgeup/8/bItQh9do7BELwyB6+a4fAL43TI2dt7IdKPZKGR1HDp4+Ryt/en1wRd/P2UlLHgQNtjI9rb4C9JEIacMC9Xy4XmyIdPF4tas23XC+uZ2juixbGRIvor6lYEVibHFFjhECkYCuIz7yAZYZghPyOCazABiwQxqKteqemiDTfKj137b55EkbHwVLvVpLIpAfIh/FWTFpH8IDmkI4PASe1d/J33AQIgJsu0nXpytVj2F4Mn1TUhtgg+kP7dipbk02nqG0vqjZHPqDMq9BjGGvfJNhAnenxTI//ix4d+W0JsqJH3o21LYJU2hEmCPJMj2d6POlmvIseeVR3enrUoMYQH5QvoEcZBhGOBLb3Mz2+eXqsiFHjB4MdPZIYQYpkQPdKXgwkzoVOxY5W+epMj98UPboj3qf+WsZ9ZOvEgj+5HWFOfDv3EaeMj1CnlIh0haB/xSOL+aT4ZcKl5EEq8MVz8SHPNmleLmo6XaxxquuwhTybImtgHYMFjg/PokMZJNzauCPhYfXG89tWe93cnDt3Cv1uU80ZMyetBTh7rHG2rBMeFzswEh4XmwSMjrYHZ8TEpyemmQe4dYe0CwAChRBlyLz+r4xPDbJnludzjL3BGEPn1SS/qUjt8v4/UEsBAgAAFAAAAAgAAAAAAFwZd9l5AAAAngAAAA0AAAAAAAAAAAAAAAAAAAAAAG1hbmlmZXN0Lmpzb25QSwECAAAUAAAACAAAAAAAC7WmPRoFAACLIAAAFQAAAAAAAAAAAAAAAACkAAAAYW5pbWF0aW9ucy8xMjM0NS5qc29uUEsFBgAAAAACAAIAfgAAAPEFAAAAAA=="
+            autoplay loop
+            style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;min-width:800px;min-height:600px;opacity:0.5;pointer-events:none;z-index:0;">
+          </dotlottie-player>
+          <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;padding:40px 24px;box-sizing:border-box;gap:20px;text-align:center;">
+            <div class="mono upper" style="font-size:10px;color:var(--ash);letter-spacing:0.12em;border:1px solid var(--hairline);padding:4px 12px;">MODULE OFFLINE</div>
+            <h2 style="font-size:52px;font-weight:900;line-height:1.1;max-width:600px;letter-spacing:-0.01em;margin:0;">
+              <span style="font-family:'Great Vibes',cursive;font-weight:400;font-size:1.15em;text-transform:none;display:block;letter-spacing:0;background:linear-gradient(135deg,#f59e0b 0%,#ef4444 45%,#ec4899 80%,#f97316 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Personalised</span>
+              <span style="font-family:'Inter',sans-serif;font-weight:900;text-transform:uppercase;display:block;font-size:0.88em;letter-spacing:-0.03em;background:linear-gradient(135deg,#f8f6f2 0%,#e8e4de 18%,#d4cfc8 32%,#f0ede9 48%,#c8c2bb 60%,#e4e0da 74%,#f5f3ef 88%,#dedad4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Soundscapes<br>For Your Brain</span>
+            </h2>
+            <p class="mono upper shine-text" style="font-size:11px;max-width:380px;line-height:1.8;margin-top:28px;">AI Learning Model to Adapt<br>Productivity Behaviours</p>
+            <div style="width:120px;height:2px;background:var(--accent);opacity:0.4;"></div>
+
+            <!-- Newsletter signup -->
+            <div style="margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:400px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#6B7680;line-height:1.7;">Sign up for the latest news on the tech —<br>free beta access for 1 month</p>
+              <form onsubmit="handleUnderSignup(event)" style="display:flex;gap:0;width:100%;">
+                <input id="under-email" type="email" required placeholder="your@email.com"
+                  style="flex:1;background:#0f0f0f;border:1px solid rgba(255,255,255,0.1);border-right:none;padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;min-width:0;"
+                  onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" />
+                <button type="submit"
+                  style="background:#E0B100;color:#050505;border:none;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;"
+                  onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                  Get Access
+                </button>
+              </form>
+              <div id="under-signup-success" style="display:none;font-family:'DM Mono',monospace;font-size:11px;color:#4ade80;letter-spacing:0.08em;text-transform:uppercase;">You're on the list — we'll be in touch.</div>
+            </div>
+          </div><!-- end z-index content wrapper -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Now Playing Bar -->
+<div class="now-playing" id="now-playing">
+  <img class="np-thumb" id="np-thumb" src="" alt="" />
+  <div class="np-info">
+    <div class="np-title" id="np-title">—</div>
+    <div class="np-cat" id="np-cat">—</div>
+  </div>
+  <div class="np-controls">
+    <div class="np-wave" id="np-wave">
+      <div class="np-bar" style="height:6px;animation-delay:0s;"></div>
+      <div class="np-bar" style="height:10px;animation-delay:0.12s;"></div>
+      <div class="np-bar" style="height:8px;animation-delay:0.06s;"></div>
+      <div class="np-bar" style="height:14px;animation-delay:0.18s;"></div>
+      <div class="np-bar" style="height:6px;animation-delay:0.09s;"></div>
+    </div>
+    <button class="np-play" onclick="toggleGlobalPlay()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="np-icon"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Hidden YT player -->
+<div id="yt-player"></div>
+
+<script>
+const TRACKS = [
+  // — CALM —
+  { id:'v4C4keiF0tQ', title:'Heavy Rain & Big Ocean Waves — White Noise', creator:'Relaxing White Noise', category:'Calm', tags:['Nature Immersion','Block Distractions','Stress Relief'], duration:'10 Hours' },
+  { id:'UPrQdaixz-4', title:'Frog Funk Therapy — Breezy Jazz Funk', creator:'Nebula Breeze', category:'Calm', tags:['Mood Boost','Wind Down','Gentle Productivity'], duration:'3 Hours' },
+  { id:'--h6buReAvw', title:'BEYOND — Meditation Music 444Hz', creator:'Zen Celesta', category:'Calm', tags:['Meditation','Grounding','Inner Peace'], duration:'1 Hour' },
+  { id:'woTWj6iN_aY', title:'Calming Nervous System — Handpan Music', creator:'Malte Marten', category:'Calm', tags:['Calm Nervous System','Stress Relief','Body Relaxation'], duration:'1 Hour' },
+  { id:'-KAxNNhyfSY', title:'Alpha Wave Promoting Soundscape', creator:'Tranquility Studios', category:'Calm', tags:['Calm Nervous System','Relaxed Focus','Alpha Waves'], duration:'3 Hours' },
+  { id:'PDI3mdiQuG0', title:'Instant Stress Relief — Singing Bowls', creator:'Aurabowls', category:'Calm', tags:['Calm Nervous System','Stress Relief','Nervous System Reset'], duration:'1 Hour' },
+  { id:'BXbsO8exZns', title:'Relaxing Meditation Music by Deuter', creator:'New Earth Records', category:'Calm', tags:['Meditation','Wind Down','Stress Relief'], duration:'1 Hour' },
+  { id:'qIW2Fu2SN0U', title:'12-Hour Engineered Pink Noise', creator:'Pink Noise (NEURONEST)', category:'Calm', tags:['Brain Restoration','Deep Sleep','Sharpen Memory'], duration:'12 Hours' },
+  // — FOCUS —
+  { id:'NQk2mX5Z36k', title:'Jazzhop Study Enhancer — Isochronic Tones', creator:'Jason Lewis', category:'Focus', tags:['Sharpen Memory','Study Sessions','Deep Focus'], duration:'1 Hour' },
+  { id:'rKxRHZec67M', title:'Jazz Alpha/Beta Isochronic Tones', creator:'Jason Lewis', category:'Focus', tags:['Sharpen Memory','Deep Focus','Mental Clarity'], duration:'1 Hour' },
+  { id:'yLOM8R6lbzg', title:'Studying White Noise — 10 Hours', creator:'Relaxing White Noise', category:'Focus', tags:['Study Sessions','Block Distractions','Sustained Focus'], duration:'10 Hours' },
+  { id:'jfKfPfyJRdk', title:'Lofi Hip Hop Radio — Relax / Study', creator:'Lofi Girl', category:'Focus', tags:['Relaxed Focus','Study Sessions','Background Listening'], duration:'24/7 Livestream' },
+  { id:'qlM39cB_5hk', title:'Soft Dark Ambient — Beats to Code To', creator:'lock in music.', category:'Focus', tags:['Deep Work','Block Distractions','Coding'], duration:'1 Hour' },
+  { id:'A6dzSX62gEY', title:'Clear Mind Intense Focus — Ambient Techno', creator:'Jason Lewis', category:'Focus', tags:['ADHD Support','Deep Focus','Block Distractions'], duration:'1 Hour' },
+  { id:'U5kH5VE31Rc', title:'Stop Mind Wandering — Smoothed Brown Noise', creator:'Jason Lewis', category:'Focus', tags:['ADHD Support','Block Distractions','Quiet Mind'], duration:'1 Hour' },
+  { id:'74cOUSKXMz0', title:'3-Hour Study With Me — Hyper Efficient', creator:'Jason Sung', category:'Focus', tags:['Study Sessions','Sustained Work','Time-Boxed Focus'], duration:'3 Hours' },
+  { id:'aju_UB5Vlf8', title:'90 Min Ethereal Intelligent DnB', creator:'Jungle Wizard', category:'Focus', tags:['Flow State','Creative Energy','Study Sessions'], duration:'90 Minutes' },
+  { id:'2F6B9EibJjw', title:'Ambient Techno Mix', creator:'Ambient Techno mixes', category:'Focus', tags:['Deep Focus','Flow State','Block Distractions'], duration:'2 Hours' },
+  { id:'AKUIk1_Hqfk', title:'Focus Flow — Deep Concentration House + Beta Waves', creator:'Jason Lewis', category:'Focus', tags:['Deep Focus','Flow State','Brain Boost'], duration:'3 Hours' },
+  // — SLEEP —
+  { id:'Yi7BM8XPTfA', title:'Theta / Delta Waves — Sleep Soundscape', creator:'The Guided Meditation Site', category:'Sleep', tags:['Deep Sleep','Brain Restoration','Fall Asleep Faster'], duration:'1 Hour' },
+  { id:'lh4JdZTJe7k', title:'12 Hours Relaxing Sleep Music', creator:'Soothing Relaxation', category:'Sleep', tags:['Stress Relief','Deep Sleep','Wind Down'], duration:'12 Hours' },
+  { id:'XntSTiJBauM', title:'Quantum Jump Sleep Meditation', creator:'Jason Stephenson', category:'Sleep', tags:['Fall Asleep Faster','Guided Relaxation','Deep Sleep'], duration:'1 Hour' },
+  { id:'FdN1pnEaJs0', title:'Sleep Sounds Deep White Noise', creator:'Relaxing White Noise', category:'Sleep', tags:['Stay Asleep All Night','Block Distractions','Deep Sleep'], duration:'10 Hours' },
+  { id:'aOPXARjP1hM', title:'Calm Noise Blanket — Parasympathetic Activation', creator:'The Sound Healers', category:'Sleep', tags:['Deep Sleep','Calm Nervous System','Brain Restoration'], duration:'3 Hours' },
+  { id:'_SsYljnOsU8', title:'Super Deep Brown Noise — Sleep & Focus', creator:'Something Soothing', category:'Sleep', tags:['Deep Sleep','Block Distractions','Fall Asleep'], duration:'2 Hours' },
+];
+
+// Neuronest Original Releases — Meditation Soundscape Series Vol. I
+const NN_RELEASES = [
+  { id:'6vez9LT68SQ', num:'NN001', title:'NN001 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'GNVdfQyKsWk', num:'NN002', title:'NN002 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'nEDq7MMmxSk', num:'NN003', title:'NN003 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'5-Uj9lU3-2Q', num:'NN004', title:'NN004 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'xDTYFBMJdXs', num:'NN005', title:'NN005 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'iU630JQqIKA', num:'NN006', title:'NN006 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'FNDaPf6qUEA', num:'NN007', title:'NN007 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'wLw7ylH9p88', num:'NN008', title:'NN008 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+  { id:'Iv1MeWyYGIQ', num:'NN009', title:'NN009 — Meditation Soundscape', series:'Meditation Soundscape Series · Vol. I' },
+];
+
+// Neuronest Album catalogue — add future albums here
+const NN_ALBUMS = [
+  {
+    id: 'meditation-soundscape-vol1',
+    title: 'Meditation Soundscape Series',
+    subtitle: 'Vol. I',
+    year: '2024',
+    trackCount: 9,
+    description: 'Nine deep-meditation soundscapes engineered for sleep onset, focused calm, and nervous system restoration.',
+    coverId: '6vez9LT68SQ', // first track thumbnail used as cover
+    releases: NN_RELEASES,
+  },
+  // Future albums can be added here:
+  // { id: 'focus-frequencies-vol1', title: 'Focus Frequencies', subtitle: 'Vol. I', ... }
+];
+
+const RESEARCH = [
+  { title:'Enhancement of sleep slow waves: underlying mechanisms and practical consequences', journal:'Frontiers in Systems Neuroscience', year:2014, series:'Pink Noise — Sleep/Memory', confidence:'High', doi:'https://doi.org/10.3389/fnsys.2014.00208' },
+  { title:'Gamma entrainment binds higher-order brain regions and offers neuroprotection', journal:'Neuron', year:2019, series:'Gamma — 40 Hz', confidence:'High', doi:'https://doi.org/10.1016/j.neuron.2019.04.011' },
+  { title:'Auditory beats in the brain', journal:'Scientific American', year:1973, series:'Binaural Beats — Cognition', confidence:'Moderate', doi:'https://doi.org/10.1038/scientificamerican1073-94' },
+  { title:"Multi-sensory gamma stimulation ameliorates Alzheimer's-associated pathology and improves cognition", journal:'Cell', year:2019, series:'Gamma — 40 Hz', confidence:'High', doi:'https://doi.org/10.1016/j.cell.2019.02.014' },
+  { title:'Gamma frequency entrainment attenuates amyloid load and modifies microglia', journal:'Nature', year:2016, series:'Gamma — 40 Hz', confidence:'High', doi:'https://doi.org/10.1038/nature20587' },
+  { title:'Effect of rosary prayer and yoga mantras on autonomic cardiovascular rhythms', journal:'BMJ', year:2001, series:'Meditation — HRV/Vagal', confidence:'High', doi:'https://doi.org/10.1136/bmj.323.7327.1446' },
+];
+
+// Category gradient constants — defined before CHANNEL_META to avoid TDZ errors
+const FOCUS_GRAD = 'linear-gradient(135deg, #f46b45 0%, #f9a825 45%, #ffd200 100%)';
+const FOCUS_MID  = '#f9a825';
+const SLEEP_GRAD = 'linear-gradient(135deg, #1A1F71 0%, #3C2A78 100%)';
+const SLEEP_MID  = '#6B4FA8';
+const CALM_GRAD  = 'linear-gradient(135deg, #11998e 0%, #43E97B 30%, #38F9D7 60%, #0ED2F7 80%, #74EBD5 100%)';
+const CALM_MID   = '#38F9D7';
+
+const CHANNEL_META = {
+  Focus:      { label:'FOCUS CHANNEL',      desc:'Isochronic tones, lo-fi, and white noise engineered for sustained attention and memory consolidation.', color:FOCUS_MID, gradient:FOCUS_GRAD, glow:'rgba(249,168,37,0.16)' },
+  Sleep:      { label:'SLEEP CHANNEL',      desc:'Theta and delta wave entrainment for deep sleep initiation and slow-wave restoration.', color:SLEEP_MID, gradient:SLEEP_GRAD, glow:'rgba(107,79,168,0.14)' },
+  Calm:       { label:'CALM CHANNEL',       desc:'Ambient soundscapes and parasympathetic activation for nervous system downregulation.', color:CALM_MID, gradient:CALM_GRAD, glow:'rgba(56,249,215,0.12)' },
+  Favourites: { label:'YOUR FAVOURITES',    desc:'Your personally saved tracks — curated by you, ready to play.', color:'#E0B100', glow:'rgba(224,177,0,0.12)' },
+};
+
+// ─── Favourites system ───────────────────────────────────────────
+let favourites = new Set(JSON.parse(localStorage.getItem('nn_favs') || '[]'));
+function saveFavs() { localStorage.setItem('nn_favs', JSON.stringify([...favourites])); }
+
+function favBtn(id) {
+  const on = favourites.has(id);
+  return `<button class="fav-btn${on?' active':''}" data-id="${id}" onclick="toggleFav('${id}',event)" title="${on?'Unfavourite':'Favourite'}">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="${on?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  </button>`;
+}
+
+function toggleFav(id, event) {
+  event.stopPropagation();
+  if (favourites.has(id)) favourites.delete(id); else favourites.add(id);
+  saveFavs();
+  // Live-update every heart button for this track without full re-render
+  document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
+    const on = favourites.has(id);
+    btn.classList.toggle('active', on);
+    btn.querySelector('svg').setAttribute('fill', on ? 'currentColor' : 'none');
+    btn.title = on ? 'Unfavourite' : 'Favourite';
+  });
+  renderHomeFavourites();
+  updateFavChannelTab();
+  // Re-render library if showing Favourites filter
+  const galPage = document.getElementById('page-gallery');
+  if (galPage && galPage.classList.contains('active') && galleryFilter === 'Favourites') renderGallery();
+}
+
+function updateFavChannelTab() {
+  const tab = document.getElementById('fav-channel-tab');
+  if (tab) tab.style.display = favourites.size > 0 ? '' : 'none';
+}
+
+function renderHomeFavourites() {
+  const section = document.getElementById('home-favs-section');
+  const listEl  = document.getElementById('home-favs-list');
+  if (!section || !listEl) return;
+  const favTracks = TRACKS.filter(t => favourites.has(t.id));
+  if (!favTracks.length) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  const colors = { Focus:FOCUS_MID, Sleep:SLEEP_MID, Calm:CALM_MID };
+  listEl.innerHTML = favTracks.slice(0, 6).map(t => `
+    <div class="home-fav-item" onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})">
+      <img class="home-fav-thumb" src="${thumb(t.id)}" alt="${t.title}" />
+      <span class="home-fav-title">${t.title}</span>
+      <span class="home-fav-cat" style="color:${colors[t.category]||'var(--ash)'};">${t.category}</span>
+      ${favBtn(t.id)}
+    </div>
+  `).join('');
+}
+
+const LISTENERS = [
+  {name:'USER-4812', track:'Theta / Delta Waves'},
+  {name:'USER-2291', track:'Lofi Hip Hop Radio'},
+  {name:'USER-7703', track:'BEYOND 444Hz'},
+  {name:'USER-1155', track:'Heavy Rain & Ocean'},
+  {name:'USER-9934', track:'Jazzhop Study Enhancer'},
+];
+
+function thumb(id) { return `https://img.youtube.com/vi/${id}/mqdefault.jpg`; }
+
+// Returns inline style string for a category badge chip
+function catBadge(cat) {
+  if (cat === 'Focus') return `background:${FOCUS_GRAD};color:#fff;border:none;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;`;
+  if (cat === 'Sleep') return `background:${SLEEP_GRAD};color:#fff;border:none;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;`;
+  if (cat === 'Calm')  return `background:${CALM_GRAD};color:#050505;border:none;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;`;
+  return `background:rgba(107,118,128,0.15);border:1px solid rgba(107,118,128,0.35);color:#6B7680;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;`;
+}
+// Returns hover border colour for cards
+function catHover(cat) {
+  return {Focus:FOCUS_MID, Sleep:SLEEP_MID, Calm:CALM_MID}[cat] || 'var(--accent)';
+}
+
+let currentTrack = null;
+let isPlaying = false;
+let radioChannel = 'Focus';
+let radioTrackId = null;
+let ytPlayer = null;
+let ytReady = false;
+
+// YT API
+window.onYouTubeIframeAPIReady = function() {
+  ytReady = true;
+  ytPlayer = new YT.Player('yt-player', {
+    height:'1', width:'1',
+    playerVars: { autoplay:0, controls:0 },
+    events: { onStateChange: e => { if(e.data === 0) stopPlayback(); } }
+  });
+};
+(function(){
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(s);
+})();
+
+function playTrack(track) {
+  currentTrack = track;
+  isPlaying = true;
+  updateNowPlaying();
+  if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
+    ytPlayer.loadVideoById(track.id);
+  }
+}
+
+function stopPlayback() {
+  isPlaying = false;
+  updatePlayState();
+}
+
+function toggleGlobalPlay() {
+  if (!currentTrack) return;
+  isPlaying = !isPlaying;
+  if (ytReady && ytPlayer) {
+    isPlaying ? ytPlayer.playVideo() : ytPlayer.pauseVideo();
+  }
+  updatePlayState();
+}
+
+function toggleHeroPlay() {
+  const btn = document.getElementById('hero-btn');
+  if (!currentTrack) { playTrack(TRACKS[9]); }
+  else { toggleGlobalPlay(); }
+  btn.textContent = isPlaying ? 'PAUSE PROTOCOL' : 'EXECUTE PROTOCOL';
+  btn.classList.toggle('playing', !isPlaying);
+}
+
+function updateNowPlaying() {
+  const bar = document.getElementById('now-playing');
+  if (!currentTrack) { bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  document.getElementById('np-thumb').src = thumb(currentTrack.id);
+  document.getElementById('np-title').textContent = currentTrack.title;
+  document.getElementById('np-cat').textContent = currentTrack.category + ' · ' + currentTrack.duration;
+  updatePlayState();
+}
+
+function updatePlayState() {
+  const icon = document.getElementById('np-icon');
+  const wave = document.getElementById('np-wave');
+  if (isPlaying) {
+    icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    wave.style.display = 'flex';
+  } else {
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+    wave.style.display = 'none';
+  }
+  updateRadioUI();
+}
+
+// Pages
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+
+  const isRadio = name === 'radio';
+  document.getElementById('search-area').style.display = isRadio ? 'none' : 'flex';
+  document.getElementById('radio-status').style.display = isRadio ? 'flex' : 'none';
+
+  // Sidebar active state — archive removed, gallery now sits at index 1
+  const idx = {dashboard:0, gallery:1, under:2, theory:3, radio:4};
+  const links = document.querySelectorAll('.sidebar-link');
+  if (idx[name] !== undefined) links[idx[name]].classList.add('active');
+
+  if (name === 'gallery') { renderGallery(); }
+  if (name === 'theory') renderTheory();
+  if (name === 'radio') renderRadio();
+}
+
+// Render uploads list
+function renderUploads() {
+  const el = document.getElementById('uploads-list');
+  el.innerHTML = TRACKS.map(t => `
+    <div class="track-item" onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})">
+      <img class="track-thumb" src="${thumb(t.id)}" alt="${t.title}" />
+      <span class="track-name">${t.title}</span>
+      <span class="track-cat">${t.category}</span>
+      ${favBtn(t.id)}
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+  `).join('');
+}
+
+// Neuronest Library — all tracks
+const CAT_COLORS = { Focus:FOCUS_MID, Sleep:SLEEP_MID, Calm:CALM_MID };
+
+function renderSignalArchive(query='') {
+  const q = query.toLowerCase();
+  const filtered = q
+    ? TRACKS.filter(t =>
+        t.title.toLowerCase().includes(q) ||
+        t.creator.toLowerCase().includes(q) ||
+        t.category.toLowerCase().includes(q) ||
+        t.tags.some(tag => tag.toLowerCase().includes(q))
+      )
+    : TRACKS;
+
+  const el = document.getElementById('cat-grid');
+  if (!filtered.length) {
+    el.innerHTML = `<div style="grid-column:1/-1;height:100px;border:1px dashed rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:#6B7680;text-transform:uppercase;letter-spacing:0.1em;">No signals matching "${query}"</div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(t => {
+    const color = CAT_COLORS[t.category] || '#6B7680';
+    const tagChips = t.tags.slice(0,2).map(tag =>
+      `<span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">${tag}</span>`
+    ).join('');
+    return `
+    <div class="cat-card" style="border-left:2px solid ${color}22;position:relative;overflow:hidden;"
+      onmouseenter="this.querySelector('.sa-play').style.opacity='1'"
+      onmouseleave="this.querySelector('.sa-play').style.opacity='0'"
+      onclick="playTrack('${t.id}','${t.title.replace(/'/g,'\\\'')}')"
+    >
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${t.title}</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:${color};display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">${t.creator}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;">${tagChips}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:${color};letter-spacing:0.08em;">${t.category}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">${t.duration}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Listeners
+function renderListeners() {
+  const el = document.getElementById('listener-list');
+  el.innerHTML = LISTENERS.map(l => `
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">${l.name}</span>
+      <span class="listener-track">${l.track}</span>
+    </div>
+  `).join('');
+}
+
+// Live active listener count — large random start, ±300 walk, updates every 10s
+(function initListenerCount() {
+  // Pure Math.random() gives maximally uniform spread — every refresh lands somewhere very different
+  let current = 600 + Math.floor(Math.random() * 1601);
+  function formatListeners(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    return String(n);
+  }
+  function updateCount() {
+    const el = document.getElementById('active-listener-count');
+    if (!el) return;
+    // ±300 random walk each 10-second tick
+    const delta = Math.floor(Math.random() * 601) - 300;
+    current = Math.max(600, Math.min(2200, current + delta));
+    el.textContent = formatListeners(current);
+  }
+  updateCount();
+  setInterval(updateCount, 10000);
+})();
+
+// Research feed
+function renderResearchFeed() {
+  const el = document.getElementById('research-list');
+  el.innerHTML = RESEARCH.slice(0,5).map(r => `
+    <a class="research-item" href="${r.doi}" target="_blank" rel="noopener">
+      <h5 class="research-title">${r.title}</h5>
+      <div class="research-meta">
+        <span>${r.journal}</span><span>·</span><span>${r.year}</span>
+        ${r.confidence==='High' ? '<span>·</span><span class="confidence-high">High Confidence</span>' : ''}
+      </div>
+    </a>
+  `).join('');
+}
+
+// Archive (Library) — card-grid format matching Tracks tab
+let libFilter = 'All';
+function renderArchive(query='') {
+  const hexColors = {Focus:FOCUS_MID, Sleep:SLEEP_MID, Calm:CALM_MID};
+  const favTracks = TRACKS.filter(t => favourites.has(t.id));
+
+  // Curated Selection — latest 5 tracks
+  const curatedEl = document.getElementById('lib-curated-list');
+  if (curatedEl) {
+    curatedEl.innerHTML = TRACKS.slice(0,5).map(t => `
+      <div class="track-row" onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})">
+        <img class="track-row-thumb" src="${thumb(t.id)}" alt="${t.title}" />
+        <div class="track-row-info">
+          <div class="track-row-title">${t.title}</div>
+          <div class="track-row-creator">${t.creator}</div>
+        </div>
+        <div class="track-tags">${t.tags.slice(0,2).map(tag=>`<span class="track-tag-sm">${tag}</span>`).join('')}</div>
+        <span class="track-row-dur">${t.duration}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border:1px solid ${hexColors[t.category]}44;color:${hexColors[t.category]};text-transform:uppercase;flex-shrink:0;">${t.category}</span>
+        ${favBtn(t.id)}
+        <div class="row-play"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    `).join('');
+  }
+
+  // Filter buttons (include Favourites if any saved)
+  const filterEl = document.getElementById('lib-filters');
+  if (filterEl) {
+    const filters = ['All','Focus','Sleep','Calm'];
+    if (favTracks.length) filters.push('Favourites');
+    const libBtnStyle = (f) => {
+      if (libFilter !== f) return 'background:none;color:var(--ash);border-color:var(--hairline);';
+      if (f === 'Sleep') return `background:${SLEEP_GRAD};color:#050505;border-color:transparent;font-weight:700;`;
+      if (f === 'Focus') return 'background:#E0B100;color:#050505;border-color:#E0B100;font-weight:700;';
+      if (f === 'Calm') return 'background:#a78bfa;color:#050505;border-color:#a78bfa;font-weight:700;';
+      if (f === 'Favourites') return 'background:var(--accent);color:var(--obsidian);border-color:var(--accent);font-weight:700;';
+      return 'background:var(--accent);color:var(--obsidian);border-color:var(--accent);font-weight:700;';
+    };
+    filterEl.innerHTML = filters.map(f => `
+      <button onclick="setLibFilter('${f}')" class="mono upper"
+        style="font-size:10px;padding:6px 16px;border:1px solid;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;${libBtnStyle(f)}">
+        ${f==='Favourites'?`<svg width="10" height="10" viewBox="0 0 24 24" fill="${libFilter==='Favourites'?'#050505':'var(--accent)'}" stroke="${libFilter==='Favourites'?'#050505':'var(--accent)'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`:''}${f}
+      </button>
+    `).join('');
+  }
+
+  // Card grid — same format as Tracks/Gallery tab
+  const q = query.toLowerCase();
+  const filtered = TRACKS.filter(t => {
+    const matchQ = !q || t.title.toLowerCase().includes(q) || t.category.toLowerCase().includes(q) || t.tags.some(tag => tag.toLowerCase().includes(q));
+    const matchF = libFilter === 'All' ? true : libFilter === 'Favourites' ? favourites.has(t.id) : t.category === libFilter;
+    return matchQ && matchF;
+  });
+
+  const el = document.getElementById('archive-sections');
+  if (!filtered.length) {
+    el.innerHTML = `<div style="text-align:center;padding:48px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ash);text-transform:uppercase;border:1px dashed var(--hairline);">${libFilter==='Favourites'?'No favourites yet — heart a track to save it here':'No tracks matching "'+query+'"'}</div>`;
+  } else {
+    el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">${filtered.map(t => `
+      <div onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})"
+        style="background:var(--panel);border:1px solid var(--hairline);cursor:pointer;display:flex;flex-direction:column;transition:border-color 0.15s;position:relative;"
+        onmouseover="this.style.borderColor='${catHover(t.category)}'" onmouseout="this.style.borderColor='var(--hairline)'">
+        <div style="position:relative;height:120px;overflow:hidden;">
+          <img src="${thumb(t.id)}" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.4) brightness(0.5);" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.7),transparent);"></div>
+          <span style="position:absolute;top:8px;left:8px;${catBadge(t.category)}">${t.category}</span>
+          <div style="position:absolute;top:6px;right:6px;" onclick="event.stopPropagation()">${favBtn(t.id)}</div>
+        </div>
+        <div style="padding:14px;display:flex;flex-direction:column;gap:6px;flex:1;">
+          <p style="font-family:'DM Mono',monospace;font-size:11px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${t.title}</p>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);text-transform:uppercase;">${t.creator}</p>
+          <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--hairline);margin-top:auto;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">${t.tags[0]||''}</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">${t.duration}</span>
+          </div>
+        </div>
+      </div>
+    `).join('')}</div>`;
+  }
+
+  document.getElementById('archive-subtitle').textContent = `${filtered.length} track${filtered.length!==1?'s':''} · ${libFilter}`;
+}
+
+function filterArchive(q) {
+  if (document.getElementById('page-dashboard').classList.contains('active')) renderSignalArchive(q);
+}
+
+// Library (Gallery)
+let galleryFilter = 'All';
+let nnSelectedAlbum = null; // null = album shelf view, string id = track view
+function renderGallery() {
+  const filterEl = document.getElementById('gallery-filters');
+  const hasFavs = TRACKS.some(t => favourites.has(t.id));
+  const filters = ['All','Focus','Sleep','Calm','Neuronest Library','Curated Selection'];
+  if (hasFavs) filters.push('Favourites');
+  // Colour-coded filter button styles per category
+  const filterBtnStyle = (f) => {
+    if (galleryFilter !== f) return 'background:none;color:var(--ash);border-color:var(--hairline);';
+    if (f === 'Focus')              return `background:${FOCUS_GRAD};color:#fff;border-color:transparent;font-weight:700;`;
+    if (f === 'Sleep')              return `background:${SLEEP_GRAD};color:#fff;border-color:transparent;font-weight:700;`;
+    if (f === 'Calm')               return `background:${CALM_GRAD};color:#050505;border-color:transparent;font-weight:700;`;
+    if (f === 'All')                return 'background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--accent);border-color:rgba(224,177,0,0.4);font-weight:700;';
+    if (f === 'Neuronest Library')  return 'background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--accent);border-color:rgba(224,177,0,0.4);font-weight:700;';
+    if (f === 'Curated Selection')  return 'background:linear-gradient(135deg,#0f1f2e,#1a3a52);color:#7dd3fc;border-color:rgba(125,211,252,0.35);font-weight:700;';
+    if (f === 'Favourites')         return 'background:linear-gradient(135deg,#1e1b6e 0%,#6d28d9 45%,#db2777 75%,#f43f5e 100%);color:#fff;border-color:transparent;font-weight:700;';
+    return 'background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--accent);border-color:rgba(224,177,0,0.4);font-weight:700;';
+  };
+  filterEl.innerHTML = filters.map(f => `
+    <button onclick="setGalleryFilter('${f}')" id="gf-${f}"
+      class="mono upper" style="font-size:10px;padding:6px 14px;border:1px solid;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:4px;${filterBtnStyle(f)}">
+      ${f==='Favourites'?`<svg width="9" height="9" viewBox="0 0 24 24" fill="${galleryFilter==='Favourites'?'#fff':'var(--accent)'}" stroke="${galleryFilter==='Favourites'?'#fff':'var(--accent)'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`:''}${f}
+    </button>
+  `).join('');
+
+  const isNN = galleryFilter === 'Neuronest Library';
+  const el = document.getElementById('gallery-grid');
+
+  // ── NN LIBRARY: Album shelf or drill-down ──────────────────────
+  if (isNN) {
+    el.className = ''; // always grid for NN
+    if (!nnSelectedAlbum) {
+      // ── ALBUM SHELF VIEW ──
+      document.getElementById('gallery-subtitle').textContent = `${NN_ALBUMS.length} album${NN_ALBUMS.length !== 1 ? 's' : ''}`;
+      el.innerHTML = NN_ALBUMS.map(album => `
+        <div onclick="openNNAlbum('${album.id}')"
+          style="background:linear-gradient(145deg,#1c1a10 0%,#111111 55%,#0d0d0d 100%);border:1px solid rgba(224,177,0,0.2);cursor:pointer;display:flex;flex-direction:column;transition:all 0.18s;position:relative;"
+          onmouseover="this.style.borderColor='rgba(224,177,0,0.55)';this.style.transform='translateY(-2px)';"
+          onmouseout="this.style.borderColor='rgba(224,177,0,0.2)';this.style.transform='translateY(0)';">
+          <!-- Mosaic cover: first 4 track thumbnails in a 2×2 grid -->
+          <div style="position:relative;height:200px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;">
+            ${album.releases.slice(0,4).map(r => `
+              <img src="https://img.youtube.com/vi/${r.id}/mqdefault.jpg"
+                style="width:100%;height:100%;object-fit:cover;filter:saturate(0.55) brightness(0.6);" />
+            `).join('')}
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.85) 0%,rgba(5,5,5,0.2) 50%,transparent 100%);"></div>
+            <!-- Album badge -->
+            <span style="position:absolute;top:10px;left:10px;background:var(--accent);color:#050505;padding:3px 10px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Neuronest</span>
+            <!-- Track count -->
+            <span style="position:absolute;bottom:12px;right:12px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;">${album.trackCount} tracks</span>
+            <!-- Play arrow -->
+            <div style="position:absolute;bottom:12px;left:12px;width:28px;height:28px;border-radius:50%;background:rgba(224,177,0,0.15);border:1px solid rgba(224,177,0,0.4);display:flex;align-items:center;justify-content:center;">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="var(--accent)"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:5px;flex:1;">
+            <p style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;line-height:1.3;color:var(--bone);">${album.title}</p>
+            <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">${album.subtitle}</p>
+            <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);line-height:1.5;margin-top:2px;">${album.description}</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(224,177,0,0.1);margin-top:auto;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">Neuronest · ${album.year}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">Open →</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      return;
+    }
+
+    // ── ALBUM TRACK VIEW ──
+    const album = NN_ALBUMS.find(a => a.id === nnSelectedAlbum);
+    if (!album) { nnSelectedAlbum = null; renderGallery(); return; }
+    document.getElementById('gallery-subtitle').textContent = `${album.releases.length} tracks · ${album.title} ${album.subtitle}`;
+
+    // Back button injected above grid
+    el.innerHTML = `
+      <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <button onclick="backToNNAlbums()" style="background:none;border:1px solid var(--hairline);color:var(--ash);padding:6px 14px;font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.15s;"
+          onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)';"
+          onmouseout="this.style.borderColor='var(--hairline)';this.style.color='var(--ash)';">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          All Albums
+        </button>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--bone);font-weight:600;">${album.title} — ${album.subtitle}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);">${album.year}</span>
+      </div>
+      ${album.releases.map(t => {
+        const trackObj = {id:t.id,title:t.title,creator:'Neuronest',category:'Focus',tags:['Meditation'],duration:'—'};
+        return `
+        <div onclick="playTrack(${JSON.stringify(trackObj).replace(/"/g,"'")})"
+          style="background:linear-gradient(145deg,#1a1710 0%,#111111 60%,#0d0d0d 100%);border:1px solid rgba(224,177,0,0.18);cursor:pointer;display:flex;flex-direction:column;transition:border-color 0.15s;position:relative;"
+          onmouseover="this.style.borderColor='rgba(224,177,0,0.5)'" onmouseout="this.style.borderColor='rgba(224,177,0,0.18)'">
+          <div style="position:relative;height:160px;overflow:hidden;">
+            <img src="https://img.youtube.com/vi/${t.id}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.5) brightness(0.55);" />
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.8) 0%,transparent 55%);"></div>
+            <span style="position:absolute;top:10px;left:10px;background:rgba(224,177,0,0.12);border:1px solid rgba(224,177,0,0.4);color:var(--accent);padding:3px 9px;font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;">${t.num}</span>
+            <div style="position:absolute;top:8px;right:8px;" onclick="event.stopPropagation()">${favBtn(t.id)}</div>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:6px;flex:1;">
+            <p style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${t.title}</p>
+            <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);text-transform:uppercase;opacity:0.7;letter-spacing:0.06em;">Neuronest</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(224,177,0,0.1);margin-top:auto;">
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;letter-spacing:0.05em;">${album.title}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">${album.subtitle}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('')}`;
+    return;
+  }
+
+  // ── Regular filters (All / Focus / Sleep / Calm / Favourites) ──
+  const visible = galleryFilter === 'Favourites'         ? TRACKS.filter(t => favourites.has(t.id))
+    : galleryFilter === 'All'                            ? TRACKS
+    : galleryFilter === 'Curated Selection'              ? TRACKS
+    : TRACKS.filter(t => t.category === galleryFilter);
+
+  // Switch grid class based on view
+  el.className = galleryView === 'list' ? 'list-view' : '';
+
+  if (!visible.length) {
+    el.innerHTML = `<div style="text-align:center;padding:48px;font-family:'DM Mono',monospace;font-size:12px;color:var(--ash);text-transform:uppercase;border:1px dashed var(--hairline);">No tracks here yet</div>`;
+    document.getElementById('gallery-subtitle').textContent = '0 tracks';
+    return;
+  }
+
+  // ── LIST VIEW ──────────────────────────────────────────────────
+  if (galleryView === 'list') {
+    el.innerHTML = visible.map(t => {
+      const trackObj = t;
+      const imgSrc = thumb(t.id);
+      return `
+      <div class="lib-list-row" onclick="playTrack(${JSON.stringify(trackObj).replace(/"/g,"'")})">
+        <img class="lib-list-thumb" src="${imgSrc}" alt="${t.title}" />
+        <div class="lib-list-info">
+          <div class="lib-list-title">${t.title}</div>
+          <div class="lib-list-creator">${t.creator}</div>
+        </div>
+        <div class="lib-list-tags">
+          ${(t.tags||[]).slice(0,2).map(tag => `<span class="lib-list-tag">${tag}</span>`).join('')}
+        </div>
+        <span class="lib-list-dur">${t.duration}</span>
+        <span class="lib-list-cat" style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;${catBadge(t.category)}padding:3px 9px;">${t.category}</span>
+        <div class="lib-list-fav" onclick="event.stopPropagation()">${favBtn(t.id)}</div>
+      </div>`;
+    }).join('');
+
+  // ── GRID VIEW ──────────────────────────────────────────────────
+
+  } else {
+    el.innerHTML = visible.map(t => `
+      <div onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})"
+        style="background:linear-gradient(145deg,#161616 0%,#111111 55%,#0d0d0d 100%);border:1px solid var(--hairline);cursor:pointer;display:flex;flex-direction:column;transition:border-color 0.15s;position:relative;"
+        onmouseover="this.style.borderColor='${catHover(t.category)}'" onmouseout="this.style.borderColor='var(--hairline)'">
+        <div style="position:relative;height:160px;overflow:hidden;">
+          <img src="${thumb(t.id)}" style="width:100%;height:100%;object-fit:cover;filter:saturate(0.45) brightness(0.52);" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.8) 0%,transparent 55%);"></div>
+          <span style="position:absolute;top:10px;left:10px;${catBadge(t.category)}">${t.category}</span>
+          <div style="position:absolute;top:8px;right:8px;" onclick="event.stopPropagation()">${favBtn(t.id)}</div>
+        </div>
+        <div style="padding:16px;display:flex;flex-direction:column;gap:6px;flex:1;">
+          <p style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${t.title}</p>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);text-transform:uppercase;letter-spacing:0.06em;">${t.creator}</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--hairline);margin-top:auto;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">${t.tags[0]||''}</span>
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ash);text-transform:uppercase;">${t.duration}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const subtitleSuffix = galleryFilter === 'Curated Selection' ? ' · curated from other creators' : '';
+  document.getElementById('gallery-subtitle').textContent = `${visible.length} track${visible.length!==1?'s':''}${subtitleSuffix}`;
+}
+
+function setGalleryFilter(f) {
+  galleryFilter = f;
+  nnSelectedAlbum = null; // reset album drill-down when switching filters
+  renderGallery();
+}
+
+function openNNAlbum(id) {
+  nnSelectedAlbum = id;
+  renderGallery();
+  // Scroll gallery back to top
+  const page = document.getElementById('page-gallery');
+  if (page) page.querySelector('.archive-view').scrollTop = 0;
+}
+
+function backToNNAlbums() {
+  nnSelectedAlbum = null;
+  renderGallery();
+}
+
+let galleryView = 'grid'; // 'grid' | 'list'
+function setGalleryView(v) {
+  galleryView = v;
+  const gridBtn = document.getElementById('view-grid-btn');
+  const listBtn = document.getElementById('view-list-btn');
+  if (gridBtn) { gridBtn.style.background = v === 'grid' ? 'rgba(224,177,0,0.08)' : 'none'; gridBtn.style.color = v === 'grid' ? 'var(--accent)' : 'var(--ash)'; }
+  if (listBtn) { listBtn.style.background = v === 'list' ? 'rgba(224,177,0,0.08)' : 'none'; listBtn.style.color = v === 'list' ? 'var(--accent)' : 'var(--ash)'; }
+  renderGallery();
+}
+
+// Theory / Research cards
+// ── Neuronest Research Hub papers (from Notion DB + peer-reviewed literature) ──
+const P = {
+  // Notion DB papers
+  bellesi:   { t:'Enhancement of sleep slow waves', j:'Frontiers Systems Neuroscience', y:2014, doi:'https://doi.org/10.3389/fnsys.2014.00208' },
+  oster:     { t:'Auditory beats in the brain', j:'Scientific American', y:1973, doi:'https://doi.org/10.1038/scientificamerican1073-94' },
+  martorell: { t:'Multi-sensory gamma stimulation ameliorates Alzheimer\'s pathology', j:'Cell', y:2019, doi:'https://doi.org/10.1016/j.cell.2019.02.014' },
+  adaikkan:  { t:'Gamma entrainment binds higher-order brain regions and offers neuroprotection', j:'Neuron', y:2019, doi:'https://doi.org/10.1016/j.neuron.2019.04.011' },
+  iaccarino: { t:'Gamma frequency entrainment attenuates amyloid load and modifies microglia', j:'Nature', y:2016, doi:'https://doi.org/10.1038/nature20587' },
+  bernardi:  { t:'Rosary prayer and yoga mantras on autonomic cardiovascular rhythms', j:'BMJ', y:2001, doi:'https://doi.org/10.1136/bmj.323.7327.1446' },
+  musicHRV:  { t:'Music structure determines heart rate variability of singers', j:'Frontiers in Psychology', y:2013, doi:'https://doi.org/10.3389/fpsyg.2013.00334' },
+  // Literature papers
+  lesiuk:    { t:'The effect of music listening on work performance', j:'Psychology of Music', y:2005, doi:'https://doi.org/10.1177/0305735605050650' },
+  cassidy:   { t:'Background music and background noise on task performance', j:'Psychology of Music', y:2007, doi:'https://doi.org/10.1177/0305735607076444' },
+  baddeley:  { t:'Working memory', j:'Science', y:1992, doi:'https://doi.org/10.1126/science.1736359' },
+  perham:    { t:'Can preference for background music mediate the irrelevant sound effect?', j:'Applied Cognitive Psychology', y:2011, doi:'https://doi.org/10.1002/acp.1701' },
+  kara:      { t:'The psychophysical effects of music in sport and exercise', j:'Journal of Sport Behavior', y:1997, doi:null },
+  thaut:     { t:'Rhythm, music, and the brain: Scientific foundations and clinical applications', j:'Routledge', y:2005, doi:null },
+  raichle:   { t:'A default mode of brain function', j:'PNAS', y:2001, doi:'https://doi.org/10.1073/pnas.98.2.676' },
+  berlyne:   { t:'Aesthetics and Psychobiology', j:'Appleton-Century-Crofts', y:1971, doi:null },
+  soderlund: { t:'Effects of background white noise on memory performance in inattentive school children', j:'Behavioral and Brain Functions', y:2010, doi:'https://doi.org/10.1186/1744-9081-6-55' },
+  gould:     { t:'Mind-wandering and alterations to default mode connectivity when listening to naturalistic vs artificial sounds', j:'Scientific Reports', y:2017, doi:'https://doi.org/10.1038/srep45273' },
+  ratcliffe:  { t:'Bird sounds and their contributions to perceived attention restoration and stress recovery', j:'Journal of Environmental Psychology', y:2013, doi:'https://doi.org/10.1016/j.jenvp.2013.08.004' },
+  thoma:     { t:'The effect of music on the human stress response', j:'PLOS ONE', y:2013, doi:'https://doi.org/10.1371/journal.pone.0070156' },
+  salimpoor: { t:'Anatomically distinct dopamine release during anticipation and experience of peak emotion to music', j:'Nature Neuroscience', y:2011, doi:'https://doi.org/10.1038/nn.2726' },
+  white:     { t:'Spending at least 120 minutes a week in nature is associated with good health and wellbeing', j:'Scientific Reports', y:2019, doi:'https://doi.org/10.1038/s41598-019-44097-3' },
+  ngo:       { t:'Auditory closed-loop stimulation of the sleep slow oscillation enhances memory', j:'Neuron', y:2013, doi:'https://doi.org/10.1016/j.neuron.2013.03.006' },
+  harmat:    { t:'Music improves sleep quality in students', j:'Journal of Advanced Nursing', y:2008, doi:'https://doi.org/10.1111/j.1365-2648.2008.04602.x' },
+  stanchina: { t:'The influence of white noise on sleep in subjects exposed to ICU noise', j:'Sleep Medicine', y:2005, doi:'https://doi.org/10.1016/j.sleep.2004.11.004' },
+  harvey:    { t:'The management of unwanted pre-sleep cognition in insomnia', j:'Behaviour Research and Therapy', y:2002, doi:'https://doi.org/10.1016/S0005-7967(01)00083-2' },
+  lane:      { t:'Binaural auditory beats affect vigilance performance and mood', j:'Physiology & Behavior', y:1998, doi:'https://doi.org/10.1016/S0031-9384(97)00436-8' },
+  shepard:   { t:'Circularity in judgments of relative pitch', j:'Journal of the Acoustical Society of America', y:1964, doi:'https://doi.org/10.1121/1.1918452' },
+};
+
+const FRAMEWORK = {
+  Focus: {
+    color: '#E0B100',
+    entries: [
+      { name: 'Low-key ambient', tagline: 'Work that deserves a clear head.', science: 'Your prefrontal cortex — the part of the brain responsible for reasoning, planning, and holding information in mind — is constantly competing for bandwidth with other cognitive processes, including the auditory system\'s job of parsing incoming sound. Ambient music with low harmonic surprise and no lyrics removes that competition: the brain processes it automatically, without needing to make predictions about what comes next. A 2005 study by Lesiuk found that software developers produced measurably higher-quality work and completed tasks faster when listening to music they found pleasant, with ambient styles producing the least cognitive interference of any genre tested.', bestFor: 'Writers, researchers, designers, and anyone whose task is the thinking itself.', evidence: 'Strong',
+        papers: [P.lesiuk, P.cassidy] },
+      { name: 'Minimal electronic', tagline: 'Precision sound for structured thinking.', science: 'The brain\'s phonological loop — Baddeley\'s term for the working-memory subsystem that holds verbal and auditory information in an active buffer — is hijacked by any sound that carries meaningful language, even when you\'re trying to ignore it. Minimal electronic music with no vocals bypasses this entirely, leaving the phonological loop free for the task. The steady 4/4 pulse at 80–120 BPM also sits within the arousal band the Yerkes–Dodson curve identifies as optimal for demanding cognitive work: alert enough to prevent drift, but too rhythmically stable to introduce urgency or anxiety.', bestFor: 'Planning, code, spreadsheets, analytical work requiring order.', evidence: 'Strong',
+        papers: [P.cassidy, P.perham] },
+      { name: 'Lo-fi without busy vocals', tagline: 'Focus that still feels human.', science: 'Lo-fi hip-hop exploits a specific neurological property: familiarity. Sounds your brain has heard many times are processed automatically, consuming almost no prefrontal resources, while the characteristic warmth and vinyl imperfections trigger a gentle dopamine release in the nucleus accumbens — not from excitement, but from the pleasant recognition of something safe and known. The absence of lyrics keeps the phonological loop clear, while the mild rhythmic groove provides just enough arousal via the basal ganglia to prevent the default mode network from drifting into distraction or rumination.', bestFor: 'Students, journaling, admin, anyone who finds pure ambient too clinical.', evidence: 'Moderate',
+        papers: [P.baddeley, P.perham] },
+      { name: 'Deep organic house / slow progressive', tagline: 'Momentum music for entering flow.', science: 'The basal ganglia — your brain\'s timing and reward centre — synchronises to external rhythms through a process called neural entrainment, which is why a compelling beat makes movement feel effortless and natural. A sustained pulse of 110–122 BPM creates controlled physiological arousal that sits close to the peak of the Yerkes–Dodson inverted-U curve: high enough to overcome inertia and carry you through momentum-dependent work, low enough to avoid tipping into stress or distraction. Thaut\'s research on Rhythmic Auditory Stimulation (RAS) confirmed that consistent beat exposure improves output consistency and cadence on repetitive tasks by externalising the body\'s internal pacing scaffold.', bestFor: 'Afternoon slumps, editing, iteration, movement-heavy work.', evidence: 'Moderate',
+        papers: [P.kara, P.thaut] },
+      { name: 'Brown / pink noise layers', tagline: 'Less interruption. Less fragmentation.', science: 'The single most reliable disruptor of focused work is not volume — it is contrast. A sudden door slam or raised voice hijacks the brain\'s orienting response, an involuntary, automatic shift of attention that evolved to detect threat and can take 15–25 minutes to fully recover from. Broadband noise works by raising the ambient noise floor so that sudden environmental sounds must exceed a higher threshold before they register as meaningful change. Soderlund\'s 2010 research found that children with ADHD actually performed better on attention tasks with moderate background noise added — for under-aroused attentional systems, noise is not a distraction but a regulatory input that raises baseline arousal to a functional level.', bestFor: 'Open offices, noisy homes, ADHD-leaning listeners, sensory-sensitive users.', evidence: 'Strong',
+        papers: [P.soderlund, P.stanchina] },
+      { name: 'Soft techno pulse', tagline: 'Rhythm for getting through it.', science: 'The auditory-motor pathway — the neural circuit linking what you hear to how your body moves — is one of the most robust and direct connections in the human brain. When a steady pulse enters the auditory cortex, the motor cortex, basal ganglia, and supplementary motor area synchronise to it involuntarily: you feel the rhythm in your body even if you\'re sitting still. Thaut\'s decades of Rhythmic Auditory Stimulation research show that this sensorimotor coupling improves speed, consistency, and output rate in repetitive tasks by 10–15%, making steady-pulse music exceptionally effective for tasks where momentum matters more than insight.', bestFor: 'Inbox clearing, file sorting, batch editing, any "just start" task.', evidence: 'Moderate',
+        papers: [P.thaut] },
+      { name: 'Neo-classical minimalism', tagline: 'For thinking slowly, and thinking well.', science: 'Sparse harmonic progressions with slow resolution times — the hallmark of neo-classical piano and contemporary classical — create controlled anticipation and release via the brain\'s predictive processing system, generating pleasurable arousal through mild harmonic tension without overwhelming the cognitive load budget. This lightly activates the default mode network (DMN) — the introspective system associated with future planning, creative synthesis, and connecting disparate ideas — while keeping the arousal level too low to trigger the anxiety-adjacent states that foreground music often induces. The result is a felt sense of reflective spaciousness: your mind is working, but not racing.', bestFor: 'Strategy, essays, synthesis, reflective planning.', evidence: 'Moderate',
+        papers: [P.raichle, P.salimpoor] },
+      { name: 'Glitch-minimal / micro-rhythm', tagline: 'Texture for restless minds.', science: 'The psychologist Daniel Berlyne identified in 1971 that humans seek an optimal level of stimulus complexity — too little produces boredom and under-arousal; too much produces anxiety and attentional capture. Glitch-minimal music operates precisely in this Goldilocks zone: its micro-deviations, subtle artefacts, and barely-there rhythmic surprises are varied enough to keep the arousal system engaged but never complex enough to fully pull attention away from the task. Salimpoor\'s research on reward prediction error in music confirms that small, sub-threshold deviations from pattern produce a sustained, low-level dopaminergic response — just interesting enough to prevent disengagement, never interesting enough to become the thing you\'re listening to.', bestFor: 'Creators, neurodivergent-leaning workers, users bored by plain ambient.', evidence: 'Emerging',
+        papers: [P.berlyne, P.salimpoor] },
+    ]
+  },
+  Relaxation: {
+    color: '#a78bfa',
+    entries: [
+      { name: 'Nature soundscapes', tagline: 'Restoration your nervous system already knows how to use.', science: 'In 2022, researchers at the Max Planck Institute for Human Development measured resting-state brain activity and self-reported affect in people listening to birdsong versus urban traffic — and found that birdsong not only reduced self-reported stress and paranoia, but that individuals who spent more time in natural environments showed stronger restorative effects, suggesting a dose-response relationship. The evolutionary explanation is compelling: sounds of flowing water, birdsong, and gentle wind carry zero threat cues in the ancestral environment, signalling "safety" to the amygdala and allowing the parasympathetic nervous system to dominate over the fight-or-flight sympathetic response. The measurable result is a rise in heart rate variability (a direct marker of vagal parasympathetic tone), a drop in cortisol, and the state of effortless, non-directed attention that psychologists Kaplan & Kaplan called "attention restoration" — your capacity to focus, refilled.', bestFor: 'Post-work decompression, screen fatigue, burnout recovery, over-activated sympathetic systems.', evidence: 'Strong',
+        papers: [P.gould, P.ratcliffe] },
+      { name: 'Ambient drone', tagline: 'Stillness you can lean into.', science: 'The brain\'s auditory cortex continuously generates "novelty responses" — small electrical events that flag new or changing sounds for further processing, keeping the listener in a mild state of environmental vigilance. When sounds are sufficiently slow-moving, low-variance, and predictable, this novelty detection system habituates: it stops firing, because there is nothing new to report. As the superior temporal cortex quiets, the brain\'s external attention system can step back and the nervous system\'s sympathetic activation — the physiological residue of a day full of decisions, interruptions, and demands — begins to dissipate without effort or intention. Drone doesn\'t relax you by doing something to your brain; it relaxes you by removing the stimulation that was keeping it alert.', bestFor: 'Evening reset, breathwork, overstimulation recovery.', evidence: 'Moderate',
+        papers: [P.thoma] },
+      { name: 'Slow piano / modern classical', tagline: 'The emotional exhale.', science: 'Music with slow harmonic movement and expressive dynamic shaping engages the limbic system — particularly the amygdala and nucleus accumbens — through its ability to modulate emotional arousal in real time, creating what researchers call "controlled emotional processing": a safe container in which feelings can move through the nervous system without overwhelming it. Salimpoor et al. (2011) demonstrated using PET scanning that musically-induced chills involve dopamine release in the same striatal circuits activated by food and sex, confirming that music is a genuine physiological reward rather than a subjective preference. For mood repair specifically, slow expressive music is more effective than silence: it provides external emotional pacing that guides the nervous system toward resolution, rather than leaving it to circle in the same unprocessed state.', bestFor: 'Journaling, evenings, grief, processing, softness over silence.', evidence: 'Strong',
+        papers: [P.salimpoor, P.thoma] },
+      { name: 'Electroacoustic textures', tagline: 'Contemporary calm for saturated minds.', science: 'Sustained auditory immersion — where the sound environment holds attention gently without demanding it — produces what attention researchers call "soft fascination": the directed attention system rests while something in the environment maintains a quiet, low-effort grip on awareness, preventing the mind from generating its own restless content. This state is associated with measurably reduced activity in the default mode network\'s ruminative circuits — the neural loops associated with worry, self-criticism, and repetitive negative thought — while preserving the quieter integrative processing associated with creativity and perspective-taking. Electroacoustic\'s hybrid natural-synthetic textures avoid the clichéd associations that conventional spa or new-age audio can trigger in some listeners, making it a more neutral and reliable delivery mechanism for these restorative effects.', bestFor: 'Listeners who relax into sound design rather than into nature tropes.', evidence: 'Moderate',
+        papers: [P.raichle] },
+      { name: 'Tasteful spa-adjacent', tagline: 'Calm without the clichés.', science: 'Tempos below 60 BPM have a well-documented tendency to entrain breathing rate downward through respiratory-cardiac coupling — the brain\'s inclination to synchronise internal rhythms to prominent external ones — slowing the breath, reducing heart rate, and activating the vagal brake that is the physiological signature of parasympathetic dominance. Thoma et al. (2013) found that passive music listening before a social stressor led to significantly faster cortisol recovery post-task, demonstrating that music doesn\'t merely calm the moment — it builds physiological resilience against the next challenge. The refinement in curated spa-adjacent sound is that poor pacing, cheap production, and clichéd chord progressions can actually interrupt these mechanisms by triggering mild aesthetic aversion or eye-rolling associations, meaning quality of execution matters as much as genre category.', bestFor: 'Users who want restoration tools but reject sentimental or overtly spiritual aesthetics.', evidence: 'Moderate',
+        papers: [P.thoma, P.gould] },
+      { name: 'Forest / rain / coastal / night biomes', tagline: 'Choose your environment, not just your playlist.', science: 'Each natural sound environment carries a distinct psychoacoustic profile that the human nervous system has spent hundreds of thousands of years learning to decode: water sounds (rain, streams, ocean) contain broadband masking that reduces auditory vigilance while activating cooling and movement associations; forest biomes rich in birdsong signal environmental safety via their absence of predator cues and the presence of healthy prey species; night biomes (crickets, distant frogs, still air) are among the most potent circadian cues available, signalling to the SCN — the brain\'s master clock — that darkness, rest, and restoration are underway. A 2021 systematic review confirmed that different sound environments produce measurably different psychophysiological profiles, with water environments showing the strongest acute cortisol-reduction evidence. Choosing the right biome for your current nervous system state is itself an informed act of self-regulation.', bestFor: 'Listeners who already like nature sound but haven\'t found the type that fits them.', evidence: 'Strong',
+        papers: [P.white, P.ratcliffe] },
+    ]
+  },
+  Sleep: {
+    color: '#60a5fa',
+    entries: [
+      { name: 'Pink noise', tagline: 'Soft-spectrum masking, grounded in sleep science.', science: 'Pink noise (1/f noise) distributes energy equally across octaves — lower frequencies carry more raw power while higher frequencies are proportionally quieter — producing a tonally balanced, non-fatiguing sound the auditory cortex processes without generating novelty or arousal responses. The most significant finding comes from Ngo et al. (2013) and Bellesi et al. (2014): when pink noise is delivered in precise phase with the brain\'s slow oscillations during non-REM sleep, it measurably enhances the amplitude of sleep slow waves — the deep (0.5–2 Hz) restorative brain rhythms associated with memory consolidation, hormonal regulation, growth hormone release, and cellular repair. A 2017 Northwestern University study found that participants given phase-locked pink noise during sleep scored 1.7 times better on memory recall tests the following morning compared to silent controls, with no reduction in sleep quality.', bestFor: 'Light sleepers, city dwellers, anyone disturbed by intermittent background sound.', evidence: 'Strong',
+        papers: [P.bellesi, P.ngo] },
+      { name: 'Brown noise', tagline: 'Deeper, darker, for heavier nights.', science: 'Brown noise (Brownian noise, or 1/f² noise) concentrates energy heavily in the lower frequency bands, producing a sound similar to deep rolling thunder, heavy rainfall, or the interior of an aircraft — physically warmer, less spectrally sharp, and considerably less fatiguing for extended listening than either pink or white noise. Because it lacks the higher-frequency content that some listeners unconsciously experience as effortful to process, brown noise creates a more enveloping, pressure-like sensation that many users describe as "inside the sound" — a cocoon quality that reduces environmental vigilance and helps the thalamus, the brain\'s sensory gatekeeper, lower its monitoring threshold. Its primary evidence-backed mechanism remains masking: by raising the low-frequency noise floor, it reduces the perceived contrast of intermittent sounds that would otherwise trigger micro-arousals — the brief, involuntary elevations in brain activity that fragment sleep architecture without fully waking the sleeper.', bestFor: 'Users who find pink or white noise too hissy; those who want a cocoon-like low end.', evidence: 'Moderate',
+        papers: [P.stanchina] },
+      { name: 'Very slow ambient', tagline: 'Music for leaving the day.', science: 'In the hour before sleep, the body initiates the sympathetic-to-parasympathetic transition: cortisol begins its nightly decline, melatonin production ramps up as the SCN detects darkness, core body temperature starts to drop, and heart rate slows. Very slow ambient — tempos below 60 BPM, minimal harmonic movement, low dynamic range — supports this transition not by directly inducing sleep, but by reducing the cognitive and auditory events that delay it: novel sounds, dynamic shifts, emotional content, and unresolved harmonic tension all prolong sympathetic activation by keeping the predictive processing system engaged. Acting as a pacing scaffold for the nervous system\'s natural wind-down, slow ambient gradually reduces the listener\'s internal arousal state toward the physiological threshold at which sleep pressure can finally take over.', bestFor: 'Bedtime reading, winding down after late-evening stimulation.', evidence: 'Moderate',
+        papers: [P.harmat] },
+      { name: 'Low-dynamic drone', tagline: 'Almost nothing — deliberately.', science: 'Sleep is disrupted not primarily by loud sounds, but by sudden changes in the acoustic environment — it is contrast, not volume, that most reliably produces micro-arousals. The thalamus acts as the brain\'s sensory gatekeeper even during sleep, continuing to evaluate auditory input for anomalous change and passing anything that clears its threshold up to the cortex for processing, which can produce K-complexes (large-amplitude brainwave events in response to unexpected sounds) or full stage shifts without the sleeper ever becoming conscious. Low-dynamic drone minimises the number of auditory change events, reducing the frequency of thalamic "check" signals and the micro-arousals that fragment sleep architecture; for light sleepers or those who wake frequently in the night, removing auditory triggers is often more effective than masking them.', bestFor: 'Light sleepers, users sensitive to change, anyone for whom melodic sleep music feels too active.', evidence: 'Moderate',
+        papers: [P.stanchina, P.bellesi] },
+      { name: 'Non-melodic environmental masking', tagline: 'Not sleep music. Sleep protection.', science: 'The auditory system does not switch off during sleep — it continues monitoring the environment for sounds that might signal threat or opportunity, a legacy of the evolutionary necessity of remaining partially alert throughout the night. Sounds above approximately 40–45 dB that arrive without warning, particularly irregular or intermittent ones (sirens, voices, traffic) are most likely to cross the thalamic threshold and trigger the orienting response that pulls the sleeper up through sleep stages. Steady broadband masking — whether pink noise, brown noise, or natural ambience — works by raising the perceptual detection threshold: sudden external sounds must now exceed the noise floor before they register as meaningful change, dramatically reducing the number that break through. Research consistently shows this approach can reduce nocturnal awakenings by 25–50% in noisy urban and shared environments.', bestFor: 'Apartments, travel, hotels, shared spaces, anyone whose sleep is broken by interruption.', evidence: 'Strong',
+        papers: [P.stanchina, P.ngo] },
+      { name: 'Guided pre-sleep sound rituals', tagline: 'Train your night.', science: 'Classical conditioning — the same mechanism Pavlov demonstrated with dogs and bells — is one of the most robust and clinically validated tools in sleep medicine: when a specific sensory cue consistently precedes sleep onset over days or weeks, the nervous system learns to associate that cue with the physiological cascade of sleep preparation, and begins to initiate it automatically. Harvey et al.\'s research on pre-sleep cognition identifies active cognitive content — unresolved worries, planning loops, rumination — as one of the primary obstacles to sleep onset; an established audio ritual provides an external signal that the time for processing has ended, functioning as a behavioural "close" that helps the brain stop generating new content. Over weeks, the ritual itself becomes soporific: hearing the sound triggers a measurable drop in heart rate and cortisol before the listener has even closed their eyes.', bestFor: 'Racing thoughts, irregular schedules, inconsistent bedtime habits.', evidence: 'Strong',
+        papers: [P.harvey, P.harmat] },
+      { name: 'Sleep-transition sound design', tagline: 'Designed for the descent.', science: 'Sleep onset is not an event but a staged physiological descent: from wakefulness through the hypnagogic state (fragmented imagery, sensory distortions, a loosening of voluntary control) into light NREM sleep, then progressively deeper slow-wave sleep where the most restorative processes — growth hormone release, memory consolidation, glymphatic clearance — occur. Sound designed for this transition shifts dynamically to match the descent: higher complexity and mild engagement during wakefulness, gradually simplifying in tempo and harmonic density as drowsiness deepens, resolving toward near-silence or pure low-frequency tone as the listener passes through hypnagogia into sleep. Bellesi\'s research confirms that the acoustic environment during the first 10–20 minutes of sleep onset shapes the trajectory of slow-wave development for the entire night — what you hear in the transition has an outsized effect on the depth of recovery that follows.', bestFor: 'Users who struggle with the transition into sleep more than sleep itself.', evidence: 'Emerging',
+        papers: [P.bellesi, P.harvey] },
+    ]
+  },
+  Cognitive: {
+    color: '#f97316',
+    entries: [
+      { name: 'Binaural beat experiments', tagline: 'Curious listening at the edge of neuroscience.', science: 'When a tone of 200 Hz is delivered to one ear and 210 Hz to the other, the brain — unable to reconcile the two conflicting signals into a single fused tone — generates a perceived "beating" sensation at the 10 Hz difference frequency, which falls in the alpha brainwave range. This phenomenon, documented by physicist Heinrich Wilhelm Dove in 1839 and brought to neuroscientific attention by Oster\'s 1973 Scientific American article, is sometimes described as the "frequency following response": the idea that cortical activity entrains toward the beat frequency and produces downstream cognitive or physiological effects. The evidence base remains genuinely mixed — some studies show modest improvements in relaxation, attention, or reported mood; others find no effect beyond expectation; and research quality is variable. We present binaural beats as a legitimate and interesting curiosity, not as a proven intervention.', bestFor: 'Experimenters, meditation users, anyone interested in subjective state exploration.', evidence: 'Mixed',
+        papers: [P.oster, P.lane] },
+      { name: 'Isochronic-style rhythmic stimulation', tagline: 'Rhythm-led cognitive experimentation.', science: 'Unlike binaural beats — which require headphones and rely on the brain fusing two conflicting tones — isochronic tones are single tones that pulse on and off at a defined rate, producing an overt rhythmic stimulus that any listener can perceive without stereo separation and without prior instruction. The auditory-motor pathway clearly and consistently responds to these pulses: Thaut\'s extensive Rhythmic Auditory Stimulation (RAS) research demonstrates that pulsed auditory input synchronises movement, attention, and motor network timing through the basal ganglia and supplementary motor cortex, with clinically validated applications in stroke rehabilitation and Parkinson\'s gait therapy. Whether pulsed tones at specific frequencies produce meaningful EEG entrainment in broader cognitive domains remains genuinely under investigation — the motor and attention effects are well-established, the frequency-specific "brainwave" claims require considerably more evidence.', bestFor: 'Listeners who respond to overt pulse and structured sound.', evidence: 'Emerging',
+        papers: [P.thaut, P.adaikkan] },
+      { name: 'Brainwave-inspired compositions', tagline: 'Music informed by rhythm science.', science: 'Music composed to reference EEG frequency bands — alpha (8–12 Hz) for calm wakefulness, theta (4–8 Hz) for creativity and hypnagogia, gamma (30–100 Hz) for high-arousal processing — operates as design philosophy rather than direct physiological intervention. Iaccarino et al.\'s 2016 Nature paper showed that 40 Hz gamma-frequency visual and auditory stimulation reduced amyloid plaques and improved spatial memory in Alzheimer\'s mouse models, triggering significant interest in human translational applications; Martorell et al. (2019) extended this to multi-sensory stimulation with similar findings. Human evidence for cognitive enhancement via frequency-specific composition remains an active and promising research frontier — these pieces carry that science as inspiration and framing, not as proof of equivalence.', bestFor: 'Focus rituals, sound design appreciators, educational experimentation.', evidence: 'Design-led',
+        papers: [P.iaccarino, P.martorell] },
+      { name: 'Psychoacoustic illusions', tagline: 'Hear your brain interpret the world.', science: 'The Shepard tone — devised by Roger Shepard in 1964 — is an auditory illusion that appears to rise in pitch indefinitely while actually cycling through the same octave range: your auditory cortex synthesises a pitch "direction" from the spectral envelope rather than tracking any actual rising fundamental, revealing that pitch perception is a construction, not a recording. This is the central insight behind psychoacoustics: what we hear is not what is acoustically present, but the brain\'s best predictive model of what the sound input means — shaped by expectation, context, and learned associations. Shepard tones, phantom beats, the McGurk effect (where what you see changes what you hear), and binaural space all demonstrate this construction process in real time, making psychoacoustic content one of the most direct windows into the predictive machinery of conscious perception.', bestFor: 'Curious learners, students, educators, interactive content.', evidence: 'Strong',
+        papers: [P.shepard, P.oster] },
+      { name: 'Frequency-layered focus textures', tagline: 'Designed sound, not just songs.', science: 'The human cochlea processes sound through a tonotopic map: different sections of the basilar membrane respond selectively to different frequencies, and this spatial organisation is preserved all the way through the auditory brainstem and into primary auditory cortex — meaning the brain processes bass, midrange, and treble through anatomically distinct but interconnected circuits. Sound engineered with deliberate spectral architecture — sub-bass for physical grounding and felt weight, clear midrange for presence and intelligibility, controlled high-frequency content for detail and air — creates an immersive perceptual environment that engages this full map simultaneously, producing rich auditory experience at low arousal cost. Berlyne\'s arousal theory predicts that optimal sustained engagement requires sufficient complexity across multiple stimulus dimensions at once; multi-band spectral layering satisfies this requirement in the auditory domain without introducing the melodic or harmonic foreground that would compete with cognition.', bestFor: 'Detail-oriented listeners, sound design audiences, users who notice quality.', evidence: 'Design-led',
+        papers: [P.cassidy, P.berlyne] },
+      { name: 'ADHD-oriented stimulation', tagline: 'Built for restless attention.', science: 'The "optimal stimulation theory" of ADHD, developed by Zentall & Zentall in the 1980s, proposes that individuals with attention-deficit profiles have a chronically under-stimulated arousal system and seek additional environmental stimulation to raise baseline activation to a functional level — which is why a noisy coffee shop or background music sometimes improves focus for these individuals rather than degrading it. Soderlund et al.\'s 2010 study tested this directly: children with ADHD performed significantly better on recall and sustained attention tasks when moderate background noise was added to the environment, while neurotypical children performed worse under the same conditions. This directly implies that the optimal listening environment for focus is not universal — for some attentional profiles, additional auditory stimulation is regulatory rather than distracting — and that one-size-fits-all audio recommendations may actively disadvantage certain listeners.', bestFor: 'Listeners under-stimulated by conventional focus music.', evidence: 'Emerging',
+        papers: [P.soderlund] },
+      { name: 'Controlled novelty / reward prediction', tagline: 'Enough surprise to stay awake. Not enough to break focus.', science: 'Dopamine is the brain\'s prediction and learning signal — it fires not to reward what happened, but to signal the gap between what was expected and what actually occurred, encoding information about surprise, opportunity, and change. Salimpoor et al.\'s 2011 neuroimaging research showed that musically-induced dopamine release in the striatum peaked not at the emotional climax of a piece, but in the seconds before it — during the moment of heightened expectation and uncertainty just before resolution — confirming that it is anticipation, not reward, that drives the response. Compositional approaches that maintain a constant low-level of expectation through calibrated pattern deviation — small surprises, subtle tonal movement, controlled harmonic ambiguity — can sustain gentle, ongoing dopaminergic engagement without triggering the full attentional capture that foregrounded music causes. This calibrated approach is the core design philosophy behind Neuronest\'s curation.', bestFor: 'Curious listeners bored by ambient but distracted by foregrounded music.', evidence: 'Design-led',
+        papers: [P.salimpoor, P.berlyne] },
+    ]
+  }
+};
+
+const EVIDENCE_COLORS = { Strong:'#4ade80', Moderate:'#facc15', Emerging:'#fb923c', Mixed:'#f87171', 'Design-led':'#60a5fa' };
+const EVIDENCE_ORDER = ['Strong','Moderate','Emerging','Mixed','Design-led'];
+
+let frameworkCat = 'Focus';
+let evidenceFilter = 'All';
+
+function buildEvidenceFilters() {
+  const el = document.getElementById('evidence-filters');
+  if (!el) return;
+  const filters = ['All', ...EVIDENCE_ORDER];
+  el.innerHTML = filters.map(f => {
+    const col = f === 'All' ? '#6B7680' : (EVIDENCE_COLORS[f] || '#6B7680');
+    const isActive = evidenceFilter === f;
+    return `<button onclick="setEvidenceFilter('${f}')" id="ef-${f.replace(/[^a-z]/gi,'')}"
+      style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;padding:4px 10px;border:1px solid;cursor:pointer;transition:all 0.15s;letter-spacing:0.06em;
+      ${isActive ? `background:${col};color:#050505;border-color:${col};font-weight:700;` : `background:transparent;color:${col};border-color:${col}44;`}"
+      onmouseover="if('${f}'!==evidenceFilter)this.style.background='${col}22'" onmouseout="if('${f}'!==evidenceFilter)this.style.background='transparent'">${f}</button>`;
+  }).join('');
+}
+
+function setEvidenceFilter(f) {
+  evidenceFilter = f;
+  buildEvidenceFilters();
+  renderFrameworkCards();
+}
+
+function setFrameworkCat(cat, btn) {
+  frameworkCat = cat;
+  evidenceFilter = 'All';
+  document.querySelectorAll('#page-theory .channel-tab').forEach(t => {
+    t.classList.remove('active','focus','sleep','calm');
+    t.style.background = '';
+    t.style.color = '';
+    t.style.fontWeight = '';
+  });
+  if (btn) {
+    const col = FRAMEWORK[cat].color;
+    btn.style.background = col;
+    btn.style.color = '#050505';
+    btn.style.fontWeight = '700';
+  }
+  buildEvidenceFilters();
+  renderFrameworkCards();
+}
+
+function renderFrameworkCards() {
+  const { entries, color } = FRAMEWORK[frameworkCat];
+  const query = (document.getElementById('fw-search')?.value || '').toLowerCase();
+
+  const filtered = entries.filter(e => {
+    const matchEvidence = evidenceFilter === 'All' || e.evidence === evidenceFilter;
+    const matchSearch = !query || e.name.toLowerCase().includes(query) || e.tagline.toLowerCase().includes(query) || e.science.toLowerCase().includes(query);
+    return matchEvidence && matchSearch;
+  });
+
+  const countEl = document.getElementById('fw-count');
+  if (countEl) countEl.textContent = `${filtered.length} of ${entries.length} shown`;
+
+  const el = document.getElementById('framework-cards');
+  if (!filtered.length) {
+    el.innerHTML = `<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;height:140px;border:1px dashed var(--hairline);">
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ash);text-transform:uppercase;">No results matching filters</span></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(e => {
+    const ec = EVIDENCE_COLORS[e.evidence] || '#6B7680';
+    const paperHTML = (e.papers || []).map(p => `
+      <a href="${p.doi || '#'}" target="${p.doi ? '_blank' : '_self'}" rel="noopener"
+        style="display:flex;align-items:start;gap:6px;padding:6px 8px;background:rgba(255,255,255,0.03);border:1px solid var(--hairline);text-decoration:none;transition:border-color 0.15s;"
+        onmouseover="this.style.borderColor='${color}'" onmouseout="this.style.borderColor='var(--hairline)'">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" style="margin-top:2px;flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--bone);line-height:1.4;">${p.t}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--ash);text-transform:uppercase;margin-top:2px;">${p.j} · ${p.y}${p.doi ? ' · ↗' : ''}</div>
+        </div>
+      </a>`).join('');
+
+    return `
+      <div style="background:var(--panel);border:1px solid var(--hairline);padding:20px;display:flex;flex-direction:column;gap:12px;transition:border-color 0.15s;"
+        onmouseover="this.style.borderColor='${color}'" onmouseout="this.style.borderColor='var(--hairline)'">
+        <div style="display:flex;justify-content:space-between;align-items:start;gap:12px;">
+          <h3 style="font-weight:700;font-size:14px;line-height:1.2;">${e.name}</h3>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;padding:3px 8px;border:1px solid ${ec}44;background:${ec}11;color:${ec};white-space:nowrap;flex-shrink:0;">${e.evidence}</span>
+        </div>
+        <p style="font-style:italic;font-size:13px;line-height:1.4;color:${color};font-weight:500;">"${e.tagline}"</p>
+        <p style="font-size:12px;color:var(--ash);line-height:1.6;">${e.science}</p>
+        <div style="display:flex;align-items:start;gap:8px;padding-top:8px;border-top:1px solid var(--hairline);">
+          <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:${color};background:${color}11;padding:3px 6px;white-space:nowrap;flex-shrink:0;">Best For</span>
+          <span style="font-size:11px;color:var(--ash);line-height:1.5;">${e.bestFor}</span>
+        </div>
+        ${paperHTML ? `<div style="display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px solid var(--hairline);">
+          <div style="font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;color:var(--ash);letter-spacing:0.1em;margin-bottom:2px;">Key Research</div>
+          ${paperHTML}
+        </div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTheory() {
+  setFrameworkCat('Focus', document.getElementById('ftab-Focus'));
+}
+
+// Radio
+let radioPlaying = false;
+function renderRadio() { setChannel(radioChannel, null); }
+
+function setChannel(ch, btn) {
+  radioChannel = ch;
+  document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active','focus','sleep','calm'));
+  if (btn) { btn.classList.add('active', ch.toLowerCase()); }
+  else {
+    document.querySelectorAll('.channel-tab').forEach(t => {
+      if (t.textContent.trim() === ch) t.classList.add('active', ch.toLowerCase());
+    });
+  }
+
+  const meta = CHANNEL_META[ch] || CHANNEL_META['Focus'];
+  const tracks = ch === 'Favourites' ? TRACKS.filter(t => favourites.has(t.id)) : TRACKS.filter(t => t.category === ch);
+  const track = tracks[0];
+  radioTrackId = track ? track.id : null;
+
+  const grad = meta.gradient || null;
+  const labelEl2 = document.getElementById('radio-channel-label');
+  labelEl2.textContent = meta.label;
+  if (grad) {
+    labelEl2.style.background = grad;
+    labelEl2.style.webkitBackgroundClip = 'text';
+    labelEl2.style.webkitTextFillColor = 'transparent';
+    labelEl2.style.backgroundClip = 'text';
+  } else {
+    labelEl2.style.background = '';
+    labelEl2.style.webkitBackgroundClip = '';
+    labelEl2.style.webkitTextFillColor = '';
+    labelEl2.style.backgroundClip = '';
+    labelEl2.style.color = meta.color;
+  }
+  document.getElementById('radio-track-title').textContent = track ? track.title : '—';
+  document.getElementById('radio-creator').textContent = track ? track.creator : '—';
+  document.getElementById('radio-desc').textContent = meta.desc;
+  document.getElementById('radio-thumb').src = track ? thumb(track.id) : '';
+  document.getElementById('radio-glow').style.background = `linear-gradient(135deg, ${meta.glow} 0%, transparent 70%)`;
+  document.getElementById('radio-play-btn').style.borderColor = meta.color;
+  document.getElementById('radio-play-btn').style.color = meta.color;
+  document.getElementById('play-dur-text').textContent = track ? track.duration : '';
+
+  const tagsEl = document.getElementById('radio-tags');
+  const tagBadgeStyle = grad
+    ? (ch === 'Calm' ? `background:${grad};color:#050505;border-color:transparent;` : `background:${grad};color:#fff;border-color:transparent;`)
+    : `color:${meta.color};border-color:${meta.color}44;background:${meta.color}0f;`;
+  tagsEl.innerHTML = (track ? track.tags.slice(0,3) : []).map(tag => `
+    <span class="radio-tag" style="${tagBadgeStyle}">${tag}</span>
+  `).join('');
+
+  // Waveform
+  const waveEl = document.getElementById('wave-bars');
+  const heights = [40,65,50,75,35,80,45,60,70,30,55,85,40,65,50,45,70,55,38,72];
+  waveEl.innerHTML = heights.map((h,i) => `
+    <div class="wave-bar" style="background:${meta.color};height:${radioPlaying?h:20}%;opacity:${radioPlaying?0.7:0.2};
+    ${radioPlaying?`animation:waveanim ${0.8+(i%5)*0.2}s ease-in-out ${i*0.04}s infinite alternate;`:''}"></div>
+  `).join('');
+
+  // Queue
+  document.getElementById('queue-header').textContent = `${ch.toUpperCase()} QUEUE — ${tracks.length} TRACKS`;
+  const queueEl = document.getElementById('queue-list');
+  queueEl.innerHTML = tracks.map((t, i) => {
+    const isCurrent = t.id === radioTrackId;
+    return `
+      <div class="queue-item ${isCurrent?'current':''}" onclick="selectRadioTrack('${t.id}','${t.title.replace(/'/g,"\\'")}')">
+        <span class="queue-num">${String(i+1).padStart(2,'0')}</span>
+        <img class="queue-thumb" src="${thumb(t.id)}" alt="${t.title}" />
+        <div class="queue-info">
+          <div class="queue-title" style="${isCurrent?'color:'+meta.color+';font-weight:700;':''}">${t.title}</div>
+          <div class="queue-creator">${t.creator}</div>
+        </div>
+        <span class="queue-dur">${t.duration}</span>
+        ${isCurrent && radioPlaying ? `<div class="playing-indicator">
+          <div class="playing-bar" style="height:6px;background:${meta.color};"></div>
+          <div class="playing-bar" style="height:10px;background:${meta.color};"></div>
+          <div class="playing-bar" style="height:7px;background:${meta.color};"></div>
+        </div>` : ''}
+        <div onclick="event.stopPropagation()">${favBtn(t.id)}</div>
+      </div>
+    `;
+  }).join('');
+
+  updateRadioUI();
+}
+
+function selectRadioTrack(id, title) {
+  radioTrackId = id;
+  const track = TRACKS.find(t => t.id === id);
+  if (track) { playTrack(track); radioPlaying = true; }
+  renderRadio();
+}
+
+function toggleRadioPlay() {
+  if (!radioTrackId) return;
+  radioPlaying = !radioPlaying;
+  const track = TRACKS.find(t => t.id === radioTrackId);
+  if (track) {
+    if (radioPlaying) { playTrack(track); }
+    else { isPlaying = false; if(ytReady&&ytPlayer) ytPlayer.pauseVideo(); updatePlayState(); }
+  }
+  updateRadioUI();
+}
+
+function updateRadioUI() {
+  const btn = document.getElementById('radio-play-btn');
+  const statusEl = document.getElementById('play-status-text');
+  const streamEl = document.getElementById('stream-status');
+  const headerWave = document.getElementById('header-wave');
+  const meta = CHANNEL_META[radioChannel];
+
+  if (!btn) return;
+
+  if (radioPlaying && isPlaying) {
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+    btn.style.background = meta.color;
+    btn.style.color = '#050505';
+    statusEl.textContent = 'NOW STREAMING';
+    if (streamEl) streamEl.textContent = 'STREAMING';
+    if (headerWave) headerWave.style.display = 'flex';
+  } else {
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    btn.style.background = 'transparent';
+    btn.style.color = meta.color;
+    statusEl.textContent = 'READY TO PLAY';
+    if (streamEl) streamEl.textContent = 'STANDBY';
+    if (headerWave) headerWave.style.display = 'none';
+  }
+}
+
+// Hero Slideshow
+const HERO_SLIDES = [
+  {
+    label: 'FEATURED TRACK · FOCUS',
+    title: 'Lofi Hip Hop Radio',
+    sub: 'by Lofi Girl',
+    desc: 'Lo-fi beats engineered for deep focus — low harmonic surprise, no lyrics, sustained dopaminergic engagement without attentional capture.',
+    btnText: 'PLAY NOW',
+    action: () => playTrack('jfKfPfyJRdk', 'Lofi Hip Hop Radio — Beats to Relax / Study To'),
+    bg: 'https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
+    color: '#f472b6',
+    gradient: 'linear-gradient(135deg, #4f0dba 0%, #c026d3 45%, #f43f5e 100%)'
+  },
+  {
+    label: 'RESEARCH SPOTLIGHT',
+    title: 'Enhancement of Sleep Slow Waves',
+    sub: 'Frontiers in Systems Neuroscience · 2014',
+    desc: 'Pink noise phase-locked to slow oscillations measurably deepens NREM sleep and improves overnight memory consolidation by up to 1.7×.',
+    btnText: 'VIEW STUDY',
+    action: () => window.open('https://doi.org/10.3389/fnsys.2014.00208', '_blank'),
+    bg: null,
+    color: '#f97316',
+    gradient: 'linear-gradient(135deg, #7e22ce 0%, #e11d48 45%, #f97316 100%)'
+  },
+  {
+    label: 'FEATURED TRACK · CALM',
+    title: 'Calming Nervous System',
+    sub: 'Handpan Music by Malte Marten',
+    desc: 'Handpan overtones engage the parasympathetic nervous system via sustained harmonic resonance — measurable cortisol reduction within minutes.',
+    btnText: 'PLAY NOW',
+    action: () => playTrack('woTWj6iN_aY', 'Calming Nervous System — Handpan Music'),
+    bg: 'https://img.youtube.com/vi/woTWj6iN_aY/maxresdefault.jpg',
+    color: '#22d3ee',
+    gradient: 'linear-gradient(135deg, #0891b2 0%, #a855f7 45%, #ec4899 100%)'
+  },
+  {
+    label: 'RESEARCH SPOTLIGHT',
+    title: 'Gamma Entrainment & Neuroprotection',
+    sub: 'Nature · 2016',
+    desc: '40 Hz auditory stimulation reduced amyloid plaque burden and activated neuroprotective microglia — a new frontier in sound-based brain health.',
+    btnText: 'VIEW STUDY',
+    action: () => window.open('https://doi.org/10.1038/nature20587', '_blank'),
+    bg: null,
+    color: '#fbbf24',
+    gradient: 'linear-gradient(135deg, #f59e0b 0%, #ef4444 55%, #b91c1c 100%)'
+  },
+  {
+    label: 'FEATURED TRACK · SLEEP',
+    title: 'Theta / Delta Waves',
+    sub: 'by The Guided Meditation Site',
+    desc: 'Delta wave entrainment for deep sleep onset. 0.5–4 Hz frequencies support thalamo-cortical slow oscillations associated with physical restoration.',
+    btnText: 'PLAY NOW',
+    action: () => playTrack('Yi7BM8XPTfA', 'Theta / Delta Waves — Sleep Soundscape'),
+    bg: 'https://img.youtube.com/vi/Yi7BM8XPTfA/maxresdefault.jpg',
+    color: '#818cf8',
+    gradient: 'linear-gradient(135deg, #1d4ed8 0%, #7c3aed 45%, #db2777 100%)'
+  },
+];
+
+let heroSlideIndex = 0;
+let heroSlideAction = null;
+
+function applyHeroSlide(idx) {
+  const slide = HERO_SLIDES[idx];
+  const bgEl = document.getElementById('hero-slide-bg');
+  const labelEl = document.getElementById('hero-label');
+  const titleEl = document.getElementById('hero-slide-title');
+  const subEl = document.getElementById('hero-slide-sub');
+  const descEl = document.getElementById('hero-slide-desc');
+  const btnEl = document.getElementById('hero-btn');
+
+  if (slide.bg) {
+    bgEl.style.backgroundImage = `url(${slide.bg})`;
+    bgEl.style.backgroundSize = 'cover';
+    bgEl.style.backgroundPosition = 'center right';
+    bgEl.style.opacity = '0.52';
+    bgEl.style.filter = 'saturate(1.15) brightness(1.05)';
+  } else {
+    // Research slides — render the slide gradient as a vivid right-side wash
+    bgEl.style.backgroundImage = slide.gradient;
+    bgEl.style.backgroundSize = '100% 100%';
+    bgEl.style.filter = 'none';
+    bgEl.style.opacity = '0.28';
+  }
+
+  const grad = slide.gradient || slide.color;
+
+  // Label badge
+  labelEl.textContent = slide.label;
+  labelEl.style.background = grad;
+  labelEl.style.color = '#fff';
+
+  // Title
+  titleEl.innerHTML = slide.title;
+  const len = slide.title.replace(/<[^>]+>/g,'').length;
+  titleEl.style.fontSize = len > 30 ? '36px' : len > 20 ? '46px' : '56px';
+
+  // Subtitle — gradient text
+  subEl.textContent = slide.sub;
+  subEl.style.background = grad;
+  subEl.style.webkitBackgroundClip = 'text';
+  subEl.style.webkitTextFillColor = 'transparent';
+  subEl.style.backgroundClip = 'text';
+  subEl.style.fontWeight = '700';
+
+  // Description
+  descEl.textContent = slide.desc;
+
+  // Button
+  btnEl.textContent = slide.btnText;
+  btnEl.style.background = grad;
+  btnEl.style.color = '#fff';
+  btnEl.style.fontWeight = '700';
+  btnEl.style.letterSpacing = '0.08em';
+
+  // Glow accent on hero
+  const heroEl = document.querySelector('.hero');
+  if (heroEl) heroEl.style.setProperty('--slide-glow', slide.color);
+
+  heroSlideAction = slide.action;
+  document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+function goToHeroSlide(idx) {
+  heroSlideIndex = idx;
+  const inner = document.getElementById('hero-content-inner');
+  inner.style.opacity = '0';
+  setTimeout(() => { applyHeroSlide(idx); inner.style.opacity = '1'; }, 350);
+}
+
+function heroAction() { if (heroSlideAction) heroSlideAction(); }
+
+let heroTimer = null;
+function startHeroTimer() {
+  if (heroTimer) clearInterval(heroTimer);
+  heroTimer = setInterval(() => goToHeroSlide((heroSlideIndex + 1) % HERO_SLIDES.length), 5000);
+}
+function stepHeroSlide(dir) {
+  goToHeroSlide((heroSlideIndex + dir + HERO_SLIDES.length) % HERO_SLIDES.length);
+  startHeroTimer(); // reset timer on manual nav
+}
+
+function initHeroSlideshow() {
+  const dotsEl = document.getElementById('slide-dots');
+  dotsEl.innerHTML = HERO_SLIDES.map((_, i) =>
+    `<div class="slide-dot${i===0?' active':''}" onclick="goToHeroSlide(${i});startHeroTimer()"></div>`
+  ).join('');
+  applyHeroSlide(0);
+  startHeroTimer();
+}
+
+// Init
+initHeroSlideshow();
+renderUploads();
+renderSignalArchive();
+renderListeners();
+renderResearchFeed();
+renderHomeFavourites();
+updateFavChannelTab();
+function handleUnderSignup(e) {
+  e.preventDefault();
+  document.getElementById('under-email').style.display = 'none';
+  e.target.querySelector('button').style.display = 'none';
+  document.getElementById('under-signup-success').style.display = 'block';
+}
+
+function openPersonalisationModal() {
+  document.getElementById('personalisation-modal').classList.add('active');
+}
+function closePersonalisationModal() {
+  document.getElementById('personalisation-modal').classList.remove('active');
+  document.getElementById('personalisation-form').reset();
+  document.getElementById('personalisation-success').style.display = 'none';
+  document.getElementById('personalisation-fields').style.display = 'flex';
+}
+function submitPersonalisationForm(e) {
+  e.preventDefault();
+  document.getElementById('personalisation-fields').style.display = 'none';
+  document.getElementById('personalisation-success').style.display = 'block';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePersonalisationModal();
+});
+</script>
+
+<!-- Personalisation Modal -->
+<div id="personalisation-modal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+  <div style="background:#0f0f0f;border:1px solid rgba(255,255,255,0.1);max-width:480px;width:calc(100% - 48px);padding:40px;position:relative;">
+    <button onclick="closePersonalisationModal()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#6B7680;cursor:pointer;font-size:18px;line-height:1;" aria-label="Close">✕</button>
+
+    <!-- Icon -->
+    <div style="margin-bottom:24px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E0B100" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"/>
+        <line x1="12" y1="4" x2="12" y2="8"/>
+        <line x1="12" y1="9.5" x2="12" y2="16"/>
+        <line x1="9" y1="11" x2="15" y2="14.5"/>
+        <line x1="9" y1="14.5" x2="15" y2="11"/>
+      </svg>
+    </div>
+
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#E0B100;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Coming Soon</div>
+    <h2 style="font-family:'Inter',sans-serif;font-size:22px;font-weight:600;color:#F3F3F0;margin-bottom:12px;line-height:1.3;">Personalisation Sound Hub</h2>
+    <p style="font-family:'Inter',sans-serif;font-size:14px;color:#6B7680;line-height:1.6;margin-bottom:28px;">Sound that adapts to <em style="color:#F3F3F0;">you</em> — your cognitive state, your goals, your biology. We're building a personalised recommendation engine grounded in neuroscience. Sign up to be first in line.</p>
+
+    <div id="personalisation-fields" style="display:flex;flex-direction:column;gap:12px;">
+      <form id="personalisation-form" onsubmit="submitPersonalisationForm(event)" style="display:flex;flex-direction:column;gap:12px;">
+        <input type="email" placeholder="your@email.com" required
+          style="background:#050505;border:1px solid rgba(255,255,255,0.1);padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;width:100%;transition:border-color 0.15s;"
+          onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
+          placeholder="your@email.com" />
+        <button type="submit"
+          style="background:#E0B100;color:#050505;border:none;padding:14px 28px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;"
+          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          Notify Me
+        </button>
+      </form>
+      <p style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;text-align:center;letter-spacing:0.06em;">No spam. Unsubscribe any time.</p>
+    </div>
+
+    <div id="personalisation-success" style="display:none;text-align:center;padding:16px 0;">
+      <div style="font-size:28px;margin-bottom:12px;">✓</div>
+      <p style="font-family:'DM Mono',monospace;font-size:12px;color:#4ade80;letter-spacing:0.08em;text-transform:uppercase;">You're on the list.</p>
+      <p style="font-family:'Inter',sans-serif;font-size:13px;color:#6B7680;margin-top:8px;">We'll reach out when Personalisation Sound Hub launches.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+#personalisation-modal { display: none; }
+#personalisation-modal.active { display: flex; }
+</style>
+</body>
+</html>
