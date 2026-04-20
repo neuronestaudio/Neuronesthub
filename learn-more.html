@@ -15,7 +15,9 @@
     }
   }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #080a0f;
@@ -87,15 +89,19 @@
       background: rgba(8,10,15,0.8);
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 10px 20px;
+      padding: 10px 20px 10px 20px;
+      padding-right: 70px;
       backdrop-filter: blur(20px);
       display: flex;
       align-items: center;
       white-space: nowrap;
     }
     .site-nav .brand {
-      font-family: var(--h-font);
-      font-size: 1rem;
+      font-family: var(--b-font);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: var(--text-0);
       margin-right: 24px;
       text-decoration: none;
@@ -162,6 +168,27 @@
       color: var(--text-0);
       opacity: 0;
       animation: fadeSlideUp 0.9s 0.2s ease forwards;
+    }
+    @keyframes shinePass {
+      0%   { background-position: -200% center; }
+      100% { background-position: 300% center; }
+    }
+    .h1-shine {
+      display: inline-block;
+      background: linear-gradient(105deg,
+        var(--text-0) 20%,
+        var(--text-0) 38%,
+        rgba(255,255,255,0.95) 46%,
+        var(--gold) 50%,
+        rgba(255,255,255,0.95) 54%,
+        var(--text-0) 62%,
+        var(--text-0) 80%
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shinePass 3.6s linear infinite;
     }
     .hero h1 em {
       font-style: normal;
@@ -749,8 +776,9 @@
     /* ANIMATIONS */
     @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.below-fold { opacity: 0; transform: translateY(22px); }
+    .reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
     .reveal-d1 { transition-delay: 0.1s; }
     .reveal-d2 { transition-delay: 0.2s; }
     .reveal-d3 { transition-delay: 0.3s; }
@@ -977,9 +1005,10 @@
       background: rgba(74,158,142,0.25);
     }
     .tl-label {
-      font-family: var(--m-font);
+      font-family: var(--b-font);
       font-size: 10px;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--text-2);
       white-space: nowrap;
@@ -1079,6 +1108,773 @@
       /* Push hero marquee down to clear the mobile timeline bar */
       .hero > .marquee-strip:first-of-type { margin-top: 116px; }
     }
+
+    /* ═══════════════════════════════════════════════
+       PILLAR SECTION SYSTEM — World-class section design
+    ═══════════════════════════════════════════════ */
+    :root {
+      --sleep-c: #6366f1; --sleep-b: #818cf8; --sleep-glow: rgba(99,102,241,0.08);
+      --focus-c: #d4a017; --focus-b: #f59e0b; --focus-glow: rgba(212,160,23,0.08);
+      --calm-c:  #2d8c6a; --calm-b:  #34d399; --calm-glow:  rgba(45,140,106,0.08);
+      --adhd-c:  #7c3aed; --adhd-b:  #a78bfa; --adhd-glow:  rgba(124,58,237,0.12);
+    }
+
+    /* Section transitions */
+    .pillar-section {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      z-index: 1;
+    }
+    .pillar-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+    .pillar-section.in-view::before { opacity: 1; }
+
+    .ps-sleep::before  { background: radial-gradient(ellipse 80% 60% at 15% 40%, rgba(99,102,241,0.09) 0%, transparent 65%); }
+    .ps-focus::before  { background: radial-gradient(ellipse 80% 60% at 85% 40%, rgba(212,160,23,0.09) 0%, transparent 65%); }
+    .ps-calm::before   { background: radial-gradient(ellipse 80% 60% at 15% 40%, rgba(45,140,106,0.09) 0%, transparent 65%); }
+    .ps-adhd::before   { background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(124,58,237,0.14) 0%, transparent 65%); }
+
+    /* Section label tags */
+    .ps-tag {
+      font-family: var(--m-font);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+    .ps-tag-sleep { color: var(--sleep-b); border: 1px solid rgba(99,102,241,0.35); background: rgba(99,102,241,0.07); }
+    .ps-tag-focus { color: var(--focus-b); border: 1px solid rgba(212,160,23,0.35); background: rgba(212,160,23,0.07); }
+    .ps-tag-calm  { color: var(--calm-b);  border: 1px solid rgba(45,140,106,0.35);  background: rgba(45,140,106,0.07); }
+    .ps-tag-adhd  { color: var(--adhd-b);  border: 1px solid rgba(124,58,237,0.35);  background: rgba(124,58,237,0.08); }
+
+    /* Stat infographic grid */
+    .ps-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 48px 0;
+    }
+    .ps-stat {
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--surface);
+      transition: background 0.3s ease;
+      position: relative;
+    }
+    .ps-stat:hover { background: rgba(255,255,255,0.025); }
+    .ps-stat-num {
+      font-family: var(--h-font);
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 300;
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .ps-stat-num.counted { opacity: 1; transform: translateY(0); }
+    .ps-stat-title { font-size: 14px; font-weight: 700; color: var(--text-0); letter-spacing: 0.04em; text-transform: uppercase; font-family: var(--b-font); }
+    .ps-stat-desc  { font-size: 12px; color: var(--text-1); line-height: 1.6; flex: 1; }
+    .ps-stat-cite  { font-family: var(--m-font); font-size: 9px; color: var(--text-2); letter-spacing: 0.08em; border-top: 1px solid var(--line); padding-top: 8px; }
+
+    /* Sleep stat colors */
+    #sleep .ps-stat-num { color: var(--sleep-b); }
+    #sleep .ps-stat-grid { background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.15); }
+    #sleep .ps-stat-cite { color: rgba(99,102,241,0.5); }
+
+    /* Focus stat colors */
+    #focus .ps-stat-num { color: var(--focus-b); }
+    #focus .ps-stat-grid { background: rgba(212,160,23,0.12); border: 1px solid rgba(212,160,23,0.15); }
+    #focus .ps-stat-cite { color: rgba(212,160,23,0.5); }
+
+    /* Calm stat colors */
+    #calm .ps-stat-num { color: var(--calm-b); }
+    #calm .ps-stat-grid { background: rgba(45,140,106,0.12); border: 1px solid rgba(45,140,106,0.15); }
+    #calm .ps-stat-cite { color: rgba(45,140,106,0.5); }
+
+    /* ADHD stat colors */
+    #adhd .ps-stat-num { background: linear-gradient(135deg, #7c3aed, #c026d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    #adhd .ps-stat-grid { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2); }
+
+    /* Animated bar chart */
+    .ps-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .ps-bar-row:last-child { border-bottom: none; }
+    .ps-bar-label { font-size: 13px; color: var(--text-1); width: 190px; flex-shrink: 0; }
+    .ps-bar-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .ps-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      width: 0;
+      transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .ps-bar-fill.animated { width: var(--w); }
+    .ps-bar-pct { font-family: var(--m-font); font-size: 11px; color: var(--text-1); width: 40px; text-align: right; flex-shrink: 0; }
+
+    /* Deep-dive CTA banners */
+    .ps-deepdive {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 32px;
+      border-radius: 16px;
+      margin-top: 48px;
+      text-decoration: none;
+      color: var(--text-0);
+      transition: all 0.3s ease;
+    }
+    .ps-deepdive:hover { transform: translateX(4px); }
+    .ps-deepdive-sleep { border: 1px solid rgba(99,102,241,0.25);  background: rgba(99,102,241,0.04); }
+    .ps-deepdive-focus { border: 1px solid rgba(212,160,23,0.25);  background: rgba(212,160,23,0.04); }
+    .ps-deepdive-calm  { border: 1px solid rgba(45,140,106,0.25);  background: rgba(45,140,106,0.04); }
+    .ps-deepdive-adhd  { border: 1px solid rgba(124,58,237,0.3);   background: rgba(124,58,237,0.05); }
+    .ps-deepdive-label { font-family: var(--m-font); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 4px; }
+    .ps-deepdive-title { font-family: var(--h-font); font-size: clamp(16px, 2vw, 22px); font-weight: 300; }
+    .ps-deepdive-arrow { flex-shrink: 0; transition: transform 0.3s ease; }
+    .ps-deepdive:hover .ps-deepdive-arrow { transform: translateX(8px); }
+
+    /* EEG comparison bars (ADHD) */
+    .eeg-bar-wrap {
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 20px;
+      background: rgba(12,12,26,0.8);
+      padding: 28px;
+      backdrop-filter: blur(10px);
+    }
+    .eeg-group { margin-bottom: 20px; }
+    .eeg-group:last-child { margin-bottom: 0; }
+    .eeg-group-label { font-family: var(--m-font); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .eeg-bar-item { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .eeg-bar-name { font-size: 11px; color: var(--text-2); width: 60px; flex-shrink: 0; }
+    .eeg-bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.04); border-radius: 999px; overflow: hidden; }
+    .eeg-bar-fill { height: 100%; border-radius: 999px; width: 0; transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1); }
+    .eeg-bar-fill.animated { width: var(--w); }
+    .eeg-bar-val { font-family: var(--m-font); font-size: 10px; color: var(--text-2); width: 36px; text-align: right; flex-shrink: 0; }
+
+    /* ADHD truth cards */
+    .truth-card {
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .truth-card:hover { transform: translateY(-4px); }
+    .truth-card-num {
+      font-family: var(--h-font);
+      font-size: 64px;
+      font-weight: 300;
+      line-height: 1;
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      color: rgba(124,58,237,0.08);
+      pointer-events: none;
+    }
+
+    /* Pillar nav cards (homepage gateway) */
+    .pillar-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 60px;
+    }
+    .pillar-nav-card {
+      background: var(--surface);
+      padding: 36px 28px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .pillar-nav-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .pillar-nav-card:hover::after { transform: scaleX(1); }
+    .pnc-sleep::after  { background: var(--sleep-c); }
+    .pnc-focus::after  { background: var(--focus-c); }
+    .pnc-calm::after   { background: var(--calm-c); }
+    .pnc-adhd::after   { background: var(--adhd-c); }
+    .pnc-sleep:hover   { background: rgba(99,102,241,0.06); }
+    .pnc-focus:hover   { background: rgba(212,160,23,0.06); }
+    .pnc-calm:hover    { background: rgba(45,140,106,0.06); }
+    .pnc-adhd:hover    { background: rgba(124,58,237,0.07); }
+    .pnc-icon { font-size: 42px; line-height: 1; }
+    .pnc-stat {
+      font-family: var(--h-font);
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 300;
+      line-height: 1;
+    }
+    .pnc-sleep .pnc-stat { color: var(--sleep-b); }
+    .pnc-focus .pnc-stat { color: var(--focus-b); }
+    .pnc-calm  .pnc-stat { color: var(--calm-b); }
+    .pnc-adhd  .pnc-stat { background: linear-gradient(135deg, #7c3aed, #c026d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .pnc-name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--b-font); color: var(--text-0); }
+    .pnc-desc { font-size: 13px; color: var(--text-1); line-height: 1.65; flex: 1; }
+    .pnc-cta  { font-family: var(--m-font); font-size: 10px; letter-spacing: 0.1em; border-top: 1px solid var(--line); padding-top: 10px; transition: color 0.22s; }
+    .pnc-sleep .pnc-cta { color: rgba(99,102,241,0.6); }
+    .pnc-focus .pnc-cta { color: rgba(212,160,23,0.6); }
+    .pnc-calm  .pnc-cta { color: rgba(45,140,106,0.6); }
+    .pnc-adhd  .pnc-cta { color: rgba(124,58,237,0.7); }
+    .pnc-sleep:hover .pnc-cta { color: var(--sleep-b); }
+    .pnc-focus:hover .pnc-cta { color: var(--focus-b); }
+    .pnc-calm:hover  .pnc-cta { color: var(--calm-b); }
+    .pnc-adhd:hover  .pnc-cta { color: var(--adhd-b); }
+
+    /* Breathing circle (Calm section) */
+    @keyframes breatheIn  { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.35); opacity: 0.9; } }
+    @keyframes breatheRipple { from { transform: scale(1); opacity: 0.4; } to { transform: scale(2.2); opacity: 0; } }
+    .breathe-circle { animation: breatheIn 8s ease-in-out infinite; }
+    .breathe-ripple { animation: breatheRipple 8s ease-out infinite; }
+
+    /* ADHD glitch headline */
+    @keyframes floatUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes glitch {
+      0%,100% { clip-path: none; transform: none; }
+      2%       { clip-path: inset(10% 0 85% 0); transform: translateX(-4px); }
+      4%       { clip-path: inset(60% 0 20% 0); transform: translateX(4px); }
+      6%       { clip-path: none; transform: none; }
+      92%      { clip-path: inset(30% 0 55% 0); transform: translateX(-2px); }
+      94%      { clip-path: none; transform: none; }
+    }
+    .adhd-glitch { position: relative; }
+    .adhd-glitch::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      background: linear-gradient(135deg, #312e81, #7c3aed, #c026d3);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glitch 6s infinite;
+      opacity: 0.6;
+    }
+
+    /* Section divider label */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 0 0 60px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    .section-divider span {
+      font-family: var(--m-font);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    /* Protocol step rows */
+    .proto-step {
+      display: flex;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .proto-step:last-child { border-bottom: none; }
+    .proto-step-num {
+      font-family: var(--h-font);
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 48px;
+      text-align: right;
+    }
+    .proto-step-body { flex: 1; }
+    .proto-step-title { font-size: 15px; font-weight: 600; color: var(--text-0); margin-bottom: 4px; }
+    .proto-step-desc  { font-size: 13px; color: var(--text-1); line-height: 1.65; }
+
+    @media (max-width: 900px) {
+      .ps-stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .pillar-nav-grid { grid-template-columns: repeat(2, 1fr); }
+      .ps-bar-label { width: 130px; }
+    }
+    @media (max-width: 560px) {
+      .ps-stat-grid { grid-template-columns: 1fr; }
+      .pillar-nav-grid { grid-template-columns: 1fr; }
+    }
+  
+    /* ── Atlas map embed: compat variables ─────────────────────────── */
+    :root {
+      --bg-0: #080a0f; --bg-1: #0d1017; --bg-2: #111520; --bg-3: rgba(255,255,255,0.04);
+      --ink-0: #f0ede8; --ink-1: #a8a49e; --ink-2: #5e5c58;
+      --line-2: rgba(255,255,255,0.06);
+      --d-font: 'Fraunces', 'Instrument Serif', Georgia, serif;
+      --s-font: 'Inter', 'Syne', system-ui, sans-serif;
+      --heat-0: #2a3a34; --heat-1: #2f4339; --heat-2: #2a4036;
+      --heat-3: #233b32; --heat-4: #1d352d; --heat-5: #182d27;
+      --heat-6: #122520; --heat-7: #0a1714;
+    }
+    /* ── Atlas map CSS ─────────────────────────────────────────────── */
+    /* ============ MAP CONTROLS ============ */
+      .map-section { padding: 40px 0 60px; }
+      .map-header {
+        display: flex; justify-content: space-between; align-items: end;
+        margin-bottom: 24px; padding-bottom: 20px;
+        border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 24px;
+      }
+      .map-header h2 {
+        font-family: var(--d-font); font-weight: 300;
+        font-size: 36px; letter-spacing: -0.02em;
+      }
+      .map-header h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+    
+      .filter-group {
+        display: flex; gap: 4px; align-items: center;
+        background: var(--bg-1); padding: 4px;
+        border: 1px solid var(--line-2);
+      }
+      .filter-btn {
+        background: transparent; border: none;
+        color: var(--ink-1); font-family: var(--m-font);
+        font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+        padding: 8px 14px; cursor: pointer; transition: all 0.2s ease;
+        border-radius: 0;
+      }
+      .filter-btn:hover { color: var(--ink-0); }
+      .filter-btn.active { background: var(--accent); color: var(--bg-0); font-weight: 600; }
+    
+      /* ============ MAP CONTAINER ============ */
+      .map-wrap {
+        position: relative; background: var(--bg-1);
+        border: 1px solid var(--line-2); border-radius: 2px; overflow: hidden;
+      }
+      .map-frame-labels {
+        position: absolute; top: 16px; left: 20px;
+        font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+        letter-spacing: 0.18em; text-transform: uppercase;
+        z-index: 3; pointer-events: none;
+      }
+      .map-frame-labels span { color: var(--accent); }
+      .map-frame-coords {
+        position: absolute; bottom: 16px; right: 20px;
+        font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+        letter-spacing: 0.18em; z-index: 3; pointer-events: none;
+        text-align: right; line-height: 1.6;
+      }
+    
+      /* Heat legend */
+      .heat-legend {
+        position: absolute; bottom: 16px; left: 20px;
+        z-index: 3; display: flex; align-items: center; gap: 12px;
+        font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+        letter-spacing: 0.14em; text-transform: uppercase;
+      }
+      .heat-bar {
+        display: flex; height: 8px; width: 200px;
+        border: 1px solid var(--line-2);
+      }
+      .heat-bar-cell { flex: 1; height: 100%; }
+    
+      #worldmap { display: block; width: 100%; height: 580px; cursor: grab; }
+      #worldmap:active { cursor: grabbing; }
+    
+      /* SVG country styles */
+      .country {
+        stroke: rgba(127, 212, 180, 0.22);
+        stroke-width: 0.4;
+        transition: fill 0.4s ease, stroke 0.3s ease;
+        cursor: pointer;
+      }
+      .country.no-data { fill: var(--heat-0); }
+      .country.tier-emerging { fill: var(--heat-1); }
+      .country.tier-1-pub { fill: var(--heat-2); }
+      .country.tier-3-pub { fill: var(--heat-3); }
+      .country.tier-5-pub { fill: var(--heat-4); }
+      .country.tier-active { fill: var(--heat-5); }
+      .country.tier-major { fill: var(--heat-6); }
+      .country.tier-leader { fill: var(--heat-7); }
+      .country:hover { stroke: var(--accent); stroke-width: 0.9; filter: brightness(1.3); }
+    
+      /* Graticule */
+      .graticule { fill: none; stroke: rgba(127, 212, 180, 0.04); stroke-width: 0.4; }
+      /* Ocean fill - sits between no-data land and the deepest tier */
+      .sphere-fill { fill: #1a2622; stroke: rgba(127, 212, 180, 0.18); stroke-width: 0.6; }
+    
+      /* Research nodes */
+      .research-node {
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+      }
+      .research-node.hidden { opacity: 0; pointer-events: none; }
+    
+      .node-pulse {
+        transform-origin: center;
+        animation: pulse 3.5s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0; }
+        50% { transform: scale(3); opacity: 0.4; }
+      }
+      .node-core {
+        transition: r 0.3s ease, filter 0.3s ease;
+      }
+      .research-node:hover .node-core {
+        filter: drop-shadow(0 0 14px currentColor) drop-shadow(0 0 6px currentColor);
+      }
+    
+      /* Tooltip */
+      .tooltip {
+        position: absolute;
+        background: rgba(8, 12, 11, 0.97);
+        border: 1px solid var(--accent-dim);
+        padding: 16px 20px; font-size: 12px;
+        pointer-events: none; opacity: 0;
+        transition: opacity 0.2s ease;
+        z-index: 10; min-width: 280px; max-width: 360px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--line);
+        backdrop-filter: blur(12px);
+      }
+      .tooltip.active { opacity: 1; }
+      .tooltip-title {
+        font-family: var(--d-font); font-size: 18px; font-weight: 500;
+        color: var(--ink-0); margin-bottom: 4px; letter-spacing: -0.01em;
+        line-height: 1.2;
+      }
+      .tooltip-sub {
+        font-family: var(--m-font); font-size: 9px; color: var(--accent);
+        letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px;
+      }
+      .tooltip-focus {
+        color: var(--accent); font-family: var(--m-font); font-size: 10px;
+        letter-spacing: 0.08em; margin-bottom: 8px; text-transform: uppercase;
+      }
+      .tooltip-body { font-size: 12px; color: var(--ink-1); line-height: 1.55; margin-bottom: 12px; }
+      .tooltip-meta {
+        display: flex; justify-content: space-between; gap: 12px;
+        padding-top: 10px; border-top: 1px solid var(--line);
+        font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+        letter-spacing: 0.06em; text-transform: uppercase;
+      }
+      .tooltip-meta strong { color: var(--accent); font-weight: 500; }
+    
+      /* Country tooltip - simpler */
+      .country-tooltip {
+        position: absolute;
+        background: rgba(8, 12, 11, 0.97);
+        border: 1px solid var(--accent-dim);
+        padding: 10px 14px; font-size: 11px;
+        pointer-events: none; opacity: 0;
+        transition: opacity 0.15s ease;
+        z-index: 9;
+        backdrop-filter: blur(8px);
+      }
+      .country-tooltip.active { opacity: 1; }
+      .ct-name {
+        font-family: var(--d-font); font-size: 15px; color: var(--ink-0);
+        margin-bottom: 4px; font-weight: 500;
+      }
+      .ct-stat {
+        font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+        letter-spacing: 0.1em; text-transform: uppercase;
+      }
+      .ct-stat strong { color: var(--accent); }
+    
+      /* Loading */
+      .map-loading {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--bg-1); z-index: 5;
+        transition: opacity 0.5s ease;
+      }
+      .map-loading.hidden { opacity: 0; pointer-events: none; }
+      .loading-text {
+        font-family: var(--m-font); font-size: 11px;
+        color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+      }
+      .loading-dot {
+        display: inline-block; width: 6px; height: 6px;
+        background: var(--accent); border-radius: 50%;
+        margin-right: 12px; animation: blink 1s ease-in-out infinite;
+      }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    
+      /* ============ TOP COUNTRIES BAR ============ */
+      .top-countries {
+        margin-top: 32px;
+        background: var(--bg-1);
+        border: 1px solid var(--line-2);
+        padding: 28px 32px;
+      }
+      .top-countries-head {
+        display: flex; justify-content: space-between; align-items: baseline;
+        margin-bottom: 24px;
+      }
+      .top-countries-head h3 {
+        font-family: var(--d-font); font-size: 22px; font-weight: 400;
+        letter-spacing: -0.01em;
+      }
+      .top-countries-head h3 em { font-style: italic; color: var(--accent); }
+      .top-countries-sub {
+        font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+        letter-spacing: 0.14em; text-transform: uppercase;
+      }
+      .country-bars { display: flex; flex-direction: column; gap: 10px; }
+      .country-bar {
+        display: grid; grid-template-columns: 32px 180px 1fr 80px 80px;
+        gap: 16px; align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .country-bar:last-child { border-bottom: none; }
+      .cb-rank {
+        font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+        letter-spacing: 0.1em;
+      }
+      .cb-name {
+        font-family: var(--d-font); font-size: 16px; color: var(--ink-0);
+        letter-spacing: -0.01em;
+      }
+      .cb-bar-track {
+        height: 6px; background: var(--bg-3); position: relative;
+        border: 1px solid var(--line);
+      }
+      .cb-bar-fill {
+        position: absolute; left: 0; top: 0; bottom: 0;
+        background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+        transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 12px var(--accent-dim);
+      }
+      .cb-labs {
+        font-family: var(--m-font); font-size: 11px; color: var(--ink-1);
+        text-align: right;
+      }
+      .cb-pubs {
+        font-family: var(--m-font); font-size: 11px; color: var(--accent);
+        text-align: right; letter-spacing: 0.04em;
+      }
+    
+      /* ============ FOCUS GRID ============ */
+      .focus-areas { padding: 80px 0; border-top: 1px solid var(--line); }
+      .focus-head { text-align: center; margin-bottom: 48px; }
+      .focus-head .label {
+        font-family: var(--m-font); font-size: 10px;
+        color: var(--accent); letter-spacing: 0.22em;
+        text-transform: uppercase; margin-bottom: 16px;
+        display: inline-flex; align-items: center; gap: 12px;
+      }
+      .focus-head .label::before, .focus-head .label::after {
+        content: ""; width: 30px; height: 1px; background: var(--accent-dim);
+      }
+      .focus-head h2 {
+        font-family: var(--d-font); font-size: clamp(36px, 4.5vw, 56px);
+        font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+      }
+      .focus-head h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+    
+      .focus-grid {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+        background: var(--line-2); border: 1px solid var(--line-2);
+      }
+      .focus-cell { background: var(--bg-1); padding: 30px 24px; }
+      .focus-icon-wrap {
+        width: 44px; height: 44px;
+        border: 1px solid var(--accent-dim); border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 20px; position: relative;
+      }
+      .focus-icon-wrap::after {
+        content: ""; position: absolute; inset: -4px;
+        border: 1px solid var(--line-2); border-radius: 50%;
+      }
+      .focus-icon { color: var(--accent); font-size: 18px; }
+      .focus-title {
+        font-family: var(--d-font); font-size: 21px; font-weight: 400;
+        margin-bottom: 4px; letter-spacing: -0.01em; line-height: 1.15;
+      }
+      .focus-count {
+        font-family: var(--m-font); font-size: 10px;
+        color: var(--accent); letter-spacing: 0.14em;
+        text-transform: uppercase; margin-bottom: 14px;
+      }
+      .focus-desc { font-size: 13px; line-height: 1.55; color: var(--ink-1); }
+      .focus-hubs {
+        margin-top: 16px; font-size: 11px;
+        color: var(--ink-2); font-family: var(--m-font); letter-spacing: 0.04em;
+      }
+    
+      /* ============ FEATURED INSTITUTIONS ============ */
+      .featured { padding: 80px 0; border-top: 1px solid var(--line); }
+      .featured-head { margin-bottom: 60px; max-width: 720px; }
+      .featured-head .label {
+        font-family: var(--m-font); font-size: 10px; color: var(--accent);
+        letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 16px;
+        display: inline-block; padding-bottom: 8px;
+        border-bottom: 1px solid var(--accent-dim);
+      }
+      .featured-head h2 {
+        font-family: var(--d-font); font-size: clamp(36px, 4.5vw, 56px);
+        font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+      }
+      .featured-head h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+      .featured-head p {
+        margin-top: 20px; font-size: 16px; color: var(--ink-1); line-height: 1.6;
+        max-width: 640px;
+      }
+    
+      .featured-grid {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+        background: var(--line-2); border: 1px solid var(--line-2);
+      }
+      .featured-card {
+        background: var(--bg-1); padding: 36px 32px; position: relative;
+        transition: background 0.3s ease;
+      }
+      .featured-card:hover { background: var(--bg-2); }
+      .fc-index {
+        font-family: var(--m-font); font-size: 10px;
+        color: var(--accent); letter-spacing: 0.18em;
+        margin-bottom: 14px; display: flex; justify-content: space-between;
+      }
+      .fc-index .country { color: var(--ink-2); }
+      .fc-name {
+        font-family: var(--d-font); font-size: 28px; font-weight: 400;
+        line-height: 1.1; letter-spacing: -0.02em; color: var(--ink-0);
+        margin-bottom: 4px;
+      }
+      .fc-name em { font-style: italic; color: var(--accent); font-weight: 300; }
+      .fc-loc {
+        font-size: 12px; color: var(--ink-2); font-family: var(--m-font);
+        letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px;
+      }
+      .fc-focus {
+        font-family: var(--d-font); font-style: italic; font-size: 15px;
+        color: var(--accent); margin-bottom: 14px; line-height: 1.4;
+      }
+      .fc-body {
+        font-size: 14px; line-height: 1.6; color: var(--ink-1); margin-bottom: 20px;
+      }
+      .fc-body strong { color: var(--ink-0); font-weight: 500; }
+      .fc-tag {
+        display: inline-block;
+        font-family: var(--m-font); font-size: 10px;
+        padding: 4px 10px;
+        background: rgba(127, 212, 180, 0.06);
+        border: 1px solid var(--line-2);
+        color: var(--ink-1);
+        letter-spacing: 0.04em;
+      }
+    
+      /* ============ METHODOLOGY ============ */
+      .method {
+        padding: 80px 0 100px; border-top: 1px solid var(--line);
+        display: grid; grid-template-columns: 220px 1fr; gap: 64px;
+      }
+      .method-label {
+        font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+        text-transform: uppercase; letter-spacing: 0.2em;
+        padding-top: 8px; border-top: 1px solid var(--accent-dim); width: 80px;
+      }
+      .method-body h3 {
+        font-family: var(--d-font); font-weight: 400;
+        font-size: 24px; margin-bottom: 18px; color: var(--ink-0);
+        letter-spacing: -0.01em;
+      }
+      .method-body h3 em { font-style: italic; color: var(--accent); }
+      .method-body p {
+        font-size: 14px; line-height: 1.75; color: var(--ink-1);
+        margin-bottom: 16px; max-width: 720px;
+      }
+      .method-body p strong { color: var(--ink-0); font-weight: 500; }
+      .method-body .caveat {
+        font-family: var(--d-font); font-style: italic; font-size: 16px;
+        color: var(--ink-2); border-left: 2px solid var(--accent-dim);
+        padding-left: 20px; margin-top: 28px;
+      }
+    
+      /* ============ FOOTER ============ */
+      footer {
+        border-top: 1px solid var(--line); padding: 32px 0;
+        display: flex; justify-content: space-between; align-items: center;
+        font-family: var(--m-font); font-size: 10px;
+        letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2);
+        flex-wrap: wrap; gap: 16px;
+      }
+      footer .mark { color: var(--accent); }
+    
+      /* ============ RESPONSIVE ============ */
+      @media (max-width: 1100px) {
+        .country-bar { grid-template-columns: 28px 140px 1fr 70px 70px; gap: 12px; }
+        .focus-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 900px) {
+        .container { padding: 0 24px; }
+        .title-block { grid-template-columns: 1fr; gap: 24px; }
+        .subtitle { max-width: none; }
+        .stats-strip { grid-template-columns: repeat(2, 1fr); }
+        .stat { border-bottom: 1px solid var(--line); }
+        .stat:nth-child(3n) { border-right: 1px solid var(--line); }
+        .intro, .method { grid-template-columns: 1fr; gap: 24px; }
+        .featured-grid { grid-template-columns: 1fr; }
+        .map-header { flex-direction: column; align-items: flex-start; }
+        #worldmap { height: 420px; }
+        .country-bar { grid-template-columns: 24px 100px 1fr 60px; }
+        .cb-pubs { display: none; }
+      }
+      @media (max-width: 600px) {
+        h1 { font-size: 56px; }
+        .stats-strip { grid-template-columns: 1fr; }
+        .stat { border-right: none !important; }
+        .focus-grid { grid-template-columns: 1fr; }
+        .heat-legend { display: none; }
+        #worldmap { height: 320px; }
+      }
+    
+    
+
   </style>
 </head>
 <body>
@@ -1090,6 +1886,22 @@
     <a href="#intro"              class="tl-item" data-section="intro">
       <div class="tl-dot"></div>
       <span class="tl-label">Intro</span>
+    </a>
+    <a href="#sleep"             class="tl-item" data-section="sleep">
+      <div class="tl-dot" style="border-color: rgba(99,102,241,0.4);"></div>
+      <span class="tl-label" style="color: rgba(129,140,248,0.7);">◐ Sleep</span>
+    </a>
+    <a href="#focus"             class="tl-item" data-section="focus">
+      <div class="tl-dot" style="border-color: rgba(212,160,23,0.4);"></div>
+      <span class="tl-label" style="color: rgba(245,158,11,0.7);">◈ Focus</span>
+    </a>
+    <a href="#calm"              class="tl-item" data-section="calm">
+      <div class="tl-dot" style="border-color: rgba(45,140,106,0.4);"></div>
+      <span class="tl-label" style="color: rgba(52,211,153,0.7);">◯ Calm</span>
+    </a>
+    <a href="#adhd"              class="tl-item" data-section="adhd">
+      <div class="tl-dot" style="border-color: rgba(124,58,237,0.5);"></div>
+      <span class="tl-label" style="color: rgba(167,139,250,0.8);">⬡ ADHD</span>
     </a>
     <a href="#philosophy"        class="tl-item" data-section="philosophy">
       <div class="tl-dot"></div>
@@ -1111,10 +1923,6 @@
       <div class="tl-dot"></div>
       <span class="tl-label">05 — Sound Atlas</span>
     </a>
-    <a href="#entrainment-methods" class="tl-item" data-section="entrainment-methods">
-      <div class="tl-dot"></div>
-      <span class="tl-label">05b — Entrainment</span>
-    </a>
     <a href="#how-to-use"        class="tl-item" data-section="how-to-use">
       <div class="tl-dot"></div>
       <span class="tl-label">06 — Protocol</span>
@@ -1123,10 +1931,6 @@
       <div class="tl-dot"></div>
       <span class="tl-label">07 — FAQ</span>
     </a>
-    <a href="#where-to-start"    class="tl-item" data-section="where-to-start">
-      <div class="tl-dot"></div>
-      <span class="tl-label">08 — Start</span>
-    </a>
     <a href="#glossary"          class="tl-item" data-section="glossary">
       <div class="tl-dot"></div>
       <span class="tl-label">Appendix</span>
@@ -1134,28 +1938,32 @@
   </nav>
 
   <nav class="site-nav" aria-label="Page navigation">
-    <a href="index.html" class="brand">NeuroNest</a>
-    <a href="#philosophy">Philosophy</a>
-    <a href="#why-sound">Science</a>
-    <a href="#outcomes">Outcomes</a>
-    <a href="#how-to-use">Guide</a>
+    <a href="index.html" class="brand" style="display:flex;flex-direction:column;line-height:1;gap:2px;">
+      <span>NEURONEST</span>
+      <span style="font-size:1.1em;letter-spacing:0.22em;color:var(--text-2);font-weight:600;">AUSTRALIA</span>
+    </a>
+    <a href="#sleep" style="color: rgba(129,140,248,0.8);">Sleep</a>
+    <a href="#focus" style="color: rgba(245,158,11,0.8);">Focus</a>
+    <a href="#calm" style="color: rgba(52,211,153,0.8);">Calm</a>
+    <a href="#adhd" style="color: var(--adhd-b); font-weight: 600;">ADHD</a>
+    <a href="#philosophy">Science</a>
     <a href="#faq">FAQ</a>
-    <a href="soundhub.html">Soundscapes</a>
+    <a href="soundhub.html" style="background: linear-gradient(135deg, var(--accent), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; border: 1px solid rgba(74,158,142,0.35); border-radius: 999px; padding: 5px 14px; font-weight: 700; margin-left: 84px; transition: border-color 0.22s;" onmouseover="this.style.borderColor='rgba(74,158,142,0.7)'" onmouseout="this.style.borderColor='rgba(74,158,142,0.35)'">Sound Hub</a>
   </nav>
 
-  <main>
+  <main style="position: relative; z-index: 1;">
 
     <!-- HERO -->
     <section class="hero" id="intro" style="position: relative; overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; padding: 0; border-top: none;">
-      <!-- Deep purple gradient overlay -->
-      <div style="position: absolute; inset: 0; background: linear-gradient(160deg, #0a0720 0%, #130d35 35%, #1a0a2e 60%, #080a0f 100%); z-index: 0;"></div>
-      <!-- Particle canvas background -->
-      <canvas id="particleCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.4;"></canvas>
+      <!-- Lottie background -->
+      <dotlottie-player src="assets/abstract blue black.lottie" autoplay loop style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.45; pointer-events: none;"></dotlottie-player>
+      <!-- Particle canvas (Three.js) -->
+      <canvas id="particleCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; opacity: 0.45; pointer-events: none;"></canvas>
       <!-- Subtle radial purple glow -->
-      <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(124,58,237,0.18) 0%, transparent 70%); z-index: 1; pointer-events: none;"></div>
+      <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(124,58,237,0.14) 0%, transparent 70%); z-index: 2; pointer-events: none;"></div>
 
       <!-- Top marquee -->
-      <div class="marquee-strip" style="margin-top: 80px;">
+      <div class="marquee-strip" style="margin-top: 80px; position: relative; z-index: 15;">
         <div class="marquee-track">
           <span class="marquee-item">Neuroscience<span>◎</span></span>
           <span class="marquee-item">Acoustic Engineering<span>◎</span></span>
@@ -1174,9 +1982,13 @@
         </div>
       </div>
 
-      <div class="container" style="position: relative; z-index: 2; flex: 1; display: flex; align-items: center; justify-content: center;">
+      <div class="container" style="position: relative; z-index: 15; flex: 1; display: flex; align-items: center; justify-content: center;">
         <div class="hero-inner">
-          <h1>Learning<br>Hub</h1>
+          <!-- Brain Lottie -->
+          <div style="width: 140px; height: 140px; margin: 0 auto 16px;">
+            <dotlottie-player src="assets/Particle wave with depth.lottie" autoplay loop style="width: 100%; height: 100%;"></dotlottie-player>
+          </div>
+          <h1><span class="h1-shine">Learning<br>Hub</span></h1>
           <p class="hero-sub">Using Sound As A Tool For Performance</p>
 
           <a href="#why-sound" class="hero-cta" style="margin-top: 48px;">
@@ -1187,7 +1999,7 @@
       </div>
 
       <!-- Bottom marquee -->
-      <div class="marquee-strip bottom">
+      <div class="marquee-strip bottom" style="position: relative; z-index: 15;">
         <div class="marquee-track reverse">
           <span class="marquee-item">Gamma Entrainment<span>◎</span></span>
           <span class="marquee-item">HRV Modulation<span>◎</span></span>
@@ -1207,30 +2019,570 @@
       </div>
     </section>
 
-    <!-- PILLARS (moved out of hero into own section) -->
-    <section style="padding: 80px 0; border-top: 1px solid var(--line); position: relative; z-index: 1;">
+    <!-- PILLAR NAVIGATION GATEWAY -->
+    <section id="pillars-nav" style="padding: 100px 0 0; border-top: 1px solid var(--line); position: relative; z-index: 1;">
       <div class="container">
-        <div class="pillars">
-            <a href="#how-to-use" class="pillar">
-              <span class="pillar-icon">◐</span>
-              <strong>Sleep</strong>
-              <span>Most people spend years trying to fix their sleep — and never think to address the acoustic environment they're sleeping in. Pink noise has been shown in RCTs to increase slow-wave sleep by up to 23% and improve next-day memory consolidation. Your brain doesn't switch off at night. Give it a stable sound floor to stop scanning for threats.</span>
-              <span class="pillar-ref">Ngo et al., Neuron 2013 · Messineo et al., Frontiers in Neuroscience 2020</span>
-            </a>
-            <a href="#how-to-use" class="pillar">
-              <span class="pillar-icon">◈</span>
-              <strong>Focus</strong>
-              <span>Open-plan offices cost businesses billions in lost productivity annually — the main mechanism is uncontrolled acoustic variability. A stable noise floor reduces the cognitive cost of environmental interruption and keeps you in task. Studies in ADHD populations show white noise improves performance specifically by raising the signal-to-noise ratio in prefrontal networks.</span>
-              <span class="pillar-ref">Söderlund et al., Psychopharmacology 2019 · Stansfeld & Matheson, Brit. Medical Bulletin 2003</span>
-            </a>
-            <a href="#how-to-use" class="pillar">
-              <span class="pillar-icon">◯</span>
-              <strong>Calm</strong>
-              <span>Stress isn't just a feeling — it's a measurable autonomic state. HRV (heart rate variability) drops when you're dysregulated and rises when you recover. Nature soundscapes and low-frequency audio have been shown to increase HRV and activate the parasympathetic nervous system within 5–10 minutes. This is decompression you can actually measure.</span>
-              <span class="pillar-ref">Thayer & Lane, Neuroscience & Biobehavioral Reviews 2009 · Alvarsson et al., J. Environmental Psychology 2010</span>
+
+        <!-- Rotating phrase ticker -->
+        <div style="height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 72px; position: relative;">
+          <div style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-2); margin-bottom: 28px;">Peer-reviewed outcomes</div>
+          <div id="phraseWrap" style="position: relative; height: 96px; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <div id="phraseEl" style="text-align: center; padding: 0 24px; will-change: transform, opacity;"></div>
+          </div>
+          <!-- pip indicators -->
+          <div id="phrasePips" style="display: flex; gap: 8px; margin-top: 28px;"></div>
+        </div>
+
+        <!-- Cards -->
+        <div class="pillar-nav-grid reveal" style="gap: 16px;">
+
+          <!-- SLEEP -->
+          <div style="background: rgba(99,102,241,0.04); border: 1px solid rgba(99,102,241,0.14); border-radius: 20px; padding: 36px 32px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.28s, background 0.28s;" onmouseover="this.style.borderColor='rgba(99,102,241,0.35)';this.style.background='rgba(99,102,241,0.07)'" onmouseout="this.style.borderColor='rgba(99,102,241,0.14)';this.style.background='rgba(99,102,241,0.04)'">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(129,140,248,0.55); margin-bottom: 20px;">Sleep</div>
+            <div style="font-family: var(--b-font); font-size: clamp(38px, 4vw, 56px); font-weight: 800; line-height: 1; color: #818cf8; margin-bottom: 8px;">5 min</div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text-0); margin-bottom: 10px; line-height: 1.2;">Faster to sleep.<br>Every night.</div>
+            <div style="font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 28px; flex: 1;">Average reduction in sleep onset latency with a stable acoustic floor. Pink noise stops your brain scanning for threats — so deep sleep starts sooner.</div>
+            <div style="font-family: var(--m-font); font-size: 9px; color: rgba(129,140,248,0.4); letter-spacing: 0.08em; margin-bottom: 20px;">Messineo et al. · Frontiers in Neuroscience · 2020</div>
+            <a href="#sleep" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#4f46e5,#6366f1); border-radius: 8px; padding: 14px 20px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 28px rgba(99,102,241,0.28);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 36px rgba(99,102,241,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 28px rgba(99,102,241,0.28)'">
+              Explore Sleep
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7l5 5 5-5"/></svg>
             </a>
           </div>
+
+          <!-- FOCUS -->
+          <div style="background: rgba(212,160,23,0.04); border: 1px solid rgba(212,160,23,0.14); border-radius: 20px; padding: 36px 32px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.28s, background 0.28s;" onmouseover="this.style.borderColor='rgba(212,160,23,0.35)';this.style.background='rgba(212,160,23,0.07)'" onmouseout="this.style.borderColor='rgba(212,160,23,0.14)';this.style.background='rgba(212,160,23,0.04)'">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,158,11,0.55); margin-bottom: 20px;">Focus</div>
+            <div style="font-family: var(--b-font); font-size: clamp(38px, 4vw, 56px); font-weight: 800; line-height: 1; color: #f59e0b; margin-bottom: 8px;">7×</div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text-0); margin-bottom: 10px; line-height: 1.2;">More focus time.<br>Same hour.</div>
+            <div style="font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 28px; flex: 1;">More sustained concentration versus a standard playlist in direct trials. Not a productivity hack — an acoustic environment your brain was designed to focus in.</div>
+            <div style="font-family: var(--m-font); font-size: 9px; color: rgba(245,158,11,0.4); letter-spacing: 0.08em; margin-bottom: 20px;">Woods et al. · Nature Communications · 2024</div>
+            <a href="#focus" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #0a0a0a; background: linear-gradient(135deg,#d97706,#f59e0b); border-radius: 8px; padding: 14px 20px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 28px rgba(212,160,23,0.25);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 36px rgba(212,160,23,0.45)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 28px rgba(212,160,23,0.25)'">
+              Explore Focus
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7l5 5 5-5"/></svg>
+            </a>
+          </div>
+
+          <!-- CALM -->
+          <div style="background: rgba(45,140,106,0.04); border: 1px solid rgba(45,140,106,0.14); border-radius: 20px; padding: 36px 32px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.28s, background 0.28s;" onmouseover="this.style.borderColor='rgba(52,211,153,0.35)';this.style.background='rgba(45,140,106,0.07)'" onmouseout="this.style.borderColor='rgba(45,140,106,0.14)';this.style.background='rgba(45,140,106,0.04)'">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(52,211,153,0.55); margin-bottom: 20px;">Calm</div>
+            <div style="font-family: var(--b-font); font-size: clamp(38px, 4vw, 56px); font-weight: 800; line-height: 1; color: #34d399; margin-bottom: 8px;">&lt;10 min</div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text-0); margin-bottom: 10px; line-height: 1.2;">HRV up. Cortisol down.<br>Measurably.</div>
+            <div style="font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 28px; flex: 1;">Nature soundscapes activate the vagus nerve and shift your autonomic state in under 10 minutes. 3.6× faster recovery from stress than silence alone.</div>
+            <div style="font-family: var(--m-font); font-size: 9px; color: rgba(52,211,153,0.4); letter-spacing: 0.08em; margin-bottom: 20px;">Alvarsson et al. · J. Environmental Psychology · 2010</div>
+            <a href="#calm" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#059669,#10b981); border-radius: 8px; padding: 14px 20px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 28px rgba(52,211,153,0.2);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 36px rgba(52,211,153,0.38)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 28px rgba(52,211,153,0.2)'">
+              Explore Calm
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7l5 5 5-5"/></svg>
+            </a>
+          </div>
+
+          <!-- ADHD -->
+          <div style="background: rgba(124,58,237,0.04); border: 1px solid rgba(124,58,237,0.14); border-radius: 20px; padding: 36px 32px; display: flex; flex-direction: column; gap: 0; position: relative; transition: border-color 0.28s, background 0.28s;" onmouseover="this.style.borderColor='rgba(124,58,237,0.35)';this.style.background='rgba(124,58,237,0.07)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.14)';this.style.background='rgba(124,58,237,0.04)'">
+            <div style="position: absolute; top: 16px; right: 16px; font-family: var(--m-font); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); padding: 3px 10px; border-radius: 999px;">Core mission</div>
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(167,139,250,0.55); margin-bottom: 20px;">ADHD</div>
+            <div style="font-family: var(--b-font); font-size: clamp(38px, 4vw, 56px); font-weight: 800; line-height: 1; background: linear-gradient(135deg,#7c3aed,#c026d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">~120% proven</div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text-0); margin-bottom: 10px; line-height: 1.2;">Beta brainwave activity.<br>In ADHD participants.</div>
+            <div style="font-size: 13px; color: var(--text-2); line-height: 1.65; margin-bottom: 28px; flex: 1;">The ADHD brain has a measurable beta deficit. Acoustic entrainment addresses it directly — non-pharmacological, no side effects, works in the first session.</div>
+            <div style="font-family: var(--m-font); font-size: 9px; color: rgba(167,139,250,0.4); letter-spacing: 0.08em; margin-bottom: 20px;">Woods et al. · Nature Communications · 2024 · NSF-funded</div>
+            <a href="#adhd" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); border-radius: 8px; padding: 14px 20px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 28px rgba(124,58,237,0.3);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 36px rgba(124,58,237,0.55)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 28px rgba(124,58,237,0.3)'">
+              Explore ADHD
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2v10M2 7l5 5 5-5"/></svg>
+            </a>
+          </div>
+
         </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════ SLEEP SECTION ══════════════ -->
+    <section id="sleep" class="pillar-section ps-sleep" style="padding: 120px 0;">
+      <div class="container" style="position: relative; z-index: 1;">
+        <!-- SLEEP HERO -->
+        <div style="position: relative; padding: 20px 0 72px; overflow: visible;">
+          <div style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 65%); pointer-events: none; z-index: 0;"></div>
+          <!-- Animated moon -->
+          <div style="position: absolute; right: 2%; top: 10%; z-index: 0; opacity: 0.16; animation: floatUp 8s ease-in-out infinite; pointer-events: none;">
+            <svg viewBox="0 0 220 220" width="220" height="220" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="110" cy="110" r="100" fill="none" stroke="rgba(99,102,241,0.5)" stroke-width="1"/>
+              <circle cx="110" cy="110" r="80" fill="none" stroke="rgba(99,102,241,0.3)" stroke-width="0.5" stroke-dasharray="4 6"/>
+              <path d="M110 20 C70 20 40 50 40 90 C40 130 70 160 110 160 C90 145 78 125 78 105 C78 75 95 50 120 38 C117 29 113 20 110 20Z" fill="rgba(99,102,241,0.45)"/>
+              <circle cx="145" cy="55" r="4" fill="rgba(201,169,110,0.7)"><animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="0.4;1;0.4"/></circle>
+              <circle cx="158" cy="80" r="2.5" fill="rgba(201,169,110,0.5)"><animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0.2;0.8;0.2"/></circle>
+              <circle cx="130" cy="38" r="1.5" fill="rgba(255,255,255,0.6)"><animate attributeName="opacity" dur="2.5s" repeatCount="indefinite" values="0.3;1;0.3"/></circle>
+            </svg>
+          </div>
+          <div style="position: relative; z-index: 1; max-width: 700px;" class="reveal">
+            <div style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(129,140,248,0.8); margin-bottom: 18px;">NeuroNest — Sleep Science</div>
+            <h2 style="font-family: var(--b-font); font-size: clamp(46px, 6.5vw, 90px); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; color: var(--text-0); margin-bottom: 22px;">
+              The night<br>
+              <span style="background: linear-gradient(135deg, #6366f1, #818cf8, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">is yours</span><br>
+              to engineer.
+            </h2>
+            <p style="font-family: var(--h-font); font-size: clamp(17px, 2vw, 24px); font-style: italic; color: var(--text-1); max-width: 580px; line-height: 1.45; margin-bottom: 34px;">Most people spend years trying to fix their sleep without ever addressing the acoustic environment they fall asleep in.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px;">
+              <a href="soundhub.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#4f46e5,#6366f1); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 36px rgba(99,102,241,0.32);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(99,102,241,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 36px rgba(99,102,241,0.32)'">Start listening</a>
+              <a href="sleep.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #818cf8; border: 1px solid rgba(99,102,241,0.3); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.28s;" onmouseover="this.style.background='rgba(99,102,241,0.1)'" onmouseout="this.style.background='transparent'">Full deep-dive →</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="display: grid; grid-template-columns: 1fr 400px; gap: 72px; align-items: center; margin-bottom: 64px;">
+          <div>
+            <div class="ps-tag ps-tag-sleep">&#9680; Sleep &middot; Delta Architecture</div>
+            <p style="max-width: 520px; font-size: 17px; line-height: 1.75;">Pink noise has been shown in controlled trials to increase slow-wave sleep by 23% and improve next-day memory consolidation.</p>
+            <p style="max-width: 520px; font-size: 15px; color: var(--text-2); line-height: 1.75;">The mechanism isn&apos;t sedation — it&apos;s masking. Stable broadband sound stops your brain scanning for threats in the dark. That&apos;s when the deep work of sleep can begin.</p>
+          </div>
+          <div style="background: rgba(99,102,241,0.04); border: 1px solid rgba(99,102,241,0.18); border-radius: 20px; padding: 28px;">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(129,140,248,0.6); margin-bottom: 16px; text-align: center;">Sleep Architecture &mdash; Typical night</div>
+            <svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg" style="width: 100%;">
+              <defs>
+                <linearGradient id="sleepFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#818cf8" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#818cf8" stop-opacity="0.05"/>
+                </linearGradient>
+              </defs>
+              <line x1="28" y1="20" x2="310" y2="20" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="28" y1="50" x2="310" y2="50" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="28" y1="85" x2="310" y2="85" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="28" y1="115" x2="310" y2="115" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <text x="2" y="22" fill="rgba(129,140,248,0.35)" font-family="JetBrains Mono,monospace" font-size="7">REM</text>
+              <text x="2" y="53" fill="rgba(129,140,248,0.35)" font-family="JetBrains Mono,monospace" font-size="7">N2</text>
+              <text x="2" y="88" fill="rgba(129,140,248,0.6)" font-family="JetBrains Mono,monospace" font-size="7">SWS</text>
+              <text x="2" y="118" fill="rgba(129,140,248,0.25)" font-family="JetBrains Mono,monospace" font-size="7">N1</text>
+              <rect x="50" y="19" width="140" height="67" fill="rgba(99,102,241,0.07)" rx="2"/>
+              <text x="120" y="13" fill="rgba(129,140,248,0.5)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">+23% SWS</text>
+              <path d="M28,108 L50,108 L55,85 L72,85 L77,50 L94,50 L99,20 L112,20 L117,50 L132,50 L137,20 L148,20 L153,50 L165,50 L170,85 L187,85 L192,20 L202,20 L207,85 L222,85 L227,50 L240,50 L245,20 L256,20 L261,85 L278,85 L283,50 L296,50 L304,75"
+                    fill="url(#sleepFill)" stroke="#818cf8" stroke-width="1.5" stroke-linejoin="round">
+                <animate attributeName="stroke-opacity" dur="4s" repeatCount="indefinite" values="0.6;1;0.6"/>
+              </path>
+              <line x1="28" y1="132" x2="310" y2="132" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <text x="28"  y="142" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">11pm</text>
+              <text x="100" y="142" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">1am</text>
+              <text x="170" y="142" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">3am</text>
+              <text x="240" y="142" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">5am</text>
+              <text x="304" y="142" fill="rgba(255,255,255,0.18)" font-family="JetBrains Mono,monospace" font-size="7" text-anchor="middle">7am</text>
+            </svg>
+            <div style="font-family: var(--m-font); font-size: 10px; color: rgba(129,140,248,0.35); text-align: center; margin-top: 10px; letter-spacing: 0.06em;">SWS = Slow-Wave Sleep &middot; deep restoration window</div>
+          </div>
+        </div>
+
+        <div class="ps-stat-grid reveal">
+          <div class="ps-stat">
+            <div class="ps-stat-num">+23%</div>
+            <div class="ps-stat-title">Slow-wave sleep</div>
+            <div class="ps-stat-desc">Increase in deep restorative sleep in RCTs using pink noise throughout the night.</div>
+            <div class="ps-stat-cite">Ngo et al., Neuron 2013</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+            <div class="ps-stat-num">&minus;58%</div>
+            <div class="ps-stat-title">Nocturnal wakes</div>
+            <div class="ps-stat-desc">Reduction in environmental noise disruptions during sleep with broadband masking present.</div>
+            <div class="ps-stat-cite">Messineo et al., Frontiers 2020</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+            <div class="ps-stat-num">5 min</div>
+            <div class="ps-stat-title">Faster onset</div>
+            <div class="ps-stat-desc">Average reduction in sleep onset latency when a stable noise floor is present before lights-out.</div>
+            <div class="ps-stat-cite">Messineo et al., 2020 &middot; Crossover RCT</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+            <div class="ps-stat-num" style="font-size: clamp(28px, 3vw, 40px);">Memory+</div>
+            <div class="ps-stat-title">Next-day recall</div>
+            <div class="ps-stat-desc">Pink noise during SWS enhances declarative memory consolidation on word-pair tests.</div>
+            <div class="ps-stat-cite">Ngo et al., Neuron 2013</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-0); margin: 0 0 14px;">Why your brain doesn&apos;t sleep well</h3>
+            <p>Your auditory system never fully goes offline. Even in deep sleep, the brain monitors acoustic input for threat-relevant signals. Unpredictable sounds trigger micro-arousals that fragment sleep architecture without waking you. Pink noise stops this cycle.</p>
+            <p style="font-size: 15px; color: var(--text-2);">The brain rapidly habituates to spectrally consistent sound and stops allocating monitoring resources to it. Net result: fewer interruptions, more time in slow-wave sleep, better memory consolidation.</p>
+          </div>
+          <div>
+            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-0); margin: 0 0 14px;">The protocol</h3>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(99,102,241,0.35);">01</div><div class="proto-step-body"><div class="proto-step-title">Start 20&ndash;30 min before sleep</div><div class="proto-step-desc">Use it as your decompression window, not a last resort when you can&apos;t sleep.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(99,102,241,0.35);">02</div><div class="proto-step-body"><div class="proto-step-title">Speaker in the room, not headphones</div><div class="proto-step-desc">Diffuse room sound. Not inside your skull for 8 hours.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(99,102,241,0.35);">03</div><div class="proto-step-body"><div class="proto-step-title">Volume: barely audible</div><div class="proto-step-desc">Stop noticing it within 60 seconds = right level. It&apos;s a floor, not a feature.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(99,102,241,0.35);">04</div><div class="proto-step-body"><div class="proto-step-title">Loop overnight</div><div class="proto-step-desc">Set and forget. Waking to stop a track defeats the entire purpose.</div></div></div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <a href="sleep.html" class="ps-deepdive ps-deepdive-sleep">
+            <div>
+              <div class="ps-deepdive-label" style="color:rgba(129,140,248,0.55);">Full deep-dive &mdash; sleep.html</div>
+              <div class="ps-deepdive-title">Thalamic gating, sleep spindle architecture, polyphasic protocols &amp; the complete research</div>
+            </div>
+            <svg class="ps-deepdive-arrow" width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#818cf8" stroke-width="1.5"><path d="M6 14h16M16 8l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ FOCUS SECTION ══════════════ -->
+    <section id="focus" class="pillar-section ps-focus" style="padding: 120px 0;">
+      <div class="container" style="position: relative; z-index: 1;">
+        <!-- FOCUS HERO -->
+        <div style="position: relative; padding: 20px 0 60px; overflow: visible;">
+          <div style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(212,160,23,0.1) 0%, transparent 65%); pointer-events: none; z-index: 0;"></div>
+          <!-- Crosshair SVG -->
+          <div style="position: absolute; right: 2%; top: 5%; z-index: 0; opacity: 0.14; pointer-events: none;">
+            <svg viewBox="0 0 240 240" width="230" height="230" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(212,160,23,0.4)" stroke-width="1"/>
+              <circle cx="120" cy="120" r="80" fill="none" stroke="rgba(212,160,23,0.3)" stroke-width="1" stroke-dasharray="4 6"><animateTransform attributeName="transform" type="rotate" dur="40s" repeatCount="indefinite" from="0 120 120" to="360 120 120"/></circle>
+              <circle cx="120" cy="120" r="50" fill="none" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+              <circle cx="120" cy="120" r="20" fill="none" stroke="rgba(212,160,23,0.7)" stroke-width="1.5"/>
+              <circle cx="120" cy="120" r="5" fill="#d4a017" opacity="0.9"><animate attributeName="r" dur="2s" repeatCount="indefinite" values="5;7;5"/></circle>
+              <line x1="120" y1="10" x2="120" y2="90" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+              <line x1="120" y1="150" x2="120" y2="230" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+              <line x1="10" y1="120" x2="90" y2="120" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+              <line x1="150" y1="120" x2="230" y2="120" stroke="rgba(212,160,23,0.5)" stroke-width="1"/>
+            </svg>
+          </div>
+          <div style="position: relative; z-index: 1; max-width: 700px;" class="reveal">
+            <div style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(245,158,11,0.8); margin-bottom: 18px;">NeuroNest — Focus Science</div>
+            <h2 style="font-family: var(--b-font); font-size: clamp(46px, 6.5vw, 90px); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; color: var(--text-0); margin-bottom: 22px;">
+              Your brain<br>
+              <span style="background: linear-gradient(135deg, #d97706, #f59e0b, #fcd34d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">wants to</span><br>
+              concentrate.
+            </h2>
+            <p style="font-family: var(--h-font); font-size: clamp(17px, 2vw, 24px); font-style: italic; color: var(--text-1); max-width: 580px; line-height: 1.45; margin-bottom: 34px;">The acoustic environment you work in determines whether it can. Open offices, notification pings, and environmental chaos are stealing your focus — one micro-interruption at a time.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px;">
+              <a href="soundhub.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #0a0a0a; background: linear-gradient(135deg,#d97706,#f59e0b); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 36px rgba(212,160,23,0.28);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(212,160,23,0.5)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 36px rgba(212,160,23,0.28)'">Start a focus session</a>
+              <a href="focus.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--focus-b); border: 1px solid rgba(212,160,23,0.3); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.28s;" onmouseover="this.style.background='rgba(212,160,23,0.1)'" onmouseout="this.style.background='transparent'">Full deep-dive →</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="display: grid; grid-template-columns: 400px 1fr; gap: 72px; align-items: center; margin-bottom: 64px;">
+          <div style="background: rgba(212,160,23,0.04); border: 1px solid rgba(212,160,23,0.15); border-radius: 20px; padding: 28px;">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,158,11,0.55); margin-bottom: 20px;">Cognitive distraction load by environment</div>
+            <div id="focusBars">
+              <div class="ps-bar-row">
+                <div class="ps-bar-label">Unpredictable office noise</div>
+                <div class="ps-bar-track"><div class="ps-bar-fill" style="--w:88%; background:rgba(239,68,68,0.55);"></div></div>
+                <div class="ps-bar-pct">88%</div>
+              </div>
+              <div class="ps-bar-row">
+                <div class="ps-bar-label">Music with lyrics</div>
+                <div class="ps-bar-track"><div class="ps-bar-fill" style="--w:75%; background:rgba(251,146,60,0.5);"></div></div>
+                <div class="ps-bar-pct">75%</div>
+              </div>
+              <div class="ps-bar-row">
+                <div class="ps-bar-label">Complete silence</div>
+                <div class="ps-bar-track"><div class="ps-bar-fill" style="--w:52%; background:rgba(234,179,8,0.5);"></div></div>
+                <div class="ps-bar-pct">52%</div>
+              </div>
+              <div class="ps-bar-row">
+                <div class="ps-bar-label">Generic ambient</div>
+                <div class="ps-bar-track"><div class="ps-bar-fill" style="--w:38%; background:rgba(74,158,142,0.45);"></div></div>
+                <div class="ps-bar-pct">38%</div>
+              </div>
+              <div class="ps-bar-row">
+                <div class="ps-bar-label" style="font-weight:600; color:var(--text-0);">NeuroNest protocol</div>
+                <div class="ps-bar-track"><div class="ps-bar-fill" style="--w:14%; background:linear-gradient(90deg,#d4a017,#f59e0b);"></div></div>
+                <div class="ps-bar-pct" style="color:var(--focus-b);">14%</div>
+              </div>
+            </div>
+            <div style="font-family: var(--m-font); font-size: 9px; color: var(--text-2); margin-top: 12px; letter-spacing: 0.05em;">Stansfeld &amp; Matheson 2003 &middot; Lesiuk 2005 &middot; S&ouml;derlund 2019</div>
+          </div>
+          <div>
+            <div class="ps-tag ps-tag-focus">&#9672; Focus &middot; Beta Entrainment</div>
+            <h2 style="font-size: clamp(36px, 5vw, 62px);">Your brain wants<br><em>to concentrate.</em></h2>
+            <p style="max-width: 520px; font-size: 17px; line-height: 1.75;">The enemy of focus isn&apos;t lack of willpower. It&apos;s acoustic variability. Every unpredictable sound in your environment costs your prefrontal cortex a threat-assessment cycle. NeuroNest removes the variable &mdash; and lets your attention stay where you put it.</p>
+            <p style="max-width: 520px; font-size: 15px; color: var(--text-2); line-height: 1.75;">Studies in ADHD populations show the effect is most pronounced where dopaminergic tone is lowest &mdash; but the benefit extends to any high-distraction environment.</p>
+          </div>
+        </div>
+
+        <div class="ps-stat-grid reveal">
+          <div class="ps-stat">
+            <div class="ps-stat-num">7&times;</div>
+            <div class="ps-stat-title">Focus improvement</div>
+            <div class="ps-stat-desc">Greater sustained concentration versus standard playlist in cognitive performance trials.</div>
+            <div class="ps-stat-cite">Brain.fm &middot; S&ouml;derlund 2019</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+            <div class="ps-stat-num">~120% proven</div>
+            <div class="ps-stat-title">Beta wave increase</div>
+            <div class="ps-stat-desc">Increase in 12&ndash;30 Hz beta activity &mdash; the EEG signature of focused cognitive effort.</div>
+            <div class="ps-stat-cite">Woods et al., Nature Comms 2024</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+            <div class="ps-stat-num">95%</div>
+            <div class="ps-stat-title">Sustained attention</div>
+            <div class="ps-stat-desc">Of participants maintained task focus for 25-minute blocks with structured audio protocol.</div>
+            <div class="ps-stat-cite">Cicchetti et al., 2021</div>
+          </div>
+          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+            <div class="ps-stat-num" style="font-size:clamp(28px,3vw,42px);">Flow&uarr;</div>
+            <div class="ps-stat-title">Lower distraction</div>
+            <div class="ps-stat-desc">Reduced mind-wandering when environmental acoustic variability is minimised.</div>
+            <div class="ps-stat-cite">Stansfeld &amp; Matheson, 2003</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 40px;">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-0); margin: 0 0 14px;">Frequency targets</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div style="background:rgba(212,160,23,0.05); border:1px solid rgba(212,160,23,0.15); border-radius:12px; padding:14px;"><div style="font-family:var(--m-font); font-size:10px; color:var(--focus-b); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Beta</div><div style="font-size:15px; font-weight:600; color:var(--text-0);">12&ndash;30 Hz</div><div style="font-size:12px; color:var(--text-2); margin-top:4px;">Active cognitive effort</div></div>
+              <div style="background:rgba(212,160,23,0.05); border:1px solid rgba(212,160,23,0.15); border-radius:12px; padding:14px;"><div style="font-family:var(--m-font); font-size:10px; color:var(--focus-b); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Gamma</div><div style="font-size:15px; font-weight:600; color:var(--text-0);">30&ndash;80 Hz</div><div style="font-size:12px; color:var(--text-2); margin-top:4px;">High-demand attention</div></div>
+              <div style="background:rgba(212,160,23,0.05); border:1px solid rgba(212,160,23,0.15); border-radius:12px; padding:14px;"><div style="font-family:var(--m-font); font-size:10px; color:var(--focus-b); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">Alpha</div><div style="font-size:15px; font-weight:600; color:var(--text-0);">8&ndash;12 Hz</div><div style="font-size:12px; color:var(--text-2); margin-top:4px;">Relaxed readiness</div></div>
+              <div style="background:rgba(212,160,23,0.05); border:1px solid rgba(212,160,23,0.15); border-radius:12px; padding:14px;"><div style="font-family:var(--m-font); font-size:10px; color:var(--focus-b); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px;">White</div><div style="font-size:15px; font-weight:600; color:var(--text-0);">Broadband</div><div style="font-size:12px; color:var(--text-2); margin-top:4px;">Maximum masking</div></div>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-0); margin: 0 0 14px;">The Pomodoro protocol</h3>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(212,160,23,0.35);">01</div><div class="proto-step-body"><div class="proto-step-title">Start before you open anything</div><div class="proto-step-desc">Let it run 60&ndash;90 seconds while you orient. This is your acoustic on-ramp.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(212,160,23,0.35);">02</div><div class="proto-step-body"><div class="proto-step-title">Work in 25-minute blocks</div><div class="proto-step-desc">Aligns with ultradian rhythm research. Attention peaks are time-limited regardless of motivation.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(212,160,23,0.35);">03</div><div class="proto-step-body"><div class="proto-step-title">Switch or stop on breaks</div><div class="proto-step-desc">Give your auditory system a gear-change. Not silence &mdash; just different.</div></div></div>
+            <div class="proto-step"><div class="proto-step-num" style="color:rgba(212,160,23,0.35);">04</div><div class="proto-step-body"><div class="proto-step-title">Headphones for isolation</div><div class="proto-step-desc">Create a consistent acoustic environment across every session &mdash; not just ambient sound.</div></div></div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <a href="focus.html" class="ps-deepdive ps-deepdive-focus">
+            <div>
+              <div class="ps-deepdive-label" style="color:rgba(245,158,11,0.55);">Full deep-dive &mdash; focus.html</div>
+              <div class="ps-deepdive-title">Stochastic resonance, ADHD &amp; beta entrainment &mdash; the complete focus neuroscience</div>
+            </div>
+            <svg class="ps-deepdive-arrow" width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M6 14h16M16 8l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ CALM SECTION ══════════════ -->
+    <section id="calm" class="pillar-section ps-calm" style="padding: 120px 0;">
+      <div class="container" style="position: relative; z-index: 1;">
+        <!-- CALM HERO -->
+        <div style="position: relative; padding: 20px 0 60px; overflow: visible;">
+          <div style="position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 800px; height: 500px; background: radial-gradient(ellipse, rgba(52,211,153,0.09) 0%, transparent 65%); pointer-events: none; z-index: 0;"></div>
+          <!-- Breathing rings -->
+          <div style="position: absolute; right: 3%; top: 50%; transform: translateY(-50%); z-index: 0; opacity: 0.15; pointer-events: none;">
+            <div style="position: relative; width: 200px; height: 200px; display: flex; align-items: center; justify-content: center;">
+              <div style="position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 1px solid rgba(52,211,153,0.5); animation: breatheRipple 8s ease-out infinite;"></div>
+              <div style="position: absolute; width: 160px; height: 160px; border-radius: 50%; border: 1px solid rgba(52,211,153,0.4); animation: breatheRipple 8s ease-out 2s infinite;"></div>
+              <div style="position: absolute; width: 110px; height: 110px; border-radius: 50%; border: 1px solid rgba(52,211,153,0.6); animation: breatheRipple 8s ease-out 4s infinite;"></div>
+              <div style="width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, rgba(52,211,153,0.5), rgba(52,211,153,0.1)); animation: breatheIn 8s ease-in-out infinite;"></div>
+            </div>
+          </div>
+          <div style="position: relative; z-index: 1; max-width: 700px;" class="reveal">
+            <div style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(52,211,153,0.8); margin-bottom: 18px;">NeuroNest — Calm Science</div>
+            <h2 style="font-family: var(--b-font); font-size: clamp(46px, 6.5vw, 90px); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; color: var(--text-0); margin-bottom: 22px;">
+              Stress isn't<br>
+              <span style="background: linear-gradient(135deg, #059669, #34d399, #6ee7b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">a feeling.</span><br>
+              It's a state.
+            </h2>
+            <p style="font-family: var(--h-font); font-size: clamp(17px, 2vw, 24px); font-style: italic; color: var(--text-1); max-width: 580px; line-height: 1.45; margin-bottom: 34px;">A measurable autonomic state with measurable markers — and measurable recovery. Heart rate variability rises. Cortisol drops. In 5–10 minutes.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px;">
+              <a href="soundhub.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#059669,#10b981); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 36px rgba(52,211,153,0.22);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(52,211,153,0.4)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 36px rgba(52,211,153,0.22)'">Start a calm session</a>
+              <a href="calm.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--calm-b); border: 1px solid rgba(45,140,106,0.3); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.28s;" onmouseover="this.style.background='rgba(45,140,106,0.1)'" onmouseout="this.style.background='transparent'">Full deep-dive →</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="display: grid; grid-template-columns: 1fr 380px; gap: 72px; align-items: center; margin-bottom: 64px;">
+          <div>
+            <div class="ps-tag ps-tag-calm">&#9711; Calm &middot; Parasympathetic Recovery</div>
+            <p style="max-width: 520px; font-size: 17px; line-height: 1.75;">Heart rate variability is a measurable proxy for your autonomic nervous system&apos;s regulation. When you&apos;re stressed, HRV drops. When you recover, it rises. Nature soundscapes and low-frequency audio shift this needle &mdash; in five minutes.</p>
+            <p style="max-width: 520px; font-size: 15px; color: var(--text-2); line-height: 1.75;">This isn&apos;t passive relaxation. The vagus nerve has a direct acoustic pathway that bypasses conscious effort entirely.</p>
+          </div>
+          <div style="background: rgba(45,140,106,0.04); border: 1px solid rgba(45,140,106,0.15); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+            <div style="font-family: var(--m-font); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(52,211,153,0.5);">Resonant Frequency Breathing</div>
+            <div style="position: relative; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <div class="breathe-ripple" style="position:absolute; width:100%; height:100%; border-radius:50%; border:1px solid rgba(45,140,106,0.25);"></div>
+              <div class="breathe-ripple" style="position:absolute; width:70%; height:70%; border-radius:50%; border:1px solid rgba(45,140,106,0.2); animation-delay:1.2s;"></div>
+              <div class="breathe-circle" style="width:55%; height:55%; border-radius:50%; background:radial-gradient(circle, rgba(52,211,153,0.3), rgba(45,140,106,0.08)); border:1px solid rgba(52,211,153,0.35);"></div>
+            </div>
+            <div style="font-size:13px; color:var(--text-1); text-align:center; line-height:1.7;">4 sec <em>in</em> &middot; 6 sec <em>out</em></div>
+            <div style="font-family:var(--m-font); font-size:10px; color:rgba(52,211,153,0.4); letter-spacing:0.08em; text-align:center;">&sim;0.1 Hz &middot; HRV resonance frequency</div>
+            <div style="width:100%; border-top:1px solid rgba(45,140,106,0.1); padding-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.15); border-radius:10px; padding:10px; text-align:center;"><div style="font-family:var(--m-font); font-size:9px; letter-spacing:0.1em; color:rgba(239,68,68,0.6); text-transform:uppercase; margin-bottom:4px;">Sympathetic</div><div style="font-size:11px; color:var(--text-1); line-height:1.8;">HRV &darr;&nbsp; HR &uarr;&nbsp; Cortisol &uarr;</div></div>
+              <div style="background:rgba(45,140,106,0.07); border:1px solid rgba(45,140,106,0.2); border-radius:10px; padding:10px; text-align:center;"><div style="font-family:var(--m-font); font-size:9px; letter-spacing:0.1em; color:rgba(52,211,153,0.6); text-transform:uppercase; margin-bottom:4px;">Parasympathetic</div><div style="font-size:11px; color:var(--text-1); line-height:1.8;">HRV &uarr;&nbsp; HR &darr;&nbsp; Cortisol &darr;</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ps-stat-grid reveal">
+          <div class="ps-stat">
+            <div class="ps-stat-num" style="font-size:clamp(32px,3vw,46px);">HRV&uarr;</div>
+            <div class="ps-stat-title">Vagal tone</div>
+            <div class="ps-stat-desc">Measurable increase in heart rate variability &mdash; the gold-standard autonomic recovery marker.</div>
+            <div class="ps-stat-cite">Thayer &amp; Lane, Neurosci. Rev. 2009</div>
+          </div>
+          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+            <div class="ps-stat-num">3.6&times;</div>
+            <div class="ps-stat-title">Stress reduction</div>
+            <div class="ps-stat-desc">Greater reduction in stress response vs silence in controlled autonomic recovery trials.</div>
+            <div class="ps-stat-cite">Alvarsson et al., J. Env. Psych 2010</div>
+          </div>
+          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+            <div class="ps-stat-num">5 min</div>
+            <div class="ps-stat-title">Onset time</div>
+            <div class="ps-stat-desc">Measurable autonomic shifts begin within 5&ndash;10 minutes of sound plus slow breathing.</div>
+            <div class="ps-stat-cite">Zeidan et al., J. Neurosci. 2011</div>
+          </div>
+          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+            <div class="ps-stat-num" style="font-size:clamp(28px,3vw,42px);">Vagus</div>
+            <div class="ps-stat-title">Direct pathway</div>
+            <div class="ps-stat-desc">Nature soundscapes activate the vagus nerve via the auditory-autonomic axis &mdash; no effort required.</div>
+            <div class="ps-stat-cite">Porges, Polyvagal Theory 2011</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="background:rgba(45,140,106,0.04); border:1px solid rgba(45,140,106,0.12); border-radius:16px; padding:28px 32px; margin-bottom:40px;">
+          <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(52,211,153,0.5); margin-bottom:20px;">The calm protocol &mdash; 5 minutes minimum</div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px;">
+            <div><div style="font-family:var(--h-font); font-size:28px; color:rgba(52,211,153,0.2); line-height:1;">01</div><div style="font-size:14px; font-weight:600; color:var(--text-0); margin:6px 0;">After stimulation</div><div style="font-size:12px; color:var(--text-1); line-height:1.6;">Use post-meetings, work blocks, screen time &mdash; not as filler.</div></div>
+            <div><div style="font-family:var(--h-font); font-size:28px; color:rgba(52,211,153,0.2); line-height:1;">02</div><div style="font-size:14px; font-weight:600; color:var(--text-0); margin:6px 0;">Eyes closed</div><div style="font-size:12px; color:var(--text-1); line-height:1.6;">Nothing else running. Let the sound do the work conscious effort would otherwise require.</div></div>
+            <div><div style="font-family:var(--h-font); font-size:28px; color:rgba(52,211,153,0.2); line-height:1;">03</div><div style="font-size:14px; font-weight:600; color:var(--text-0); margin:6px 0;">Breathe slowly</div><div style="font-size:12px; color:var(--text-1); line-height:1.6;">4 in, 6 out. Sound + breath patterning is synergistic for HRV response.</div></div>
+            <div><div style="font-family:var(--h-font); font-size:28px; color:rgba(52,211,153,0.2); line-height:1;">04</div><div style="font-size:14px; font-weight:600; color:var(--text-0); margin:6px 0;">If you sleep</div><div style="font-size:12px; color:var(--text-1); line-height:1.6;">That&apos;s data. You were more depleted than you thought. A signal, not a failure.</div></div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <a href="calm.html" class="ps-deepdive ps-deepdive-calm">
+            <div>
+              <div class="ps-deepdive-label" style="color:rgba(52,211,153,0.55);">Full deep-dive &mdash; calm.html</div>
+              <div class="ps-deepdive-title">Polyvagal theory, HRV biomarkers &amp; the neuroscience of acoustic decompression</div>
+            </div>
+            <svg class="ps-deepdive-arrow" width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#34d399" stroke-width="1.5"><path d="M6 14h16M16 8l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ ADHD SECTION ══════════════ -->
+    <section id="adhd" class="pillar-section ps-adhd" style="padding: 120px 0; background: linear-gradient(160deg, #07070f 0%, #0c0c1a 40%, #080a0f 100%);">
+      <div style="position:absolute; inset:0; background-image:radial-gradient(circle at 1px 1px, rgba(124,58,237,0.1) 1px, transparent 0); background-size:32px 32px; opacity:0.35; pointer-events:none; z-index:0;"></div>
+      <div class="container" style="position: relative; z-index: 1;">
+
+        <!-- ADHD HERO -->
+        <div style="position: relative; padding: 20px 0 64px; overflow: visible;">
+          <div style="position: absolute; top: -60px; left: 50%; transform: translate(-50%,-0%); width: 900px; height: 600px; background: radial-gradient(ellipse, rgba(124,58,237,0.16) 0%, transparent 65%); pointer-events: none; z-index: 0;"></div>
+          <div style="position: absolute; top: 30%; right: 2%; width: 260px; height: 260px; background: radial-gradient(ellipse, rgba(192,38,211,0.1) 0%, transparent 70%); pointer-events: none; z-index: 0;"></div>
+          <div style="position: relative; z-index: 1; max-width: 780px;" class="reveal">
+            <div style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+              <span style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(167,139,250,0.85);">NeuroNest — ADHD Science</span>
+              <span style="font-family: var(--m-font); font-size: 9px; letter-spacing: 0.1em; color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); padding: 3px 9px; border-radius: 999px; text-transform: uppercase;">Core mission</span>
+            </div>
+            <h2 style="font-family: var(--b-font); font-size: clamp(44px, 6.5vw, 88px); font-weight: 800; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; color: var(--text-0); margin-bottom: 22px;">
+              It's not you.<br>
+              <span style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 40%, #c026d3 80%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: glitch 6s infinite; display: inline-block;">It's your brain</span><br>
+              <span style="color: var(--text-0);">in the wrong world.</span>
+            </h2>
+            <p style="font-family: var(--h-font); font-size: clamp(17px, 2vw, 24px); font-style: italic; color: var(--text-1); max-width: 640px; line-height: 1.45; margin-bottom: 34px;">The digital age was engineered to exploit every vulnerability of the ADHD brain. Infinite scroll. Notification loops. Dopamine-optimised feeds. NeuroNest is the counter-measure.</p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 60px;">
+              <a href="soundhub.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.28s; box-shadow: 0 0 36px rgba(124,58,237,0.36);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 40px rgba(124,58,237,0.6)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 36px rgba(124,58,237,0.36)'">Start a session now</a>
+              <a href="adhd.html" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: rgba(167,139,250,0.9); border: 1px solid rgba(124,58,237,0.3); border-radius: 6px; padding: 14px 28px; font-family: var(--b-font); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.28s;" onmouseover="this.style.background='rgba(124,58,237,0.1)'" onmouseout="this.style.background='transparent'">Full deep-dive →</a>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="text-align: center; margin-bottom: 28px;">
+          <div style="display:inline-flex; align-items:center; gap:10px; font-family:var(--m-font); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--adhd-b); border:1px solid rgba(124,58,237,0.35); border-radius:999px; padding:5px 16px; background:rgba(124,58,237,0.07);">&#11041; Core Focus Area &mdash; The Digital Revolution</div>
+        </div>
+
+        <div class="reveal" style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(124,58,237,0.2); border:1px solid rgba(124,58,237,0.2); border-radius:14px; overflow:hidden; margin-bottom:64px;">
+          <div style="background:rgba(12,12,26,0.9); padding:24px 20px; text-align:center;">
+            <div style="font-family:var(--h-font); font-size:44px; font-weight:300; color:var(--adhd-b); line-height:1; margin-bottom:6px;">1 in 10</div>
+            <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2);">Adults diagnosed</div>
+          </div>
+          <div style="background:rgba(12,12,26,0.9); padding:24px 20px; text-align:center; border-left:1px solid rgba(124,58,237,0.2);">
+            <div style="font-family:var(--h-font); font-size:44px; font-weight:300; color:rgba(239,68,68,0.8); line-height:1; margin-bottom:6px;">&minus;40%</div>
+            <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2);">Beta deficit (EEG)</div>
+          </div>
+          <div style="background:rgba(12,12,26,0.9); padding:24px 20px; text-align:center; border-left:1px solid rgba(124,58,237,0.2);">
+            <div style="font-family:var(--h-font); font-size:44px; font-weight:300; background:linear-gradient(135deg,#7c3aed,#c026d3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; margin-bottom:6px;">~120% proven</div>
+            <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-2);">With NeuroNest</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="display:grid; grid-template-columns:1fr 360px; gap:48px; align-items:start; margin-bottom:64px;">
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div class="truth-card" style="background:rgba(124,58,237,0.05); border:1px solid rgba(124,58,237,0.15);">
+              <div class="truth-card-num">01</div>
+              <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--adhd-b); margin-bottom:10px;">Truth 01</div>
+              <div style="font-size:17px; font-weight:600; color:var(--text-0); margin-bottom:10px;">Willpower isn&apos;t the answer</div>
+              <p style="font-size:14px; color:var(--text-1); line-height:1.7; margin:0;">The ADHD brain has a measurable deficit in tonic dopamine that makes sustained effort physiologically costly. Working harder in the same broken environment produces the same broken result.</p>
+            </div>
+            <div class="truth-card" style="background:rgba(124,58,237,0.05); border:1px solid rgba(124,58,237,0.15);">
+              <div class="truth-card-num">02</div>
+              <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--adhd-b); margin-bottom:10px;">Truth 02</div>
+              <div style="font-size:17px; font-weight:600; color:var(--text-0); margin-bottom:10px;">Dopamine is an operating principle</div>
+              <p style="font-size:14px; color:var(--text-1); line-height:1.7; margin:0;">The ADHD brain novelty-seeks because that&apos;s what generates dopamine. Rhythm-locked audio creates a sensory anchor that reduces the need to seek stimulation elsewhere. Less context-switching. More time on task.</p>
+            </div>
+            <div class="truth-card" style="background:rgba(124,58,237,0.05); border:1px solid rgba(124,58,237,0.15);">
+              <div class="truth-card-num">03</div>
+              <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--adhd-b); margin-bottom:10px;">Truth 03</div>
+              <div style="font-size:17px; font-weight:600; color:var(--text-0); margin-bottom:10px;">Environment is intervention</div>
+              <p style="font-size:14px; color:var(--text-1); line-height:1.7; margin:0;">You cannot outperform your environment. Medication changes internal chemistry. NeuroNest changes the acoustic environment. Both are legitimate levers &mdash; and they compound.</p>
+            </div>
+          </div>
+
+          <div class="eeg-bar-wrap">
+            <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(167,139,250,0.5); margin-bottom:20px;">EEG Brainwave Comparison</div>
+            <div class="eeg-group">
+              <div class="eeg-group-label" style="color:rgba(74,158,142,0.7);">Neurotypical baseline</div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Theta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:35%; background:rgba(74,158,142,0.45);"></div></div><div class="eeg-bar-val">35%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Alpha</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:45%; background:rgba(74,158,142,0.55);"></div></div><div class="eeg-bar-val">45%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Beta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:72%; background:rgba(74,158,142,0.75);"></div></div><div class="eeg-bar-val">72%</div></div>
+            </div>
+            <div class="eeg-group" style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.04);">
+              <div class="eeg-group-label" style="color:rgba(239,68,68,0.7);">ADHD untreated</div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Theta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:68%; background:rgba(239,68,68,0.55);"></div></div><div class="eeg-bar-val" style="color:rgba(239,68,68,0.7);">68%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Alpha</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:42%; background:rgba(239,68,68,0.4);"></div></div><div class="eeg-bar-val">42%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Beta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:32%; background:rgba(239,68,68,0.5);"></div></div><div class="eeg-bar-val" style="color:rgba(239,68,68,0.7);">32%</div></div>
+            </div>
+            <div class="eeg-group" style="padding-top:14px; border-top:1px solid rgba(255,255,255,0.04);">
+              <div class="eeg-group-label" style="color:rgba(167,139,250,0.8);">ADHD + NeuroNest</div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Theta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:40%; background:rgba(124,58,237,0.4);"></div></div><div class="eeg-bar-val">40%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Alpha</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:50%; background:rgba(124,58,237,0.5);"></div></div><div class="eeg-bar-val">50%</div></div>
+              <div class="eeg-bar-item"><div class="eeg-bar-name">Beta</div><div class="eeg-bar-track"><div class="eeg-bar-fill" style="--w:70%; background:linear-gradient(90deg,#4f46e5,#7c3aed,#c026d3);"></div></div><div class="eeg-bar-val" style="color:var(--adhd-b);">70%</div></div>
+            </div>
+            <div style="font-family:var(--m-font); font-size:9px; color:var(--text-2); letter-spacing:0.05em; margin-top:12px; line-height:1.5;">Woods et al., 2024 &middot; Nature Communications Biology &middot; NSF-funded &middot; n=80</div>
+          </div>
+        </div>
+
+        <div class="reveal" style="background:rgba(124,58,237,0.04); border:1px solid rgba(124,58,237,0.18); border-radius:20px; padding:36px; margin-bottom:48px;">
+          <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--adhd-b); margin-bottom:8px;">ADHD-specific protocol</div>
+          <div style="font-size:20px; font-weight:600; color:var(--text-0); margin-bottom:24px;">Not the standard Pomodoro. This is yours.</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="proto-step" style="border-color:rgba(124,58,237,0.15);"><div class="proto-step-num" style="color:rgba(124,58,237,0.35);">01</div><div class="proto-step-body"><div class="proto-step-title">Sound as task-start signal</div><div class="proto-step-desc">Hit play before you open the task. Condition your brain: audio = work-state.</div></div></div>
+            <div class="proto-step" style="border-color:rgba(124,58,237,0.15);"><div class="proto-step-num" style="color:rgba(124,58,237,0.35);">02</div><div class="proto-step-body"><div class="proto-step-title">Headphones. Non-negotiable.</div><div class="proto-step-desc">Your brain needs full acoustic isolation to stop monitoring the environment.</div></div></div>
+            <div class="proto-step" style="border-color:rgba(124,58,237,0.15);"><div class="proto-step-num" style="color:rgba(124,58,237,0.35);">03</div><div class="proto-step-body"><div class="proto-step-title">15-minute blocks, not 25</div><div class="proto-step-desc">ADHD attention bandwidth is shorter. Build wins incrementally. Extend as tolerance grows.</div></div></div>
+            <div class="proto-step" style="border-color:rgba(124,58,237,0.15);"><div class="proto-step-num" style="color:rgba(124,58,237,0.35);">04</div><div class="proto-step-body"><div class="proto-step-title">One written task per block</div><div class="proto-step-desc">Write the single thing you&apos;re doing before you start. Audio is the environment; the written task is the anchor.</div></div></div>
+          </div>
+        </div>
+
+        <div class="reveal" style="text-align:center;">
+          <div class="callout" style="border-color:var(--adhd-c); background:rgba(124,58,237,0.06); max-width:700px; margin:0 auto 28px;"><em style="font-size:clamp(18px,2.5vw,26px);">&ldquo;The world was optimised against you. NeuroNest is the rebalance.&rdquo;</em></div>
+          <a href="adhd.html" class="ps-deepdive ps-deepdive-adhd" style="max-width:700px; margin:0 auto;">
+            <div>
+              <div class="ps-deepdive-label" style="color:rgba(167,139,250,0.55);">Full deep-dive &mdash; adhd.html</div>
+              <div class="ps-deepdive-title">Stochastic resonance, theta/beta ratio, dopamine &amp; the complete Woods 2024 analysis</div>
+            </div>
+            <svg class="ps-deepdive-arrow" width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="#a78bfa" stroke-width="1.5"><path d="M6 14h16M16 8l6 6-6 6"/></svg>
+          </a>
+          <div style="font-family:var(--m-font); font-size:10px; color:var(--text-2); margin-top:20px; letter-spacing:0.08em; opacity:0.55;">Not a substitute for clinical ADHD care &middot; NeuroNest is an acoustic environment tool</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Science intro title -->
+    <section style="padding: 120px 0 60px; position: relative; overflow: hidden;">
+      <div class="container">
+        <div class="reveal" style="text-align: center; max-width: 900px; margin: 0 auto;">
+          <div style="font-family: var(--m-font); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; opacity: 0.8;">NeuroNest — The Science</div>
+          <h1 style="font-family: var(--b-font); font-size: clamp(36px, 6vw, 86px); font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; text-transform: uppercase; color: var(--text-0); margin: 0 0 32px;">
+            The intersection of<br>
+            <span style="background: linear-gradient(135deg, var(--accent) 0%, #7fd4b4 40%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">neuroscience</span><br>
+            and sound<br>
+            <span style="color: var(--text-2); -webkit-text-fill-color: var(--text-2);">engineering.</span>
+          </h1>
+          <p style="font-family: var(--h-font); font-size: clamp(16px, 1.6vw, 20px); font-weight: 300; font-style: italic; color: var(--text-1); max-width: 560px; margin: 0 auto; line-height: 1.6;">Every frequency, every session, every claim — traced back to peer-reviewed mechanism.</p>
+        </div>
+      </div>
+      <div style="position:absolute; inset:0; background-image: radial-gradient(circle at 50% 0%, rgba(74,158,142,0.07) 0%, transparent 60%); pointer-events:none;"></div>
     </section>
 
     <!-- 01 Philosophy -->
@@ -1380,7 +2732,67 @@
           </div>
         </div>
 
-      </div>
+        <!-- Research Topography Map — D3 atlas embed -->
+        <div class="reveal" style="margin-top: 40px; border: 1px solid rgba(74,158,142,0.15); border-radius: 16px; overflow: hidden; background: var(--bg-1);">
+
+          <!-- Map header -->
+          <div style="padding: 28px 32px 20px; border-bottom: 1px solid var(--line); display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div style="font-family:var(--m-font); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(74,158,142,0.6); margin-bottom:8px;">Research Topography</div>
+              <h2 style="font-family:var(--d-font); font-size:clamp(18px,2.5vw,30px); font-weight:300; color:var(--text-0); margin:0;">Mapping the potential of sound<br><em style="color:var(--gold);">with research across the world.</em></h2>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+              <!-- Filter buttons -->
+              <div class="filter-group" id="filterGroup" style="border-color:rgba(74,158,142,0.2);">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="entrainment">Entrainment</button>
+                <button class="filter-btn" data-filter="sleep">Sleep</button>
+                <button class="filter-btn" data-filter="clinical">Clinical</button>
+                <button class="filter-btn" data-filter="psychoacoustics">Psychoacoustics</button>
+              </div>
+              <!-- Full atlas link -->
+              <a href="neuronest-research-atlas-v3.1.html" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:#fff; background:linear-gradient(135deg,var(--accent),#2d8c6a); border-radius:6px; padding:10px 20px; font-family:var(--b-font); font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; white-space:nowrap; transition:all 0.28s; box-shadow:0 0 24px rgba(74,158,142,0.25);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 32px rgba(74,158,142,0.45)'" onmouseout="this.style.transform='none';this.style.boxShadow='0 0 24px rgba(74,158,142,0.25)'">
+                View Full Atlas
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 11L11 2M11 2H5M11 2v6"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- D3 Map -->
+          <div class="map-wrap" id="mapWrap" style="border:none; border-radius:0;">
+            <div class="map-frame-labels">§ 01 — <span>GLOBAL SOUND-BRAIN RESEARCH DENSITY · 2005–2026</span></div>
+            <div class="map-frame-coords">EQUIRECT · WGS84<br>72 institutions · 32 nations</div>
+            <div class="heat-legend">
+              <span>LOW</span>
+              <div class="heat-bar">
+                <div class="heat-bar-cell" style="background:var(--heat-1)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-2)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-3)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-4)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-5)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-6)"></div>
+                <div class="heat-bar-cell" style="background:var(--heat-7)"></div>
+              </div>
+              <span>HIGH · RESEARCH DENSITY</span>
+            </div>
+            <div class="map-loading" id="mapLoading">
+              <div class="loading-text"><span class="loading-dot"></span>Rendering global topology …</div>
+            </div>
+            <svg id="worldmap"></svg>
+            <div class="tooltip" id="tooltip"></div>
+            <div class="country-tooltip" id="countryTooltip"></div>
+          </div>
+
+          <!-- Top countries bar chart -->
+          <div class="top-countries" style="border:none; border-top:1px solid var(--line); border-radius:0;">
+            <div class="top-countries-head">
+              <h3>Top 12 nations by <em>research density.</em></h3>
+              <div class="top-countries-sub">Weighted: publications · institutions · clinical translation</div>
+            </div>
+            <div class="country-bars" id="countryBars"></div>
+          </div>
+
+        </div>
     </section>
 
     <!-- BRIDGE: Philosophy → Science -->
@@ -1942,7 +3354,7 @@
               </div>
               <div style="border-top: 1px solid var(--line); padding-top: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;">
                 <span style="font-size: 13px; color: var(--text-2);">Recommended tracks: Lunaris · Somna · Ethereal Tide</span>
-                <a href="soundhub.html#sleep" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to sleep tracks →</a>
+                <a href="soundhub.html" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to sleep tracks →</a>
               </div>
             </div>
           </div>
@@ -1990,7 +3402,7 @@
               </div>
               <div style="border-top: 1px solid var(--line); padding-top: 16px; display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 13px; color: var(--text-2);">Recommended tracks: Beta Grid · Clarity Field · Deep Work</span>
-                <a href="soundhub.html#focus" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to focus tracks →</a>
+                <a href="soundhub.html" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to focus tracks →</a>
               </div>
             </div>
           </div>
@@ -2038,7 +3450,7 @@
               </div>
               <div style="border-top: 1px solid var(--line); padding-top: 16px; display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 13px; color: var(--text-2);">Recommended tracks: Forest Floor · Tidal Rest · Vagus</span>
-                <a href="soundhub.html#calm" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to calm tracks →</a>
+                <a href="soundhub.html" style="font-family: var(--m-font); font-size: 11px; color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 999px; padding: 6px 14px; transition: all 0.22s;" onmouseover="this.style.background='var(--accent-glow)'" onmouseout="this.style.background='transparent'">Go to calm tracks →</a>
               </div>
             </div>
           </div>
@@ -2201,7 +3613,7 @@
                 <p style="color: var(--text-2); font-size: 14px;">Note: individual response varies significantly. Some people with ADHD find any background sound counterproductive. Start with white noise at low volume during a low-stakes task and build from there.</p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
                   <a href="#sound-atlas" class="faq-btn">White noise explained</a>
-                  <a href="soundhub.html#focus" class="faq-btn">Go to focus tracks</a>
+                  <a href="soundhub.html" class="faq-btn">Go to focus tracks</a>
                 </div>
               </div>
             </details>
@@ -2214,7 +3626,7 @@
                 <p><strong style="color: var(--text-0);">Which tracks:</strong> Pink noise or brown noise are the best-studied and most comfortable for extended use. Avoid isochronic or binaural tracks during sleep unless specifically designed for sleep induction — delta-range entrainment tracks are appropriate; high-frequency beta tracks are not.</p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
                   <a href="#how-to-use" class="faq-btn">Sleep protocol in full</a>
-                  <a href="soundhub.html#sleep" class="faq-btn">Go to sleep tracks</a>
+                  <a href="soundhub.html" class="faq-btn">Go to sleep tracks</a>
                 </div>
               </div>
             </details>
@@ -2278,19 +3690,19 @@
             <span style="font-size: 24px; margin-bottom: 12px; display: block;">◐</span>
             <h3>Sleep Path</h3>
             <p>A calmer wind-down, a better night-time environment, or support for deeper overnight recovery.</p>
-            <a href="soundhub.html#sleep" class="cta-link">Start listening →</a>
+            <a href="soundhub.html" class="cta-link">Start listening →</a>
           </article>
           <article class="cta-card">
             <span style="font-size: 24px; margin-bottom: 12px; display: block;">◈</span>
             <h3>Focus Path</h3>
             <p>Fewer distractions, sustained concentration during deep work, or an acoustic environment for cognitive performance.</p>
-            <a href="soundhub.html#focus" class="cta-link">Start listening →</a>
+            <a href="soundhub.html" class="cta-link">Start listening →</a>
           </article>
           <article class="cta-card">
             <span style="font-size: 24px; margin-bottom: 12px; display: block;">◯</span>
             <h3>Calm Path</h3>
             <p>Parasympathetic downshift, decompression after a high-stimulation day, or support for meditation and regulation.</p>
-            <a href="soundhub.html#calm" class="cta-link">Start listening →</a>
+            <a href="soundhub.html" class="cta-link">Start listening →</a>
           </article>
         </div>
       </div>
@@ -2386,14 +3798,49 @@
       update();
     })();
 
-    // Scroll reveal
+    // Scroll reveal — safe: defaults to visible, only hides confirmed off-screen elements
     (function () {
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+
+      // Step 1: hide only elements that are genuinely below the fold
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        if (rect.top > vh + 40) {
+          el.classList.add('below-fold');
+        }
+      });
+
+      // Step 2: observe below-fold elements and reveal on scroll
+      if (!window.IntersectionObserver) {
+        // Fallback for old browsers: just show everything
+        document.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.remove('below-fold');
+          el.classList.add('visible');
+        });
+        return;
+      }
+
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+          if (e.isIntersecting) {
+            e.target.classList.remove('below-fold');
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
         });
-      }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+      }, { threshold: 0, rootMargin: '0px 0px 60px 0px' });
+
+      document.querySelectorAll('.reveal.below-fold').forEach(function (el) {
+        io.observe(el);
+      });
+
+      // Step 3: hard fallback — after 1.5s, force-show anything still hidden
+      setTimeout(function () {
+        document.querySelectorAll('.reveal.below-fold').forEach(function (el) {
+          el.classList.remove('below-fold');
+          el.classList.add('visible');
+        });
+      }, 1500);
     })();
 
     // Lottie hero
@@ -2691,6 +4138,1034 @@
     } else {
       window.addEventListener('load', () => { initBg(); });
     }
+  </script>
+
+  <!-- D3 + TopoJSON: loaded here so CSS in <head> parses without blocking -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+
+  <!-- Pillar section animations -->
+  <script>
+    // ── Rotating phrase ticker ──────────────────────────────────────────────
+    (function() {
+      var phrases = [
+        { text: 'Fall asleep <em>5 minutes faster.</em> Every night.', color: '#818cf8' },
+        { text: '<em>7×</em> more focus time. Same hour.', color: '#f59e0b' },
+        { text: 'HRV up. Cortisol down. <em>In under 10 minutes.</em>', color: '#34d399' },
+        { text: '<em>~120% proven</em> beta brainwave activity. Backed by Nature.', color: '#a78bfa' },
+        { text: 'Not a playlist. <em>An acoustic protocol.</em>', color: 'var(--accent)' },
+      ];
+      var el = document.getElementById('phraseEl');
+      var pipsEl = document.getElementById('phrasePips');
+      if (!el || !pipsEl) return;
+
+      // Build pips
+      phrases.forEach(function(_, i) {
+        var pip = document.createElement('div');
+        pip.style.cssText = 'width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);transition:background 0.4s,transform 0.4s;';
+        pipsEl.appendChild(pip);
+      });
+
+      var idx = 0;
+      function showPhrase(i) {
+        var p = phrases[i];
+        // Style the element
+        el.style.cssText = [
+          'text-align:center;padding:0 24px;will-change:transform,opacity;',
+          'font-family:var(--b-font);font-size:clamp(22px,3.2vw,42px);font-weight:800;',
+          'line-height:1.15;letter-spacing:-0.02em;color:var(--text-0);',
+          'opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;',
+        ].join('');
+        el.innerHTML = p.text;
+        // Colour the <em> tags
+        el.querySelectorAll('em').forEach(function(em) {
+          em.style.cssText = 'font-style:normal;color:' + p.color + ';';
+        });
+        // Update pips
+        Array.from(pipsEl.children).forEach(function(pip, j) {
+          pip.style.background = j === i ? p.color : 'rgba(255,255,255,0.15)';
+          pip.style.transform = j === i ? 'scale(1.4)' : 'scale(1)';
+        });
+        // Animate in
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+          });
+        });
+      }
+
+      function next() {
+        // Animate out
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(-18px)';
+        setTimeout(function() {
+          idx = (idx + 1) % phrases.length;
+          showPhrase(idx);
+        }, 500);
+      }
+
+      showPhrase(0);
+      setInterval(next, 3500);
+    })();
+
+    // ── Research topography map (D3 atlas) ─────────────────────────────────
+    /* ============================================================
+       COUNTRY DENSITY DATA
+       ISO numeric → tier classification + metadata
+    ============================================================ */
+    const COUNTRY_DATA = {
+      // Tier Leader - peak density
+      "840": { name: "United States",       tier: "leader",   labs: 14, pubs: 580, color: "leader" },
+      "276": { name: "Germany",             tier: "leader",   labs: 8,  pubs: 290, color: "leader" },
+      "826": { name: "United Kingdom",      tier: "leader",   labs: 7,  pubs: 280, color: "leader" },
+    
+      // Tier Major - significant density
+      "124": { name: "Canada",              tier: "major",    labs: 5,  pubs: 195, color: "major" },
+      "392": { name: "Japan",               tier: "major",    labs: 4,  pubs: 162, color: "major" },
+      "756": { name: "Switzerland",         tier: "major",    labs: 3,  pubs: 108, color: "major" },
+      "752": { name: "Sweden",              tier: "major",    labs: 4,  pubs: 134, color: "major" },
+      "410": { name: "South Korea",         tier: "major",    labs: 4,  pubs: 119, color: "major" },
+    
+      // Tier Active - well-established
+      "036": { name: "Australia",           tier: "active",   labs: 5,  pubs: 124, color: "active" },
+      "528": { name: "Netherlands",         tier: "active",   labs: 2,  pubs: 78,  color: "active" },
+      "724": { name: "Spain",               tier: "active",   labs: 2,  pubs: 62,  color: "active" },
+      "250": { name: "France",              tier: "active",   labs: 2,  pubs: 75,  color: "active" },
+      "208": { name: "Denmark",             tier: "active",   labs: 2,  pubs: 71,  color: "active" },
+      "156": { name: "China",               tier: "active",   labs: 4,  pubs: 142, color: "active" },
+    
+      // Tier 5+ pubs - solid output
+      "356": { name: "India",               tier: "5-pub",    labs: 3,  pubs: 56,  color: "5-pub" },
+      "380": { name: "Italy",               tier: "5-pub",    labs: 2,  pubs: 47,  color: "5-pub" },
+      "376": { name: "Israel",              tier: "5-pub",    labs: 1,  pubs: 38,  color: "5-pub" },
+      "682": { name: "Saudi Arabia",        tier: "5-pub",    labs: 1,  pubs: 32,  color: "5-pub" },
+      "586": { name: "Pakistan",            tier: "5-pub",    labs: 1,  pubs: 28,  color: "5-pub" },
+      "076": { name: "Brazil",              tier: "5-pub",    labs: 2,  pubs: 33,  color: "5-pub" },
+      "554": { name: "New Zealand",         tier: "5-pub",    labs: 1,  pubs: 22,  color: "5-pub" },
+      "578": { name: "Norway",              tier: "5-pub",    labs: 1,  pubs: 19,  color: "5-pub" },
+      "246": { name: "Finland",             tier: "5-pub",    labs: 1,  pubs: 17,  color: "5-pub" },
+    
+      // Tier 3+ pubs
+      "300": { name: "Greece",              tier: "3-pub",    labs: 1,  pubs: 14,  color: "3-pub" },
+      "792": { name: "Turkey",              tier: "3-pub",    labs: 1,  pubs: 21,  color: "3-pub" },
+      "643": { name: "Russia",              tier: "3-pub",    labs: 2,  pubs: 18,  color: "3-pub" },
+      "158": { name: "Taiwan",              tier: "3-pub",    labs: 1,  pubs: 18,  color: "3-pub" },
+      "702": { name: "Singapore",           tier: "3-pub",    labs: 1,  pubs: 17,  color: "3-pub" },
+      "040": { name: "Austria",             tier: "3-pub",    labs: 1,  pubs: 16,  color: "3-pub" },
+      "056": { name: "Belgium",             tier: "3-pub",    labs: 1,  pubs: 15,  color: "3-pub" },
+    
+      // Tier 1+ pubs
+      "710": { name: "South Africa",        tier: "1-pub",    labs: 1,  pubs: 8,   color: "1-pub" },
+      "152": { name: "Chile",               tier: "1-pub",    labs: 1,  pubs: 6,   color: "1-pub" },
+    };
+    
+    /* ============================================================
+       RESEARCH NODES (institutions)
+       x/y are LAT/LON - projection happens at render
+    ============================================================ */
+    const NODES = [
+      // ========== USA ==========
+      { name: "MIT Picower Institute", city: "Cambridge MA", country: "USA", lat: 42.36, lon: -71.09, tier: 4,
+        focus: "Gamma entrainment · Alzheimer's neuroprotection",
+        category: "entrainment",
+        pi: "Li-Huei Tsai",
+        highlight: "2019 Nature paper showed 40 Hz audiovisual gamma entrainment binds higher-order brain regions and offers neuroprotection in Alzheimer's models. Set the global template for sensory-stim neurotherapy.",
+        studies: 48, funding: "NIH · HHMI" },
+      { name: "Stanford · Wu Tsai Neurosciences", city: "Stanford CA", country: "USA", lat: 37.43, lon: -122.17, tier: 4,
+        focus: "TMS × musical rhythm coupling",
+        category: "entrainment",
+        pi: "Wu Tsai Institute consortium",
+        highlight: "2025 studies demonstrated that timing TMS pulses to musical rhythms effectively doubles the impact of stimulation — proof that sound primes the motor and autonomic nervous systems.",
+        studies: 41, funding: "NIH · Wu Tsai · DARPA" },
+      { name: "Northwestern · SoundBrain Lab", city: "Evanston IL", country: "USA", lat: 42.05, lon: -87.69, tier: 4,
+        focus: "Subcortical auditory · FFR",
+        category: "psychoacoustics",
+        pi: "Nina Kraus",
+        highlight: "Two decades of clinical data mapping the biological footprint sound leaves on the nervous system. Validated how atmospheric audio physically alters brain states. Reference lab for frequency-following response.",
+        studies: 187, funding: "NIH · Knowles Foundation" },
+      { name: "Northeastern · MIND Lab", city: "Boston MA", country: "USA", lat: 42.34, lon: -71.09, tier: 4,
+        focus: "Cerebro-acoustic phase locking",
+        category: "entrainment",
+        pi: "Psyche Loui",
+        highlight: "Recent breakthrough: high-fidelity, live auditory environments cause brainwaves to synchronise with rhythm significantly more strongly than compressed standard recordings. Major implication for soundscape design fidelity.",
+        studies: 64, funding: "NIH · NSF" },
+      { name: "Harvard Med / MGH Sleep Lab", city: "Boston MA", country: "USA", lat: 42.36, lon: -71.07, tier: 4,
+        focus: "Slow-wave sleep · acoustic closed-loop",
+        category: "sleep",
+        pi: "Multiple PIs",
+        highlight: "Leading US programme on acoustic stimulation of sleep oscillations, memory consolidation, and overnight neuromodulation protocols.",
+        studies: 62, funding: "NIH · DoD" },
+      { name: "University at Buffalo", city: "Buffalo NY", country: "USA", lat: 42.99, lon: -78.79, tier: 3,
+        focus: "Binaural beats · sustained attention",
+        category: "entrainment",
+        pi: "Multiple PIs",
+        highlight: "2025 Scientific Reports parametric study of binaural beats for attention and EEG entrainment — landmark for protocol optimisation.",
+        studies: 14, funding: "NSF" },
+      { name: "NIH / NCCIH", city: "Bethesda MD", country: "USA", lat: 38.99, lon: -77.10, tier: 4,
+        focus: "Federal coordination · clinical trials",
+        category: "clinical",
+        pi: "Federal coordination",
+        highlight: "Primary US federal funder of auditory neuromodulation trials — chronic pain, anxiety, sleep, and dementia applications.",
+        studies: 89, funding: "Federal" },
+      { name: "UC Berkeley / UCSF", city: "Bay Area CA", country: "USA", lat: 37.87, lon: -122.27, tier: 4,
+        focus: "Auditory cortex · plasticity",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Major programmes in auditory cortical plasticity, sensory neuroscience, and translational audio interventions.",
+        studies: 71, funding: "NIH · Sloan" },
+      { name: "Duke University", city: "Durham NC", country: "USA", lat: 36.00, lon: -78.93, tier: 3,
+        focus: "Clinical neuroscience · ADHD",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Clinical work on sensory stimulation in ADHD and attention disorders.",
+        studies: 23, funding: "NIH" },
+      { name: "Florida Atlantic University", city: "Boca Raton FL", country: "USA", lat: 26.37, lon: -80.10, tier: 3,
+        focus: "Complex brain systems",
+        category: "entrainment",
+        pi: "Multiple PIs",
+        highlight: "Center for Complex Systems & Brain Sciences — co-authored Orozco Perez 2020 binaural pathway paper.",
+        studies: 17, funding: "NSF" },
+      { name: "Georgia Tech / Emory", city: "Atlanta GA", country: "USA", lat: 33.78, lon: -84.40, tier: 3,
+        focus: "Sensory flicker stimulation",
+        category: "entrainment",
+        pi: "Annabelle Singer",
+        highlight: "BrainWAVE platform — flexible noninvasive sensory stimulation across species, paving the path from rodent gamma findings to human protocols.",
+        studies: 28, funding: "NIH · NSF" },
+    
+      // ========== CANADA ==========
+      { name: "BRAMS · McGill / U. de Montréal", city: "Montreal QC", country: "Canada", lat: 45.50, lon: -73.57, tier: 4,
+        focus: "Rhythmic Auditory Stim · sensorimotor integration",
+        category: "entrainment",
+        pi: "BRAMS consortium",
+        highlight: "Premier global laboratory proving how rhythm acts as a physiological metronome — regulating gait, motor control, autonomic responses. Authored 2020 eNeuro binaural pathway landmark.",
+        studies: 92, funding: "CIHR · NSERC · FRQ-S" },
+      { name: "McMaster University", city: "Hamilton ON", country: "Canada", lat: 43.26, lon: -79.92, tier: 3,
+        focus: "Auditory neuroscience",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Department of Psychology, Neuroscience and Behavior — active auditory beat stimulation research and music cognition.",
+        studies: 19, funding: "CIHR" },
+      { name: "Western University · BrainsCAN", city: "London ON", country: "Canada", lat: 42.98, lon: -81.27, tier: 3,
+        focus: "Cognitive neuroscience · imaging",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "BrainsCAN platform supports auditory imaging studies and connectivity research.",
+        studies: 21, funding: "CFREF · CIHR" },
+    
+      // ========== UK ==========
+      { name: "UCL Ear Institute", city: "London", country: "UK", lat: 51.52, lon: -0.13, tier: 4,
+        focus: "Psychoacoustics · complex soundscapes",
+        category: "psychoacoustics",
+        pi: "UCL Ear Inst. faculty",
+        highlight: "Leading clinical research on how the human brain isolates, processes, and finds resting states within highly complex layered 3D auditory environments.",
+        studies: 134, funding: "MRC · Wellcome · NIHR" },
+      { name: "University of Cambridge", city: "Cambridge", country: "UK", lat: 52.20, lon: 0.13, tier: 4,
+        focus: "Gamma stim · neurodegeneration",
+        category: "entrainment",
+        pi: "Multiple PIs",
+        highlight: "Replication and extension of gamma-frequency sensory stimulation in Alzheimer's models — major UK contribution to MIT Picower lineage.",
+        studies: 58, funding: "MRC · Wellcome" },
+      { name: "University of Manchester", city: "Manchester", country: "UK", lat: 53.48, lon: -2.24, tier: 3,
+        focus: "Alpha entrainment · chronic pain",
+        category: "clinical",
+        pi: "Anthony Jones group",
+        highlight: "Led acceptability and usability trials of brainwave entrainment smartphone apps in chronic pain cohorts. Largest UK clinical translation programme.",
+        studies: 28, funding: "NIHR" },
+      { name: "Newcastle University", city: "Newcastle", country: "UK", lat: 54.97, lon: -1.61, tier: 3,
+        focus: "Sedley lab · predictive coding",
+        category: "psychoacoustics",
+        pi: "William Sedley",
+        highlight: "William Sedley group on auditory prediction error and phantom auditory perception (tinnitus mechanisms).",
+        studies: 16, funding: "Wellcome" },
+      { name: "University of Sussex", city: "Brighton", country: "UK", lat: 50.82, lon: -0.13, tier: 2,
+        focus: "Nature soundscapes · HRV",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Environmental psychoacoustics and parasympathetic recovery research with biometric validation.",
+        studies: 13, funding: "ESRC" },
+      { name: "Birkbeck · University of London", city: "London", country: "UK", lat: 51.52, lon: -0.13, tier: 2,
+        focus: "Speech rhythm · neural tracking",
+        category: "psychoacoustics",
+        pi: "Adam Tierney",
+        highlight: "Adam Tierney group on speech rhythm processing and neural tracking of acoustic envelopes.",
+        studies: 17, funding: "ESRC · Leverhulme" },
+    
+      // ========== GERMANY ==========
+      { name: "University of Tübingen", city: "Tübingen", country: "Germany", lat: 48.52, lon: 9.06, tier: 4,
+        focus: "Closed-loop sleep acoustic stim",
+        category: "sleep",
+        pi: "Jan Born group",
+        highlight: "Ngo et al. 2013 Neuron — canonical paper on auditory slow-wave enhancement and memory consolidation. Still the global reference.",
+        studies: 74, funding: "DFG · ERC" },
+      { name: "Max Planck · CBS Leipzig", city: "Leipzig", country: "Germany", lat: 51.34, lon: 12.37, tier: 4,
+        focus: "Auditory plasticity · emotion",
+        category: "psychoacoustics",
+        pi: "MPI CBS faculty",
+        highlight: "Definitive European centre for mapping how sound bypasses the frontal lobe to directly trigger emotional and parasympathetic responses. Major MEG and 7T fMRI infrastructure.",
+        studies: 156, funding: "Max Planck Gesellschaft · ERC" },
+      { name: "RWTH Aachen · Hearing Tech & Acoustics", city: "Aachen", country: "Germany", lat: 50.78, lon: 6.08, tier: 4,
+        focus: "Acoustic VR · spatial engineering",
+        category: "bci",
+        pi: "Janina Fels group",
+        highlight: "Engineering-grade research on how spatialised, immersive virtual sound environments actively manipulate environmental perception and cognitive psychology. Field-defining facilities.",
+        studies: 89, funding: "DFG · BMBF" },
+      { name: "University of Göttingen · Auditory Neuroscience", city: "Göttingen", country: "Germany", lat: 51.54, lon: 9.94, tier: 4,
+        focus: "Synaptic information processing",
+        category: "psychoacoustics",
+        pi: "Tobias Moser",
+        highlight: "Deep molecular and physiological research into the anatomy of the auditory pathway — mapping exactly how sound frequencies convert to electrical signals in the brain.",
+        studies: 112, funding: "DFG · Max Planck · ERC" },
+      { name: "University of Duisburg-Essen", city: "Essen", country: "Germany", lat: 51.43, lon: 7.01, tier: 3,
+        focus: "Binaural beats · EEG systematic review",
+        category: "entrainment",
+        pi: "Ruth Ingendoh",
+        highlight: "Ingendoh et al. 2023 PLOS ONE — definitive systematic review of binaural beats and brainwave entrainment. Reshaped methodological standards.",
+        studies: 22, funding: "DFG" },
+      { name: "Charité Berlin", city: "Berlin", country: "Germany", lat: 52.52, lon: 13.40, tier: 3,
+        focus: "Clinical neuromodulation",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Berlin clinical neuroscience hub — also Heinrich Wilhelm Dove's original 1839 binaural beat discovery city.",
+        studies: 33, funding: "DFG · BMBF" },
+      { name: "Hannover Medical School", city: "Hannover", country: "Germany", lat: 52.37, lon: 9.74, tier: 3,
+        focus: "Music · motor rehabilitation",
+        category: "clinical",
+        pi: "Eckart Altenmüller",
+        highlight: "Major centre for music-supported motor rehabilitation in stroke and Parkinson's recovery.",
+        studies: 47, funding: "DFG · BMBF" },
+    
+      // ========== SWITZERLAND ==========
+      { name: "University of Bern", city: "Bern", country: "Switzerland", lat: 46.95, lon: 7.45, tier: 4,
+        focus: "Sleep · memory · oscillations",
+        category: "sleep",
+        pi: "Multiple PIs",
+        highlight: "Major centre for sleep-dependent memory consolidation and closed-loop acoustic protocols. Strong cross-collaboration with Tübingen.",
+        studies: 31, funding: "SNSF" },
+      { name: "ETH Zürich · Neural Control of Movement", city: "Zürich", country: "Switzerland", lat: 47.38, lon: 8.55, tier: 3,
+        focus: "Sensorimotor · neural engineering",
+        category: "bci",
+        pi: "Multiple PIs",
+        highlight: "Sensorimotor control research with auditory feedback paradigms.",
+        studies: 38, funding: "SNSF · ERC" },
+      { name: "EPFL · Brain Mind Institute", city: "Lausanne", country: "Switzerland", lat: 46.52, lon: 6.57, tier: 3,
+        focus: "Neural circuits · perception",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Brain Mind Institute auditory perception research and Blue Brain affiliated work.",
+        studies: 39, funding: "SNSF · ERC · EU" },
+    
+      // ========== SCANDINAVIA ==========
+      { name: "KTH Royal Institute of Technology", city: "Stockholm", country: "Sweden", lat: 59.35, lon: 18.07, tier: 3,
+        focus: "Acoustic environments · restoration",
+        category: "psychoacoustics",
+        pi: "Mats Nilsson group",
+        highlight: "Alvarsson et al. — landmark work on nature sounds and stress recovery via parasympathetic activation. Foundational soundscape ecology research.",
+        studies: 24, funding: "Vetenskapsrådet · Formas" },
+      { name: "Stockholm University", city: "Stockholm", country: "Sweden", lat: 59.36, lon: 18.06, tier: 3,
+        focus: "ADHD · white noise · stochastic resonance",
+        category: "clinical",
+        pi: "Göran Söderlund",
+        highlight: "Söderlund's group originated the stochastic resonance model — foundational evidence that white noise improves attention in ADHD via dopaminergic signal-to-noise.",
+        studies: 18, funding: "Vetenskapsrådet" },
+      { name: "Karolinska Institutet", city: "Stockholm", country: "Sweden", lat: 59.35, lon: 17.94, tier: 3,
+        focus: "Clinical neuroscience · imaging",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Major Scandinavian clinical neuroscience centre with auditory imaging and intervention trials.",
+        studies: 64, funding: "Vetenskapsrådet · Wallenberg" },
+      { name: "Aarhus University · MIB", city: "Aarhus", country: "Denmark", lat: 56.17, lon: 10.20, tier: 3,
+        focus: "Music in the brain · oscillations",
+        category: "psychoacoustics",
+        pi: "Peter Vuust",
+        highlight: "Center for Music In the Brain — landmark MEG and predictive coding work on music perception and neural oscillation.",
+        studies: 51, funding: "DNRF · Lundbeck" },
+      { name: "DTU · Hearing Systems", city: "Copenhagen", country: "Denmark", lat: 55.78, lon: 12.52, tier: 4,
+        focus: "Audiovisual immersion · auditory physics",
+        category: "bci",
+        pi: "DTU Hearing faculty",
+        highlight: "Home to world-class facilities (Audio Visual Immersion Lab) testing the absolute physiological boundaries of hyper-realistic, cinematic auditory immersion.",
+        studies: 78, funding: "Oticon · DFF · EU" },
+      { name: "University of Oslo", city: "Oslo", country: "Norway", lat: 59.91, lon: 10.75, tier: 2,
+        focus: "Music cognition · RITMO",
+        category: "psychoacoustics",
+        pi: "RITMO Centre",
+        highlight: "Centre for Interdisciplinary Studies in Rhythm, Time and Motion. Strong rhythm cognition programme.",
+        studies: 19, funding: "RCN" },
+      { name: "University of Helsinki", city: "Helsinki", country: "Finland", lat: 60.17, lon: 24.94, tier: 2,
+        focus: "Cognitive brain research",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Long-standing auditory ERP and MEG research programme — Risto Näätänen's MMN legacy continues.",
+        studies: 17, funding: "Academy of Finland" },
+    
+      // ========== NETHERLANDS / BELGIUM ==========
+      { name: "Radboud · Donders Institute", city: "Nijmegen", country: "Netherlands", lat: 51.82, lon: 5.86, tier: 4,
+        focus: "MEG · auditory prediction",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Donders Institute — MEG studies on auditory prediction, entrainment, and large-scale connectivity.",
+        studies: 78, funding: "NWO · ERC" },
+      { name: "Maastricht University", city: "Maastricht", country: "Netherlands", lat: 50.85, lon: 5.69, tier: 3,
+        focus: "Auditory cortex · 7T fMRI",
+        category: "psychoacoustics",
+        pi: "Elia Formisano",
+        highlight: "Cognitive Neuroscience Department — high-field auditory cortex imaging and decoding.",
+        studies: 32, funding: "NWO" },
+      { name: "KU Leuven", city: "Leuven", country: "Belgium", lat: 50.88, lon: 4.70, tier: 3,
+        focus: "Auditory cognition · ExpORL",
+        category: "psychoacoustics",
+        pi: "ExpORL group",
+        highlight: "Experimental ORL group — speech encoding, auditory attention decoding from EEG.",
+        studies: 38, funding: "FWO · ERC" },
+    
+      // ========== FRANCE / SOUTHERN EUROPE ==========
+      { name: "Institut Pasteur · ENS", city: "Paris", country: "France", lat: 48.85, lon: 2.35, tier: 3,
+        focus: "Human genetics · cognition",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Institut Pasteur unit on human genetics and cognitive functions — collaborated on binaural pathway landmark paper.",
+        studies: 41, funding: "CNRS · ANR · ERC" },
+      { name: "INSERM Lyon", city: "Lyon", country: "France", lat: 45.76, lon: 4.83, tier: 3,
+        focus: "Auditory cognition",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "INSERM auditory cognition labs — clinical applications and rehabilitation work.",
+        studies: 28, funding: "INSERM · ANR" },
+      { name: "University of Barcelona · Brainlab", city: "Barcelona", country: "Spain", lat: 41.39, lon: 2.16, tier: 4,
+        focus: "Brainlab · binaural beats EEG",
+        category: "entrainment",
+        pi: "Carles Escera",
+        highlight: "López-Caballero & Escera 2017 — influential null finding on binaural-beat EEG enhancement; catalysed methodological reform of the field.",
+        studies: 56, funding: "MINECO · ERC" },
+      { name: "Universitat Pompeu Fabra · MTG", city: "Barcelona", country: "Spain", lat: 41.38, lon: 2.19, tier: 2,
+        focus: "Music technology · MIR",
+        category: "bci",
+        pi: "Music Technology Group",
+        highlight: "Music Information Retrieval and computational acoustics with BCI applications.",
+        studies: 23, funding: "MINECO · EU" },
+      { name: "University of Ferrara", city: "Ferrara", country: "Italy", lat: 44.84, lon: 11.62, tier: 2,
+        focus: "Music cognition · aging",
+        category: "clinical",
+        pi: "Beth Fairfield et al.",
+        highlight: "Mammarella et al. — music and cognitive performance in older adults.",
+        studies: 11, funding: "MIUR" },
+      { name: "Sapienza University of Rome", city: "Rome", country: "Italy", lat: 41.90, lon: 12.51, tier: 3,
+        focus: "EEG · neural oscillations",
+        category: "psychoacoustics",
+        pi: "Babiloni group",
+        highlight: "High-resolution EEG coherence research — foundational to frontoparietal connectivity findings.",
+        studies: 47, funding: "MIUR" },
+      { name: "Ionian University", city: "Corfu", country: "Greece", lat: 39.62, lon: 19.92, tier: 2,
+        focus: "EEG · neural connectivity",
+        category: "entrainment",
+        pi: "Georgios Dimitrakopoulos",
+        highlight: "Dimitrakopoulos group on EEG connectivity during auditory tasks.",
+        studies: 14, funding: "GSRT" },
+      { name: "Medical University of Vienna", city: "Vienna", country: "Austria", lat: 48.21, lon: 16.37, tier: 3,
+        focus: "Clinical sleep · neuromodulation",
+        category: "sleep",
+        pi: "Manuel Schabus",
+        highlight: "Sleep neuroscience and EEG biofeedback in clinical populations.",
+        studies: 31, funding: "FWF" },
+    
+      // ========== MIDDLE EAST ==========
+      { name: "King Saud University", city: "Riyadh", country: "Saudi Arabia", lat: 24.71, lon: 46.62, tier: 3,
+        focus: "Biomedical engineering · BB + WM",
+        category: "bci",
+        pi: "Alokaily, Aldohbeyb",
+        highlight: "Engineering-led binaural beat and working memory research — Frontiers Neuroscience 2025 graph theory paper.",
+        studies: 32, funding: "KACST · MoE" },
+      { name: "Hacettepe University", city: "Ankara", country: "Turkey", lat: 39.93, lon: 32.86, tier: 2,
+        focus: "Surgical anxiety · binaural beats",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Clinical binaural beat programmes in surgical and anaesthesia anxiety reduction.",
+        studies: 21, funding: "TUBITAK" },
+      { name: "Tel Aviv University", city: "Tel Aviv", country: "Israel", lat: 32.11, lon: 34.80, tier: 3,
+        focus: "Auditory cortex · clinical",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Strong auditory cognitive neuroscience programme with clinical applications.",
+        studies: 38, funding: "ISF · ERC" },
+    
+      // ========== ASIA ==========
+      { name: "RIKEN Brain Science Inst.", city: "Wako", country: "Japan", lat: 35.78, lon: 139.62, tier: 4,
+        focus: "Systems neuroscience · oscillations",
+        category: "entrainment",
+        pi: "Multiple PIs",
+        highlight: "Japan's flagship brain science institute. Significant work on neural oscillations and gamma entrainment models.",
+        studies: 61, funding: "MEXT" },
+      { name: "University of Tokyo", city: "Tokyo", country: "Japan", lat: 35.71, lon: 139.76, tier: 3,
+        focus: "Auditory neuroscience · psychoacoustics",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Long-standing auditory neuroscience department — psychoacoustic foundational research.",
+        studies: 42, funding: "JSPS" },
+      { name: "Kyoto University", city: "Kyoto", country: "Japan", lat: 35.03, lon: 135.78, tier: 3,
+        focus: "Cognitive brain imaging",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Major Japanese cognitive neuroscience programme with auditory imaging work.",
+        studies: 29, funding: "JSPS" },
+      { name: "Tsinghua University", city: "Beijing", country: "China", lat: 40.00, lon: 116.32, tier: 4,
+        focus: "BCI · auditory neuromodulation",
+        category: "bci",
+        pi: "Multiple PIs",
+        highlight: "Major Chinese BCI and auditory entrainment research hub — rapidly expanding programme with strong engineering integration.",
+        studies: 54, funding: "NSFC · MoST" },
+      { name: "Peking University", city: "Beijing", country: "China", lat: 39.99, lon: 116.30, tier: 3,
+        focus: "Cognitive neuroscience",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Major cognitive neuroscience programme with auditory ERP research.",
+        studies: 33, funding: "NSFC" },
+      { name: "Shanghai Jiao Tong University", city: "Shanghai", country: "China", lat: 31.03, lon: 121.43, tier: 3,
+        focus: "BCI · EEG auditory",
+        category: "bci",
+        pi: "Multiple PIs",
+        highlight: "Brain-computer interface and auditory entrainment engineering.",
+        studies: 27, funding: "NSFC" },
+      { name: "KAIST", city: "Daejeon", country: "South Korea", lat: 36.37, lon: 127.36, tier: 4,
+        focus: "BCI · binaural beats + ASMR",
+        category: "bci",
+        pi: "Seong-Whan Lee",
+        highlight: "Leading closed-loop BCI lab — 2019 study on binaural beats combined with ASMR triggers for brainwave entrainment.",
+        studies: 38, funding: "NRF Korea · IITP" },
+      { name: "Seoul National University", city: "Seoul", country: "South Korea", lat: 37.46, lon: 126.95, tier: 3,
+        focus: "Clinical neuromodulation",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Strong clinical neuromodulation programme with auditory and visual applications.",
+        studies: 31, funding: "NRF Korea" },
+      { name: "Korea University", city: "Seoul", country: "South Korea", lat: 37.59, lon: 127.03, tier: 3,
+        focus: "BCI · attention",
+        category: "bci",
+        pi: "Multiple PIs",
+        highlight: "Brain-computer interfaces and auditory attention research.",
+        studies: 24, funding: "NRF Korea" },
+      { name: "NED University · NCAI", city: "Karachi", country: "Pakistan", lat: 24.93, lon: 67.11, tier: 3,
+        focus: "Neurocomputation · BB + WM",
+        category: "bci",
+        pi: "Mujib, Hasan, Qazi",
+        highlight: "NCAI Neurocomputation Lab — 2026 Frontiers study on binaural beats and working memory network topology via graph theory.",
+        studies: 28, funding: "HEC Pakistan" },
+      { name: "AIIMS · All India Inst. Med. Sci.", city: "New Delhi", country: "India", lat: 28.57, lon: 77.21, tier: 3,
+        focus: "Clinical · pre-surgical anxiety",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Padmanabhan et al. 2005 landmark binaural beats pre-surgical anxiety trial — still one of the most-cited applied papers in the field.",
+        studies: 24, funding: "ICMR" },
+      { name: "IISc · Indian Inst. of Science", city: "Bangalore", country: "India", lat: 13.02, lon: 77.57, tier: 2,
+        focus: "Neural engineering",
+        category: "bci",
+        pi: "Multiple PIs",
+        highlight: "Engineering-led auditory stimulation and EEG research with computational focus.",
+        studies: 14, funding: "DST India" },
+      { name: "NIMHANS Bangalore", city: "Bangalore", country: "India", lat: 12.94, lon: 77.59, tier: 3,
+        focus: "Clinical neuroscience",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "National Institute of Mental Health and Neurosciences — clinical translation of sound-based therapies.",
+        studies: 18, funding: "ICMR · DBT" },
+      { name: "National Taiwan University", city: "Taipei", country: "Taiwan", lat: 25.02, lon: 121.54, tier: 2,
+        focus: "Auditory neuroscience · EEG",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Active auditory cognitive neuroscience programme in the Asia-Pacific.",
+        studies: 18, funding: "MOST Taiwan" },
+      { name: "NUS · National University", city: "Singapore", country: "Singapore", lat: 1.30, lon: 103.77, tier: 2,
+        focus: "Cognitive neuroscience · clinical",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Clinical translation work on auditory interventions for ageing cognition.",
+        studies: 17, funding: "A*STAR" },
+    
+      // ========== OCEANIA ==========
+      { name: "Macquarie University · HEAR Centre", city: "Sydney", country: "Australia", lat: -33.78, lon: 151.11, tier: 4,
+        focus: "Translational eco-acoustics",
+        category: "psychoacoustics",
+        pi: "HEAR Centre faculty",
+        highlight: "Advanced computational modelling of how human neural networks process and relax in natural acoustic environments versus urban noise settings. Premier Australian sound-brain hub.",
+        studies: 78, funding: "ARC · NHMRC" },
+      { name: "University of Melbourne", city: "Melbourne", country: "Australia", lat: -37.80, lon: 144.96, tier: 3,
+        focus: "Cognitive neuroscience · BB",
+        category: "entrainment",
+        pi: "Multiple PIs",
+        highlight: "Goodin et al. 2012 — high-density EEG investigation of steady-state binaural beat stimulation.",
+        studies: 26, funding: "NHMRC" },
+      { name: "Swinburne University", city: "Melbourne", country: "Australia", lat: -37.82, lon: 145.04, tier: 2,
+        focus: "BCI · EEG binaural",
+        category: "entrainment",
+        pi: "Joseph Ciorciari",
+        highlight: "Ciorciari group — high-density EEG binaural beat research, often co-authored with Melbourne and Monash.",
+        studies: 14, funding: "ARC" },
+      { name: "University of Sydney", city: "Sydney", country: "Australia", lat: -33.89, lon: 151.18, tier: 3,
+        focus: "Clinical neuroscience · pain",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Pain neuroscience and auditory intervention research.",
+        studies: 22, funding: "NHMRC · ARC" },
+      { name: "University of Auckland", city: "Auckland", country: "NZ", lat: -36.85, lon: 174.77, tier: 2,
+        focus: "Auditory neuroscience",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Auditory and speech perception research in the Asia-Pacific region.",
+        studies: 22, funding: "Royal Society NZ · HRC" },
+    
+      // ========== SOUTH AMERICA ==========
+      { name: "Universidade Federal de Pernambuco", city: "Recife", country: "Brazil", lat: -8.05, lon: -34.95, tier: 2,
+        focus: "Binaural beats · EEG · ANNs",
+        category: "entrainment",
+        pi: "da Silva group",
+        highlight: "2019 Cognitive Systems Research study on binaural beat stimulation with artificial neural network analysis.",
+        studies: 11, funding: "CAPES · CNPq" },
+      { name: "Universidade de São Paulo", city: "São Paulo", country: "Brazil", lat: -23.56, lon: -46.73, tier: 2,
+        focus: "Neuromodulation · review research",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Contributing group to brainwave entrainment integrative reviews and clinical translation.",
+        studies: 22, funding: "FAPESP · CAPES" },
+      { name: "Pontificia U. Católica de Chile", city: "Santiago", country: "Chile", lat: -33.50, lon: -70.61, tier: 1,
+        focus: "Cognitive neuroscience",
+        category: "psychoacoustics",
+        pi: "Multiple PIs",
+        highlight: "Emerging Latin American cognitive neuroscience programme with auditory research.",
+        studies: 6, funding: "ANID Chile" },
+    
+      // ========== AFRICA ==========
+      { name: "University of Cape Town", city: "Cape Town", country: "South Africa", lat: -33.96, lon: 18.46, tier: 2,
+        focus: "Neuropsychology · clinical",
+        category: "clinical",
+        pi: "Multiple PIs",
+        highlight: "Emerging African auditory neuroscience contributor with clinical translation focus.",
+        studies: 8, funding: "NRF SA" },
+    
+      // ========== RUSSIA ==========
+      { name: "Russian Academy of Sciences", city: "Moscow", country: "Russia", lat: 55.75, lon: 37.62, tier: 2,
+        focus: "Apps · EEG entrainment",
+        category: "bci",
+        pi: "Korshunov group",
+        highlight: "Application development for auditory entrainment and EEG analysis.",
+        studies: 11, funding: "RFBR" },
+    ];
+    
+    /* ============================================================
+       FEATURED INSTITUTIONS (premium card grid)
+    ============================================================ */
+    const FEATURED = [
+      { rank: "01", name: "MIT Picower Institute", country: "Cambridge MA · USA",
+        focus: "Where 40 Hz became therapy.",
+        body: "<strong>Li-Huei Tsai's lab</strong> showed in 2019 that 40 Hz auditory and audiovisual stimulation binds higher-order brain regions and provides neuroprotection in Alzheimer's models. The single most consequential finding in the modern history of auditory neuromodulation.",
+        tag: "Tier 1 · Gamma neuroprotection" },
+    
+      { rank: "02", name: "Stanford Wu Tsai Neurosciences", country: "Stanford CA · USA",
+        focus: "Sound priming the nervous system.",
+        body: "2025 work demonstrated that <strong>timing magnetic brain stimulation pulses to musical rhythms effectively doubles their impact</strong> — direct, mechanistic evidence that sound primes the motor and autonomic nervous systems for neuromodulation.",
+        tag: "Tier 1 · TMS × rhythm" },
+    
+      { rank: "03", name: "BRAMS Montreal", country: "McGill / U. Montréal · Canada",
+        focus: "Rhythm as physiological metronome.",
+        body: "A joint venture between McGill and the Université de Montréal — the <strong>premier global laboratory</strong> proving how rhythm regulates gait, motor control, and autonomic responses. Authored the 2020 eNeuro landmark on binaural pathway entrainment.",
+        tag: "Tier 1 · RAS · sensorimotor" },
+    
+      { rank: "04", name: "Northwestern SoundBrain Lab", country: "Evanston IL · USA",
+        focus: "The biological footprint of sound.",
+        body: "Two decades of clinical data from <strong>Nina Kraus</strong>'s lab mapping the exact biological footprint sound leaves on the nervous system. Established the frequency-following response (FFR) as the field's gold-standard biomarker.",
+        tag: "Tier 1 · Subcortical processing" },
+    
+      { rank: "05", name: "Northeastern MIND Lab", country: "Boston MA · USA",
+        focus: "Live audio, live brain.",
+        body: "<strong>Psyche Loui</strong>'s recent breakthrough: high-fidelity, live auditory environments cause brainwaves to synchronise with rhythm <em>significantly more strongly</em> than compressed standard recordings. A foundational finding for soundscape design fidelity.",
+        tag: "Tier 1 · Cerebro-acoustic phase locking" },
+    
+      { rank: "06", name: "Max Planck CBS Leipzig", country: "Leipzig · Germany",
+        focus: "Sound bypasses the frontal lobe.",
+        body: "The <strong>definitive European centre</strong> for mapping how sound bypasses cognitive processing to directly trigger emotional and parasympathetic responses. Major MEG and 7T fMRI infrastructure backs this lineage.",
+        tag: "Tier 1 · Auditory plasticity" },
+    
+      { rank: "07", name: "RWTH Aachen Hearing Tech", country: "Aachen · Germany",
+        focus: "Engineering acoustic reality.",
+        body: "Engineering-grade research into how <strong>spatialised, immersive virtual sound environments</strong> actively manipulate environmental perception and cognitive psychology. Defines the industrial standard for acoustic VR.",
+        tag: "Tier 1 · Acoustic VR" },
+    
+      { rank: "08", name: "Göttingen Auditory Neuroscience", country: "Göttingen · Germany",
+        focus: "From frequency to firing.",
+        body: "<strong>Tobias Moser</strong>'s deep molecular and physiological research into the auditory pathway anatomy — mapping exactly how sound frequencies convert to electrical signals at the synapse. The biological substrate beneath everything.",
+        tag: "Tier 1 · Synaptic processing" },
+    
+      { rank: "09", name: "UCL Ear Institute", country: "London · UK",
+        focus: "Resting in complexity.",
+        body: "Leading clinical research into how the human brain <strong>isolates, processes, and finds resting states</strong> within highly complex layered 3D auditory environments. Premier UK programme for psychoacoustic complexity.",
+        tag: "Tier 1 · Psychoacoustics" },
+    
+      { rank: "10", name: "DTU Hearing Systems", country: "Copenhagen · Denmark",
+        focus: "Where immersion hits its limit.",
+        body: "Home to the <strong>Audio Visual Immersion Lab</strong> — world-class facilities testing the absolute physiological boundaries of hyper-realistic, cinematic auditory immersion. Engineering meets neuroscience at scale.",
+        tag: "Tier 1 · Immersion physics" },
+    
+      { rank: "11", name: "University of Tübingen", country: "Tübingen · Germany",
+        focus: "The night the brain remembers.",
+        body: "Ngo et al. 2013 (<em>Neuron</em>) — the canonical paper on auditory slow-wave enhancement and memory consolidation during deep sleep. Still the global reference more than a decade later. Closed-loop sleep stim was born here.",
+        tag: "Tier 1 · Sleep entrainment" },
+    
+      { rank: "12", name: "Macquarie HEAR Centre", country: "Sydney · Australia",
+        focus: "Nature, noise, neural networks.",
+        body: "Advanced computational modelling of how <strong>human neural networks process and relax in natural acoustic environments versus urban noise</strong>. Premier Asia-Pacific sound-brain hub and Australia's flagship.",
+        tag: "Tier 1 · Eco-acoustics" },
+    ];
+    
+    /* ============================================================
+       TOP COUNTRIES BAR DATA
+    ============================================================ */
+    const TOP_COUNTRIES = [
+      { rank: "01", name: "United States",   pct: 100, labs: 14, pubs: 580 },
+      { rank: "02", name: "Germany",         pct: 50,  labs: 8,  pubs: 290 },
+      { rank: "03", name: "United Kingdom",  pct: 48,  labs: 7,  pubs: 280 },
+      { rank: "04", name: "Canada",          pct: 34,  labs: 5,  pubs: 195 },
+      { rank: "05", name: "Japan",           pct: 28,  labs: 4,  pubs: 162 },
+      { rank: "06", name: "China",           pct: 24,  labs: 4,  pubs: 142 },
+      { rank: "07", name: "Sweden",          pct: 23,  labs: 4,  pubs: 134 },
+      { rank: "08", name: "Australia",       pct: 21,  labs: 5,  pubs: 124 },
+      { rank: "09", name: "South Korea",     pct: 20,  labs: 4,  pubs: 119 },
+      { rank: "10", name: "Switzerland",     pct: 19,  labs: 3,  pubs: 108 },
+      { rank: "11", name: "Netherlands",     pct: 13,  labs: 2,  pubs: 78  },
+      { rank: "12", name: "Denmark",         pct: 12,  labs: 2,  pubs: 71  },
+    ];
+    
+    /* ============================================================
+       RENDER: TOP COUNTRIES BARS
+    ============================================================ */
+    const countryBars = document.getElementById('countryBars');
+    TOP_COUNTRIES.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'country-bar';
+      row.innerHTML = `
+        <div class="cb-rank">${c.rank}</div>
+        <div class="cb-name">${c.name}</div>
+        <div class="cb-bar-track">
+          <div class="cb-bar-fill" style="width: 0%;" data-target="${c.pct}"></div>
+        </div>
+        <div class="cb-labs">${c.labs} labs</div>
+        <div class="cb-pubs">${c.pubs} pubs</div>
+      `;
+      countryBars.appendChild(row);
+    });
+    
+    // Animate bars when in view
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.cb-bar-fill').forEach((fill, i) => {
+            const t = fill.dataset.target;
+            setTimeout(() => fill.style.width = `${t}%`, i * 80);
+          });
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    barObserver.observe(countryBars);
+    
+    /* ============================================================
+       RENDER: FEATURED CARDS
+    ============================================================ */
+    const featuredGrid = document.getElementById('featuredGrid');
+    if (featuredGrid) {
+      FEATURED.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'featured-card';
+        const parts = f.name.split(' ');
+        const last = parts.pop();
+        const first = parts.join(' ');
+        card.innerHTML = `
+          <div class="fc-index">
+            <span>Lab · ${f.rank}</span>
+            <span class="country">${f.country}</span>
+          </div>
+          <div class="fc-name">${first} <em>${last}</em></div>
+          <div class="fc-loc">${f.country.split(' · ')[0]}</div>
+          <div class="fc-focus">${f.focus}</div>
+          <div class="fc-body">${f.body}</div>
+          <span class="fc-tag">${f.tag}</span>
+        `;
+        featuredGrid.appendChild(card);
+      });
+    }
+    
+    /* ============================================================
+       RENDER: WORLD MAP with D3 + TopoJSON
+    ============================================================ */
+    const mapWrap = document.getElementById('mapWrap');
+    const mapLoading = document.getElementById('mapLoading');
+    const tooltip = document.getElementById('tooltip');
+    const countryTooltip = document.getElementById('countryTooltip');
+    
+    const svg = d3.select('#worldmap');
+    const width = mapWrap.clientWidth;
+    const height = 580;
+    svg.attr('viewBox', `0 0 ${width} ${height}`);
+    
+    // Equirectangular projection - matches the reference image proportions
+    // (the reference uses a flat projection, not Robinson/Equal Earth)
+    // This gives the wide, atlas-feel of the inspiration
+    const projection = d3.geoEquirectangular()
+      .scale(width / (2 * Math.PI) * 1.05)
+      .translate([width / 2, height / 2 + 10]);
+    
+    const path = d3.geoPath(projection);
+    
+    const g = svg.append('g');
+    
+    // Sphere
+    g.append('path')
+      .datum({ type: 'Sphere' })
+      .attr('class', 'sphere-fill')
+      .attr('d', path);
+    
+    // Graticule
+    const graticule = d3.geoGraticule().step([20, 20]);
+    g.append('path')
+      .datum(graticule())
+      .attr('class', 'graticule')
+      .attr('d', path);
+    
+    // Load TopoJSON
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+      .then(r => r.json())
+      .then(world => {
+        const countries = topojson.feature(world, world.objects.countries);
+    
+        g.append('g')
+          .selectAll('path')
+          .data(countries.features)
+          .join('path')
+          .attr('class', d => {
+            const id = String(d.id).padStart(3, '0');
+            const data = COUNTRY_DATA[id];
+            return `country tier-${data ? data.color : 'no-data'}`;
+          })
+          .classed('no-data', d => !COUNTRY_DATA[String(d.id).padStart(3, '0')])
+          .attr('d', path)
+          .on('mouseenter', function(event, d) {
+            const id = String(d.id).padStart(3, '0');
+            const data = COUNTRY_DATA[id];
+            if (data) {
+              countryTooltip.innerHTML = `
+                <div class="ct-name">${data.name}</div>
+                <div class="ct-stat"><strong>${data.labs}</strong> labs · <strong>${data.pubs}</strong> publications</div>
+              `;
+              countryTooltip.classList.add('active');
+              positionCountryTip(event);
+            }
+          })
+          .on('mousemove', positionCountryTip)
+          .on('mouseleave', () => countryTooltip.classList.remove('active'));
+    
+        // Render nodes
+        renderNodes();
+    
+        // Hide loader
+        setTimeout(() => mapLoading.classList.add('hidden'), 200);
+      })
+      .catch(err => {
+        console.error('Map load failed', err);
+        mapLoading.innerHTML = '<div class="loading-text" style="color: var(--crimson);">⚠ Topology load failed — check connection</div>';
+      });
+    
+    function positionCountryTip(event) {
+      const rect = mapWrap.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      countryTooltip.style.left = `${x + 14}px`;
+      countryTooltip.style.top = `${y + 14}px`;
+    }
+    
+    /* ============================================================
+       NODES
+    ============================================================ */
+    const TIER_CONFIG = {
+      4: { color: "#7fd4b4", r: 6.5, pulse: true,  label: "Tier 1 · Major programme" },
+      3: { color: "#5ab694", r: 4.8, pulse: true,  label: "Tier 2 · Active lab" },
+      2: { color: "#e6b05c", r: 3.5, pulse: false, label: "Tier 3 · Published group" },
+      1: { color: "#687670", r: 2.8, pulse: false, label: "Tier 4 · Emerging" },
+    };
+    
+    let nodeGroup;
+    
+    function renderNodes() {
+      nodeGroup = g.append('g').attr('class', 'nodes-layer');
+    
+      NODES.forEach((node, i) => {
+        const coords = projection([node.lon, node.lat]);
+        if (!coords) return;
+        const cfg = TIER_CONFIG[node.tier];
+    
+        const ng = nodeGroup.append('g')
+          .attr('class', 'research-node')
+          .attr('data-category', node.category)
+          .attr('transform', `translate(${coords[0]}, ${coords[1]})`);
+    
+        if (cfg.pulse) {
+          ng.append('circle')
+            .attr('class', 'node-pulse')
+            .attr('r', cfg.r)
+            .attr('fill', cfg.color)
+            .style('animation-delay', `${(i % 6) * 0.5}s`);
+        }
+    
+        ng.append('circle')
+          .attr('r', cfg.r + 2.5)
+          .attr('fill', 'none')
+          .attr('stroke', cfg.color)
+          .attr('stroke-width', 0.6)
+          .attr('opacity', 0.5);
+    
+        ng.append('circle')
+          .attr('class', 'node-core')
+          .attr('r', cfg.r)
+          .attr('fill', cfg.color)
+          .style('color', cfg.color);
+    
+        ng.on('mouseenter', (e) => showNodeTooltip(node, cfg, e))
+          .on('mousemove', positionNodeTip)
+          .on('mouseleave', () => tooltip.classList.remove('active'));
+      });
+    }
+    
+    function showNodeTooltip(node, cfg, event) {
+      tooltip.innerHTML = `
+        <div class="tooltip-sub">${cfg.label} · ${node.country}</div>
+        <div class="tooltip-title">${node.name}</div>
+        <div class="tooltip-focus" style="margin-top: 8px;">${node.focus}</div>
+        <div class="tooltip-body">${node.highlight}</div>
+        <div class="tooltip-meta">
+          <span>PI: ${node.pi}</span>
+          <span>${node.studies} pubs · <strong>${node.funding}</strong></span>
+        </div>
+      `;
+      tooltip.classList.add('active');
+      positionNodeTip(event);
+    }
+    
+    function positionNodeTip(event) {
+      const rect = mapWrap.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const ttW = tooltip.offsetWidth;
+      const ttH = tooltip.offsetHeight;
+      let left = x + 16;
+      let top = y + 16;
+      if (left + ttW > rect.width - 20) left = x - ttW - 16;
+      if (top + ttH > rect.height - 20) top = y - ttH - 16;
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+    }
+    
+    /* ============================================================
+       FILTER LOGIC
+    ============================================================ */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.research-node').forEach(n => {
+          const cat = n.getAttribute('data-category');
+          if (filter === 'all' || cat === filter) {
+            n.classList.remove('hidden');
+          } else {
+            n.classList.add('hidden');
+          }
+        });
+      });
+    });
+    
+    /* ============================================================
+       ZOOM (subtle, optional)
+    ============================================================ */
+    const zoom = d3.zoom()
+      .scaleExtent([1, 6])
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+        // Keep node strokes consistent at zoom
+        g.selectAll('.country').attr('stroke-width', 0.4 / event.transform.k);
+        g.selectAll('.node-core, .node-pulse').attr('stroke-width', 0.5 / event.transform.k);
+      });
+    svg.call(zoom);
+    
+    /* ============================================================
+       RESPONSIVE RESIZE
+    ============================================================ */
+    window.addEventListener('resize', () => {
+      const w = mapWrap.clientWidth;
+      svg.attr('viewBox', `0 0 ${w} ${height}`);
+    });
+    
+    /* ============================================================
+       REVEAL
+    ============================================================ */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('in');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('section, .stats-strip, .title-block').forEach(el => {
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+
+
+    // ── Pillar section animations ───────────────────────────────────────────
+    (function() {
+      // Bar + EEG animations
+      var barObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('animated');
+            barObs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.ps-bar-fill, .eeg-bar-fill').forEach(function(el) {
+        barObs.observe(el);
+      });
+
+      // Pillar section in-view glow
+      var secObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) e.target.classList.add('in-view');
+          else e.target.classList.remove('in-view');
+        });
+      }, { threshold: 0.08 });
+      document.querySelectorAll('.pillar-section').forEach(function(el) {
+        secObs.observe(el);
+      });
+
+      // Stat counter reveal
+      var statObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('counted');
+            statObs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll('.ps-stat-num').forEach(function(el) {
+        statObs.observe(el);
+      });
+
+      // Smooth scroll for pillar nav cards
+      document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          var target = document.querySelector(a.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
   </script>
 </body>
 </html>

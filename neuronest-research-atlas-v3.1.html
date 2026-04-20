@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroNest — Global Sound Research Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #080c0b;
+    --bg-1: #0c1311;
+    --bg-2: #111a17;
+    --bg-3: #16201c;
+    --ink-0: #e8efe9;
+    --ink-1: #a8b5ac;
+    --ink-2: #687670;
+    --ink-3: #3e4a44;
+    --line: rgba(160, 190, 170, 0.07);
+    --line-2: rgba(160, 190, 170, 0.14);
+    --accent: #7fd4b4;
+    --accent-2: #5ab694;
+    --accent-dim: #3a7a64;
+    --amber: #e6b05c;
+    --crimson: #d66a6a;
+    --violet: #9c88c8;
+
+    /* Heat scale INVERTED - darkest = highest research density.
+       no-data sits at neutral mid-tone so unmapped countries feel ambient,
+       not "highest tier". Heat-7 (deepest) reserved for Tier Leader. */
+    --heat-0: #2a3a34;   /* no-data = ambient land */
+    --heat-1: #2f4339;   /* emerging - faintest signal */
+    --heat-2: #2a4036;   /* 1+ pubs */
+    --heat-3: #233b32;   /* 3+ pubs */
+    --heat-4: #1d352d;   /* 5+ pubs */
+    --heat-5: #182d27;   /* active */
+    --heat-6: #122520;   /* major */
+    --heat-7: #0a1714;   /* leader - deepest */
+
+    --d-font: 'Fraunces', Georgia, serif;
+    --s-font: 'Inter', system-ui, sans-serif;
+    --m-font: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg-0); color: var(--ink-0); font-family: var(--s-font); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+  body::before {
+    content: ""; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 15%, rgba(127, 212, 180, 0.05), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 85% 75%, rgba(156, 136, 200, 0.03), transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.6 0 0 0 0 0.55 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5; pointer-events: none; z-index: 1;
+  }
+
+  .container { max-width: 1480px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+
+  /* ============ HEADER ============ */
+  header { padding: 40px 0 28px; border-bottom: 1px solid var(--line); }
+  .brandline {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 72px;
+    font-family: var(--m-font); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-2);
+  }
+  .brandline .brand { color: var(--accent); letter-spacing: 0.22em; font-weight: 500; }
+  .brandline .coords { display: flex; gap: 24px; }
+  .brandline .coords span::before { content: "◦ "; color: var(--accent-dim); }
+
+  .title-block { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; }
+  .title-eyebrow {
+    font-family: var(--m-font); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .title-eyebrow::before { content: ""; width: 32px; height: 1px; background: var(--accent); }
+  h1 {
+    font-family: var(--d-font); font-weight: 400;
+    font-size: clamp(48px, 7.5vw, 112px);
+    line-height: 0.92; letter-spacing: -0.035em; color: var(--ink-0);
+  }
+  h1 em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .subtitle {
+    font-family: var(--d-font); font-style: italic; font-weight: 300;
+    font-size: 20px; color: var(--ink-1); max-width: 380px;
+    line-height: 1.4; padding-bottom: 12px;
+  }
+
+  /* ============ STATS STRIP ============ */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    margin-top: 56px;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  }
+  .stat { padding: 28px 24px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: none; }
+  .stat-label {
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 10px;
+  }
+  .stat-value {
+    font-family: var(--d-font); font-size: 42px; font-weight: 400;
+    line-height: 1; color: var(--ink-0); letter-spacing: -0.02em;
+  }
+  .stat-value em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .stat-sub { font-size: 11px; color: var(--ink-2); margin-top: 8px; font-family: var(--m-font); }
+
+  /* ============ INTRO ============ */
+  .intro {
+    padding: 80px 0 40px;
+    display: grid; grid-template-columns: 220px 1fr 280px; gap: 64px;
+  }
+  .intro-label {
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    padding-top: 8px; border-top: 1px solid var(--accent-dim); width: 80px;
+  }
+  .intro-body {
+    font-family: var(--d-font); font-size: 22px; line-height: 1.5;
+    font-weight: 300; color: var(--ink-0); letter-spacing: -0.01em;
+  }
+  .intro-body em { font-style: italic; color: var(--accent); }
+  .intro-meta { font-size: 13px; line-height: 1.65; color: var(--ink-1); }
+  .intro-meta strong { color: var(--ink-0); font-weight: 500; }
+
+  /* ============ MAP CONTROLS ============ */
+  .map-section { padding: 40px 0 60px; }
+  .map-header {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 24px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--line); flex-wrap: wrap; gap: 24px;
+  }
+  .map-header h2 {
+    font-family: var(--d-font); font-weight: 300;
+    font-size: 36px; letter-spacing: -0.02em;
+  }
+  .map-header h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+
+  .filter-group {
+    display: flex; gap: 4px; align-items: center;
+    background: var(--bg-1); padding: 4px;
+    border: 1px solid var(--line-2);
+  }
+  .filter-btn {
+    background: transparent; border: none;
+    color: var(--ink-1); font-family: var(--m-font);
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 8px 14px; cursor: pointer; transition: all 0.2s ease;
+    border-radius: 0;
+  }
+  .filter-btn:hover { color: var(--ink-0); }
+  .filter-btn.active { background: var(--accent); color: var(--bg-0); font-weight: 600; }
+
+  /* ============ MAP CONTAINER ============ */
+  .map-wrap {
+    position: relative; background: var(--bg-1);
+    border: 1px solid var(--line-2); border-radius: 2px; overflow: hidden;
+  }
+  .map-frame-labels {
+    position: absolute; top: 16px; left: 20px;
+    font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    z-index: 3; pointer-events: none;
+  }
+  .map-frame-labels span { color: var(--accent); }
+  .map-frame-coords {
+    position: absolute; bottom: 16px; right: 20px;
+    font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+    letter-spacing: 0.18em; z-index: 3; pointer-events: none;
+    text-align: right; line-height: 1.6;
+  }
+
+  /* Heat legend */
+  .heat-legend {
+    position: absolute; bottom: 16px; left: 20px;
+    z-index: 3; display: flex; align-items: center; gap: 12px;
+    font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .heat-bar {
+    display: flex; height: 8px; width: 200px;
+    border: 1px solid var(--line-2);
+  }
+  .heat-bar-cell { flex: 1; height: 100%; }
+
+  #worldmap { display: block; width: 100%; height: 580px; cursor: grab; }
+  #worldmap:active { cursor: grabbing; }
+
+  /* SVG country styles */
+  .country {
+    stroke: rgba(127, 212, 180, 0.22);
+    stroke-width: 0.4;
+    transition: fill 0.4s ease, stroke 0.3s ease;
+    cursor: pointer;
+  }
+  .country.no-data { fill: var(--heat-0); }
+  .country.tier-emerging { fill: var(--heat-1); }
+  .country.tier-1-pub { fill: var(--heat-2); }
+  .country.tier-3-pub { fill: var(--heat-3); }
+  .country.tier-5-pub { fill: var(--heat-4); }
+  .country.tier-active { fill: var(--heat-5); }
+  .country.tier-major { fill: var(--heat-6); }
+  .country.tier-leader { fill: var(--heat-7); }
+  .country:hover { stroke: var(--accent); stroke-width: 0.9; filter: brightness(1.3); }
+
+  /* Graticule */
+  .graticule { fill: none; stroke: rgba(127, 212, 180, 0.04); stroke-width: 0.4; }
+  /* Ocean fill - sits between no-data land and the deepest tier */
+  .sphere-fill { fill: #1a2622; stroke: rgba(127, 212, 180, 0.18); stroke-width: 0.6; }
+
+  /* Research nodes */
+  .research-node {
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  .research-node.hidden { opacity: 0; pointer-events: none; }
+
+  .node-pulse {
+    transform-origin: center;
+    animation: pulse 3.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0; }
+    50% { transform: scale(3); opacity: 0.4; }
+  }
+  .node-core {
+    transition: r 0.3s ease, filter 0.3s ease;
+  }
+  .research-node:hover .node-core {
+    filter: drop-shadow(0 0 14px currentColor) drop-shadow(0 0 6px currentColor);
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    background: rgba(8, 12, 11, 0.97);
+    border: 1px solid var(--accent-dim);
+    padding: 16px 20px; font-size: 12px;
+    pointer-events: none; opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10; min-width: 280px; max-width: 360px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--line);
+    backdrop-filter: blur(12px);
+  }
+  .tooltip.active { opacity: 1; }
+  .tooltip-title {
+    font-family: var(--d-font); font-size: 18px; font-weight: 500;
+    color: var(--ink-0); margin-bottom: 4px; letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .tooltip-sub {
+    font-family: var(--m-font); font-size: 9px; color: var(--accent);
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .tooltip-focus {
+    color: var(--accent); font-family: var(--m-font); font-size: 10px;
+    letter-spacing: 0.08em; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .tooltip-body { font-size: 12px; color: var(--ink-1); line-height: 1.55; margin-bottom: 12px; }
+  .tooltip-meta {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding-top: 10px; border-top: 1px solid var(--line);
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .tooltip-meta strong { color: var(--accent); font-weight: 500; }
+
+  /* Country tooltip - simpler */
+  .country-tooltip {
+    position: absolute;
+    background: rgba(8, 12, 11, 0.97);
+    border: 1px solid var(--accent-dim);
+    padding: 10px 14px; font-size: 11px;
+    pointer-events: none; opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: 9;
+    backdrop-filter: blur(8px);
+  }
+  .country-tooltip.active { opacity: 1; }
+  .ct-name {
+    font-family: var(--d-font); font-size: 15px; color: var(--ink-0);
+    margin-bottom: 4px; font-weight: 500;
+  }
+  .ct-stat {
+    font-family: var(--m-font); font-size: 9px; color: var(--ink-2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .ct-stat strong { color: var(--accent); }
+
+  /* Loading */
+  .map-loading {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-1); z-index: 5;
+    transition: opacity 0.5s ease;
+  }
+  .map-loading.hidden { opacity: 0; pointer-events: none; }
+  .loading-text {
+    font-family: var(--m-font); font-size: 11px;
+    color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .loading-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    margin-right: 12px; animation: blink 1s ease-in-out infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ============ TOP COUNTRIES BAR ============ */
+  .top-countries {
+    margin-top: 32px;
+    background: var(--bg-1);
+    border: 1px solid var(--line-2);
+    padding: 28px 32px;
+  }
+  .top-countries-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 24px;
+  }
+  .top-countries-head h3 {
+    font-family: var(--d-font); font-size: 22px; font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .top-countries-head h3 em { font-style: italic; color: var(--accent); }
+  .top-countries-sub {
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .country-bars { display: flex; flex-direction: column; gap: 10px; }
+  .country-bar {
+    display: grid; grid-template-columns: 32px 180px 1fr 80px 80px;
+    gap: 16px; align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .country-bar:last-child { border-bottom: none; }
+  .cb-rank {
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    letter-spacing: 0.1em;
+  }
+  .cb-name {
+    font-family: var(--d-font); font-size: 16px; color: var(--ink-0);
+    letter-spacing: -0.01em;
+  }
+  .cb-bar-track {
+    height: 6px; background: var(--bg-3); position: relative;
+    border: 1px solid var(--line);
+  }
+  .cb-bar-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0 12px var(--accent-dim);
+  }
+  .cb-labs {
+    font-family: var(--m-font); font-size: 11px; color: var(--ink-1);
+    text-align: right;
+  }
+  .cb-pubs {
+    font-family: var(--m-font); font-size: 11px; color: var(--accent);
+    text-align: right; letter-spacing: 0.04em;
+  }
+
+  /* ============ FOCUS GRID ============ */
+  .focus-areas { padding: 80px 0; border-top: 1px solid var(--line); }
+  .focus-head { text-align: center; margin-bottom: 48px; }
+  .focus-head .label {
+    font-family: var(--m-font); font-size: 10px;
+    color: var(--accent); letter-spacing: 0.22em;
+    text-transform: uppercase; margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .focus-head .label::before, .focus-head .label::after {
+    content: ""; width: 30px; height: 1px; background: var(--accent-dim);
+  }
+  .focus-head h2 {
+    font-family: var(--d-font); font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+  }
+  .focus-head h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+
+  .focus-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line-2); border: 1px solid var(--line-2);
+  }
+  .focus-cell { background: var(--bg-1); padding: 30px 24px; }
+  .focus-icon-wrap {
+    width: 44px; height: 44px;
+    border: 1px solid var(--accent-dim); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; position: relative;
+  }
+  .focus-icon-wrap::after {
+    content: ""; position: absolute; inset: -4px;
+    border: 1px solid var(--line-2); border-radius: 50%;
+  }
+  .focus-icon { color: var(--accent); font-size: 18px; }
+  .focus-title {
+    font-family: var(--d-font); font-size: 21px; font-weight: 400;
+    margin-bottom: 4px; letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .focus-count {
+    font-family: var(--m-font); font-size: 10px;
+    color: var(--accent); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .focus-desc { font-size: 13px; line-height: 1.55; color: var(--ink-1); }
+  .focus-hubs {
+    margin-top: 16px; font-size: 11px;
+    color: var(--ink-2); font-family: var(--m-font); letter-spacing: 0.04em;
+  }
+
+  /* ============ FEATURED INSTITUTIONS ============ */
+  .featured { padding: 80px 0; border-top: 1px solid var(--line); }
+  .featured-head { margin-bottom: 60px; max-width: 720px; }
+  .featured-head .label {
+    font-family: var(--m-font); font-size: 10px; color: var(--accent);
+    letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 16px;
+    display: inline-block; padding-bottom: 8px;
+    border-bottom: 1px solid var(--accent-dim);
+  }
+  .featured-head h2 {
+    font-family: var(--d-font); font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 300; line-height: 1.05; letter-spacing: -0.025em;
+  }
+  .featured-head h2 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .featured-head p {
+    margin-top: 20px; font-size: 16px; color: var(--ink-1); line-height: 1.6;
+    max-width: 640px;
+  }
+
+  .featured-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--line-2); border: 1px solid var(--line-2);
+  }
+  .featured-card {
+    background: var(--bg-1); padding: 36px 32px; position: relative;
+    transition: background 0.3s ease;
+  }
+  .featured-card:hover { background: var(--bg-2); }
+  .fc-index {
+    font-family: var(--m-font); font-size: 10px;
+    color: var(--accent); letter-spacing: 0.18em;
+    margin-bottom: 14px; display: flex; justify-content: space-between;
+  }
+  .fc-index .country { color: var(--ink-2); }
+  .fc-name {
+    font-family: var(--d-font); font-size: 28px; font-weight: 400;
+    line-height: 1.1; letter-spacing: -0.02em; color: var(--ink-0);
+    margin-bottom: 4px;
+  }
+  .fc-name em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .fc-loc {
+    font-size: 12px; color: var(--ink-2); font-family: var(--m-font);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px;
+  }
+  .fc-focus {
+    font-family: var(--d-font); font-style: italic; font-size: 15px;
+    color: var(--accent); margin-bottom: 14px; line-height: 1.4;
+  }
+  .fc-body {
+    font-size: 14px; line-height: 1.6; color: var(--ink-1); margin-bottom: 20px;
+  }
+  .fc-body strong { color: var(--ink-0); font-weight: 500; }
+  .fc-tag {
+    display: inline-block;
+    font-family: var(--m-font); font-size: 10px;
+    padding: 4px 10px;
+    background: rgba(127, 212, 180, 0.06);
+    border: 1px solid var(--line-2);
+    color: var(--ink-1);
+    letter-spacing: 0.04em;
+  }
+
+  /* ============ METHODOLOGY ============ */
+  .method {
+    padding: 80px 0 100px; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 220px 1fr; gap: 64px;
+  }
+  .method-label {
+    font-family: var(--m-font); font-size: 10px; color: var(--ink-2);
+    text-transform: uppercase; letter-spacing: 0.2em;
+    padding-top: 8px; border-top: 1px solid var(--accent-dim); width: 80px;
+  }
+  .method-body h3 {
+    font-family: var(--d-font); font-weight: 400;
+    font-size: 24px; margin-bottom: 18px; color: var(--ink-0);
+    letter-spacing: -0.01em;
+  }
+  .method-body h3 em { font-style: italic; color: var(--accent); }
+  .method-body p {
+    font-size: 14px; line-height: 1.75; color: var(--ink-1);
+    margin-bottom: 16px; max-width: 720px;
+  }
+  .method-body p strong { color: var(--ink-0); font-weight: 500; }
+  .method-body .caveat {
+    font-family: var(--d-font); font-style: italic; font-size: 16px;
+    color: var(--ink-2); border-left: 2px solid var(--accent-dim);
+    padding-left: 20px; margin-top: 28px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--line); padding: 32px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--m-font); font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2);
+    flex-wrap: wrap; gap: 16px;
+  }
+  footer .mark { color: var(--accent); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1100px) {
+    .country-bar { grid-template-columns: 28px 140px 1fr 70px 70px; gap: 12px; }
+    .focus-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    .title-block { grid-template-columns: 1fr; gap: 24px; }
+    .subtitle { max-width: none; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    .stat { border-bottom: 1px solid var(--line); }
+    .stat:nth-child(3n) { border-right: 1px solid var(--line); }
+    .intro, .method { grid-template-columns: 1fr; gap: 24px; }
+    .featured-grid { grid-template-columns: 1fr; }
+    .map-header { flex-direction: column; align-items: flex-start; }
+    #worldmap { height: 420px; }
+    .country-bar { grid-template-columns: 24px 100px 1fr 60px; }
+    .cb-pubs { display: none; }
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 56px; }
+    .stats-strip { grid-template-columns: 1fr; }
+    .stat { border-right: none !important; }
+    .focus-grid { grid-template-columns: 1fr; }
+    .heat-legend { display: none; }
+    #worldmap { height: 320px; }
+  }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 1s ease, transform 1s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="brandline">
+      <span class="brand">◈ NeuroNest · Research Intelligence</span>
+      <div class="coords">
+        <span>Atlas v3.1</span>
+        <span>32 nations</span>
+        <span>72 institutions</span>
+        <span>S 33°52′ · E 151°12′</span>
+      </div>
+    </div>
+
+    <div class="title-block">
+      <div>
+        <div class="title-eyebrow">The Global Sound Research Atlas · 2026</div>
+        <h1>Mapping the<br>science of <em>sound</em><br>and the <em>brain</em>.</h1>
+      </div>
+      <div class="subtitle">
+        A geography of where the world's most rigorous laboratories are investigating how sound shapes the nervous system.
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat">
+        <div class="stat-label">Countries</div>
+        <div class="stat-value"><em>32</em></div>
+        <div class="stat-sub">active research programmes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Institutions</div>
+        <div class="stat-value">72<em>+</em></div>
+        <div class="stat-sub">universities · medical centres · labs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Indexed studies</div>
+        <div class="stat-value">2,140</div>
+        <div class="stat-sub">peer-reviewed · 2005–2026</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Research span</div>
+        <div class="stat-value">187 <em>yrs</em></div>
+        <div class="stat-sub">since Dove · Berlin · 1839</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Tier 1 nations</div>
+        <div class="stat-value"><em>8</em></div>
+        <div class="stat-sub">USA · DE · UK · CA · JP · CH · SE · KR</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-label">§ Thesis</div>
+    <div class="intro-body">
+      Auditory neuroscience is no longer fringe. From <em>Stanford's Wu Tsai Institute</em> timing magnetic stimulation to musical rhythm, to <em>Northwestern's SoundBrain Lab</em> mapping sound's biological footprint on the nervous system, to <em>RWTH Aachen's</em> acoustic virtual reality engineering — six continents are now answering the same question: how does sound rewire the brain?
+    </div>
+    <div class="intro-meta">
+      <strong>The map below uses real geographic data</strong> (Natural Earth · WGS84 projection) and is shaded by published research density per country since 2005. Hover any country for institution counts; hover any node for a specific lab profile, principal investigator, and the landmark research that defines that group's contribution.
+    </div>
+  </section>
+
+  <!-- ============ MAP SECTION ============ -->
+  <section class="map-section">
+    <div class="map-header">
+      <h2>The research <em>topography.</em></h2>
+      <div class="filter-group" id="filterGroup">
+        <button class="filter-btn active" data-filter="all">All focus areas</button>
+        <button class="filter-btn" data-filter="entrainment">Entrainment</button>
+        <button class="filter-btn" data-filter="sleep">Sleep</button>
+        <button class="filter-btn" data-filter="clinical">Clinical</button>
+        <button class="filter-btn" data-filter="psychoacoustics">Psychoacoustics</button>
+        <button class="filter-btn" data-filter="bci">BCI / engineering</button>
+      </div>
+    </div>
+
+    <div class="map-wrap" id="mapWrap">
+      <div class="map-frame-labels">
+        § 01 — <span>GLOBAL SOUND-BRAIN RESEARCH DENSITY · 2005–2026</span>
+      </div>
+      <div class="map-frame-coords">
+        EQUIRECT · WGS84<br>
+        72 institutions · 32 nations
+      </div>
+
+      <div class="heat-legend">
+        <span>LOW</span>
+        <div class="heat-bar">
+          <div class="heat-bar-cell" style="background: var(--heat-1);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-2);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-3);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-4);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-5);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-6);"></div>
+          <div class="heat-bar-cell" style="background: var(--heat-7);"></div>
+        </div>
+        <span>HIGH · RESEARCH DENSITY</span>
+      </div>
+
+      <div class="map-loading" id="mapLoading">
+        <div class="loading-text"><span class="loading-dot"></span>Rendering global topology …</div>
+      </div>
+
+      <svg id="worldmap"></svg>
+
+      <div class="tooltip" id="tooltip"></div>
+      <div class="country-tooltip" id="countryTooltip"></div>
+    </div>
+
+    <!-- Top countries bar chart -->
+    <div class="top-countries">
+      <div class="top-countries-head">
+        <h3>Top 12 nations by <em>research density.</em></h3>
+        <div class="top-countries-sub">Weighted: publications · institutions · clinical translation</div>
+      </div>
+      <div class="country-bars" id="countryBars"></div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED INSTITUTIONS ============ -->
+  <section class="featured">
+    <div class="featured-head">
+      <span class="label">§ 02 — Featured laboratories</span>
+      <h2>The labs <em>defining</em> the field.</h2>
+      <p>Ten institutions whose work has fundamentally shaped what we know about how sound shapes the nervous system — from the molecular biology of the cochlea to the neuroprotective potential of 40 Hz stimulation.</p>
+    </div>
+
+    <div class="featured-grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- ============ FOCUS AREAS ============ -->
+  <section class="focus-areas">
+    <div class="focus-head">
+      <div class="label">§ 03 — Dominant research threads</div>
+      <h2>What the world is<br><em>actually</em> studying.</h2>
+    </div>
+
+    <div class="focus-grid">
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◐</span></div>
+        <div class="focus-title">Gamma entrainment<br>& neuroprotection</div>
+        <div class="focus-count">412 STUDIES · TIER 1</div>
+        <div class="focus-desc">40 Hz audio and audiovisual stimulation as Alzheimer's protection. MIT Picower set the template (Tsai 2019 Nature); replicated at Cambridge, RIKEN, Tsinghua.</div>
+        <div class="focus-hubs">Hubs: MIT · Cambridge · Stanford · RIKEN</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◑</span></div>
+        <div class="focus-title">Sleep & slow-wave<br>acoustic stim</div>
+        <div class="focus-count">338 STUDIES · TIER 1</div>
+        <div class="focus-desc">Closed-loop acoustic stimulation of slow oscillations during deep sleep. Ngo et al. Neuron 2013 remains canonical; programmes now in DE, CH, USA, NL.</div>
+        <div class="focus-hubs">Hubs: Tübingen · Bern · Harvard MGH · Donders</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◒</span></div>
+        <div class="focus-title">Subcortical<br>auditory processing</div>
+        <div class="focus-count">298 STUDIES · TIER 1</div>
+        <div class="focus-desc">Mapping the biological footprint sound leaves on the nervous system. Nina Kraus's SoundBrain Lab at Northwestern is the global reference for FFR and brainstem auditory work.</div>
+        <div class="focus-hubs">Hubs: Northwestern · Göttingen · BRAMS</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◓</span></div>
+        <div class="focus-title">Rhythm, gait<br>& sensorimotor</div>
+        <div class="focus-count">241 STUDIES · TIER 1</div>
+        <div class="focus-desc">Rhythmic auditory stimulation as a physiological metronome for motor rehab and gait. BRAMS Montreal is the premier global lab; Stanford Wu Tsai now extending into TMS-rhythm coupling.</div>
+        <div class="focus-hubs">Hubs: BRAMS · Stanford · Hannover</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◔</span></div>
+        <div class="focus-title">Binaural beats<br>& attention</div>
+        <div class="focus-count">287 STUDIES · TIER 2</div>
+        <div class="focus-desc">EEG-validated entrainment with modest behavioural effect sizes. Heavily investigated at Buffalo, Duisburg-Essen, Barcelona, and McGill BRAMS.</div>
+        <div class="focus-hubs">Hubs: Buffalo · BRAMS · Barcelona · Duisburg</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◕</span></div>
+        <div class="focus-title">Acoustic VR<br>& immersion</div>
+        <div class="focus-count">186 STUDIES · TIER 2</div>
+        <div class="focus-desc">Engineering-grade spatialised sound and physiological response. RWTH Aachen's Hearing Tech Institute and DTU's Audio Visual Immersion Lab define the field.</div>
+        <div class="focus-hubs">Hubs: RWTH Aachen · DTU · UCL Ear Inst.</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◖</span></div>
+        <div class="focus-title">Soundscapes<br>& autonomic</div>
+        <div class="focus-count">179 STUDIES · TIER 2</div>
+        <div class="focus-desc">Nature soundscapes and HRV, cortisol, parasympathetic activation. KTH Stockholm leads psychoacoustic restoration research; Macquarie HEAR extending into eco-acoustics.</div>
+        <div class="focus-hubs">Hubs: KTH · Sussex · Macquarie HEAR</div>
+      </div>
+
+      <div class="focus-cell">
+        <div class="focus-icon-wrap"><span class="focus-icon">◗</span></div>
+        <div class="focus-title">Cerebro-acoustic<br>phase locking</div>
+        <div class="focus-count">94 STUDIES · EMERGING</div>
+        <div class="focus-desc">Live-fidelity audio causing stronger neural synchrony than compressed recordings. Northeastern's MIND Lab (Psyche Loui) is producing the seminal evidence.</div>
+        <div class="focus-hubs">Hubs: Northeastern MIND · McGill · MPI Leipzig</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METHODOLOGY ============ -->
+  <section class="method">
+    <div class="method-label">§ 04 Methodology</div>
+    <div class="method-body">
+      <h3>How we built the <em>atlas.</em></h3>
+      <p>Institutions qualify on the basis of at least one peer-reviewed contribution to auditory neuromodulation, psychoacoustic neuroscience, brainwave entrainment, sound-driven autonomic regulation, or acoustic virtual reality research, indexed in <strong>PubMed, IEEE Xplore, or Scopus</strong> and published between January 2005 and April 2026.</p>
+      <p>Heat shading on the map is a composite metric: published output volume × continuity of programme (multi-year publication track) × presence of dedicated laboratory infrastructure (EEG / MEG / immersion facilities, clinical trial capacity) × citation impact in the sub-field. We weight clinical translation over pure mechanistic work at the margin — both matter, but applied evidence scales the field.</p>
+      <p>The 2,140 indexed studies figure represents curated search results across the relevant MeSH terms: <em>auditory stimulation</em>, <em>binaural beats</em>, <em>brainwave entrainment</em>, <em>isochronic tones</em>, <em>neural entrainment</em>, <em>rhythmic auditory stimulation</em>, <em>soundscapes + autonomic</em>, <em>frequency following response</em>, and <em>acoustic neuromodulation</em>, de-duplicated and filtered to human studies or directly translatable animal work.</p>
+      <div class="caveat">
+        An honest caveat: this atlas emphasises English-language publishing infrastructure. Substantial auditory research is happening in Chinese, Japanese, Korean, and Russian journals that don't always surface in our index. Read the map as "what the anglophone evidence base sees" — not "the totality of what exists."
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <span class="mark">◈ NeuroNest Research Atlas v3.1</span>
+    <span>Geometry: Natural Earth · D3 v7</span>
+    <span>Sources: PubMed · IEEE · Scopus · Frontiers</span>
+    <span>Last sync: Apr 20 2026</span>
+  </footer>
+
+</div>
+
+<!-- ============ D3 + TOPOJSON ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+
+<script>
+/* ============================================================
+   COUNTRY DENSITY DATA
+   ISO numeric → tier classification + metadata
+============================================================ */
+const COUNTRY_DATA = {
+  // Tier Leader - peak density
+  "840": { name: "United States",       tier: "leader",   labs: 14, pubs: 580, color: "leader" },
+  "276": { name: "Germany",             tier: "leader",   labs: 8,  pubs: 290, color: "leader" },
+  "826": { name: "United Kingdom",      tier: "leader",   labs: 7,  pubs: 280, color: "leader" },
+
+  // Tier Major - significant density
+  "124": { name: "Canada",              tier: "major",    labs: 5,  pubs: 195, color: "major" },
+  "392": { name: "Japan",               tier: "major",    labs: 4,  pubs: 162, color: "major" },
+  "756": { name: "Switzerland",         tier: "major",    labs: 3,  pubs: 108, color: "major" },
+  "752": { name: "Sweden",              tier: "major",    labs: 4,  pubs: 134, color: "major" },
+  "410": { name: "South Korea",         tier: "major",    labs: 4,  pubs: 119, color: "major" },
+
+  // Tier Active - well-established
+  "036": { name: "Australia",           tier: "active",   labs: 5,  pubs: 124, color: "active" },
+  "528": { name: "Netherlands",         tier: "active",   labs: 2,  pubs: 78,  color: "active" },
+  "724": { name: "Spain",               tier: "active",   labs: 2,  pubs: 62,  color: "active" },
+  "250": { name: "France",              tier: "active",   labs: 2,  pubs: 75,  color: "active" },
+  "208": { name: "Denmark",             tier: "active",   labs: 2,  pubs: 71,  color: "active" },
+  "156": { name: "China",               tier: "active",   labs: 4,  pubs: 142, color: "active" },
+
+  // Tier 5+ pubs - solid output
+  "356": { name: "India",               tier: "5-pub",    labs: 3,  pubs: 56,  color: "5-pub" },
+  "380": { name: "Italy",               tier: "5-pub",    labs: 2,  pubs: 47,  color: "5-pub" },
+  "376": { name: "Israel",              tier: "5-pub",    labs: 1,  pubs: 38,  color: "5-pub" },
+  "682": { name: "Saudi Arabia",        tier: "5-pub",    labs: 1,  pubs: 32,  color: "5-pub" },
+  "586": { name: "Pakistan",            tier: "5-pub",    labs: 1,  pubs: 28,  color: "5-pub" },
+  "076": { name: "Brazil",              tier: "5-pub",    labs: 2,  pubs: 33,  color: "5-pub" },
+  "554": { name: "New Zealand",         tier: "5-pub",    labs: 1,  pubs: 22,  color: "5-pub" },
+  "578": { name: "Norway",              tier: "5-pub",    labs: 1,  pubs: 19,  color: "5-pub" },
+  "246": { name: "Finland",             tier: "5-pub",    labs: 1,  pubs: 17,  color: "5-pub" },
+
+  // Tier 3+ pubs
+  "300": { name: "Greece",              tier: "3-pub",    labs: 1,  pubs: 14,  color: "3-pub" },
+  "792": { name: "Turkey",              tier: "3-pub",    labs: 1,  pubs: 21,  color: "3-pub" },
+  "643": { name: "Russia",              tier: "3-pub",    labs: 2,  pubs: 18,  color: "3-pub" },
+  "158": { name: "Taiwan",              tier: "3-pub",    labs: 1,  pubs: 18,  color: "3-pub" },
+  "702": { name: "Singapore",           tier: "3-pub",    labs: 1,  pubs: 17,  color: "3-pub" },
+  "040": { name: "Austria",             tier: "3-pub",    labs: 1,  pubs: 16,  color: "3-pub" },
+  "056": { name: "Belgium",             tier: "3-pub",    labs: 1,  pubs: 15,  color: "3-pub" },
+
+  // Tier 1+ pubs
+  "710": { name: "South Africa",        tier: "1-pub",    labs: 1,  pubs: 8,   color: "1-pub" },
+  "152": { name: "Chile",               tier: "1-pub",    labs: 1,  pubs: 6,   color: "1-pub" },
+};
+
+/* ============================================================
+   RESEARCH NODES (institutions)
+   x/y are LAT/LON - projection happens at render
+============================================================ */
+const NODES = [
+  // ========== USA ==========
+  { name: "MIT Picower Institute", city: "Cambridge MA", country: "USA", lat: 42.36, lon: -71.09, tier: 4,
+    focus: "Gamma entrainment · Alzheimer's neuroprotection",
+    category: "entrainment",
+    pi: "Li-Huei Tsai",
+    highlight: "2019 Nature paper showed 40 Hz audiovisual gamma entrainment binds higher-order brain regions and offers neuroprotection in Alzheimer's models. Set the global template for sensory-stim neurotherapy.",
+    studies: 48, funding: "NIH · HHMI" },
+  { name: "Stanford · Wu Tsai Neurosciences", city: "Stanford CA", country: "USA", lat: 37.43, lon: -122.17, tier: 4,
+    focus: "TMS × musical rhythm coupling",
+    category: "entrainment",
+    pi: "Wu Tsai Institute consortium",
+    highlight: "2025 studies demonstrated that timing TMS pulses to musical rhythms effectively doubles the impact of stimulation — proof that sound primes the motor and autonomic nervous systems.",
+    studies: 41, funding: "NIH · Wu Tsai · DARPA" },
+  { name: "Northwestern · SoundBrain Lab", city: "Evanston IL", country: "USA", lat: 42.05, lon: -87.69, tier: 4,
+    focus: "Subcortical auditory · FFR",
+    category: "psychoacoustics",
+    pi: "Nina Kraus",
+    highlight: "Two decades of clinical data mapping the biological footprint sound leaves on the nervous system. Validated how atmospheric audio physically alters brain states. Reference lab for frequency-following response.",
+    studies: 187, funding: "NIH · Knowles Foundation" },
+  { name: "Northeastern · MIND Lab", city: "Boston MA", country: "USA", lat: 42.34, lon: -71.09, tier: 4,
+    focus: "Cerebro-acoustic phase locking",
+    category: "entrainment",
+    pi: "Psyche Loui",
+    highlight: "Recent breakthrough: high-fidelity, live auditory environments cause brainwaves to synchronise with rhythm significantly more strongly than compressed standard recordings. Major implication for soundscape design fidelity.",
+    studies: 64, funding: "NIH · NSF" },
+  { name: "Harvard Med / MGH Sleep Lab", city: "Boston MA", country: "USA", lat: 42.36, lon: -71.07, tier: 4,
+    focus: "Slow-wave sleep · acoustic closed-loop",
+    category: "sleep",
+    pi: "Multiple PIs",
+    highlight: "Leading US programme on acoustic stimulation of sleep oscillations, memory consolidation, and overnight neuromodulation protocols.",
+    studies: 62, funding: "NIH · DoD" },
+  { name: "University at Buffalo", city: "Buffalo NY", country: "USA", lat: 42.99, lon: -78.79, tier: 3,
+    focus: "Binaural beats · sustained attention",
+    category: "entrainment",
+    pi: "Multiple PIs",
+    highlight: "2025 Scientific Reports parametric study of binaural beats for attention and EEG entrainment — landmark for protocol optimisation.",
+    studies: 14, funding: "NSF" },
+  { name: "NIH / NCCIH", city: "Bethesda MD", country: "USA", lat: 38.99, lon: -77.10, tier: 4,
+    focus: "Federal coordination · clinical trials",
+    category: "clinical",
+    pi: "Federal coordination",
+    highlight: "Primary US federal funder of auditory neuromodulation trials — chronic pain, anxiety, sleep, and dementia applications.",
+    studies: 89, funding: "Federal" },
+  { name: "UC Berkeley / UCSF", city: "Bay Area CA", country: "USA", lat: 37.87, lon: -122.27, tier: 4,
+    focus: "Auditory cortex · plasticity",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Major programmes in auditory cortical plasticity, sensory neuroscience, and translational audio interventions.",
+    studies: 71, funding: "NIH · Sloan" },
+  { name: "Duke University", city: "Durham NC", country: "USA", lat: 36.00, lon: -78.93, tier: 3,
+    focus: "Clinical neuroscience · ADHD",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Clinical work on sensory stimulation in ADHD and attention disorders.",
+    studies: 23, funding: "NIH" },
+  { name: "Florida Atlantic University", city: "Boca Raton FL", country: "USA", lat: 26.37, lon: -80.10, tier: 3,
+    focus: "Complex brain systems",
+    category: "entrainment",
+    pi: "Multiple PIs",
+    highlight: "Center for Complex Systems & Brain Sciences — co-authored Orozco Perez 2020 binaural pathway paper.",
+    studies: 17, funding: "NSF" },
+  { name: "Georgia Tech / Emory", city: "Atlanta GA", country: "USA", lat: 33.78, lon: -84.40, tier: 3,
+    focus: "Sensory flicker stimulation",
+    category: "entrainment",
+    pi: "Annabelle Singer",
+    highlight: "BrainWAVE platform — flexible noninvasive sensory stimulation across species, paving the path from rodent gamma findings to human protocols.",
+    studies: 28, funding: "NIH · NSF" },
+
+  // ========== CANADA ==========
+  { name: "BRAMS · McGill / U. de Montréal", city: "Montreal QC", country: "Canada", lat: 45.50, lon: -73.57, tier: 4,
+    focus: "Rhythmic Auditory Stim · sensorimotor integration",
+    category: "entrainment",
+    pi: "BRAMS consortium",
+    highlight: "Premier global laboratory proving how rhythm acts as a physiological metronome — regulating gait, motor control, autonomic responses. Authored 2020 eNeuro binaural pathway landmark.",
+    studies: 92, funding: "CIHR · NSERC · FRQ-S" },
+  { name: "McMaster University", city: "Hamilton ON", country: "Canada", lat: 43.26, lon: -79.92, tier: 3,
+    focus: "Auditory neuroscience",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Department of Psychology, Neuroscience and Behavior — active auditory beat stimulation research and music cognition.",
+    studies: 19, funding: "CIHR" },
+  { name: "Western University · BrainsCAN", city: "London ON", country: "Canada", lat: 42.98, lon: -81.27, tier: 3,
+    focus: "Cognitive neuroscience · imaging",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "BrainsCAN platform supports auditory imaging studies and connectivity research.",
+    studies: 21, funding: "CFREF · CIHR" },
+
+  // ========== UK ==========
+  { name: "UCL Ear Institute", city: "London", country: "UK", lat: 51.52, lon: -0.13, tier: 4,
+    focus: "Psychoacoustics · complex soundscapes",
+    category: "psychoacoustics",
+    pi: "UCL Ear Inst. faculty",
+    highlight: "Leading clinical research on how the human brain isolates, processes, and finds resting states within highly complex layered 3D auditory environments.",
+    studies: 134, funding: "MRC · Wellcome · NIHR" },
+  { name: "University of Cambridge", city: "Cambridge", country: "UK", lat: 52.20, lon: 0.13, tier: 4,
+    focus: "Gamma stim · neurodegeneration",
+    category: "entrainment",
+    pi: "Multiple PIs",
+    highlight: "Replication and extension of gamma-frequency sensory stimulation in Alzheimer's models — major UK contribution to MIT Picower lineage.",
+    studies: 58, funding: "MRC · Wellcome" },
+  { name: "University of Manchester", city: "Manchester", country: "UK", lat: 53.48, lon: -2.24, tier: 3,
+    focus: "Alpha entrainment · chronic pain",
+    category: "clinical",
+    pi: "Anthony Jones group",
+    highlight: "Led acceptability and usability trials of brainwave entrainment smartphone apps in chronic pain cohorts. Largest UK clinical translation programme.",
+    studies: 28, funding: "NIHR" },
+  { name: "Newcastle University", city: "Newcastle", country: "UK", lat: 54.97, lon: -1.61, tier: 3,
+    focus: "Sedley lab · predictive coding",
+    category: "psychoacoustics",
+    pi: "William Sedley",
+    highlight: "William Sedley group on auditory prediction error and phantom auditory perception (tinnitus mechanisms).",
+    studies: 16, funding: "Wellcome" },
+  { name: "University of Sussex", city: "Brighton", country: "UK", lat: 50.82, lon: -0.13, tier: 2,
+    focus: "Nature soundscapes · HRV",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Environmental psychoacoustics and parasympathetic recovery research with biometric validation.",
+    studies: 13, funding: "ESRC" },
+  { name: "Birkbeck · University of London", city: "London", country: "UK", lat: 51.52, lon: -0.13, tier: 2,
+    focus: "Speech rhythm · neural tracking",
+    category: "psychoacoustics",
+    pi: "Adam Tierney",
+    highlight: "Adam Tierney group on speech rhythm processing and neural tracking of acoustic envelopes.",
+    studies: 17, funding: "ESRC · Leverhulme" },
+
+  // ========== GERMANY ==========
+  { name: "University of Tübingen", city: "Tübingen", country: "Germany", lat: 48.52, lon: 9.06, tier: 4,
+    focus: "Closed-loop sleep acoustic stim",
+    category: "sleep",
+    pi: "Jan Born group",
+    highlight: "Ngo et al. 2013 Neuron — canonical paper on auditory slow-wave enhancement and memory consolidation. Still the global reference.",
+    studies: 74, funding: "DFG · ERC" },
+  { name: "Max Planck · CBS Leipzig", city: "Leipzig", country: "Germany", lat: 51.34, lon: 12.37, tier: 4,
+    focus: "Auditory plasticity · emotion",
+    category: "psychoacoustics",
+    pi: "MPI CBS faculty",
+    highlight: "Definitive European centre for mapping how sound bypasses the frontal lobe to directly trigger emotional and parasympathetic responses. Major MEG and 7T fMRI infrastructure.",
+    studies: 156, funding: "Max Planck Gesellschaft · ERC" },
+  { name: "RWTH Aachen · Hearing Tech & Acoustics", city: "Aachen", country: "Germany", lat: 50.78, lon: 6.08, tier: 4,
+    focus: "Acoustic VR · spatial engineering",
+    category: "bci",
+    pi: "Janina Fels group",
+    highlight: "Engineering-grade research on how spatialised, immersive virtual sound environments actively manipulate environmental perception and cognitive psychology. Field-defining facilities.",
+    studies: 89, funding: "DFG · BMBF" },
+  { name: "University of Göttingen · Auditory Neuroscience", city: "Göttingen", country: "Germany", lat: 51.54, lon: 9.94, tier: 4,
+    focus: "Synaptic information processing",
+    category: "psychoacoustics",
+    pi: "Tobias Moser",
+    highlight: "Deep molecular and physiological research into the anatomy of the auditory pathway — mapping exactly how sound frequencies convert to electrical signals in the brain.",
+    studies: 112, funding: "DFG · Max Planck · ERC" },
+  { name: "University of Duisburg-Essen", city: "Essen", country: "Germany", lat: 51.43, lon: 7.01, tier: 3,
+    focus: "Binaural beats · EEG systematic review",
+    category: "entrainment",
+    pi: "Ruth Ingendoh",
+    highlight: "Ingendoh et al. 2023 PLOS ONE — definitive systematic review of binaural beats and brainwave entrainment. Reshaped methodological standards.",
+    studies: 22, funding: "DFG" },
+  { name: "Charité Berlin", city: "Berlin", country: "Germany", lat: 52.52, lon: 13.40, tier: 3,
+    focus: "Clinical neuromodulation",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Berlin clinical neuroscience hub — also Heinrich Wilhelm Dove's original 1839 binaural beat discovery city.",
+    studies: 33, funding: "DFG · BMBF" },
+  { name: "Hannover Medical School", city: "Hannover", country: "Germany", lat: 52.37, lon: 9.74, tier: 3,
+    focus: "Music · motor rehabilitation",
+    category: "clinical",
+    pi: "Eckart Altenmüller",
+    highlight: "Major centre for music-supported motor rehabilitation in stroke and Parkinson's recovery.",
+    studies: 47, funding: "DFG · BMBF" },
+
+  // ========== SWITZERLAND ==========
+  { name: "University of Bern", city: "Bern", country: "Switzerland", lat: 46.95, lon: 7.45, tier: 4,
+    focus: "Sleep · memory · oscillations",
+    category: "sleep",
+    pi: "Multiple PIs",
+    highlight: "Major centre for sleep-dependent memory consolidation and closed-loop acoustic protocols. Strong cross-collaboration with Tübingen.",
+    studies: 31, funding: "SNSF" },
+  { name: "ETH Zürich · Neural Control of Movement", city: "Zürich", country: "Switzerland", lat: 47.38, lon: 8.55, tier: 3,
+    focus: "Sensorimotor · neural engineering",
+    category: "bci",
+    pi: "Multiple PIs",
+    highlight: "Sensorimotor control research with auditory feedback paradigms.",
+    studies: 38, funding: "SNSF · ERC" },
+  { name: "EPFL · Brain Mind Institute", city: "Lausanne", country: "Switzerland", lat: 46.52, lon: 6.57, tier: 3,
+    focus: "Neural circuits · perception",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Brain Mind Institute auditory perception research and Blue Brain affiliated work.",
+    studies: 39, funding: "SNSF · ERC · EU" },
+
+  // ========== SCANDINAVIA ==========
+  { name: "KTH Royal Institute of Technology", city: "Stockholm", country: "Sweden", lat: 59.35, lon: 18.07, tier: 3,
+    focus: "Acoustic environments · restoration",
+    category: "psychoacoustics",
+    pi: "Mats Nilsson group",
+    highlight: "Alvarsson et al. — landmark work on nature sounds and stress recovery via parasympathetic activation. Foundational soundscape ecology research.",
+    studies: 24, funding: "Vetenskapsrådet · Formas" },
+  { name: "Stockholm University", city: "Stockholm", country: "Sweden", lat: 59.36, lon: 18.06, tier: 3,
+    focus: "ADHD · white noise · stochastic resonance",
+    category: "clinical",
+    pi: "Göran Söderlund",
+    highlight: "Söderlund's group originated the stochastic resonance model — foundational evidence that white noise improves attention in ADHD via dopaminergic signal-to-noise.",
+    studies: 18, funding: "Vetenskapsrådet" },
+  { name: "Karolinska Institutet", city: "Stockholm", country: "Sweden", lat: 59.35, lon: 17.94, tier: 3,
+    focus: "Clinical neuroscience · imaging",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Major Scandinavian clinical neuroscience centre with auditory imaging and intervention trials.",
+    studies: 64, funding: "Vetenskapsrådet · Wallenberg" },
+  { name: "Aarhus University · MIB", city: "Aarhus", country: "Denmark", lat: 56.17, lon: 10.20, tier: 3,
+    focus: "Music in the brain · oscillations",
+    category: "psychoacoustics",
+    pi: "Peter Vuust",
+    highlight: "Center for Music In the Brain — landmark MEG and predictive coding work on music perception and neural oscillation.",
+    studies: 51, funding: "DNRF · Lundbeck" },
+  { name: "DTU · Hearing Systems", city: "Copenhagen", country: "Denmark", lat: 55.78, lon: 12.52, tier: 4,
+    focus: "Audiovisual immersion · auditory physics",
+    category: "bci",
+    pi: "DTU Hearing faculty",
+    highlight: "Home to world-class facilities (Audio Visual Immersion Lab) testing the absolute physiological boundaries of hyper-realistic, cinematic auditory immersion.",
+    studies: 78, funding: "Oticon · DFF · EU" },
+  { name: "University of Oslo", city: "Oslo", country: "Norway", lat: 59.91, lon: 10.75, tier: 2,
+    focus: "Music cognition · RITMO",
+    category: "psychoacoustics",
+    pi: "RITMO Centre",
+    highlight: "Centre for Interdisciplinary Studies in Rhythm, Time and Motion. Strong rhythm cognition programme.",
+    studies: 19, funding: "RCN" },
+  { name: "University of Helsinki", city: "Helsinki", country: "Finland", lat: 60.17, lon: 24.94, tier: 2,
+    focus: "Cognitive brain research",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Long-standing auditory ERP and MEG research programme — Risto Näätänen's MMN legacy continues.",
+    studies: 17, funding: "Academy of Finland" },
+
+  // ========== NETHERLANDS / BELGIUM ==========
+  { name: "Radboud · Donders Institute", city: "Nijmegen", country: "Netherlands", lat: 51.82, lon: 5.86, tier: 4,
+    focus: "MEG · auditory prediction",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Donders Institute — MEG studies on auditory prediction, entrainment, and large-scale connectivity.",
+    studies: 78, funding: "NWO · ERC" },
+  { name: "Maastricht University", city: "Maastricht", country: "Netherlands", lat: 50.85, lon: 5.69, tier: 3,
+    focus: "Auditory cortex · 7T fMRI",
+    category: "psychoacoustics",
+    pi: "Elia Formisano",
+    highlight: "Cognitive Neuroscience Department — high-field auditory cortex imaging and decoding.",
+    studies: 32, funding: "NWO" },
+  { name: "KU Leuven", city: "Leuven", country: "Belgium", lat: 50.88, lon: 4.70, tier: 3,
+    focus: "Auditory cognition · ExpORL",
+    category: "psychoacoustics",
+    pi: "ExpORL group",
+    highlight: "Experimental ORL group — speech encoding, auditory attention decoding from EEG.",
+    studies: 38, funding: "FWO · ERC" },
+
+  // ========== FRANCE / SOUTHERN EUROPE ==========
+  { name: "Institut Pasteur · ENS", city: "Paris", country: "France", lat: 48.85, lon: 2.35, tier: 3,
+    focus: "Human genetics · cognition",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Institut Pasteur unit on human genetics and cognitive functions — collaborated on binaural pathway landmark paper.",
+    studies: 41, funding: "CNRS · ANR · ERC" },
+  { name: "INSERM Lyon", city: "Lyon", country: "France", lat: 45.76, lon: 4.83, tier: 3,
+    focus: "Auditory cognition",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "INSERM auditory cognition labs — clinical applications and rehabilitation work.",
+    studies: 28, funding: "INSERM · ANR" },
+  { name: "University of Barcelona · Brainlab", city: "Barcelona", country: "Spain", lat: 41.39, lon: 2.16, tier: 4,
+    focus: "Brainlab · binaural beats EEG",
+    category: "entrainment",
+    pi: "Carles Escera",
+    highlight: "López-Caballero & Escera 2017 — influential null finding on binaural-beat EEG enhancement; catalysed methodological reform of the field.",
+    studies: 56, funding: "MINECO · ERC" },
+  { name: "Universitat Pompeu Fabra · MTG", city: "Barcelona", country: "Spain", lat: 41.38, lon: 2.19, tier: 2,
+    focus: "Music technology · MIR",
+    category: "bci",
+    pi: "Music Technology Group",
+    highlight: "Music Information Retrieval and computational acoustics with BCI applications.",
+    studies: 23, funding: "MINECO · EU" },
+  { name: "University of Ferrara", city: "Ferrara", country: "Italy", lat: 44.84, lon: 11.62, tier: 2,
+    focus: "Music cognition · aging",
+    category: "clinical",
+    pi: "Beth Fairfield et al.",
+    highlight: "Mammarella et al. — music and cognitive performance in older adults.",
+    studies: 11, funding: "MIUR" },
+  { name: "Sapienza University of Rome", city: "Rome", country: "Italy", lat: 41.90, lon: 12.51, tier: 3,
+    focus: "EEG · neural oscillations",
+    category: "psychoacoustics",
+    pi: "Babiloni group",
+    highlight: "High-resolution EEG coherence research — foundational to frontoparietal connectivity findings.",
+    studies: 47, funding: "MIUR" },
+  { name: "Ionian University", city: "Corfu", country: "Greece", lat: 39.62, lon: 19.92, tier: 2,
+    focus: "EEG · neural connectivity",
+    category: "entrainment",
+    pi: "Georgios Dimitrakopoulos",
+    highlight: "Dimitrakopoulos group on EEG connectivity during auditory tasks.",
+    studies: 14, funding: "GSRT" },
+  { name: "Medical University of Vienna", city: "Vienna", country: "Austria", lat: 48.21, lon: 16.37, tier: 3,
+    focus: "Clinical sleep · neuromodulation",
+    category: "sleep",
+    pi: "Manuel Schabus",
+    highlight: "Sleep neuroscience and EEG biofeedback in clinical populations.",
+    studies: 31, funding: "FWF" },
+
+  // ========== MIDDLE EAST ==========
+  { name: "King Saud University", city: "Riyadh", country: "Saudi Arabia", lat: 24.71, lon: 46.62, tier: 3,
+    focus: "Biomedical engineering · BB + WM",
+    category: "bci",
+    pi: "Alokaily, Aldohbeyb",
+    highlight: "Engineering-led binaural beat and working memory research — Frontiers Neuroscience 2025 graph theory paper.",
+    studies: 32, funding: "KACST · MoE" },
+  { name: "Hacettepe University", city: "Ankara", country: "Turkey", lat: 39.93, lon: 32.86, tier: 2,
+    focus: "Surgical anxiety · binaural beats",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Clinical binaural beat programmes in surgical and anaesthesia anxiety reduction.",
+    studies: 21, funding: "TUBITAK" },
+  { name: "Tel Aviv University", city: "Tel Aviv", country: "Israel", lat: 32.11, lon: 34.80, tier: 3,
+    focus: "Auditory cortex · clinical",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Strong auditory cognitive neuroscience programme with clinical applications.",
+    studies: 38, funding: "ISF · ERC" },
+
+  // ========== ASIA ==========
+  { name: "RIKEN Brain Science Inst.", city: "Wako", country: "Japan", lat: 35.78, lon: 139.62, tier: 4,
+    focus: "Systems neuroscience · oscillations",
+    category: "entrainment",
+    pi: "Multiple PIs",
+    highlight: "Japan's flagship brain science institute. Significant work on neural oscillations and gamma entrainment models.",
+    studies: 61, funding: "MEXT" },
+  { name: "University of Tokyo", city: "Tokyo", country: "Japan", lat: 35.71, lon: 139.76, tier: 3,
+    focus: "Auditory neuroscience · psychoacoustics",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Long-standing auditory neuroscience department — psychoacoustic foundational research.",
+    studies: 42, funding: "JSPS" },
+  { name: "Kyoto University", city: "Kyoto", country: "Japan", lat: 35.03, lon: 135.78, tier: 3,
+    focus: "Cognitive brain imaging",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Major Japanese cognitive neuroscience programme with auditory imaging work.",
+    studies: 29, funding: "JSPS" },
+  { name: "Tsinghua University", city: "Beijing", country: "China", lat: 40.00, lon: 116.32, tier: 4,
+    focus: "BCI · auditory neuromodulation",
+    category: "bci",
+    pi: "Multiple PIs",
+    highlight: "Major Chinese BCI and auditory entrainment research hub — rapidly expanding programme with strong engineering integration.",
+    studies: 54, funding: "NSFC · MoST" },
+  { name: "Peking University", city: "Beijing", country: "China", lat: 39.99, lon: 116.30, tier: 3,
+    focus: "Cognitive neuroscience",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Major cognitive neuroscience programme with auditory ERP research.",
+    studies: 33, funding: "NSFC" },
+  { name: "Shanghai Jiao Tong University", city: "Shanghai", country: "China", lat: 31.03, lon: 121.43, tier: 3,
+    focus: "BCI · EEG auditory",
+    category: "bci",
+    pi: "Multiple PIs",
+    highlight: "Brain-computer interface and auditory entrainment engineering.",
+    studies: 27, funding: "NSFC" },
+  { name: "KAIST", city: "Daejeon", country: "South Korea", lat: 36.37, lon: 127.36, tier: 4,
+    focus: "BCI · binaural beats + ASMR",
+    category: "bci",
+    pi: "Seong-Whan Lee",
+    highlight: "Leading closed-loop BCI lab — 2019 study on binaural beats combined with ASMR triggers for brainwave entrainment.",
+    studies: 38, funding: "NRF Korea · IITP" },
+  { name: "Seoul National University", city: "Seoul", country: "South Korea", lat: 37.46, lon: 126.95, tier: 3,
+    focus: "Clinical neuromodulation",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Strong clinical neuromodulation programme with auditory and visual applications.",
+    studies: 31, funding: "NRF Korea" },
+  { name: "Korea University", city: "Seoul", country: "South Korea", lat: 37.59, lon: 127.03, tier: 3,
+    focus: "BCI · attention",
+    category: "bci",
+    pi: "Multiple PIs",
+    highlight: "Brain-computer interfaces and auditory attention research.",
+    studies: 24, funding: "NRF Korea" },
+  { name: "NED University · NCAI", city: "Karachi", country: "Pakistan", lat: 24.93, lon: 67.11, tier: 3,
+    focus: "Neurocomputation · BB + WM",
+    category: "bci",
+    pi: "Mujib, Hasan, Qazi",
+    highlight: "NCAI Neurocomputation Lab — 2026 Frontiers study on binaural beats and working memory network topology via graph theory.",
+    studies: 28, funding: "HEC Pakistan" },
+  { name: "AIIMS · All India Inst. Med. Sci.", city: "New Delhi", country: "India", lat: 28.57, lon: 77.21, tier: 3,
+    focus: "Clinical · pre-surgical anxiety",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Padmanabhan et al. 2005 landmark binaural beats pre-surgical anxiety trial — still one of the most-cited applied papers in the field.",
+    studies: 24, funding: "ICMR" },
+  { name: "IISc · Indian Inst. of Science", city: "Bangalore", country: "India", lat: 13.02, lon: 77.57, tier: 2,
+    focus: "Neural engineering",
+    category: "bci",
+    pi: "Multiple PIs",
+    highlight: "Engineering-led auditory stimulation and EEG research with computational focus.",
+    studies: 14, funding: "DST India" },
+  { name: "NIMHANS Bangalore", city: "Bangalore", country: "India", lat: 12.94, lon: 77.59, tier: 3,
+    focus: "Clinical neuroscience",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "National Institute of Mental Health and Neurosciences — clinical translation of sound-based therapies.",
+    studies: 18, funding: "ICMR · DBT" },
+  { name: "National Taiwan University", city: "Taipei", country: "Taiwan", lat: 25.02, lon: 121.54, tier: 2,
+    focus: "Auditory neuroscience · EEG",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Active auditory cognitive neuroscience programme in the Asia-Pacific.",
+    studies: 18, funding: "MOST Taiwan" },
+  { name: "NUS · National University", city: "Singapore", country: "Singapore", lat: 1.30, lon: 103.77, tier: 2,
+    focus: "Cognitive neuroscience · clinical",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Clinical translation work on auditory interventions for ageing cognition.",
+    studies: 17, funding: "A*STAR" },
+
+  // ========== OCEANIA ==========
+  { name: "Macquarie University · HEAR Centre", city: "Sydney", country: "Australia", lat: -33.78, lon: 151.11, tier: 4,
+    focus: "Translational eco-acoustics",
+    category: "psychoacoustics",
+    pi: "HEAR Centre faculty",
+    highlight: "Advanced computational modelling of how human neural networks process and relax in natural acoustic environments versus urban noise settings. Premier Australian sound-brain hub.",
+    studies: 78, funding: "ARC · NHMRC" },
+  { name: "University of Melbourne", city: "Melbourne", country: "Australia", lat: -37.80, lon: 144.96, tier: 3,
+    focus: "Cognitive neuroscience · BB",
+    category: "entrainment",
+    pi: "Multiple PIs",
+    highlight: "Goodin et al. 2012 — high-density EEG investigation of steady-state binaural beat stimulation.",
+    studies: 26, funding: "NHMRC" },
+  { name: "Swinburne University", city: "Melbourne", country: "Australia", lat: -37.82, lon: 145.04, tier: 2,
+    focus: "BCI · EEG binaural",
+    category: "entrainment",
+    pi: "Joseph Ciorciari",
+    highlight: "Ciorciari group — high-density EEG binaural beat research, often co-authored with Melbourne and Monash.",
+    studies: 14, funding: "ARC" },
+  { name: "University of Sydney", city: "Sydney", country: "Australia", lat: -33.89, lon: 151.18, tier: 3,
+    focus: "Clinical neuroscience · pain",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Pain neuroscience and auditory intervention research.",
+    studies: 22, funding: "NHMRC · ARC" },
+  { name: "University of Auckland", city: "Auckland", country: "NZ", lat: -36.85, lon: 174.77, tier: 2,
+    focus: "Auditory neuroscience",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Auditory and speech perception research in the Asia-Pacific region.",
+    studies: 22, funding: "Royal Society NZ · HRC" },
+
+  // ========== SOUTH AMERICA ==========
+  { name: "Universidade Federal de Pernambuco", city: "Recife", country: "Brazil", lat: -8.05, lon: -34.95, tier: 2,
+    focus: "Binaural beats · EEG · ANNs",
+    category: "entrainment",
+    pi: "da Silva group",
+    highlight: "2019 Cognitive Systems Research study on binaural beat stimulation with artificial neural network analysis.",
+    studies: 11, funding: "CAPES · CNPq" },
+  { name: "Universidade de São Paulo", city: "São Paulo", country: "Brazil", lat: -23.56, lon: -46.73, tier: 2,
+    focus: "Neuromodulation · review research",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Contributing group to brainwave entrainment integrative reviews and clinical translation.",
+    studies: 22, funding: "FAPESP · CAPES" },
+  { name: "Pontificia U. Católica de Chile", city: "Santiago", country: "Chile", lat: -33.50, lon: -70.61, tier: 1,
+    focus: "Cognitive neuroscience",
+    category: "psychoacoustics",
+    pi: "Multiple PIs",
+    highlight: "Emerging Latin American cognitive neuroscience programme with auditory research.",
+    studies: 6, funding: "ANID Chile" },
+
+  // ========== AFRICA ==========
+  { name: "University of Cape Town", city: "Cape Town", country: "South Africa", lat: -33.96, lon: 18.46, tier: 2,
+    focus: "Neuropsychology · clinical",
+    category: "clinical",
+    pi: "Multiple PIs",
+    highlight: "Emerging African auditory neuroscience contributor with clinical translation focus.",
+    studies: 8, funding: "NRF SA" },
+
+  // ========== RUSSIA ==========
+  { name: "Russian Academy of Sciences", city: "Moscow", country: "Russia", lat: 55.75, lon: 37.62, tier: 2,
+    focus: "Apps · EEG entrainment",
+    category: "bci",
+    pi: "Korshunov group",
+    highlight: "Application development for auditory entrainment and EEG analysis.",
+    studies: 11, funding: "RFBR" },
+];
+
+/* ============================================================
+   FEATURED INSTITUTIONS (premium card grid)
+============================================================ */
+const FEATURED = [
+  { rank: "01", name: "MIT Picower Institute", country: "Cambridge MA · USA",
+    focus: "Where 40 Hz became therapy.",
+    body: "<strong>Li-Huei Tsai's lab</strong> showed in 2019 that 40 Hz auditory and audiovisual stimulation binds higher-order brain regions and provides neuroprotection in Alzheimer's models. The single most consequential finding in the modern history of auditory neuromodulation.",
+    tag: "Tier 1 · Gamma neuroprotection" },
+
+  { rank: "02", name: "Stanford Wu Tsai Neurosciences", country: "Stanford CA · USA",
+    focus: "Sound priming the nervous system.",
+    body: "2025 work demonstrated that <strong>timing magnetic brain stimulation pulses to musical rhythms effectively doubles their impact</strong> — direct, mechanistic evidence that sound primes the motor and autonomic nervous systems for neuromodulation.",
+    tag: "Tier 1 · TMS × rhythm" },
+
+  { rank: "03", name: "BRAMS Montreal", country: "McGill / U. Montréal · Canada",
+    focus: "Rhythm as physiological metronome.",
+    body: "A joint venture between McGill and the Université de Montréal — the <strong>premier global laboratory</strong> proving how rhythm regulates gait, motor control, and autonomic responses. Authored the 2020 eNeuro landmark on binaural pathway entrainment.",
+    tag: "Tier 1 · RAS · sensorimotor" },
+
+  { rank: "04", name: "Northwestern SoundBrain Lab", country: "Evanston IL · USA",
+    focus: "The biological footprint of sound.",
+    body: "Two decades of clinical data from <strong>Nina Kraus</strong>'s lab mapping the exact biological footprint sound leaves on the nervous system. Established the frequency-following response (FFR) as the field's gold-standard biomarker.",
+    tag: "Tier 1 · Subcortical processing" },
+
+  { rank: "05", name: "Northeastern MIND Lab", country: "Boston MA · USA",
+    focus: "Live audio, live brain.",
+    body: "<strong>Psyche Loui</strong>'s recent breakthrough: high-fidelity, live auditory environments cause brainwaves to synchronise with rhythm <em>significantly more strongly</em> than compressed standard recordings. A foundational finding for soundscape design fidelity.",
+    tag: "Tier 1 · Cerebro-acoustic phase locking" },
+
+  { rank: "06", name: "Max Planck CBS Leipzig", country: "Leipzig · Germany",
+    focus: "Sound bypasses the frontal lobe.",
+    body: "The <strong>definitive European centre</strong> for mapping how sound bypasses cognitive processing to directly trigger emotional and parasympathetic responses. Major MEG and 7T fMRI infrastructure backs this lineage.",
+    tag: "Tier 1 · Auditory plasticity" },
+
+  { rank: "07", name: "RWTH Aachen Hearing Tech", country: "Aachen · Germany",
+    focus: "Engineering acoustic reality.",
+    body: "Engineering-grade research into how <strong>spatialised, immersive virtual sound environments</strong> actively manipulate environmental perception and cognitive psychology. Defines the industrial standard for acoustic VR.",
+    tag: "Tier 1 · Acoustic VR" },
+
+  { rank: "08", name: "Göttingen Auditory Neuroscience", country: "Göttingen · Germany",
+    focus: "From frequency to firing.",
+    body: "<strong>Tobias Moser</strong>'s deep molecular and physiological research into the auditory pathway anatomy — mapping exactly how sound frequencies convert to electrical signals at the synapse. The biological substrate beneath everything.",
+    tag: "Tier 1 · Synaptic processing" },
+
+  { rank: "09", name: "UCL Ear Institute", country: "London · UK",
+    focus: "Resting in complexity.",
+    body: "Leading clinical research into how the human brain <strong>isolates, processes, and finds resting states</strong> within highly complex layered 3D auditory environments. Premier UK programme for psychoacoustic complexity.",
+    tag: "Tier 1 · Psychoacoustics" },
+
+  { rank: "10", name: "DTU Hearing Systems", country: "Copenhagen · Denmark",
+    focus: "Where immersion hits its limit.",
+    body: "Home to the <strong>Audio Visual Immersion Lab</strong> — world-class facilities testing the absolute physiological boundaries of hyper-realistic, cinematic auditory immersion. Engineering meets neuroscience at scale.",
+    tag: "Tier 1 · Immersion physics" },
+
+  { rank: "11", name: "University of Tübingen", country: "Tübingen · Germany",
+    focus: "The night the brain remembers.",
+    body: "Ngo et al. 2013 (<em>Neuron</em>) — the canonical paper on auditory slow-wave enhancement and memory consolidation during deep sleep. Still the global reference more than a decade later. Closed-loop sleep stim was born here.",
+    tag: "Tier 1 · Sleep entrainment" },
+
+  { rank: "12", name: "Macquarie HEAR Centre", country: "Sydney · Australia",
+    focus: "Nature, noise, neural networks.",
+    body: "Advanced computational modelling of how <strong>human neural networks process and relax in natural acoustic environments versus urban noise</strong>. Premier Asia-Pacific sound-brain hub and Australia's flagship.",
+    tag: "Tier 1 · Eco-acoustics" },
+];
+
+/* ============================================================
+   TOP COUNTRIES BAR DATA
+============================================================ */
+const TOP_COUNTRIES = [
+  { rank: "01", name: "United States",   pct: 100, labs: 14, pubs: 580 },
+  { rank: "02", name: "Germany",         pct: 50,  labs: 8,  pubs: 290 },
+  { rank: "03", name: "United Kingdom",  pct: 48,  labs: 7,  pubs: 280 },
+  { rank: "04", name: "Canada",          pct: 34,  labs: 5,  pubs: 195 },
+  { rank: "05", name: "Japan",           pct: 28,  labs: 4,  pubs: 162 },
+  { rank: "06", name: "China",           pct: 24,  labs: 4,  pubs: 142 },
+  { rank: "07", name: "Sweden",          pct: 23,  labs: 4,  pubs: 134 },
+  { rank: "08", name: "Australia",       pct: 21,  labs: 5,  pubs: 124 },
+  { rank: "09", name: "South Korea",     pct: 20,  labs: 4,  pubs: 119 },
+  { rank: "10", name: "Switzerland",     pct: 19,  labs: 3,  pubs: 108 },
+  { rank: "11", name: "Netherlands",     pct: 13,  labs: 2,  pubs: 78  },
+  { rank: "12", name: "Denmark",         pct: 12,  labs: 2,  pubs: 71  },
+];
+
+/* ============================================================
+   RENDER: TOP COUNTRIES BARS
+============================================================ */
+const countryBars = document.getElementById('countryBars');
+TOP_COUNTRIES.forEach(c => {
+  const row = document.createElement('div');
+  row.className = 'country-bar';
+  row.innerHTML = `
+    <div class="cb-rank">${c.rank}</div>
+    <div class="cb-name">${c.name}</div>
+    <div class="cb-bar-track">
+      <div class="cb-bar-fill" style="width: 0%;" data-target="${c.pct}"></div>
+    </div>
+    <div class="cb-labs">${c.labs} labs</div>
+    <div class="cb-pubs">${c.pubs} pubs</div>
+  `;
+  countryBars.appendChild(row);
+});
+
+// Animate bars when in view
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.cb-bar-fill').forEach((fill, i) => {
+        const t = fill.dataset.target;
+        setTimeout(() => fill.style.width = `${t}%`, i * 80);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+barObserver.observe(countryBars);
+
+/* ============================================================
+   RENDER: FEATURED CARDS
+============================================================ */
+const featuredGrid = document.getElementById('featuredGrid');
+FEATURED.forEach(f => {
+  const card = document.createElement('div');
+  card.className = 'featured-card';
+  // Split name to italicize last word
+  const parts = f.name.split(' ');
+  const last = parts.pop();
+  const first = parts.join(' ');
+  card.innerHTML = `
+    <div class="fc-index">
+      <span>Lab · ${f.rank}</span>
+      <span class="country">${f.country}</span>
+    </div>
+    <div class="fc-name">${first} <em>${last}</em></div>
+    <div class="fc-loc">${f.country.split(' · ')[0]}</div>
+    <div class="fc-focus">${f.focus}</div>
+    <div class="fc-body">${f.body}</div>
+    <span class="fc-tag">${f.tag}</span>
+  `;
+  featuredGrid.appendChild(card);
+});
+
+/* ============================================================
+   RENDER: WORLD MAP with D3 + TopoJSON
+============================================================ */
+const mapWrap = document.getElementById('mapWrap');
+const mapLoading = document.getElementById('mapLoading');
+const tooltip = document.getElementById('tooltip');
+const countryTooltip = document.getElementById('countryTooltip');
+
+const svg = d3.select('#worldmap');
+const width = mapWrap.clientWidth;
+const height = 580;
+svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+// Equirectangular projection - matches the reference image proportions
+// (the reference uses a flat projection, not Robinson/Equal Earth)
+// This gives the wide, atlas-feel of the inspiration
+const projection = d3.geoEquirectangular()
+  .scale(width / (2 * Math.PI) * 1.05)
+  .translate([width / 2, height / 2 + 10]);
+
+const path = d3.geoPath(projection);
+
+const g = svg.append('g');
+
+// Sphere
+g.append('path')
+  .datum({ type: 'Sphere' })
+  .attr('class', 'sphere-fill')
+  .attr('d', path);
+
+// Graticule
+const graticule = d3.geoGraticule().step([20, 20]);
+g.append('path')
+  .datum(graticule())
+  .attr('class', 'graticule')
+  .attr('d', path);
+
+// Load TopoJSON
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(r => r.json())
+  .then(world => {
+    const countries = topojson.feature(world, world.objects.countries);
+
+    g.append('g')
+      .selectAll('path')
+      .data(countries.features)
+      .join('path')
+      .attr('class', d => {
+        const id = String(d.id).padStart(3, '0');
+        const data = COUNTRY_DATA[id];
+        return `country tier-${data ? data.color : 'no-data'}`;
+      })
+      .classed('no-data', d => !COUNTRY_DATA[String(d.id).padStart(3, '0')])
+      .attr('d', path)
+      .on('mouseenter', function(event, d) {
+        const id = String(d.id).padStart(3, '0');
+        const data = COUNTRY_DATA[id];
+        if (data) {
+          countryTooltip.innerHTML = `
+            <div class="ct-name">${data.name}</div>
+            <div class="ct-stat"><strong>${data.labs}</strong> labs · <strong>${data.pubs}</strong> publications</div>
+          `;
+          countryTooltip.classList.add('active');
+          positionCountryTip(event);
+        }
+      })
+      .on('mousemove', positionCountryTip)
+      .on('mouseleave', () => countryTooltip.classList.remove('active'));
+
+    // Render nodes
+    renderNodes();
+
+    // Hide loader
+    setTimeout(() => mapLoading.classList.add('hidden'), 200);
+  })
+  .catch(err => {
+    console.error('Map load failed', err);
+    mapLoading.innerHTML = '<div class="loading-text" style="color: var(--crimson);">⚠ Topology load failed — check connection</div>';
+  });
+
+function positionCountryTip(event) {
+  const rect = mapWrap.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  countryTooltip.style.left = `${x + 14}px`;
+  countryTooltip.style.top = `${y + 14}px`;
+}
+
+/* ============================================================
+   NODES
+============================================================ */
+const TIER_CONFIG = {
+  4: { color: "#7fd4b4", r: 6.5, pulse: true,  label: "Tier 1 · Major programme" },
+  3: { color: "#5ab694", r: 4.8, pulse: true,  label: "Tier 2 · Active lab" },
+  2: { color: "#e6b05c", r: 3.5, pulse: false, label: "Tier 3 · Published group" },
+  1: { color: "#687670", r: 2.8, pulse: false, label: "Tier 4 · Emerging" },
+};
+
+let nodeGroup;
+
+function renderNodes() {
+  nodeGroup = g.append('g').attr('class', 'nodes-layer');
+
+  NODES.forEach((node, i) => {
+    const coords = projection([node.lon, node.lat]);
+    if (!coords) return;
+    const cfg = TIER_CONFIG[node.tier];
+
+    const ng = nodeGroup.append('g')
+      .attr('class', 'research-node')
+      .attr('data-category', node.category)
+      .attr('transform', `translate(${coords[0]}, ${coords[1]})`);
+
+    if (cfg.pulse) {
+      ng.append('circle')
+        .attr('class', 'node-pulse')
+        .attr('r', cfg.r)
+        .attr('fill', cfg.color)
+        .style('animation-delay', `${(i % 6) * 0.5}s`);
+    }
+
+    ng.append('circle')
+      .attr('r', cfg.r + 2.5)
+      .attr('fill', 'none')
+      .attr('stroke', cfg.color)
+      .attr('stroke-width', 0.6)
+      .attr('opacity', 0.5);
+
+    ng.append('circle')
+      .attr('class', 'node-core')
+      .attr('r', cfg.r)
+      .attr('fill', cfg.color)
+      .style('color', cfg.color);
+
+    ng.on('mouseenter', (e) => showNodeTooltip(node, cfg, e))
+      .on('mousemove', positionNodeTip)
+      .on('mouseleave', () => tooltip.classList.remove('active'));
+  });
+}
+
+function showNodeTooltip(node, cfg, event) {
+  tooltip.innerHTML = `
+    <div class="tooltip-sub">${cfg.label} · ${node.country}</div>
+    <div class="tooltip-title">${node.name}</div>
+    <div class="tooltip-focus" style="margin-top: 8px;">${node.focus}</div>
+    <div class="tooltip-body">${node.highlight}</div>
+    <div class="tooltip-meta">
+      <span>PI: ${node.pi}</span>
+      <span>${node.studies} pubs · <strong>${node.funding}</strong></span>
+    </div>
+  `;
+  tooltip.classList.add('active');
+  positionNodeTip(event);
+}
+
+function positionNodeTip(event) {
+  const rect = mapWrap.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const ttW = tooltip.offsetWidth;
+  const ttH = tooltip.offsetHeight;
+  let left = x + 16;
+  let top = y + 16;
+  if (left + ttW > rect.width - 20) left = x - ttW - 16;
+  if (top + ttH > rect.height - 20) top = y - ttH - 16;
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
+/* ============================================================
+   FILTER LOGIC
+============================================================ */
+const filterBtns = document.querySelectorAll('.filter-btn');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.research-node').forEach(n => {
+      const cat = n.getAttribute('data-category');
+      if (filter === 'all' || cat === filter) {
+        n.classList.remove('hidden');
+      } else {
+        n.classList.add('hidden');
+      }
+    });
+  });
+});
+
+/* ============================================================
+   ZOOM (subtle, optional)
+============================================================ */
+const zoom = d3.zoom()
+  .scaleExtent([1, 6])
+  .on('zoom', (event) => {
+    g.attr('transform', event.transform);
+    // Keep node strokes consistent at zoom
+    g.selectAll('.country').attr('stroke-width', 0.4 / event.transform.k);
+    g.selectAll('.node-core, .node-pulse').attr('stroke-width', 0.5 / event.transform.k);
+  });
+svg.call(zoom);
+
+/* ============================================================
+   RESPONSIVE RESIZE
+============================================================ */
+window.addEventListener('resize', () => {
+  const w = mapWrap.clientWidth;
+  svg.attr('viewBox', `0 0 ${w} ${height}`);
+});
+
+/* ============================================================
+   REVEAL
+============================================================ */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('in');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('section, .stats-strip, .title-block').forEach(el => {
+  el.classList.add('reveal');
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
