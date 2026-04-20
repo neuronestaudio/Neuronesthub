@@ -1,1761 +1,480 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NeuroNest | Sound Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/page-transitions.css">
     <style>
         :root {
-            --bg-pure: #000000;
-            --text-main: #ffffff;
-            --text-dim: #a1a1aa;
-            --accent: #00f2ff;
-            --accent-dim: rgba(0, 242, 255, 0.15);
-            --border: rgba(255, 255, 255, 0.1);
-            --panel-bg: rgba(15, 15, 15, 0.8);
-            --font-modern: 'Outfit', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg-dark: #070709;
+            --bg-panel: #101014;
+            --bg-surface: #18181c;
+            --bg-surface-hover: #222228;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --accent: #8ea3ff;
+            --accent-hover: #a5b6ff;
+            --border: rgba(255, 255, 255, 0.08);
+            --player-height: 90px;
+            --sidebar-width: 260px;
+            
+            --cat-focus: #8ea3ff;
+            --cat-sleep: #a78bfa;
+            --cat-calm: #67e8f9;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-primary); overflow: hidden; }
+
+        /* App Layout */
+        .app-container {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: 1fr var(--player-height);
+            height: 100vh;
         }
 
-        body {
-            background-color: var(--bg-pure);
-            color: var(--text-main);
-            font-family: var(--font-modern);
-            margin: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
-            background-size: 30px 30px;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: radial-gradient(circle at 50% 0%, rgba(143, 212, 255, 0.05) 0%, transparent 70%);
-            z-index: 0;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background:
-                linear-gradient(rgba(143, 212, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(143, 212, 255, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 0;
-        }
-
-        .container {
-            width: min(1180px, 94vw);
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .topbar {
-            padding: 24px 0;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #222;
-        }
-
-        .header-row {
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-dark);
+            border-right: 1px solid var(--border);
+            padding: 24px 20px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
+            flex-direction: column;
+            z-index: 10;
         }
 
-        .header-title {
-            font-family: 'DM Serif Display', serif;
+        .brand {
+            font-family: 'Outfit', sans-serif;
             font-size: 24px;
-            color: #fff;
-            white-space: nowrap;
-            font-weight: 400;
-            letter-spacing: 0.5px;
-        }
-
-        .header-nav-btns {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-bottom: 40px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .header-nav-btn {
-            text-decoration: none;
-            color: #888;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 8px 16px;
-            border-radius: 4px;
-            border: 1px solid #333;
-            background: #111;
-            transition: all 0.3s ease;
-        }
-
-        .header-nav-btn:hover {
-            color: var(--accent);
-            border-color: var(--accent);
-            background: #000;
-        }
-
-        .nav-pill {
-            border-radius: 4px;
-            background: #111;
-            border: 1px solid #333;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            position: relative;
-        }
-
-        .nav-pill a {
-            text-decoration: none;
-            color: #888;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .nav-pill a:hover {
-            color: var(--accent);
-        }
-
-        .brand {
-            position: absolute;
-            left: 24px;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: left;
-            text-decoration: none;
-            color: #fff;
-            padding: 0;
-            border: none;
-        }
-
-        .brand strong {
-            display: block;
-            font-size: 16px;
-            line-height: 1;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        .brand span {
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 6px;
-            letter-spacing: 0.4em;
-            color: #444;
-            text-transform: uppercase;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(180deg, rgba(17, 34, 56, 0.98) 0%, rgba(8, 18, 31, 0.98) 100%);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            backdrop-filter: blur(14px) saturate(120%);
-            padding: 8px;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateX(-50%) translateY(-8px);
-            transition: opacity 0.28s ease, visibility 0.28s ease, transform 0.28s ease;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .brand:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-            pointer-events: auto;
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 12px 16px;
-            color: rgba(246, 246, 255, 0.74);
-            text-decoration: none;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            transition: all 0.24s ease;
-            border-radius: 8px;
-        }
-
-        .dropdown-menu a:hover {
-            background: rgba(143, 212, 255, 0.12);
-            color: #8fd4ff;
-        }
-
-        .hero {
-            position: relative;
-            padding: 120px 0 60px;
-            text-align: center;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 40vh;
-        }
-
-        .hero::before {
-            display: none !important;
-        }
-
-        .hero h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(80px, 18vw, 240px);
-            text-transform: uppercase;
-            letter-spacing: -0.04em;
-            color: rgba(255, 255, 255, 0.03);
-            margin-bottom: 0;
-            font-weight: 400;
-            line-height: 0.8;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero-content-wrap {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-subtitle {
-            margin: 0 auto 24px;
-            max-width: 740px;
-            color: var(--accent);
-            font-size: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-
-        .hero-badge {
+        .brand-logo {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--accent), #d1d5db);
+            border-radius: 6px;
             display: inline-block;
-            border: 1px solid #222;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: #666;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
         }
 
-        .latest-release-section {
-            padding: 0 0 40px;
-            border-bottom: 1px solid #111;
-            margin-bottom: 40px;
-        }
+        .nav-links { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+        .nav-item { display: flex; align-items: center; gap: 14px; padding: 10px 14px; color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 14px; border-radius: 8px; transition: all 0.2s ease; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { color: var(--text-primary); background: var(--bg-surface); }
+        .nav-item svg { width: 20px; height: 20px; opacity: 0.8; }
 
-        .latest-release-kicker {
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            letter-spacing: 0.5em;
-            text-transform: uppercase;
-            color: #444;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
+        .sidebar-heading { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 16px; font-weight: 600; padding-left: 14px; }
 
-        .latest-release-kicker::before,
-        .latest-release-kicker::after {
-            content: "";
-            height: 1px;
-            width: 30px;
-            background: #222;
-        }
-
-        .latest-release-heading {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 40px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(244, 249, 255, 0.96);
-            margin-bottom: 16px;
-        }
-
-        .latest-release-section .layout {
-            padding-bottom: 0;
-        }
-
-        .latest-play-btn {
-            width: 66px;
-            height: 66px;
-            border-radius: 50%;
-            border: 1px solid rgba(236, 246, 255, 0.42);
-            background: rgba(13, 27, 44, 0.64);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-            backdrop-filter: blur(8px);
-        }
-
-        .latest-play-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: #eaf6ff;
-            margin-left: 2px;
-        }
-
-        .layout {
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1.55fr 1fr;
-            gap: 16px;
-            padding-bottom: 54px;
-        }
-
-        .card {
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            overflow: hidden;
-            background: var(--card);
-            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-            display: block;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(196, 180, 255, 0.56);
-            box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
-        }
-
-        .card-main {
-            min-height: 420px;
+        /* Main View */
+        .main-view {
+            background: linear-gradient(180deg, #1e1e24 0%, var(--bg-panel) 400px);
+            overflow-y: auto;
             position: relative;
         }
 
-        .card-main__image {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-        }
-
-        .card-main__shade {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(6, 6, 8, 0.18) 0%, rgba(6, 6, 8, 0.9) 74%);
-        }
-
-        .card-main__content {
-            position: absolute;
-            left: 24px;
-            right: 24px;
-            bottom: 22px;
-            z-index: 1;
-        }
-
-        .tag {
-            display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-
-        .card-main h2 {
-            font-size: clamp(28px, 4vw, 78px);
-            line-height: 0.95;
-            letter-spacing: -0.01em;
-            text-transform: lowercase;
-        }
-
-        .card-main p {
-            margin-top: 10px;
-            font-size: 16px;
-            color: rgba(226, 226, 236, 0.8);
-            max-width: 74%;
-        }
-
-        .card-main h2 {
-            font-size: clamp(40px, 5.2vw, 82px);
-            line-height: 0.95;
-            letter-spacing: -0.015em;
-            text-transform: none;
-        }
-
-        .card-side-wrap {
-            display: grid;
-            gap: 16px;
-            grid-template-rows: 1.2fr 1fr;
-        }
-
-        .card-side {
-            padding: 22px 20px;
-            background: var(--card-2);
-            min-height: 158px;
-        }
-
-        .card-side h3 {
-            font-size: clamp(24px, 2vw, 36px);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .card-side p {
-            color: var(--muted);
-            font-size: 15px;
-            max-width: 95%;
-        }
-
-        .card-side-bottom {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .card-small {
-            min-height: 164px;
-            padding: 20px;
-            background: rgba(15, 13, 22, 0.84);
-        }
-
-        .card-small h4 {
-            font-size: clamp(20px, 1.4vw, 32px);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .card-small p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .extra-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-            padding-bottom: 56px;
-        }
-
-        .extra-card {
-            padding: 16px;
-            min-height: 140px;
-            border-radius: 16px;
-            background: rgba(12, 12, 18, 0.74);
-            border: 1px solid var(--line);
-            text-decoration: none;
-            color: inherit;
-            transition: border-color 0.2s ease;
-        }
-
-        .extra-card:hover {
-            border-color: rgba(196, 180, 255, 0.56);
-        }
-
-        .extra-card h5 {
-            font-size: 22px;
-            line-height: 1.1;
-            margin-bottom: 6px;
-        }
-
-        .extra-card p {
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .radio-hub {
-            padding-bottom: 56px;
-        }
-
-        .curated-selection {
-            padding: 8px 0 44px;
-        }
-
-        .curated-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 40px;
-            letter-spacing: 0.18em;
-            text-transform: none;
-            color: rgba(244, 249, 255, 0.96);
-            margin-bottom: 10px;
-            text-align: center;
-            font-weight: 400;
-        }
-
-        .curated-subtitle {
-            font-size: 16px;
-            color: var(--muted);
-            max-width: 760px;
-            margin: 0 auto 40px;
-            text-align: center;
-        }
-
-        .mosaic-grid {
-            columns: 4;
-            column-gap: 14px;
-        }
-
-        .mosaic-card {
-            break-inside: avoid;
-            margin-bottom: 14px;
-            background: linear-gradient(180deg, rgba(18, 40, 63, 0.42) 0%, rgba(10, 25, 41, 0.42) 100%);
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            color: var(--text);
-            padding: 14px;
-            text-decoration: none;
-            transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease;
-            box-shadow: none;
-            backdrop-filter: blur(0.14px) saturate(118%);
-            -webkit-backdrop-filter: blur(0.14px) saturate(118%);
-            display: block;
-            overflow: hidden;
-        }
-
-        .mosaic-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            border-color: rgba(197, 229, 255, 0.7);
-            background: linear-gradient(180deg, rgba(28, 56, 86, 0.58) 0%, rgba(14, 31, 50, 0.62) 100%);
-        }
-
-        .mosaic-card__thumb {
-            position: relative;
-            width: 100%;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
-            margin-bottom: 12px;
-            border: 1px solid rgba(193, 222, 255, 0.22);
-            overflow: hidden;
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.002);
-            backdrop-filter: blur(0.3px) saturate(120%);
-            -webkit-backdrop-filter: blur(0.3px) saturate(120%);
-        }
-
-        .mosaic-card__thumb::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.003);
-            backdrop-filter: blur(0.4px) saturate(120%);
-            -webkit-backdrop-filter: blur(0.4px) saturate(120%);
-            pointer-events: none;
-            mix-blend-mode: normal;
-            transition: background 0.22s ease, backdrop-filter 0.22s ease, opacity 0.22s ease;
-        }
-
-        .mosaic-card__thumb.tall {
-            aspect-ratio: 3 / 4;
-        }
-
-        .mosaic-card__thumb.wide {
-            aspect-ratio: 16 / 9;
-        }
-
-        .mosaic-card__thumb.square {
-            aspect-ratio: 1 / 1;
-        }
-
-        .mosaic-card__thumb.cinematic {
-            aspect-ratio: 21 / 9;
-        }
-
-        .mosaic-card__thumb.portrait {
-            aspect-ratio: 2 / 3;
-        }
-
-        .mosaic-card__tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--accent);
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .mosaic-card h3 {
-            font-size: 20px;
-            margin-bottom: 4px;
-            line-height: 1.15;
-        }
-
-        .mosaic-card.featured h3 {
-            font-size: 28px;
-        }
-
-        .mosaic-card p {
-            color: rgba(220, 236, 255, 0.76);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .mosaic-card.featured {
-            padding: 18px;
-        }
-
-        /* Colored hover tint per category */
-        .mosaic-card.category-focus:hover .mosaic-card__thumb::after { background: rgba(96,211,133,0.12); }
-        .mosaic-card.category-sleep:hover .mosaic-card__thumb::after { background: rgba(167,139,250,0.12); }
-        .mosaic-card.category-calm:hover .mosaic-card__thumb::after { background: rgba(56,189,248,0.12); }
-        .mosaic-card.category-other:hover .mosaic-card__thumb::after { background: rgba(248,230,122,0.12); }
-
-        .mosaic-card.minimal {
-            padding: 12px;
-        }
-
-        .mosaic-card.minimal h3 {
-            font-size: 16px;
-        }
-
-        .mosaic-card.minimal p {
-            display: none;
-        }
-
-        @media (max-width: 1040px) {
-            .mosaic-grid {
-                columns: 3;
-            }
-        }
-
-        @media (max-width: 760px) {
-            .mosaic-grid {
-                columns: 2;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .mosaic-grid {
-                columns: 1;
-            }
-        }
-
-        .coming-soon-shell {
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            background: linear-gradient(180deg, rgba(15, 32, 52, 0.54) 0%, rgba(8, 20, 34, 0.58) 100%);
-            box-shadow: 0 14px 34px rgba(4, 14, 26, 0.34);
-            backdrop-filter: blur(12px) saturate(122%);
-            padding: clamp(18px, 3vw, 28px);
-            text-align: center;
-        }
-
-        .coming-soon-shell h2 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(22px, 3vw, 34px);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            color: #eef8ff;
-        }
-
-        .coming-soon-shell p {
-            color: var(--muted);
-            max-width: 820px;
-            margin: 0 auto;
-            font-size: 16px;
-        }
-
-        .signup-subtitle {
-            font-size: clamp(16px, 2vw, 22px);
-            color: #c8dff4;
-            margin: 28px 0 18px;
-            font-weight: 400;
-        }
-
-        .join-form {
-            max-width: 760px;
-            margin: 0 auto;
-            text-align: left;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-            color: var(--muted);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            background: rgba(5, 14, 24, 0.56);
-            border: 1px solid var(--line);
-            color: var(--text);
-            border-radius: 12px;
-            padding: 12px 14px;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: rgba(196, 180, 255, 0.62);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(180deg, rgba(234, 246, 255, 0.96) 0%, rgba(213, 236, 255, 0.94) 100%);
-            color: #07253f;
-            border: none;
-            border-radius: 999px;
-            padding: 13px 20px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-1px);
-            opacity: 1;
-        }
-
-        .tab-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .tab-btn {
-            border: 1px solid var(--line);
-            background: rgba(11, 11, 15, 0.82);
-            color: var(--text);
-            border-radius: 999px;
-            padding: 10px 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: border-color 0.2s ease, background 0.2s ease;
-        }
-
-        .tab-btn.is-active {
-            border-color: var(--line-strong);
-            background: rgba(35, 28, 52, 0.92);
-            color: #ffffff;
-        }
-
-        .hub-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 16px;
-        }
-
-        .hub-panel {
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            background: rgba(14, 13, 21, 0.84);
-            padding: 18px;
-        }
-
-        .panel-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 14px;
-        }
-
-        .track-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .track-item {
-            width: 100%;
-            text-align: left;
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            background: rgba(10, 10, 14, 0.78);
-            color: var(--text);
-            padding: 12px;
-            cursor: pointer;
-            transition: border-color 0.2s ease, transform 0.2s ease;
-        }
-
-        .track-item:hover,
-        .track-item.is-active {
-            border-color: rgba(196, 180, 255, 0.6);
-            transform: translateY(-1px);
-        }
-
-        .track-item strong {
-            display: block;
-            font-size: 18px;
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
-
-        .track-meta {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        .player {
-            border: 1px solid var(--line-strong);
-            border-radius: 16px;
-            background: rgba(20, 16, 30, 0.84);
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .player h3 {
-            font-size: 22px;
-            margin-bottom: 4px;
-        }
-
-        .player p {
-            color: var(--muted);
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .player audio {
-            width: 100%;
-        }
-
-        .queue-list {
-            display: grid;
-            gap: 8px;
-        }
-
-        .queue-item {
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 10px;
-            font-size: 13px;
-            color: var(--muted);
-            background: rgba(10, 10, 14, 0.68);
-        }
-
-        @media (max-width: 1040px) {
-            .layout {
-                grid-template-columns: 1fr;
-            }
-
-            .latest-release-heading {
-                font-size: clamp(22px, 5vw, 34px);
-            }
-
-            .card-main p {
-                max-width: 100%;
-            }
-
-            .extra-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .recommendation-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .hub-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 760px) {
-            .topbar {
-                position: static;
-                padding-top: 14px;
-            }
-
-            .nav-pill {
-                border-radius: 20px;
-                flex-direction: column;
-                gap: 12px;
-                padding: 14px;
-            }
-
-            .brand strong {
-                font-size: 23px;
-            }
-
-            .hero {
-                margin-top: 20px;
-                padding-top: 56px;
-            }
-
-            .hero h1 {
-                letter-spacing: 0.08em;
-            }
-
-            .hero-subtitle {
-                font-size: 15px;
-            }
-
-            .card-side-bottom {
-                grid-template-columns: 1fr;
-            }
-
-            .extra-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .recommendation-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                flex-direction: column;
-            }
-
-            .header-nav-btns {
-                display: none;
-            }
-        }
-
-        /* --- Sound Hub Cards --- */
-        .sound-hub-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 32px;
-            margin: 60px 0;
-            text-align: left;
-        }
-
-        .sound-card {
-            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-            border: 1px solid #333;
-            border-radius: 4px;
-            /* Industrial sharper edges */
-            padding: 0;
-            /* Change to accommodate rack header */
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.8),
-                inset 0 1px 1px rgba(255, 255, 255, 0.05);
-        }
-
-        .sound-card::before {
-            /* Rack detail: Screws */
-            content: "•";
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #444;
-            font-size: 10px;
-        }
-
-        .sound-card::after {
-            /* Rack detail: Screws */
-            content: "•";
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            color: #444;
-            font-size: 10px;
-        }
-
-        .sound-card__rack-header {
-            background: #222;
-            padding: 8px 16px;
-            border-bottom: 1px solid #333;
+        .main-header {
+            position: sticky;
+            top: 0;
+            padding: 20px 40px;
+            background: rgba(16, 16, 20, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 20;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid transparent;
+            transition: border-bottom 0.3s ease;
         }
+        .main-header.scrolled { border-bottom: 1px solid var(--border); }
 
-        .sound-card__led {
-            width: 6px;
-            height: 6px;
-            background: #555;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        }
+        .pills { display: flex; gap: 10px; }
+        .pill { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-primary); padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; }
+        .pill:hover, .pill.active { background: var(--text-primary); color: var(--bg-dark); }
 
-        .sound-card.active .sound-card__led {
-            background: #ff3e3e;
-            /* Power Red */
-            box-shadow: 0 0 8px rgba(255, 62, 62, 0.8);
-            animation: pulse 2s infinite;
-        }
-
-        .sound-card__body {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .sound-card__display {
-            background: #000;
-            border: 1px solid #222;
-            padding: 12px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sound-card__freq-label {
-            font-size: 10px;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
-            display: block;
-        }
-
-        .sound-card__freq-value {
-            font-size: 18px;
-            color: var(--accent);
-            text-shadow: 0 0 10px rgba(143, 212, 255, 0.4);
-        }
-
-        .sound-card h3 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 24px;
-            margin: 0;
-            color: #eee;
-            letter-spacing: 0.5px;
-        }
-
-        /* --- CSS Visualizer --- */
-        .visualizer {
-            height: 30px;
+        .hero-banner {
+            padding: 60px 40px 40px;
             display: flex;
             align-items: flex-end;
-            gap: 2px;
-            margin-top: 10px;
+            gap: 24px;
         }
-
-        .vis-bar {
-            flex: 1;
-            background: var(--accent);
-            height: 20%;
-            opacity: 0.3;
-            transition: height 0.2s ease;
-        }
-
-        .sound-card.active .vis-bar {
-            animation: barAnim 1s ease-in-out infinite;
-            opacity: 0.8;
-        }
-
-        @keyframes barAnim {
-
-            0%,
-            100% {
-                height: 20%;
-            }
-
-            50% {
-                height: 80%;
-            }
-        }
-
-        /* Vary animations for realism */
-        .vis-bar:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .vis-bar:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .vis-bar:nth-child(4) {
-            animation-delay: 0.15s;
-        }
-
-        .vis-bar:nth-child(5) {
-            animation-delay: 0.3s;
-        }
-
-        .video-container {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            border-radius: 2px;
+        .hero-art {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #2a2a35, #18181c);
             overflow: hidden;
-            background: #000;
-            border: 1px solid #333;
-            cursor: pointer;
-            position: relative;
-            filter: grayscale(0.5);
-            transition: filter 0.3s ease;
         }
+        .hero-art img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-info p.label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; color: var(--text-secondary); }
+        .hero-info h1 { font-family: 'Outfit', sans-serif; font-size: clamp(40px, 5vw, 82px); font-weight: 800; line-height: 1.1; margin-bottom: 12px; letter-spacing: -1px; }
+        .hero-info p.desc { font-size: 15px; color: var(--text-secondary); font-weight: 400; max-width: 600px; }
 
-        .sound-card:hover .video-container {
-            filter: grayscale(0);
-            border-color: var(--accent);
-        }
+        /* Tracklist */
+        .tracklist-container { padding: 20px 40px 100px; }
+        .tracklist-header { display: grid; grid-template-columns: 50px 1fr 1fr 100px; padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        
+        .track-row { display: grid; grid-template-columns: 50px 1fr 1fr 100px; align-items: center; padding: 12px 16px; border-radius: 8px; transition: background 0.2s ease; cursor: pointer; }
+        .track-row:hover { background: var(--bg-surface-hover); }
+        .track-row:hover .track-num { display: none; }
+        .track-row:hover .track-play-btn { display: flex; }
+        .track-row.playing .track-title { color: var(--accent); }
+        .track-row.playing .track-num { display: none; }
+        .track-row.playing .track-eq { display: flex; }
+        
+        .track-col { display: flex; align-items: center; font-size: 14px; color: var(--text-secondary); }
+        .track-col:first-child { justify-content: center; position: relative; }
+        .track-col:last-child { justify-content: flex-end; }
+        
+        .track-play-btn { display: none; background: transparent; border: none; color: var(--text-primary); cursor: pointer; align-items: center; justify-content: center; }
+        .track-play-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        
+        .track-info { display: flex; align-items: center; gap: 14px; }
+        .track-img { width: 40px; height: 40px; border-radius: 4px; background: #222; overflow: hidden; }
+        .track-img img { width: 100%; height: 100%; object-fit: cover; }
+        .track-details { display: flex; flex-direction: column; justify-content: center; }
+        .track-title { font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+        
+        .cat-badge { font-size: 11px; padding: 2px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* EQ Animation */
+        .track-eq { display: none; align-items: flex-end; gap: 2px; height: 14px; width: 14px; }
+        .eq-bar { width: 3px; background: var(--accent); animation: eq 1s ease-in-out infinite alternate; }
+        .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes eq { 0% { height: 2px; } 100% { height: 14px; } }
 
-        .play-overlay {
-            position: absolute;
-            inset: 0;
-            display: flex;
+        /* Player Bar */
+        .player-bar {
+            grid-column: 1 / -1;
+            background: rgba(16, 16, 20, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
             align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.4);
+            padding: 0 24px;
+            z-index: 100;
         }
 
-        .play-icon {
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--accent);
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease;
-        }
+        .now-playing { display: flex; align-items: center; gap: 16px; visibility: hidden; opacity: 0; transition: opacity 0.3s; }
+        .now-playing.active { visibility: visible; opacity: 1; }
+        .np-img { width: 56px; height: 56px; border-radius: 6px; overflow: hidden; background: #222; }
+        .np-img img { width: 100%; height: 100%; object-fit: cover; }
+        .np-info h4 { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+        .np-info p { font-size: 12px; color: var(--text-secondary); }
 
-        .play-icon svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--accent);
-        }
+        .player-controls { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+        .control-btns { display: flex; align-items: center; gap: 20px; }
+        .ctrl-btn { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .ctrl-btn:hover { color: var(--text-primary); transform: scale(1.1); }
+        .ctrl-btn.play-pause { width: 40px; height: 40px; border-radius: 50%; background: var(--text-primary); color: var(--bg-dark); }
+        .ctrl-btn.play-pause:hover { background: #fff; transform: scale(1.05); }
+        .ctrl-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .ctrl-btn.play-pause svg { width: 20px; height: 20px; }
 
-        /* --- Industrial Background --- */
-        body {
-            background-color: #000 !important;
-        }
+        /* Loading state */
+        .loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--text-muted); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
 
-        main::before {
-            background-size: 60px 60px;
-            background-image:
-                linear-gradient(rgba(143, 212, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(143, 212, 255, 0.03) 1px, transparent 1px);
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 0.4;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0.4;
-            }
-        }
     </style>
 </head>
-
 <body>
-    <header class="topbar">
-        <div class="header-row container">
-            <nav class="nav-pill">
-                <a class="brand" href="index.html" aria-label="Neuronest Australia">
-                    <strong>NeuroNest</strong>
-                    <span>Australia</span>
-                    <div class="dropdown-menu">
-                        <a href="index.html">Home</a>
-                        <a href="learn-more.html">Learn More</a>
-                        <a href="soundhub.html">Sound Hub</a>
-                        <a href="neuroscience-news.html">Latest News</a>
-                        <a href="mailto:contact@neuronest.au">Contact</a>
-                    </div>
+    <div class="app-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="index.html" class="brand">
+                <span class="brand-logo"></span>
+                NeuroNest
+            </a>
+            
+            <ul class="nav-links">
+                <a href="index.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    Home
                 </a>
-            </nav>
-            <div class="header-title">Sound Hub</div>
-            <nav class="header-nav-btns">
-                <a href="#latest-release" class="header-nav-btn">Latest Releases</a>
-                <a href="#curated-grid" class="header-nav-btn">Curated Selection</a>
-            </nav>
-            <div class="rotating-text-wrap">
-                <span class="rotating-text active">Sound Engineering Collaborations</span>
-                <span class="rotating-text">Latest Neuroscience News</span>
-                <span class="rotating-text">Sound Engineering</span>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero">
-            <h1>SOUND HUB</h1>
-            <div class="container hero-content-wrap">
-                <p class="hero-subtitle">Neuro-Auditory Protocols</p>
-                <span class="hero-badge">Signal Stable · 40Hz Audio Active</span>
-            </div>
-        </section>
-
-        <section class="section-block" style="padding-top: 0;">
-            <div class="container">
-                <!-- Active Sound Hub Section -->
-                <!-- Modern Radio Interface: Sound Hub Grid -->
-                <div class="sound-hub-grid">
-                    <!-- Module 1: CALM -->
-                    <div class="sound-card">
-                        <div class="sound-card__rack-header">
-                            <div><span class="sound-card__led"></span><span
-                                    style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; text-transform: uppercase;">Module
-                                    01</span></div>
-                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #555;">SIG:
-                                OPTIMAL</div>
-                        </div>
-                        <div class="sound-card__body">
-                            <div class="sound-card__display">
-                                <span class="sound-card__freq-label">Deep Calm Protocol</span>
-                                <div class="sound-card__freq-value">4-8 Hz Theta / 0.5-4 Hz Delta</div>
-                                <div class="visualizer">
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                </div>
-                            </div>
-                            <h3>Post-Work Recovery</h3>
-                            <div class="video-container"
-                                onclick="this.closest('.sound-card').classList.add('active'); this.innerHTML='<iframe width=100% height=100% src=\'https://www.youtube.com/embed/DXmP7_m4Eks?autoplay=1\' frameborder=0 allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
-                                <img src="https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg"
-                                    alt="Calm Soundscape">
-                                <div class="play-overlay">
-                                    <div class="play-icon">
-                                        <svg viewBox="0 0 24 24">
-                                            <polygon points="5,3 19,12 5,21"></polygon>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Module 2: FOCUS -->
-                    <div class="sound-card">
-                        <div class="sound-card__rack-header">
-                            <div><span class="sound-card__led"></span><span
-                                    style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; text-transform: uppercase;">Module
-                                    02</span></div>
-                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #555;">SIG:
-                                STANDBY</div>
-                        </div>
-                        <div class="sound-card__body">
-                            <div class="sound-card__display">
-                                <span class="sound-card__freq-label">Focus Architecture</span>
-                                <div class="sound-card__freq-value">40 Hz Gamma Entrainment</div>
-                                <div class="visualizer">
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                </div>
-                            </div>
-                            <h3>Cognitive Performance</h3>
-                            <div class="video-container"
-                                onclick="this.closest('.sound-card').classList.add('active'); this.innerHTML='<iframe width=100% height=100% src=\'https://www.youtube.com/embed/6vez9LT68SQ?autoplay=1\' frameborder=0 allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
-                                <img src="https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg"
-                                    alt="Focus Soundscape">
-                                <div class="play-overlay">
-                                    <div class="play-icon">
-                                        <svg viewBox="0 0 24 24">
-                                            <polygon points="5,3 19,12 5,21"></polygon>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Module 3: MEDITATION -->
-                    <div class="sound-card">
-                        <div class="sound-card__rack-header">
-                            <div><span class="sound-card__led"></span><span
-                                    style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #888; text-transform: uppercase;">Module
-                                    03</span></div>
-                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #555;">SIG:
-                                STANDBY</div>
-                        </div>
-                        <div class="sound-card__body">
-                            <div class="sound-card__display">
-                                <span class="sound-card__freq-label">Alpha–Theta Flow</span>
-                                <div class="sound-card__freq-value">8-12 Hz Alpha Coherence</div>
-                                <div class="visualizer">
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                    <div class="vis-bar"></div>
-                                </div>
-                            </div>
-                            <h3>Creative Visualization</h3>
-                            <div class="video-container"
-                                onclick="this.closest('.sound-card').classList.add('active'); this.innerHTML='<iframe width=100% height=100% src=\'https://www.youtube.com/embed/1ZYbU82GVz4?autoplay=1\' frameborder=0 allow=\'autoplay; encrypted-media\' allowfullscreen></iframe>'">
-                                <img src="https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg"
-                                    alt="Meditation Soundscape">
-                                <div class="play-overlay">
-                                    <div class="play-icon">
-                                        <svg viewBox="0 0 24 24">
-                                            <polygon points="5,3 19,12 5,21"></polygon>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="nav-item active">
+                    <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="6" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="2"></circle><circle cx="18" cy="16" r="3" fill="none" stroke="currentColor" stroke-width="2"></circle></svg>
+                    Sound Hub
                 </div>
+                <a href="neuroscience-news.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    Research Hub
+                </a>
+                <a href="learn-more.html" class="nav-item">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 16v-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 8h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    Learn More
+                </a>
+            </ul>
 
-                <div class="coming-soon-shell" style="margin-top: 32px; margin-bottom: 40px;">
-                    <h2>Join the Free Access List</h2>
-                    <p>The full interactive dashboard is in active development. Join the early access list for launch
-                        updates and exclusive beta testing protocols.</p>
-
-                    <h3 class="signup-subtitle">August 2026 Batch</h3>
-                    <form class="join-form" id="radioSignupForm" action="https://formsubmit.co/neuronestaudio@gmail.com"
-                        method="POST">
-                        <input type="hidden" name="_cc" value="dion@neuronesthub.org">
-                        <input type="hidden" name="_subject" value="New Sound Hub Free Access Signup">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <input type="text" name="_honey" style="display:none">
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="signup-first-name">First name</label>
-                                <input id="signup-first-name" type="text" name="first_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="signup-last-name">Last name</label>
-                                <input id="signup-last-name" type="text" name="last_name" required>
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label for="signup-email">Email</label>
-                            <input id="signup-email" type="email" name="email" required>
-                        </div>
-                        <div class="form-group" style="margin-bottom: 20px;">
-                            <label for="signup-goal">What will you use Sound Hub for?</label>
-                            <textarea id="signup-goal" rows="3" name="message"></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn" id="radioSubmitBtn">Join Free Access List</button>
-                    </form>
+            <div class="sidebar-heading">Your Pathways</div>
+            <ul class="nav-links">
+                <div class="nav-item" data-filter="Focus">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--cat-focus);"></span> Focus
                 </div>
-
-                <p class="hero-subtitle">Explore curated selections and latest releases while we continue building the
-                    full interactive hub experience.</p>
-                <span class="hero-badge">Curated Listening · Live Now</span>
-
-                <div id="latest-release"
-                    style="font-family: 'DM Serif Display', serif; font-size: 40px; letter-spacing: 0.18em; text-transform: none; color: rgba(244, 249, 255, 0.96); margin-bottom: 40px; text-align: center; font-weight: 400; margin-top: 72px;">
-                    Latest Release</div>
-
-                <div class="layout">
-                    <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener"
-                        class="card card-main">
-                        <div class="card-main__image"
-                            style="background-image: url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');">
-                        </div>
-                        <div class="card-main__shade"></div>
-                        <div class="card-main__content">
-                            <div class="latest-play-btn" aria-hidden="true">
-                                <svg viewBox="0 0 24 24">
-                                    <polygon points="5,3 19,12 5,21"></polygon>
-                                </svg>
-                            </div>
-                            <span class="tag">Active Collab · Pulse Engine</span>
-                            <h2>Deep Focus Architecture</h2>
-                            <p>Engineered isochronic tones layered with brown noise. Designed for sustained cognitive
-                                performance.</p>
-                        </div>
-                    </a>
-
-                    <div class="card-side-wrap">
-                        <a href="#curated-grid" class="card card-side">
-                            <span class="tag">Button</span>
-                            <h3>Curated Selection</h3>
-                            <p>Jump straight to the curated tracks and topic playlists.</p>
-                        </a>
-
-                        <div class="card-side-bottom">
-                            <a href="neuroscience-news.html" class="card card-small">
-                                <span class="tag">Research Hub</span>
-                                <h4>Neuroscience News</h4>
-                                <p>Open the latest research and neuroscience updates.</p>
-                            </a>
-
-                            <a href="learn-more.html#how-it-works" class="card card-small">
-                                <span class="tag">Guide</span>
-                                <h4>How to Use Sound</h4>
-                                <p>Get practical listening guidance and brainwave timing cues.</p>
-                            </a>
-                        </div>
-                    </div>
+                <div class="nav-item" data-filter="Sleep">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--cat-sleep);"></span> Sleep
                 </div>
+                <div class="nav-item" data-filter="Calm">
+                    <span style="width:10px;height:10px;border-radius:50%;background:var(--cat-calm);"></span> Calm
+                </div>
+            </ul>
+        </aside>
 
-                <div id="curated-grid" style="margin-top: 80px;">
-                    <div class="curated-title">Curated Selection</div>
-                    <p class="curated-subtitle">Explore our hand-picked rotation of tracks engineered to complement
-                        specific neurological targets and cultural soundscapes.</p>
+        <!-- Main Content -->
+        <main class="main-view" id="main-scroll">
+            <header class="main-header" id="header">
+                <div class="pills">
+                    <button class="pill active" data-filter="All">All Regions</button>
+                    <button class="pill" data-filter="Focus">Focus</button>
+                    <button class="pill" data-filter="Sleep">Sleep</button>
+                    <button class="pill" data-filter="Calm">Calm</button>
+                </div>
+            </header>
 
-                    <div class="mosaic-grid">
-
-                        <a href="https://www.youtube.com/watch?v=6vez9LT68SQ" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb tall"
-                                style="background-image:url('https://img.youtube.com/vi/6vez9LT68SQ/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Deep Focus</span>
-                            <h3>The ASSR Rotation</h3>
-                            <p>Auditory Steady-State Response tracks using 40Hz Gamma pulses for sustained cognitive
-                                focus.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=DXmP7_m4Eks" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/DXmP7_m4Eks/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Nervous System</span>
-                            <h3>Calm the Vagus Nerve</h3>
-                            <p>Slow-wave delta ramps for post-stress recovery.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Study Tool</span>
-                            <h3>What is Lofi?</h3>
-                            <p>Soft sonic landscapes that mask distractions during focused work.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=L2vS_05R3P0" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb portrait"
-                                style="background-image:url('https://img.youtube.com/vi/L2vS_05R3P0/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Cultural Research</span>
-                            <h3>African Percussion</h3>
-                            <p>Traditional polyrhythms that support hemispheric balance and gamma synchronization.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=1X5O83E1S1I" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb cinematic"
-                                style="background-image:url('https://img.youtube.com/vi/1X5O83E1S1I/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Sleep Tech</span>
-                            <h3>Sleep Deep</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=7u8mmU85XQw" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb tall"
-                                style="background-image:url('https://img.youtube.com/vi/7u8mmU85XQw/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Emotional Flow</span>
-                            <h3>Mood Elevation</h3>
-                            <p>High-beta and gamma profiles to lift arousal and attention.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=mXm2ba_9N9I" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/mXm2ba_9N9I/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">8D Research</span>
-                            <h3>Spatial Clarity</h3>
-                            <p>360-degree auditory textures that expand the perceived mental workspace.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=hO1_Dcl4_rY" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/hO1_Dcl4_rY/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Cognitive Health</span>
-                            <h3>Plasticity Flow</h3>
-                            <p>Structured frequency-following responses to support neural adaptation.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=5qap5aO4i9A" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/5qap5aO4i9A/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Brown Noise</span>
-                            <h3>Deep Warmth</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=FjHGZj2IjBk" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb portrait"
-                                style="background-image:url('https://img.youtube.com/vi/FjHGZj2IjBk/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Theta Waves</span>
-                            <h3>Creative State</h3>
-                            <p>Theta-range entrainment for ideation and creative problem solving.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=lTRiuFIWV54" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/lTRiuFIWV54/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Alpha Bridge</span>
-                            <h3>Relaxed Alertness</h3>
-                            <p>10Hz alpha foundations for calm, present focus.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=wzjWIxXBs_s" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb tall"
-                                style="background-image:url('https://img.youtube.com/vi/wzjWIxXBs_s/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Nature Blend</span>
-                            <h3>Rain Architecture</h3>
-                            <p>Layered rain textures with embedded frequency ramps for overnight comfort.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=nMfPqeZjc2c" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb cinematic"
-                                style="background-image:url('https://img.youtube.com/vi/nMfPqeZjc2c/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">White Noise</span>
-                            <h3>Flat Spectrum</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=aXItOY0sLRY" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/aXItOY0sLRY/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Binaural</span>
-                            <h3>Hemispheric Sync</h3>
-                            <p>Differential frequency processing for interaural coherence.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=OdIJ2x3nTzQ" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb portrait"
-                                style="background-image:url('https://img.youtube.com/vi/OdIJ2x3nTzQ/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Ambient Drone</span>
-                            <h3>Harmonic Depth</h3>
-                            <p>Sustained harmonic overtones for deep immersion environments.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=rUxyKA_-grg" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/rUxyKA_-grg/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Pink Noise</span>
-                            <h3>Spectral Balance</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=WPni755-Krg" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/WPni755-Krg/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Gamma Pulse</span>
-                            <h3>40Hz Cognitive Engine</h3>
-                            <p>Isochronic 40Hz gamma stimulation for peak concentration and neural coherence.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=1ZYbU82GVz4" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb tall"
-                                style="background-image:url('https://img.youtube.com/vi/1ZYbU82GVz4/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Meditation</span>
-                            <h3>Stillness Protocol</h3>
-                            <p>Delta-theta blends for guided and unguided meditation practice.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=jOwjY6lSdMo" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb cinematic"
-                                style="background-image:url('https://img.youtube.com/vi/jOwjY6lSdMo/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Ocean</span>
-                            <h3>Tidal Rhythm</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=bo_efYhYU2A" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/bo_efYhYU2A/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Work Mode</span>
-                            <h3>Productivity Stack</h3>
-                            <p>Multi-layered focus blend with brown noise base and subtle isochronic overtones.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=77ZozI0rw7w" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/77ZozI0rw7w/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Vagal Tone</span>
-                            <h3>Nervous System Reset</h3>
-                            <p>Low-frequency modulation for parasympathetic activation.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=lE6RYpe9IT0" target="_blank" rel="noopener"
-                            class="mosaic-card featured">
-                            <div class="mosaic-card__thumb portrait"
-                                style="background-image:url('https://img.youtube.com/vi/lE6RYpe9IT0/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Indigenous Sound</span>
-                            <h3>Didgeridoo Resonance</h3>
-                            <p>Deep drone traditions from Aboriginal Australian sound practice.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=Dx5qFachd3A" target="_blank" rel="noopener"
-                            class="mosaic-card minimal">
-                            <div class="mosaic-card__thumb wide"
-                                style="background-image:url('https://img.youtube.com/vi/Dx5qFachd3A/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">ASMR Hybrid</span>
-                            <h3>Whisper Texture</h3>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=rBrd_3VMC3c" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb tall"
-                                style="background-image:url('https://img.youtube.com/vi/rBrd_3VMC3c/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Frequency Bath</span>
-                            <h3>528Hz Harmonic</h3>
-                            <p>Solfeggio-inspired frequency layering for tonal immersion.</p>
-                        </a>
-
-                        <a href="https://www.youtube.com/watch?v=BlbWDylJHfk" target="_blank" rel="noopener"
-                            class="mosaic-card">
-                            <div class="mosaic-card__thumb square"
-                                style="background-image:url('https://img.youtube.com/vi/BlbWDylJHfk/maxresdefault.jpg');">
-                            </div><span class="mosaic-card__tag">Wind Down</span>
-                            <h3>Evening Protocol</h3>
-                            <p>Beta-to-delta descent curve for structured sleep preparation.</p>
-                        </a>
-
-                    </div>
+            <div class="hero-banner">
+                <div class="hero-art">
+                    <img src="https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=600&q=80" alt="Sound Hub Playlist">
+                </div>
+                <div class="hero-info">
+                    <p class="label">Public Pathway</p>
+                    <h1>NeuroNest Sound Atlas</h1>
+                    <p class="desc">A curated collection of scientifically informed audio environments designed to modulate autonomic state, enhance concentration, and promote rest.</p>
                 </div>
             </div>
-        </section>
 
-    </main>
+            <div class="tracklist-container">
+                <div class="tracklist-header">
+                    <div class="track-col">#</div>
+                    <div class="track-col">Title</div>
+                    <div class="track-col">Category</div>
+                    <div class="track-col">Action</div>
+                </div>
+                
+                <div id="tracks-wrapper">
+                    <div class="loading">Loading Database...</div>
+                    <!-- Tracks generated via JS -->
+                </div>
+            </div>
+        </main>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
+        <!-- Player Bar -->
+        <footer class="player-bar">
+            <div class="now-playing" id="now-playing-container">
+                <div class="np-img"><img src="" alt="" id="np-img"></div>
+                <div class="np-info">
+                    <h4 id="np-title">Track Title</h4>
+                    <p id="np-cat">Category</p>
+                </div>
+            </div>
 
-    <script src="assets/page-transitions.js"></script>
+            <div class="player-controls">
+                <div class="control-btns">
+                    <button class="ctrl-btn"><svg viewBox="0 0 24 24"><path d="M19 20L9 12l10-8v16zM5 19V5h2v14H5z"/></svg></button>
+                    <button class="ctrl-btn play-pause" id="master-play"><svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg></button>
+                    <button class="ctrl-btn"><svg viewBox="0 0 24 24"><path d="M5 4l10 8-10 8V4zm14 1h-2v14h2V5z"/></svg></button>
+                </div>
+            </div>
+            
+            <div></div> <!-- Volume block placeholder -->
+        </footer>
+    </div>
+
+    <!-- Hidden YouTube API Embed -->
+    <div id="ytplayer" style="position:absolute; width:0; height:0; top:-9999px; left:-9999px;"></div>
+
     <script>
-        // --- Form AJAX Submission ---
-        (function () {
-            const form = document.getElementById('radioSignupForm');
-            const submitBtn = document.getElementById('radioSubmitBtn');
-            const toast = document.getElementById('toast');
+        let tracksData = [];
+        let player;
+        let isPlaying = false;
+        let currentTrackId = null;
 
-            function showToast(message, type) {
-                const toast = document.getElementById('toast');
-                if (!toast) return;
-                toast.textContent = message;
-                toast.className = 'toast toast--' + type;
-                void toast.offsetWidth;
-                toast.classList.add('visible');
-                setTimeout(() => {
-                    toast.classList.remove('visible');
-                }, 4000);
+        // UI Elements
+        const tracksWrapper = document.getElementById('tracks-wrapper');
+        const masterPlayBtn = document.getElementById('master-play');
+        const npContainer = document.getElementById('now-playing-container');
+        const npTitle = document.getElementById('np-title');
+        const npCat = document.getElementById('np-cat');
+        const npImg = document.getElementById('np-img');
+        const mainScroll = document.getElementById('main-scroll');
+        const header = document.getElementById('header');
+
+        // Scroll effect
+        mainScroll.addEventListener('scroll', () => {
+            if (mainScroll.scrollTop > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // Load YouTube IFrame API
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytplayer', {
+                height: '0',
+                width: '0',
+                videoId: '',
+                playerVars: { 'playsinline': 1, 'controls': 0, 'disablekb': 1 },
+                events: { 'onStateChange': onPlayerStateChange }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                updatePlayIcons();
+            } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                isPlaying = false;
+                updatePlayIcons();
             }
+        }
 
-            if (form) {
-                form.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-                    submitBtn.disabled = true;
-                    const originalText = submitBtn.textContent;
-                    submitBtn.textContent = 'Sending...';
-                    const formData = new FormData(form);
-                    try {
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: { 'Accept': 'application/json' }
-                        });
-                        if (response.ok) {
-                            showToast('✓ You are on the free access list!', 'success');
-                            form.reset();
-                        } else {
-                            showToast('Something went wrong. Please try again.', 'error');
-                        }
-                    } catch (error) {
-                        showToast('Network error. Please try again.', 'error');
-                    }
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
+        // Fetch data
+        async function init() {
+            try {
+                const res = await fetch('assets/soundhub-data.json');
+                tracksData = await res.json();
+                renderTracks(tracksData);
+                bindFilters();
+            } catch (err) {
+                console.error(err);
+                tracksWrapper.innerHTML = '<div class="loading">Error loading tracks.</div>';
+            }
+        }
+
+        function getCatColor(cat) {
+            const c = cat.toLowerCase();
+            if(c==='focus') return '#8ea3ff';
+            if(c==='sleep') return '#a78bfa';
+            if(c==='calm') return '#67e8f9';
+            return '#a1a1aa';
+        }
+
+        function renderTracks(data) {
+            if (!data.length) {
+                tracksWrapper.innerHTML = '<div class="loading">No tracks found.</div>';
+                return;
+            }
+            tracksWrapper.innerHTML = data.map((track, i) => {
+                const isCurrent = track.id === currentTrackId;
+                const playingClass = isCurrent && isPlaying ? 'playing' : '';
+                return `
+                    <div class="track-row ${playingClass}" data-id="${track.id}" data-yt="${track.youtubeId}">
+                        <div class="track-col">
+                            <span class="track-num">${i + 1}</span>
+                            <button class="track-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                            <div class="track-eq">
+                                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                            </div>
+                        </div>
+                        <div class="track-col track-info">
+                            <div class="track-img"><img src="${track.coverArt}" alt="cover"></div>
+                            <div class="track-details">
+                                <div class="track-title">${track.title}</div>
+                                <div style="font-size:12px">${track.description.substring(0, 45)}...</div>
+                            </div>
+                        </div>
+                        <div class="track-col">
+                            <span class="cat-badge" style="color: ${getCatColor(track.category)}; border-color: ${getCatColor(track.category)}44">${track.category}</span>
+                        </div>
+                        <div class="track-col">-:--</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Bind click to tracks
+            document.querySelectorAll('.track-row').forEach(row => {
+                row.addEventListener('click', () => {
+                    playTrack(row.dataset.id, row.dataset.yt);
                 });
+            });
+        }
+
+        function playTrack(id, ytId) {
+            const track = tracksData.find(t => t.id === id);
+            if (!track) return;
+
+            // If same track clicked, toggle pause/play
+            if (currentTrackId === id) {
+                if (isPlaying) player.pauseVideo();
+                else player.playVideo();
+                return;
             }
 
-            // Existing Rotating Text Script
-            var texts = document.querySelectorAll('.rotating-text');
-            if (texts.length < 2) return;
-            var current = 0;
-            setInterval(function () {
-                texts[current].classList.remove('active');
-                current = (current + 1) % texts.length;
-                texts[current].classList.add('active');
-            }, 3000);
-        })();
+            // Play new track
+            currentTrackId = id;
+            if (player && typeof player.loadVideoById === 'function') {
+                player.loadVideoById(ytId);
+            }
+
+            // Update UI
+            npContainer.classList.add('active');
+            npTitle.textContent = track.title;
+            npCat.textContent = track.category;
+            npImg.src = track.coverArt;
+            
+            // Re-render tracks to show correct playing state
+            renderTracks(tracksData); 
+        }
+
+        function updatePlayIcons() {
+            // Master button
+            const playSvg = `<path d="M8 5v14l11-7z"/>`;
+            const pauseSvg = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`;
+            document.getElementById('play-icon').innerHTML = isPlaying ? pauseSvg : playSvg;
+            
+            // Re-render tracks rows
+            renderTracks(tracksData);
+        }
+
+        masterPlayBtn.addEventListener('click', () => {
+            if (!currentTrackId && tracksData.length > 0) {
+                playTrack(tracksData[0].id, tracksData[0].youtubeId);
+                return;
+            }
+            if (isPlaying) player.pauseVideo();
+            else player.playVideo();
+        });
+
+        // Filters
+        function bindFilters() {
+            const btns = document.querySelectorAll('[data-filter]');
+            btns.forEach(b => {
+                b.addEventListener('click', () => {
+                    // Visual active state
+                    if (b.classList.contains('pill')) {
+                        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                        b.classList.add('active');
+                    } else if (b.classList.contains('nav-item')) {
+                        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                        b.classList.add('active');
+                    }
+                    
+                    const f = b.dataset.filter;
+                    if (f === 'All') renderTracks(tracksData);
+                    else renderTracks(tracksData.filter(t => t.category === f));
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+
     </script>
 </body>
-
 </html>
