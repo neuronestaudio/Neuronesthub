@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NeuroNest | Sound Hub</title>
-<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+<script type="text/javascript" id="www-widgetapi-script" src="soundhub_files/www-widgetapi.js" async=""></script><script src="soundhub_files/dotlottie-player.mjs" type="module"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;800;900&family=Playfair+Display:wght@700;900&family=Great+Vibes&display=swap');
 
@@ -513,8 +513,8 @@
   }
   .sidebar-radio-tab { animation: aurora-shift 4s ease-in-out infinite; }
 </style>
-</head>
-<body>
+<script src="soundhub_files/iframe_api"></script></head>
+<body data-new-gr-c-s-check-loaded="8.937.0" data-gr-ext-installed="">
 
 <div id="app">
   <!-- Sidebar -->
@@ -530,11 +530,11 @@
       </a>
       <a class="sidebar-link" onclick="showPage('under')" title="Personalised">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"/>
-          <line x1="12" y1="4" x2="12" y2="8"/>
-          <line x1="12" y1="9.5" x2="12" y2="16"/>
-          <line x1="9" y1="11" x2="15" y2="14.5"/>
-          <line x1="9" y1="14.5" x2="15" y2="11"/>
+          <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"></path>
+          <line x1="12" y1="4" x2="12" y2="8"></line>
+          <line x1="12" y1="9.5" x2="12" y2="16"></line>
+          <line x1="9" y1="11" x2="15" y2="14.5"></line>
+          <line x1="9" y1="14.5" x2="15" y2="11"></line>
         </svg>
         <span class="nav-label">AI</span>
       </a>
@@ -544,9 +544,9 @@
       </a>
       <a class="sidebar-link sidebar-radio-tab" onclick="showPage('radio')" title="Radio">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
-          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"></path>
+          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
         </svg>
         <span class="nav-label">Radio</span>
       </a>
@@ -566,7 +566,7 @@
         <span class="topbar-title">Neuronest Radio // The Sound Hub</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;" id="search-area">
-        <input class="search-input" type="text" placeholder="Query signal archive..." oninput="filterArchive(this.value)" />
+        <input class="search-input" type="text" placeholder="Query signal archive..." oninput="filterArchive(this.value)">
         <button class="notif-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
         </button>
@@ -589,29 +589,31 @@
         <!-- === DASHBOARD === -->
         <div class="page active" id="page-dashboard">
           <!-- Hero -->
-          <section class="hero fade-in">
+          <section class="hero fade-in" style="--slide-glow: #f472b6;">
             <div class="hero-bg"></div>
-            <div class="hero-slide-bg" id="hero-slide-bg"></div>
+            <div class="hero-slide-bg" id="hero-slide-bg" style="background-image: url(&quot;https://img.youtube.com/vi/jfKfPfyJRdk/maxresdefault.jpg&quot;); background-size: cover; background-position: right center; opacity: 0.52; filter: saturate(1.15) brightness(1.05);"></div>
             <div class="hero-grid"></div>
             <div class="hero-overlay"></div>
             <div class="hero-content">
-              <div id="hero-content-inner" style="transition:opacity 0.4s ease;">
-                <div class="hero-label" id="hero-label">Active Protocol</div>
-                <h1 class="hero-title" id="hero-slide-title">Neuronest Radio.<br><span style="font-size:0.6em;letter-spacing:-0.01em;opacity:0.85;">The Sound Hub</span></h1>
-                <p id="hero-slide-sub" style="font-size:15px;font-weight:600;margin-bottom:6px;font-family:'Inter',sans-serif;color:#F3F3F0;">Using Sound as a Tool for Performance</p>
-                <p class="hero-body" id="hero-slide-desc">Neuroscience-backed audio protocols for focus, sleep, and calm — curated from peer-reviewed research and engineered for real-world use.</p>
+              <div id="hero-content-inner" style="transition: opacity 0.4s; opacity: 1;">
+                <div class="hero-label" id="hero-label" style="background: linear-gradient(135deg, rgb(79, 13, 186) 0%, rgb(192, 38, 211) 45%, rgb(244, 63, 94) 100%); color: rgb(255, 255, 255);">FEATURED TRACK · FOCUS</div>
+                <h1 class="hero-title" id="hero-slide-title" style="font-size: 56px;">Lofi Hip Hop Radio</h1>
+                <p id="hero-slide-sub" style="font-size: 15px; font-weight: 700; margin-bottom: 6px; font-family: &quot;Inter&quot;, sans-serif; color: rgb(243, 243, 240); background: linear-gradient(135deg, rgb(79, 13, 186) 0%, rgb(192, 38, 211) 45%, rgb(244, 63, 94) 100%) padding-box text; -webkit-text-fill-color: transparent;">by Lofi Girl</p>
+                <p class="hero-body" id="hero-slide-desc">Lo-fi beats 
+engineered for deep focus — low harmonic surprise, no lyrics, sustained 
+dopaminergic engagement without attentional capture.</p>
                 <div class="hero-actions">
-                  <button class="btn-primary" id="hero-btn" onclick="heroAction()" style="cursor:pointer;border:none;">LEARN MORE</button>
+                  <button class="btn-primary" id="hero-btn" onclick="heroAction()" style="cursor: pointer; border: medium; background: linear-gradient(135deg, rgb(79, 13, 186) 0%, rgb(192, 38, 211) 45%, rgb(244, 63, 94) 100%); color: rgb(255, 255, 255); font-weight: 700; letter-spacing: 0.08em;">PLAY NOW</button>
                 </div>
               </div>
             </div>
-            <div class="slide-dots" id="slide-dots"></div>
+            <div class="slide-dots" id="slide-dots"><div class="slide-dot active" onclick="goToHeroSlide(0);startHeroTimer()"></div><div class="slide-dot" onclick="goToHeroSlide(1);startHeroTimer()"></div><div class="slide-dot" onclick="goToHeroSlide(2);startHeroTimer()"></div><div class="slide-dot" onclick="goToHeroSlide(3);startHeroTimer()"></div><div class="slide-dot" onclick="goToHeroSlide(4);startHeroTimer()"></div></div>
             <!-- Prev / Next arrows -->
             <button class="hero-nav hero-prev" onclick="stepHeroSlide(-1)" aria-label="Previous slide">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
             <button class="hero-nav hero-next" onclick="stepHeroSlide(1)" aria-label="Next slide">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
           </section>
 
@@ -652,7 +654,307 @@
                   <span class="section-label">Curated Selection</span>
                   <span class="gallery-link" onclick="showPage('gallery')">[ Mode ]</span>
                 </div>
-                <div class="track-list" id="uploads-list"></div>
+                <div class="track-list" id="uploads-list">
+    <div class="track-item" onclick="playTrack({'id':'v4C4keiF0tQ','title':'Heavy Rain &amp; Big Ocean Waves — White Noise','creator':'Relaxing White Noise','category':'Calm','tags':['Nature Immersion','Block Distractions','Stress Relief'],'duration':'10 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_023.jpg" alt="Heavy Rain &amp; Big Ocean Waves — White Noise">
+      <span class="track-name">Heavy Rain &amp; Big Ocean Waves — White Noise</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="v4C4keiF0tQ" onclick="toggleFav('v4C4keiF0tQ',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'UPrQdaixz-4','title':'Frog Funk Therapy — Breezy Jazz Funk','creator':'Nebula Breeze','category':'Calm','tags':['Mood Boost','Wind Down','Gentle Productivity'],'duration':'3 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_006.jpg" alt="Frog Funk Therapy — Breezy Jazz Funk">
+      <span class="track-name">Frog Funk Therapy — Breezy Jazz Funk</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="UPrQdaixz-4" onclick="toggleFav('UPrQdaixz-4',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'--h6buReAvw','title':'BEYOND — Meditation Music 444Hz','creator':'Zen Celesta','category':'Calm','tags':['Meditation','Grounding','Inner Peace'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_014.jpg" alt="BEYOND — Meditation Music 444Hz">
+      <span class="track-name">BEYOND — Meditation Music 444Hz</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="--h6buReAvw" onclick="toggleFav('--h6buReAvw',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'woTWj6iN_aY','title':'Calming Nervous System — Handpan Music','creator':'Malte Marten','category':'Calm','tags':['Calm Nervous System','Stress Relief','Body Relaxation'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_009.jpg" alt="Calming Nervous System — Handpan Music">
+      <span class="track-name">Calming Nervous System — Handpan Music</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="woTWj6iN_aY" onclick="toggleFav('woTWj6iN_aY',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'-KAxNNhyfSY','title':'Alpha Wave Promoting Soundscape','creator':'Tranquility Studios','category':'Calm','tags':['Calm Nervous System','Relaxed Focus','Alpha Waves'],'duration':'3 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_012.jpg" alt="Alpha Wave Promoting Soundscape">
+      <span class="track-name">Alpha Wave Promoting Soundscape</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="-KAxNNhyfSY" onclick="toggleFav('-KAxNNhyfSY',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'PDI3mdiQuG0','title':'Instant Stress Relief — Singing Bowls','creator':'Aurabowls','category':'Calm','tags':['Calm Nervous System','Stress Relief','Nervous System Reset'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_017.jpg" alt="Instant Stress Relief — Singing Bowls">
+      <span class="track-name">Instant Stress Relief — Singing Bowls</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="PDI3mdiQuG0" onclick="toggleFav('PDI3mdiQuG0',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'BXbsO8exZns','title':'Relaxing Meditation Music by Deuter','creator':'New Earth Records','category':'Calm','tags':['Meditation','Wind Down','Stress Relief'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_005.jpg" alt="Relaxing Meditation Music by Deuter">
+      <span class="track-name">Relaxing Meditation Music by Deuter</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="BXbsO8exZns" onclick="toggleFav('BXbsO8exZns',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'qIW2Fu2SN0U','title':'12-Hour Engineered Pink Noise','creator':'Pink Noise (NEURONEST)','category':'Calm','tags':['Brain Restoration','Deep Sleep','Sharpen Memory'],'duration':'12 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_004.jpg" alt="12-Hour Engineered Pink Noise">
+      <span class="track-name">12-Hour Engineered Pink Noise</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="qIW2Fu2SN0U" onclick="toggleFav('qIW2Fu2SN0U',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'NQk2mX5Z36k','title':'Jazzhop Study Enhancer — Isochronic Tones','creator':'Jason Lewis','category':'Focus','tags':['Sharpen Memory','Study Sessions','Deep Focus'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_011.jpg" alt="Jazzhop Study Enhancer — Isochronic Tones">
+      <span class="track-name">Jazzhop Study Enhancer — Isochronic Tones</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="NQk2mX5Z36k" onclick="toggleFav('NQk2mX5Z36k',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'rKxRHZec67M','title':'Jazz Alpha/Beta Isochronic Tones','creator':'Jason Lewis','category':'Focus','tags':['Sharpen Memory','Deep Focus','Mental Clarity'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_025.jpg" alt="Jazz Alpha/Beta Isochronic Tones">
+      <span class="track-name">Jazz Alpha/Beta Isochronic Tones</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="rKxRHZec67M" onclick="toggleFav('rKxRHZec67M',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'yLOM8R6lbzg','title':'Studying White Noise — 10 Hours','creator':'Relaxing White Noise','category':'Focus','tags':['Study Sessions','Block Distractions','Sustained Focus'],'duration':'10 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_013.jpg" alt="Studying White Noise — 10 Hours">
+      <span class="track-name">Studying White Noise — 10 Hours</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="yLOM8R6lbzg" onclick="toggleFav('yLOM8R6lbzg',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'jfKfPfyJRdk','title':'Lofi Hip Hop Radio — Relax / Study','creator':'Lofi Girl','category':'Focus','tags':['Relaxed Focus','Study Sessions','Background Listening'],'duration':'24/7 Livestream'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_003.jpg" alt="Lofi Hip Hop Radio — Relax / Study">
+      <span class="track-name">Lofi Hip Hop Radio — Relax / Study</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="jfKfPfyJRdk" onclick="toggleFav('jfKfPfyJRdk',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'qlM39cB_5hk','title':'Soft Dark Ambient — Beats to Code To','creator':'lock in music.','category':'Focus','tags':['Deep Work','Block Distractions','Coding'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_020.jpg" alt="Soft Dark Ambient — Beats to Code To">
+      <span class="track-name">Soft Dark Ambient — Beats to Code To</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="qlM39cB_5hk" onclick="toggleFav('qlM39cB_5hk',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'A6dzSX62gEY','title':'Clear Mind Intense Focus — Ambient Techno','creator':'Jason Lewis','category':'Focus','tags':['ADHD Support','Deep Focus','Block Distractions'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_015.jpg" alt="Clear Mind Intense Focus — Ambient Techno">
+      <span class="track-name">Clear Mind Intense Focus — Ambient Techno</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="A6dzSX62gEY" onclick="toggleFav('A6dzSX62gEY',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'U5kH5VE31Rc','title':'Stop Mind Wandering — Smoothed Brown Noise','creator':'Jason Lewis','category':'Focus','tags':['ADHD Support','Block Distractions','Quiet Mind'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_022.jpg" alt="Stop Mind Wandering — Smoothed Brown Noise">
+      <span class="track-name">Stop Mind Wandering — Smoothed Brown Noise</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="U5kH5VE31Rc" onclick="toggleFav('U5kH5VE31Rc',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'74cOUSKXMz0','title':'3-Hour Study With Me — Hyper Efficient','creator':'Jason Sung','category':'Focus','tags':['Study Sessions','Sustained Work','Time-Boxed Focus'],'duration':'3 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_010.jpg" alt="3-Hour Study With Me — Hyper Efficient">
+      <span class="track-name">3-Hour Study With Me — Hyper Efficient</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="74cOUSKXMz0" onclick="toggleFav('74cOUSKXMz0',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'aju_UB5Vlf8','title':'90 Min Ethereal Intelligent DnB','creator':'Jungle Wizard','category':'Focus','tags':['Flow State','Creative Energy','Study Sessions'],'duration':'90 Minutes'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_007.jpg" alt="90 Min Ethereal Intelligent DnB">
+      <span class="track-name">90 Min Ethereal Intelligent DnB</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="aju_UB5Vlf8" onclick="toggleFav('aju_UB5Vlf8',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'2F6B9EibJjw','title':'Ambient Techno Mix','creator':'Ambient Techno mixes','category':'Focus','tags':['Deep Focus','Flow State','Block Distractions'],'duration':'2 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_019.jpg" alt="Ambient Techno Mix">
+      <span class="track-name">Ambient Techno Mix</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="2F6B9EibJjw" onclick="toggleFav('2F6B9EibJjw',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'AKUIk1_Hqfk','title':'Focus Flow — Deep Concentration House + Beta Waves','creator':'Jason Lewis','category':'Focus','tags':['Deep Focus','Flow State','Brain Boost'],'duration':'3 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_018.jpg" alt="Focus Flow — Deep Concentration House + Beta Waves">
+      <span class="track-name">Focus Flow — Deep Concentration House + Beta Waves</span>
+      <span class="track-cat">Focus</span>
+      <button class="fav-btn" data-id="AKUIk1_Hqfk" onclick="toggleFav('AKUIk1_Hqfk',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'Yi7BM8XPTfA','title':'Theta / Delta Waves — Sleep Soundscape','creator':'The Guided Meditation Site','category':'Sleep','tags':['Deep Sleep','Brain Restoration','Fall Asleep Faster'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_002.jpg" alt="Theta / Delta Waves — Sleep Soundscape">
+      <span class="track-name">Theta / Delta Waves — Sleep Soundscape</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="Yi7BM8XPTfA" onclick="toggleFav('Yi7BM8XPTfA',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'lh4JdZTJe7k','title':'12 Hours Relaxing Sleep Music','creator':'Soothing Relaxation','category':'Sleep','tags':['Stress Relief','Deep Sleep','Wind Down'],'duration':'12 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_024.jpg" alt="12 Hours Relaxing Sleep Music">
+      <span class="track-name">12 Hours Relaxing Sleep Music</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="lh4JdZTJe7k" onclick="toggleFav('lh4JdZTJe7k',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'XntSTiJBauM','title':'Quantum Jump Sleep Meditation','creator':'Jason Stephenson','category':'Sleep','tags':['Fall Asleep Faster','Guided Relaxation','Deep Sleep'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_008.jpg" alt="Quantum Jump Sleep Meditation">
+      <span class="track-name">Quantum Jump Sleep Meditation</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="XntSTiJBauM" onclick="toggleFav('XntSTiJBauM',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'FdN1pnEaJs0','title':'Sleep Sounds Deep White Noise','creator':'Relaxing White Noise','category':'Sleep','tags':['Stay Asleep All Night','Block Distractions','Deep Sleep'],'duration':'10 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault.jpg" alt="Sleep Sounds Deep White Noise">
+      <span class="track-name">Sleep Sounds Deep White Noise</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="FdN1pnEaJs0" onclick="toggleFav('FdN1pnEaJs0',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'aOPXARjP1hM','title':'Calm Noise Blanket — Parasympathetic Activation','creator':'The Sound Healers','category':'Sleep','tags':['Deep Sleep','Calm Nervous System','Brain Restoration'],'duration':'3 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_021.jpg" alt="Calm Noise Blanket — Parasympathetic Activation">
+      <span class="track-name">Calm Noise Blanket — Parasympathetic Activation</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="aOPXARjP1hM" onclick="toggleFav('aOPXARjP1hM',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'_SsYljnOsU8','title':'Super Deep Brown Noise — Sleep &amp; Focus','creator':'Something Soothing','category':'Sleep','tags':['Deep Sleep','Block Distractions','Fall Asleep'],'duration':'2 Hours'})">
+      <img class="track-thumb" src="soundhub_files/mqdefault_016.jpg" alt="Super Deep Brown Noise — Sleep &amp; Focus">
+      <span class="track-name">Super Deep Brown Noise — Sleep &amp; Focus</span>
+      <span class="track-cat">Sleep</span>
+      <button class="fav-btn" data-id="_SsYljnOsU8" onclick="toggleFav('_SsYljnOsU8',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  </div>
               </div>
               <!-- Your Neuronest Hub -->
               <div>
@@ -660,9 +962,363 @@
                   <span class="section-label">Your Neuronest Hub</span>
                 </div>
                 <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);line-height:1.7;margin-bottom:16px;max-width:560px;">
-                  The more you listen, the smarter it gets. We track what resonates — your focus sessions, sleep patterns, the sounds that actually move you — and use that to surface tracks and curated mixes that genuinely fit where your mind is at. No algorithm noise. Just sound, matched to you.
+                  The more you listen, the smarter it gets. We track 
+what resonates — your focus sessions, sleep patterns, the sounds that 
+actually move you — and use that to surface tracks and curated mixes 
+that genuinely fit where your mind is at. No algorithm noise. Just 
+sound, matched to you.
                 </p>
-                <div class="archive-grid" id="cat-grid"></div>
+                <div class="archive-grid" id="cat-grid">
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('v4C4keiF0tQ','Heavy Rain &amp; Big Ocean Waves — White Noise')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Heavy Rain &amp; Big Ocean Waves — White Noise</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Relaxing White Noise</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Nature Immersion</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">10 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('UPrQdaixz-4','Frog Funk Therapy — Breezy Jazz Funk')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Frog Funk Therapy — Breezy Jazz Funk</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Nebula Breeze</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Mood Boost</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Wind Down</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">3 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('--h6buReAvw','BEYOND — Meditation Music 444Hz')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">BEYOND — Meditation Music 444Hz</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Zen Celesta</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Meditation</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Grounding</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('woTWj6iN_aY','Calming Nervous System — Handpan Music')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Calming Nervous System — Handpan Music</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Malte Marten</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Calm Nervous System</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Stress Relief</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('-KAxNNhyfSY','Alpha Wave Promoting Soundscape')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Alpha Wave Promoting Soundscape</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Tranquility Studios</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Calm Nervous System</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Relaxed Focus</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">3 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('PDI3mdiQuG0','Instant Stress Relief — Singing Bowls')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Instant Stress Relief — Singing Bowls</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Aurabowls</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Calm Nervous System</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Stress Relief</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('BXbsO8exZns','Relaxing Meditation Music by Deuter')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Relaxing Meditation Music by Deuter</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">New Earth Records</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Meditation</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Wind Down</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #38F9D722;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('qIW2Fu2SN0U','12-Hour Engineered Pink Noise')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">12-Hour Engineered Pink Noise</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#38F9D7;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Pink Noise (NEURONEST)</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Brain Restoration</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Sleep</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#38F9D7;letter-spacing:0.08em;">Calm</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">12 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('NQk2mX5Z36k','Jazzhop Study Enhancer — Isochronic Tones')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Jazzhop Study Enhancer — Isochronic Tones</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Lewis</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Sharpen Memory</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Study Sessions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('rKxRHZec67M','Jazz Alpha/Beta Isochronic Tones')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Jazz Alpha/Beta Isochronic Tones</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Lewis</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Sharpen Memory</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Focus</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('yLOM8R6lbzg','Studying White Noise — 10 Hours')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Studying White Noise — 10 Hours</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Relaxing White Noise</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Study Sessions</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">10 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('jfKfPfyJRdk','Lofi Hip Hop Radio — Relax / Study')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Lofi Hip Hop Radio — Relax / Study</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Lofi Girl</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Relaxed Focus</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Study Sessions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">24/7 Livestream</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('qlM39cB_5hk','Soft Dark Ambient — Beats to Code To')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Soft Dark Ambient — Beats to Code To</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">lock in music.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Work</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('A6dzSX62gEY','Clear Mind Intense Focus — Ambient Techno')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Clear Mind Intense Focus — Ambient Techno</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Lewis</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">ADHD Support</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Focus</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('U5kH5VE31Rc','Stop Mind Wandering — Smoothed Brown Noise')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Stop Mind Wandering — Smoothed Brown Noise</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Lewis</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">ADHD Support</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('74cOUSKXMz0','3-Hour Study With Me — Hyper Efficient')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">3-Hour Study With Me — Hyper Efficient</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Sung</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Study Sessions</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Sustained Work</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">3 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('aju_UB5Vlf8','90 Min Ethereal Intelligent DnB')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">90 Min Ethereal Intelligent DnB</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jungle Wizard</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Flow State</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Creative Energy</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">90 Minutes</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('2F6B9EibJjw','Ambient Techno Mix')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Ambient Techno Mix</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Ambient Techno mixes</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Focus</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Flow State</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">2 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #f9a82522;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('AKUIk1_Hqfk','Focus Flow — Deep Concentration House + Beta Waves')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Focus Flow — Deep Concentration House + Beta Waves</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#f9a825;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Lewis</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Focus</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Flow State</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#f9a825;letter-spacing:0.08em;">Focus</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">3 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('Yi7BM8XPTfA','Theta / Delta Waves — Sleep Soundscape')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Theta / Delta Waves — Sleep Soundscape</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">The Guided Meditation Site</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Sleep</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Brain Restoration</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('lh4JdZTJe7k','12 Hours Relaxing Sleep Music')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">12 Hours Relaxing Sleep Music</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Soothing Relaxation</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Stress Relief</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Sleep</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">12 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('XntSTiJBauM','Quantum Jump Sleep Meditation')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Quantum Jump Sleep Meditation</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Jason Stephenson</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Fall Asleep Faster</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Guided Relaxation</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">1 Hour</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('FdN1pnEaJs0','Sleep Sounds Deep White Noise')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Sleep Sounds Deep White Noise</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Relaxing White Noise</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Stay Asleep All Night</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">10 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('aOPXARjP1hM','Calm Noise Blanket — Parasympathetic Activation')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Calm Noise Blanket — Parasympathetic Activation</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">The Sound Healers</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Sleep</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Calm Nervous System</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">3 Hours</span>
+      </div>
+    </div>
+    <div class="cat-card" style="border-left:2px solid #6B4FA822;position:relative;overflow:hidden;" onmouseenter="this.querySelector('.sa-play').style.opacity='1'" onmouseleave="this.querySelector('.sa-play').style.opacity='0'" onclick="playTrack('_SsYljnOsU8','Super Deep Brown Noise — Sleep &amp; Focus')">
+      <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;">
+        <h3 class="cat-name" style="font-size:13px;line-height:1.3;text-transform:none;letter-spacing:0;font-weight:600;flex:1;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">Super Deep Brown Noise — Sleep &amp; Focus</h3>
+        <div class="sa-play" style="opacity:0;transition:opacity 0.15s;flex-shrink:0;width:24px;height:24px;background:#6B4FA8;display:flex;align-items:center;justify-content:center;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#050505"><path d="M8 5v14l11-7z"></path></svg>
+        </div>
+      </div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#6B7680;margin-top:4px;">Something Soothing</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:8px;"><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Deep Sleep</span><span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B7680;border:1px solid rgba(255,255,255,0.07);padding:2px 6px;letter-spacing:0.06em;">Block Distractions</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;color:#6B4FA8;letter-spacing:0.08em;">Sleep</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#6B7680;opacity:0.7;">2 Hours</span>
+      </div>
+    </div></div>
               </div>
             </div>
 
@@ -671,7 +1327,7 @@
               <div id="home-favs-section" style="display:none;margin-bottom:24px;">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                   <span class="section-label" style="display:flex;align-items:center;gap:6px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                     Your Favourites
                   </span>
                   <span class="gallery-link" onclick="showPage('gallery')" style="font-size:10px;">[ View All ]</span>
@@ -681,14 +1337,84 @@
               <!-- Active Listeners -->
               <div class="listeners-section">
                 <div style="margin-bottom:4px;"><span class="section-label">Active Listeners</span></div>
-                <div class="listener-count" id="active-listener-count">1.2K</div>
+                <div class="listener-count" id="active-listener-count">2.2K</div>
                 <div class="listener-subtitle">Online Now</div>
-                <div class="listener-avatars" id="listener-list"></div>
+                <div class="listener-avatars" id="listener-list">
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">USER-4812</span>
+      <span class="listener-track">Theta / Delta Waves</span>
+    </div>
+  
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">USER-2291</span>
+      <span class="listener-track">Lofi Hip Hop Radio</span>
+    </div>
+  
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">USER-7703</span>
+      <span class="listener-track">BEYOND 444Hz</span>
+    </div>
+  
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">USER-1155</span>
+      <span class="listener-track">Heavy Rain &amp; Ocean</span>
+    </div>
+  
+    <div class="listener-row">
+      <div class="listener-dot"></div>
+      <span class="listener-name">USER-9934</span>
+      <span class="listener-track">Jazzhop Study Enhancer</span>
+    </div>
+  </div>
               </div>
               <!-- Research Feed -->
               <div class="research-section">
                 <div style="margin-bottom:24px;"><span class="section-label">Research Feed</span></div>
-                <div class="research-items" id="research-list"></div>
+                <div class="research-items" id="research-list">
+    <a class="research-item" href="https://doi.org/10.3389/fnsys.2014.00208" target="_blank" rel="noopener">
+      <h5 class="research-title">Enhancement of sleep slow waves: underlying mechanisms and practical consequences</h5>
+      <div class="research-meta">
+        <span>Frontiers in Systems Neuroscience</span><span>·</span><span>2014</span>
+        <span>·</span><span class="confidence-high">High Confidence</span>
+      </div>
+    </a>
+  
+    <a class="research-item" href="https://doi.org/10.1016/j.neuron.2019.04.011" target="_blank" rel="noopener">
+      <h5 class="research-title">Gamma entrainment binds higher-order brain regions and offers neuroprotection</h5>
+      <div class="research-meta">
+        <span>Neuron</span><span>·</span><span>2019</span>
+        <span>·</span><span class="confidence-high">High Confidence</span>
+      </div>
+    </a>
+  
+    <a class="research-item" href="https://doi.org/10.1038/scientificamerican1073-94" target="_blank" rel="noopener">
+      <h5 class="research-title">Auditory beats in the brain</h5>
+      <div class="research-meta">
+        <span>Scientific American</span><span>·</span><span>1973</span>
+        
+      </div>
+    </a>
+  
+    <a class="research-item" href="https://doi.org/10.1016/j.cell.2019.02.014" target="_blank" rel="noopener">
+      <h5 class="research-title">Multi-sensory gamma stimulation ameliorates Alzheimer's-associated pathology and improves cognition</h5>
+      <div class="research-meta">
+        <span>Cell</span><span>·</span><span>2019</span>
+        <span>·</span><span class="confidence-high">High Confidence</span>
+      </div>
+    </a>
+  
+    <a class="research-item" href="https://doi.org/10.1038/nature20587" target="_blank" rel="noopener">
+      <h5 class="research-title">Gamma frequency entrainment attenuates amyloid load and modifies microglia</h5>
+      <div class="research-meta">
+        <span>Nature</span><span>·</span><span>2016</span>
+        <span>·</span><span class="confidence-high">High Confidence</span>
+      </div>
+    </a>
+  </div>
               </div>
             </div>
           </div>
@@ -706,7 +1432,7 @@
 
             <div class="radio-player" id="radio-player">
               <div class="radio-visual">
-                <img class="radio-thumb" id="radio-thumb" src="" alt="" />
+                <img class="radio-thumb" id="radio-thumb" src="" alt="">
                 <div class="radio-glow" id="radio-glow"></div>
                 <div class="radio-wave-overlay" id="wave-bars"></div>
               </div>
@@ -719,9 +1445,7 @@
                   <div class="radio-tags" id="radio-tags"></div>
                 </div>
                 <div class="radio-controls">
-                  <button class="play-btn" id="radio-play-btn" onclick="toggleRadioPlay()" style="border-color:var(--focus-color);color:var(--focus-color);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
+                  <button class="play-btn" id="radio-play-btn" onclick="toggleRadioPlay()" style="border-color: var(--focus-color); color: rgb(249, 168, 37); background: transparent;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button>
                   <div>
                     <div class="play-status" id="play-status-text">READY TO PLAY</div>
                     <div class="play-status" id="play-dur-text" style="opacity:0.5;font-size:9px;"></div>
@@ -748,13 +1472,11 @@
                 <div style="display:flex;gap:6px;flex-wrap:wrap;" id="gallery-filters"></div>
                 <!-- View toggle -->
                 <div style="display:flex;border:1px solid var(--hairline);overflow:hidden;flex-shrink:0;">
-                  <button id="view-grid-btn" onclick="setGalleryView('grid')" title="Grid view"
-                    style="width:32px;height:32px;background:rgba(224,177,0,0.08);border:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                  <button id="view-grid-btn" onclick="setGalleryView('grid')" title="Grid view" style="width:32px;height:32px;background:rgba(224,177,0,0.08);border:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
                   </button>
-                  <button id="view-list-btn" onclick="setGalleryView('list')" title="List view"
-                    style="width:32px;height:32px;background:none;border:none;color:var(--ash);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  <button id="view-list-btn" onclick="setGalleryView('list')" title="List view" style="width:32px;height:32px;background:none;border:none;color:var(--ash);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                   </button>
                 </div>
               </div>
@@ -772,9 +1494,7 @@
                 <h2 class="view-title">Research Foundation</h2>
                 <p class="view-subtitle">The science behind every sound — 4 categories · 28 sub-types</p>
               </div>
-              <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener"
-                style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--obsidian);background:var(--accent);padding:14px 28px;text-decoration:none;transition:filter 0.15s;white-space:nowrap;"
-                onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
+              <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--obsidian);background:var(--accent);padding:14px 28px;text-decoration:none;transition:filter 0.15s;white-space:nowrap;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
                 Neuronest Research Hub →
               </a>
             </div>
@@ -787,9 +1507,7 @@
             </div>
             <!-- Filters row -->
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-              <input id="fw-search" oninput="renderFrameworkCards()" type="text" placeholder="Search..."
-                style="background:var(--panel);border:1px solid var(--hairline);padding:7px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--bone);outline:none;width:220px;transition:border-color 0.15s;"
-                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--hairline)'" />
+              <input id="fw-search" oninput="renderFrameworkCards()" type="text" placeholder="Search..." style="background:var(--panel);border:1px solid var(--hairline);padding:7px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--bone);outline:none;width:220px;transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--hairline)'">
               <div style="display:flex;gap:4px;flex-wrap:wrap;" id="evidence-filters"></div>
               <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--ash);margin-left:auto;" id="fw-count"></span>
             </div>
@@ -801,10 +1519,7 @@
         <!-- === UNDER CONSTRUCTION === -->
         <div class="page" id="page-under" style="position:relative;overflow:hidden;height:100%;">
           <!-- Lottie wave background -->
-          <dotlottie-player
-            src="assets/abstract blue black.lottie"
-            autoplay loop
-            style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;min-width:800px;min-height:600px;opacity:0.5;pointer-events:none;z-index:0;">
+          <dotlottie-player src="assets/abstract blue black.lottie" autoplay="" loop="" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;min-width:800px;min-height:600px;opacity:0.5;pointer-events:none;z-index:0;">
           </dotlottie-player>
           <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;padding:40px 24px;box-sizing:border-box;gap:20px;text-align:center;">
             <div class="mono upper" style="font-size:10px;color:var(--ash);letter-spacing:0.12em;border:1px solid var(--hairline);padding:4px 12px;">MODULE OFFLINE</div>
@@ -819,12 +1534,8 @@
             <div style="margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:400px;">
               <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#6B7680;line-height:1.7;">Sign up for the latest news on the tech —<br>free beta access for 1 month</p>
               <form onsubmit="handleUnderSignup(event)" style="display:flex;gap:0;width:100%;">
-                <input id="under-email" type="email" required placeholder="your@email.com"
-                  style="flex:1;background:#0f0f0f;border:1px solid rgba(255,255,255,0.1);border-right:none;padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;min-width:0;"
-                  onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" />
-                <button type="submit"
-                  style="background:#E0B100;color:#050505;border:none;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;"
-                  onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                <input id="under-email" type="email" required="" placeholder="your@email.com" style="flex:1;background:#0f0f0f;border:1px solid rgba(255,255,255,0.1);border-right:none;padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;min-width:0;" onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                <button type="submit" style="background:#E0B100;color:#050505;border:none;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
                   Get Access
                 </button>
               </form>
@@ -839,14 +1550,14 @@
 </div>
 
 <!-- Now Playing Bar -->
-<div class="now-playing" id="now-playing">
-  <img class="np-thumb" id="np-thumb" src="" alt="" />
+<div class="now-playing visible" id="now-playing">
+  <img class="np-thumb" id="np-thumb" src="soundhub_files/mqdefault_012.jpg" alt="">
   <div class="np-info">
-    <div class="np-title" id="np-title">—</div>
-    <div class="np-cat" id="np-cat">—</div>
+    <div class="np-title" id="np-title">Alpha Wave Promoting Soundscape</div>
+    <div class="np-cat" id="np-cat">Calm · 3 Hours</div>
   </div>
   <div class="np-controls">
-    <div class="np-wave" id="np-wave">
+    <div class="np-wave" id="np-wave" style="display: flex;">
       <div class="np-bar" style="height:6px;animation-delay:0s;"></div>
       <div class="np-bar" style="height:10px;animation-delay:0.12s;"></div>
       <div class="np-bar" style="height:8px;animation-delay:0.06s;"></div>
@@ -854,13 +1565,13 @@
       <div class="np-bar" style="height:6px;animation-delay:0.09s;"></div>
     </div>
     <button class="np-play" onclick="toggleGlobalPlay()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="np-icon"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="np-icon"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
     </button>
   </div>
 </div>
 
 <!-- Hidden YT player -->
-<div id="yt-player"></div>
+<iframe id="yt-player" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Try listening for 20 mins ~ Alpha Waves to Relieve Stress ~ Help heal body and mind  :)" width="1" height="1" src="soundhub_files/a.htm"></iframe>
 
 <script>
 const TRACKS = [
@@ -2060,27 +2771,25 @@ document.addEventListener('keydown', function(e) {
     <!-- Icon -->
     <div style="margin-bottom:24px;">
       <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E0B100" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"/>
-        <line x1="12" y1="4" x2="12" y2="8"/>
-        <line x1="12" y1="9.5" x2="12" y2="16"/>
-        <line x1="9" y1="11" x2="15" y2="14.5"/>
-        <line x1="9" y1="14.5" x2="15" y2="11"/>
+        <path d="M12 4 C9 4 6.5 5.8 6 8.5 C5.5 10.5 6.5 12 7.5 12.8 C6.5 13.8 6 15.2 6.5 17 C7.5 19.5 9.5 20.5 12 20.5 C14.5 20.5 16.5 19.5 17.5 17 C18 15.2 17.5 13.8 16.5 12.8 C17.5 12 18.5 10.5 18 8.5 C17.5 5.8 15 4 12 4 Z"></path>
+        <line x1="12" y1="4" x2="12" y2="8"></line>
+        <line x1="12" y1="9.5" x2="12" y2="16"></line>
+        <line x1="9" y1="11" x2="15" y2="14.5"></line>
+        <line x1="9" y1="14.5" x2="15" y2="11"></line>
       </svg>
     </div>
 
     <div style="font-family:'DM Mono',monospace;font-size:10px;color:#E0B100;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Coming Soon</div>
     <h2 style="font-family:'Inter',sans-serif;font-size:22px;font-weight:600;color:#F3F3F0;margin-bottom:12px;line-height:1.3;">Personalisation Sound Hub</h2>
-    <p style="font-family:'Inter',sans-serif;font-size:14px;color:#6B7680;line-height:1.6;margin-bottom:28px;">Sound that adapts to <em style="color:#F3F3F0;">you</em> — your cognitive state, your goals, your biology. We're building a personalised recommendation engine grounded in neuroscience. Sign up to be first in line.</p>
+    <p style="font-family:'Inter',sans-serif;font-size:14px;color:#6B7680;line-height:1.6;margin-bottom:28px;">Sound that adapts to <em style="color:#F3F3F0;">you</em>
+ — your cognitive state, your goals, your biology. We're building a 
+personalised recommendation engine grounded in neuroscience. Sign up to 
+be first in line.</p>
 
     <div id="personalisation-fields" style="display:flex;flex-direction:column;gap:12px;">
       <form id="personalisation-form" onsubmit="submitPersonalisationForm(event)" style="display:flex;flex-direction:column;gap:12px;">
-        <input type="email" placeholder="your@email.com" required
-          style="background:#050505;border:1px solid rgba(255,255,255,0.1);padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;width:100%;transition:border-color 0.15s;"
-          onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'"
-          placeholder="your@email.com" />
-        <button type="submit"
-          style="background:#E0B100;color:#050505;border:none;padding:14px 28px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;"
-          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        <input type="email" placeholder="your@email.com" required="" style="background:#050505;border:1px solid rgba(255,255,255,0.1);padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;width:100%;transition:border-color 0.15s;" onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+        <button type="submit" style="background:#E0B100;color:#050505;border:none;padding:14px 28px;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
           Notify Me
         </button>
       </form>
@@ -2099,5 +2808,6 @@ document.addEventListener('keydown', function(e) {
 #personalisation-modal { display: none; }
 #personalisation-modal.active { display: flex; }
 </style>
-</body>
-</html>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
