@@ -3,21 +3,59 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeuroNest | Sound Hub</title>
-<script type="text/javascript" id="www-widgetapi-script" src="soundhub_files/www-widgetapi.js" async=""></script><script src="soundhub_files/dotlottie-player.mjs" type="module"></script>
+<title>SoundHub — Neuronest</title>
+<script type="text/javascript" id="www-widgetapi-script" src="SoundHub%20%E2%80%94%20Neuronest_files/www-widgetapi.js" async=""></script><script>
+  // Apply saved theme before first paint to prevent flash
+  try {
+    if (localStorage.getItem('nn_theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {}
+</script>
+<script src="SoundHub%20%E2%80%94%20Neuronest_files/dotlottie-player.mjs" type="module"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;800;900&family=Playfair+Display:wght@700;900&family=Great+Vibes&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    /* Brand */
     --obsidian: #050505;
     --panel: #0f0f0f;
     --panel-alt: #161616;
     --bone: #F3F3F0;
     --ash: #6B7680;
     --accent: #E0B100;
+    --accent-soft: rgba(224,177,0,0.5);
     --hairline: rgba(255,255,255,0.07);
+
+    /* Semantic surfaces (dark theme defaults) */
+    --bg-app: #050505;
+    --bg-grid: rgba(255,255,255,0.028);
+    --surface-1: #0f0f0f;
+    --surface-2: #161616;
+    --surface-raised: linear-gradient(145deg, #1c1a14 0%, #111111 60%, #0d0d0d 100%);
+    --surface-sidebar: linear-gradient(180deg, #111110 0%, #0a0a0a 50%, #080808 100%);
+    --surface-topbar: linear-gradient(90deg, #111110 0%, #0d0d0d 50%, #0a0a0a 100%);
+    --surface-section: linear-gradient(160deg, #161614 0%, #111111 55%, #0d0d0d 100%);
+    --surface-section-warm: linear-gradient(160deg, #161412 0%, #111111 50%, #0c0c0c 100%);
+    --surface-cat: linear-gradient(145deg, #181816 0%, #111111 55%, #0d0d0d 100%);
+    --surface-hero: linear-gradient(145deg, #1a1710 0%, #0f0e0c 40%, #080808 100%);
+    --hero-overlay-grad: linear-gradient(to right, #050505 30%, rgba(5,5,5,0.55) 60%, transparent);
+    --text-primary: #F3F3F0;
+    --text-secondary: #6B7680;
+    --text-on-accent: #050505;
+    --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+    --shadow-card-hover: 0 8px 32px rgba(224,177,0,0.08);
+    --shadow-section: 0 4px 20px rgba(0,0,0,0.3);
+    --inset-highlight: inset 0 1px 0 rgba(255,255,255,0.04);
+    --np-bar-color: #fff;
+    --scrollbar-track: rgba(255,255,255,0.1);
+
+    /* Input/chip fill — 80% opaque so text is always legible over the grid */
+    --input-fill: rgba(15,15,15,0.80);
+
+    /* Channel colors */
     --focus-color: #8E54E9;
     --focus-gradient: linear-gradient(135deg, #f46b45 0%, #f9a825 45%, #ffd200 100%);
     --sleep-color: #6B4FA8;
@@ -26,10 +64,64 @@
     --calm-gradient: linear-gradient(135deg, #11998e 0%, #43E97B 30%, #38F9D7 60%, #0ED2F7 80%, #74EBD5 100%);
   }
 
-  html, body { height: 100%; color: var(--bone); font-family: 'Inter', sans-serif; overflow: hidden;
-    background-color: var(--obsidian);
-    background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+  /* === LIGHT THEME: soft warm grey morphism + faded yellow grid === */
+  [data-theme="light"] {
+    /* Legacy var overrides — keeps all existing var(--bone)/var(--ash) refs working in light mode */
+    --obsidian: #E8E6E0;
+    --panel: #E8E6E0;
+    --panel-alt: #DEDCD5;
+    --bone: #1A1815;
+    --ash: #6B6557;
+
+    --bg-app: #DEDCD3;                            /* soft warm grey, easier on eyes than cream/white */
+    --bg-grid: rgba(184,148,0,0.16);              /* faded yellow grid, slightly stronger to read on grey */
+    --surface-1: #E8E6E0;
+    --surface-2: #DEDCD5;
+    --surface-raised: linear-gradient(145deg, #ECEAE3 0%, #E5E2DB 60%, #DEDCD3 100%);
+    --surface-sidebar: linear-gradient(180deg, #E8E6E0 0%, #E2DFD8 50%, #DCD9D1 100%);
+    --surface-topbar: linear-gradient(90deg, #E8E6E0 0%, #E5E2DB 50%, #E0DDD5 100%);
+    --surface-section: linear-gradient(160deg, #ECEAE3 0%, #E5E2DB 55%, #DEDCD3 100%);
+    --surface-section-warm: linear-gradient(160deg, #ECE8DC 0%, #E5E2D5 50%, #DEDBCD 100%);
+    --surface-cat: linear-gradient(145deg, #ECEAE3 0%, #E5E2DB 55%, #DEDCD3 100%);
+    --surface-hero: linear-gradient(145deg, #E8DEB8 0%, #EDDD9C 45%, #E2D8B8 100%);
+    --hero-overlay-grad: linear-gradient(to right, rgba(222,220,211,0.95) 28%, rgba(222,220,211,0.65) 55%, transparent);
+
+    --text-primary: #1A1815;
+    --text-secondary: #5C574B;
+    --text-on-accent: #1A1815;
+
+    --hairline: rgba(110,90,0,0.18);              /* soft warm trims */
+    --accent-soft: rgba(224,177,0,0.55);
+
+    /* Soft, layered shadows — muted for the grey palette */
+    --shadow-card: 0 1px 2px rgba(60,50,20,0.05), 0 8px 24px rgba(60,50,20,0.07), 0 1px 0 rgba(255,253,245,0.5) inset;
+    --shadow-card-hover: 0 4px 12px rgba(224,177,0,0.22), 0 16px 36px rgba(224,177,0,0.18), 0 1px 0 rgba(255,253,245,0.4) inset;
+    --shadow-section: 0 1px 2px rgba(60,50,20,0.04), 0 6px 20px rgba(60,50,20,0.06), 0 1px 0 rgba(255,253,245,0.5) inset;
+    --inset-highlight: inset 0 1px 0 rgba(255,253,245,0.5);
+
+    --np-bar-color: var(--accent);
+    --scrollbar-track: rgba(110,90,0,0.18);
+
+    /* Input/chip fill — 80% opaque pale tone over the cream/grey bg */
+    --input-fill: rgba(248,246,238,0.85);
+
+    /* Channel colors stay vivid but get softer surroundings */
+    --sleep-gradient: linear-gradient(135deg, #4F5BD5 0%, #7B5FD1 100%);
+  }
+
+  html, body { height: 100%; color: var(--text-primary); font-family: 'Inter', sans-serif; overflow: hidden;
+    background-color: var(--bg-app);
+    background-image: linear-gradient(var(--bg-grid) 2px, transparent 2px), linear-gradient(90deg, var(--bg-grid) 2px, transparent 2px);
     background-size: 20px 20px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+  /* Smooth theme transitions on key surfaces */
+  .sidebar, .topbar, .hero, .feature-card, .uploads-log, .listeners-section,
+  .research-section, .cat-card, .radio-player, .now-playing,
+  .search-input, .notif-btn, .channel-tab, .btn-primary, .lib-card,
+  .archive-grid .cat-card, .topbar-title, .hero-title, .hero-body,
+  .fc-title, .fc-desc, .fc-sub, .section-label, .nav-label {
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
   }
 
   .mono { font-family: 'DM Mono', monospace; }
@@ -41,8 +133,8 @@
   /* Sidebar */
   .sidebar {
     width: 80px; height: 100%;
-    background: linear-gradient(180deg, #111110 0%, #0a0a0a 50%, #080808 100%);
-    border-right: 1px solid rgba(224,177,0,0.07);
+    background: var(--surface-sidebar);
+    border-right: 1px solid var(--hairline);
     display: flex; flex-direction: column; align-items: center;
     justify-content: space-between; padding: 24px 0; flex-shrink: 0;
   }
@@ -50,22 +142,22 @@
   .sidebar-link {
     width: 68px; height: 58px; display: flex; flex-direction: column; align-items: center;
     justify-content: center; gap: 4px;
-    border-radius: 6px; color: var(--ash); cursor: pointer; position: relative;
+    border-radius: 6px; color: var(--text-secondary); cursor: pointer; position: relative;
     transition: all 0.15s; text-decoration: none;
   }
   .sidebar-link span.nav-label {
     font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.06em;
     text-transform: uppercase; line-height: 1;
   }
-  .sidebar-link:hover { background: var(--panel); color: var(--bone); }
-  .sidebar-link.active { color: var(--bone); background: rgba(224,177,0,0.06); }
+  .sidebar-link:hover { background: var(--surface-2); color: var(--text-primary); }
+  .sidebar-link.active { color: var(--text-primary); background: rgba(224,177,0,0.10); }
   .sidebar-link.active span.nav-label { color: var(--accent); }
   .sidebar-link.active::after {
     content: ''; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
     width: 2px; height: 28px; background: var(--accent);
   }
   .sidebar-bottom { display: flex; flex-direction: column; align-items: center; gap: 16px; margin-bottom: 8px; }
-  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--panel); border: 1px solid var(--hairline); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-2); border: 1px solid var(--hairline); }
   .radio-dot {
     width: 18px; height: 18px; background: var(--accent); border-radius: 2px;
     box-shadow: 0 0 8px rgba(224,177,0,0.5);
@@ -76,31 +168,151 @@
 
   /* Header */
   .topbar {
-    height: 72px; border-bottom: 1px solid rgba(224,177,0,0.1);
+    height: 72px; border-bottom: 1px solid var(--hairline);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 32px; flex-shrink: 0;
-    background: linear-gradient(90deg, #111110 0%, #0d0d0d 50%, #0a0a0a 100%);
-    box-shadow: 0 1px 0 rgba(224,177,0,0.05), 0 4px 24px rgba(0,0,0,0.4);
+    background: var(--surface-topbar);
+    box-shadow: var(--shadow-section);
   }
   .topbar-left { display: flex; align-items: center; gap: 12px; }
   .logo-sq { display: flex; align-items: center; }
-  .topbar-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+  .topbar-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
   .search-input {
-    width: 320px; background: var(--panel); border: 1px solid var(--hairline);
-    padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--bone);
+    width: 420px; background: var(--surface-1); border: 1px solid var(--hairline);
+    padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-primary);
     outline: none; transition: all 0.2s;
   }
-  .search-input::placeholder { color: var(--ash); }
+  .search-input::placeholder { color: var(--text-secondary); }
   .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(224,177,0,0.15); }
+
+  /* ===== Global search dropdown ===== */
+  .search-wrap { position: relative; }
+  .search-clear {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    width: 22px; height: 22px; padding: 0; border: none; background: none;
+    color: var(--text-secondary); cursor: pointer; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .search-clear:hover { color: var(--accent); background: var(--surface-2); }
+  .search-wrap:has(.search-clear:not([style*="display:none"])) .search-input { padding-right: 40px; }
+
+  .search-dropdown {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: var(--surface-section); border: 1px solid var(--hairline);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45), var(--inset-highlight);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    z-index: 500; max-height: 480px; overflow-y: auto;
+    display: none;
+    animation: searchDropIn 0.18s cubic-bezier(0.2, 0, 0.1, 1);
+  }
+  @keyframes searchDropIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .search-dropdown.open { display: block; }
+  .search-dropdown::-webkit-scrollbar { width: 4px; }
+  .search-dropdown::-webkit-scrollbar-thumb { background: var(--hairline); }
+
+  .sr-group-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700;
+    color: var(--accent); letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 10px 14px 6px; display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--hairline);
+    position: sticky; top: 0; z-index: 2;
+  }
+  .sr-group-count {
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-secondary);
+    letter-spacing: 0.06em; font-weight: 500;
+  }
+
+  .sr-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; cursor: pointer;
+    border-bottom: 1px solid var(--hairline);
+    transition: background 0.12s;
+    text-decoration: none; color: inherit;
+  }
+  .sr-item:last-child { border-bottom: none; }
+  .sr-item:hover, .sr-item.active { background: var(--surface-2); }
+  .sr-item.active { background: rgba(224,177,0,0.10); }
+
+  .sr-thumb {
+    width: 40px; height: 26px; object-fit: cover; flex-shrink: 0;
+    border: 1px solid var(--hairline); filter: saturate(0.7) brightness(0.85);
+  }
+  .sr-item:hover .sr-thumb, .sr-item.active .sr-thumb { filter: saturate(1) brightness(1); border-color: var(--accent); }
+
+  .sr-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-2); border: 1px solid var(--hairline);
+    color: var(--accent);
+  }
+
+  .sr-body { flex: 1; min-width: 0; }
+  .sr-title {
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--text-primary); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sr-meta {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .sr-meta .sr-dot { opacity: 0.5; }
+  .sr-badge {
+    font-size: 9px; padding: 2px 6px; border: 1px solid;
+    font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .sr-badge-focus { color: #f9a825; border-color: rgba(249,168,37,0.5); }
+  .sr-badge-sleep { color: #7B5FD1; border-color: rgba(123,95,209,0.5); }
+  .sr-badge-calm  { color: #38F9D7; border-color: rgba(56,249,215,0.5); }
+  .sr-conf-high   { color: #4ade80; }
+
+  .sr-action {
+    flex-shrink: 0; color: var(--text-secondary); display: flex; align-items: center;
+    transition: all 0.15s;
+  }
+  .sr-item:hover .sr-action, .sr-item.active .sr-action { color: var(--accent); transform: translateX(2px); }
+
+  /* Query highlight */
+  .sr-highlight { background: rgba(224,177,0,0.22); color: var(--text-primary); padding: 0 2px; }
+
+  .sr-empty {
+    padding: 32px 14px; text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .sr-empty small {
+    display: block; margin-top: 6px; font-size: 10px;
+    color: var(--text-secondary); text-transform: none; letter-spacing: 0;
+    opacity: 0.7;
+  }
   .notif-btn {
-    width: 32px; height: 32px; border: 1px solid var(--hairline); background: none;
-    display: flex; align-items: center; justify-content: center; color: var(--ash);
+    width: 32px; height: 32px; border: 1px solid var(--hairline); background: var(--input-fill); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
     cursor: pointer; transition: all 0.15s;
   }
-  .notif-btn:hover { color: var(--bone); border-color: var(--accent); }
+  .notif-btn:hover { color: var(--text-primary); border-color: var(--accent); }
+
+  /* Theme toggle */
+  .theme-toggle {
+    width: 32px; height: 32px; border: 1px solid var(--hairline); background: var(--surface-1);
+    display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.2s; border-radius: 4px;
+  }
+  .theme-toggle:hover { color: var(--accent); border-color: var(--accent); transform: rotate(15deg); }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
   /* Content */
-  .content { flex: 1; overflow-y: auto; padding: 32px; }
+  .content { flex: 1; overflow-y: auto; padding: 32px 32px 110px; }
   .content-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
 
   /* Pages */
@@ -112,8 +324,8 @@
     position: relative; min-height: 380px; overflow: hidden;
     display: flex; flex-direction: column; justify-content: center;
     padding: 40px 48px;
-    background: linear-gradient(145deg, #1a1710 0%, #0f0e0c 40%, #080808 100%);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(224,177,0,0.08);
+    background: var(--surface-hero);
+    box-shadow: var(--shadow-card), inset 0 1px 0 rgba(224,177,0,0.08);
   }
   .hero-bg {
     position: absolute; inset: 0;
@@ -123,13 +335,13 @@
   }
   .hero-grid {
     position: absolute; inset: 0; opacity: 0.03;
-    background-image: linear-gradient(var(--bone) 1px, transparent 1px), linear-gradient(90deg, var(--bone) 1px, transparent 1px);
+    background-image: linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px);
     background-size: 40px 40px;
   }
-  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, var(--obsidian) 30%, rgba(5,5,5,0.55) 60%, transparent); }
+  .hero-overlay { position: absolute; inset: 0; background: var(--hero-overlay-grad); }
   .hero-content { position: relative; z-index: 10; max-width: 55%; }
   .hero-label {
-    display: inline-block; background: var(--accent); color: var(--obsidian);
+    display: inline-block; background: var(--accent); color: var(--text-on-accent);
     font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase;
     padding: 6px 10px; margin-bottom: 20px; letter-spacing: 0.1em;
   }
@@ -140,13 +352,13 @@
   .hero-body { font-size: 14px; color: var(--ash); max-width: 420px; margin-bottom: 28px; line-height: 1.6; }
   .hero-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .btn-primary {
-    height: 48px; padding: 0 28px; background: var(--accent); color: var(--obsidian);
+    height: 48px; padding: 0 28px; background: var(--accent); color: var(--text-on-accent);
     font-family: 'DM Mono', monospace; font-size: 12px; text-transform: uppercase;
     font-weight: 700; border: none; cursor: pointer; letter-spacing: 0.08em;
     transition: all 0.15s; white-space: nowrap;
   }
   .btn-primary:hover { filter: brightness(1.1); }
-  .btn-primary.playing { background: var(--panel); color: var(--accent); border: 2px solid var(--accent); }
+  .btn-primary.playing { background: var(--surface-1); color: var(--accent); border: 2px solid var(--accent); }
 
   /* Hero slideshow */
   .hero-slide-bg {
@@ -189,41 +401,94 @@
   .store-btn-text-main { font-size: 13px; font-weight: 600; color: var(--bone); display: block; letter-spacing: -0.01em; }
 
   /* Feature Cards */
-  .feature-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feature-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 1200px) { .feature-cards { grid-template-columns: repeat(2, 1fr); } }
   .feature-card {
     min-height: 160px; padding: 24px; display: flex; flex-direction: column;
     justify-content: space-between; cursor: pointer; transition: all 0.2s;
-    background: linear-gradient(145deg, #1c1a14 0%, #111111 60%, #0d0d0d 100%);
-    border: 1px solid rgba(224,177,0,0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 24px rgba(0,0,0,0.4);
+    background: var(--surface-raised);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--inset-highlight), var(--shadow-card);
   }
-  .feature-card:hover { transform: translateY(-2px); border-color: rgba(224,177,0,0.35); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 8px 32px rgba(224,177,0,0.08); }
+  .feature-card:hover { transform: translateY(-2px); border-color: var(--accent-soft); box-shadow: var(--inset-highlight), var(--shadow-card-hover); }
   .feature-card.highlight { background: linear-gradient(135deg, #f0c200 0%, #E0B100 50%, #c49200 100%); border-color: transparent; box-shadow: 0 8px 32px rgba(224,177,0,0.25), inset 0 1px 0 rgba(255,255,255,0.3); }
   .feature-card.highlight:hover { border-color: transparent; }
-  .fc-sub { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--ash); }
+
+  /* Performance/Science card — distinct look with layered waveform SVG */
+  .feature-card.performance-card {
+    position: relative;
+    background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 60%, #0a0a0a 100%);
+    border: 1px solid rgba(224,177,0,0.22);
+    overflow: hidden;
+  }
+  .feature-card.performance-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 120%, rgba(224,177,0,0.18) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .perf-card-waves {
+    position: absolute; inset: 0; pointer-events: none;
+    opacity: 0.9;
+    animation: perfWaveShift 8s ease-in-out infinite alternate;
+  }
+  @keyframes perfWaveShift {
+    from { transform: translateX(-4%); }
+    to   { transform: translateX(4%); }
+  }
+  .feature-card.performance-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(224,177,0,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .feature-card.performance-card:hover .perf-card-waves { opacity: 1; }
+  .feature-card.performance-card .fc-title { color: var(--bone); }
+  .feature-card.performance-card .fc-sub { color: var(--accent); letter-spacing: 0.14em; }
+  .feature-card.performance-card .fc-link { color: var(--accent); }
+
+  /* In light mode — also keeps a dark-ish accent look to distinguish it */
+  [data-theme="light"] .feature-card.performance-card {
+    background: linear-gradient(145deg, #1f1d15 0%, #141411 60%, #0f0f0e 100%) !important;
+    border-color: rgba(224,177,0,0.3) !important;
+  }
+  [data-theme="light"] .feature-card.performance-card .fc-title,
+  [data-theme="light"] .feature-card.performance-card .fc-sub,
+  [data-theme="light"] .feature-card.performance-card .fc-link { color: var(--accent) !important; }
+  [data-theme="light"] .feature-card.performance-card .fc-title { color: #F5F1E6 !important; }
+  [data-theme="light"] .feature-card.performance-card:hover {
+    background: linear-gradient(145deg, #1f1d15 0%, #141411 60%, #0f0f0e 100%) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(224,177,0,0.3), 0 16px 40px rgba(224,177,0,0.2) !important;
+  }
+  [data-theme="light"] .feature-card.performance-card:hover .fc-title { color: var(--accent) !important; }
+  .fc-sub { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--text-secondary); }
   .feature-card.highlight .fc-sub { color: rgba(5,5,5,0.6); }
-  .fc-title { font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.1; letter-spacing: -0.01em; }
-  .feature-card.highlight .fc-title { color: var(--obsidian); }
-  .fc-desc { font-size: 13px; color: var(--ash); line-height: 1.4; }
+  .fc-title { font-weight: 800; font-size: 22px; text-transform: uppercase; line-height: 1.1; letter-spacing: -0.01em; color: var(--text-primary); }
+  .feature-card.highlight .fc-title { color: var(--text-on-accent); }
+  .fc-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
   .feature-card.highlight .fc-desc { color: rgba(5,5,5,0.7); }
   .fc-link { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--accent); letter-spacing: 0.08em; }
-  .feature-card.highlight .fc-link { color: var(--obsidian); }
+  .feature-card.highlight .fc-link { color: var(--text-on-accent); }
 
   /* Grid */
   .grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
   .left-col { display: flex; flex-direction: column; gap: 24px; }
-  .right-col { display: flex; flex-direction: column; gap: 24px; border-left: 1px solid var(--hairline); padding-left: 24px; }
-  .listeners-section, .research-section { background: linear-gradient(160deg, #161614 0%, #111111 55%, #0d0d0d 100%); border: 1px solid rgba(255,255,255,0.05); padding: 20px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 20px rgba(0,0,0,0.3); }
+  .right-col { display: flex; flex-direction: column; gap: 24px; }
+  .listeners-section, .research-section { background: var(--surface-section); border: 1px solid var(--hairline); padding: 20px; box-shadow: var(--inset-highlight), var(--shadow-section); }
 
   /* Section headers */
-  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ash); text-transform: uppercase; letter-spacing: 0.12em; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.12em; }
 
   /* Uploads Log */
-  .uploads-log { background: linear-gradient(160deg, #161412 0%, #111111 50%, #0c0c0c 100%); border: 1px solid rgba(224,177,0,0.07); padding: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 4px 20px rgba(0,0,0,0.3); }
+  .uploads-log { background: var(--surface-section-warm); border: 1px solid var(--hairline); padding: 24px; box-shadow: var(--inset-highlight), var(--shadow-section); }
   .uploads-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-  .gallery-link { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--ash); cursor: pointer; letter-spacing: 0.1em; }
-  .gallery-link:hover { color: var(--bone); }
-  .track-list { height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+  #curated-reshuffle svg { transition: transform 0.15s; }
+  #curated-reshuffle:hover svg { transform: rotate(-30deg); }
+  #curated-reshuffle.spinning svg { animation: reshuffle-spin 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes reshuffle-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  .gallery-link { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--text-secondary); cursor: pointer; letter-spacing: 0.1em; }
+  .gallery-link:hover { color: var(--text-primary); }
+  .track-list { height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
   .track-list::-webkit-scrollbar { width: 4px; }
   .track-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   .track-item {
@@ -282,12 +547,13 @@
   /* Neuronest Library */
   .archive-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .cat-card {
-    height: 140px; background: linear-gradient(145deg, #181816 0%, #111111 55%, #0d0d0d 100%); padding: 20px;
+    height: 140px; background: var(--surface-cat); padding: 20px;
     display: flex; flex-direction: column; justify-content: space-between;
-    border: 1px solid transparent; cursor: pointer; transition: all 0.15s;
+    border: 1px solid var(--hairline); cursor: pointer; transition: all 0.15s;
+    box-shadow: var(--inset-highlight), var(--shadow-section);
   }
-  .cat-card:hover { border-color: var(--accent); }
-  .cat-name { font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: -0.01em; }
+  .cat-card:hover { border-color: var(--accent); transform: translateY(-1px); box-shadow: var(--inset-highlight), var(--shadow-card-hover); }
+  .cat-name { font-weight: 700; font-size: 18px; text-transform: uppercase; letter-spacing: -0.01em; color: var(--text-primary); }
   .cat-card:hover .cat-name { color: var(--accent); }
   .cat-modality {
     font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase;
@@ -309,16 +575,50 @@
 
   /* Research Feed */
   .research-section { display: flex; flex-direction: column; padding-top: 32px; }
-  .research-items { display: flex; flex-direction: column; gap: 18px; border-top: 1px solid var(--hairline); padding-top: 16px; }
-  .research-item { cursor: pointer; }
-  .research-title { font-size: 13px; color: var(--bone); font-weight: 500; margin-bottom: 4px; line-height: 1.4; }
-  .research-item:hover .research-title { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .research-items { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--hairline); padding-top: 16px; }
+  .research-item {
+    cursor: pointer;
+    padding: 10px 12px;
+    margin: 0 -12px;
+    border-radius: 2px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .research-item:hover {
+    background: rgba(224,177,0,0.08);
+  }
+  .research-item::after {
+    content: '↗';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 12px;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    font-family: 'DM Mono', monospace;
+  }
+  .research-item:hover::after {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+  .research-title {
+    font-size: 13px; color: var(--bone); font-weight: 500;
+    margin-bottom: 4px; line-height: 1.4;
+    text-decoration: none;
+    padding-right: 20px;
+  }
+  .research-item:hover .research-title { color: var(--accent); }
   .research-meta { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ash); text-transform: uppercase; display: flex; gap: 6px; }
+  .research-meta span { text-decoration: none; }
   .confidence-high { color: #4ade80; }
 
   /* === RADIO VIEW === */
   .radio-page { display: flex; flex-direction: column; gap: 28px; }
-  .channel-tabs { display: flex; border: 1px solid var(--hairline); width: fit-content; }
+  .channel-tabs { display: flex; border: 1px solid var(--hairline); width: fit-content; background: var(--input-fill); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
   .channel-tab {
     font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase;
     padding: 10px 20px; cursor: pointer; color: var(--ash); transition: all 0.15s;
@@ -338,11 +638,11 @@
   .wave-bar { width: 3px; border-radius: 2px; transition: height 0.4s; }
   .radio-glow { position: absolute; inset: 0; }
 
-  .radio-info { flex: 1; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #181614 0%, #111111 55%, #0d0d0d 100%); box-shadow: inset 1px 0 0 rgba(255,255,255,0.03); }
+  .radio-info { flex: 1; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface-section); box-shadow: var(--inset-highlight); }
   .radio-channel-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
-  .radio-track-title { font-weight: 800; font-size: 26px; text-transform: uppercase; line-height: 1.1; margin-bottom: 8px; letter-spacing: -0.01em; }
-  .radio-creator { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ash); text-transform: uppercase; margin-bottom: 8px; }
-  .radio-desc { font-size: 13px; color: var(--ash); line-height: 1.6; max-width: 380px; margin-bottom: 20px; }
+  .radio-track-title { font-weight: 800; font-size: 26px; text-transform: uppercase; line-height: 1.1; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--text-primary); }
+  .radio-creator { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; }
+  .radio-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; max-width: 380px; margin-bottom: 20px; }
   .radio-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
   .radio-tag { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; padding: 4px 10px; border: 1px solid; border-radius: 0; }
   .radio-controls { display: flex; align-items: center; gap: 16px; }
@@ -352,11 +652,11 @@
     flex-shrink: 0;
   }
   .play-btn:hover { transform: scale(1.05); }
-  .play-status { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--ash); }
+  .play-status { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; color: var(--text-secondary); }
 
   .queue-section { display: flex; flex-direction: column; gap: 16px; }
-  .queue-header { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--ash); letter-spacing: 0.1em; }
-  .queue-list { border: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, #141414 0%, #0e0e0e 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+  .queue-header { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.1em; }
+  .queue-list { border: 1px solid var(--hairline); background: var(--surface-section); box-shadow: var(--shadow-section); }
   .queue-item {
     display: flex; align-items: center; gap: 16px; padding: 12px 16px;
     border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
@@ -447,30 +747,148 @@
   .home-fav-title { font-family: 'DM Mono', monospace; font-size: 11px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.15s; }
   .home-fav-cat { font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; flex-shrink: 0; }
 
-  /* Now playing bar */
+  /* ====================================================================
+     PERSISTENT MINI PLAYER (Now Playing bar)
+     ==================================================================== */
   .now-playing {
     position: fixed; bottom: 0; left: 80px; right: 0;
-    height: 60px;
-    background: linear-gradient(90deg, #1c1a12 0%, #131313 45%, #0f0f0f 100%);
-    border-top: 1px solid rgba(224,177,0,0.18);
-    box-shadow: 0 -4px 28px rgba(0,0,0,0.55), 0 -1px 0 rgba(224,177,0,0.06);
-    display: none; align-items: center; gap: 16px; padding: 0 24px;
+    height: 78px;
+    background: var(--surface-topbar);
+    border-top: 1px solid var(--hairline);
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.2), var(--inset-highlight);
+    display: none; flex-direction: column; padding: 0;
     z-index: 100;
+    transition: opacity 0.45s ease, filter 0.45s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    transform: translateY(100%);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
-  .now-playing.visible { display: flex; }
-  .np-thumb { width: 36px; height: 24px; object-fit: cover; border: 1px solid var(--hairline); flex-shrink: 0; }
+  .now-playing.visible { display: flex; transform: translateY(0); }
+  .now-playing.np-fading { opacity: 0.65; filter: saturate(0.7); }
+
+  /* Slim progress bar across the very top of the player */
+  .np-progress-track {
+    width: 100%; height: 3px; background: var(--hairline);
+    cursor: pointer; position: relative; flex-shrink: 0;
+    transition: height 0.15s;
+  }
+  .np-progress-track:hover { height: 6px; }
+  .np-progress-bar {
+    height: 100%; background: var(--accent); width: 0%;
+    transition: width 0.5s linear; position: relative;
+    box-shadow: 0 0 8px rgba(224,177,0,0.4);
+  }
+  .np-progress-handle {
+    position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+    width: 12px; height: 12px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(224,177,0,0.2), 0 2px 8px rgba(0,0,0,0.4);
+    opacity: 0; transition: opacity 0.15s, left 0.5s linear;
+    pointer-events: none;
+  }
+  .np-progress-track:hover .np-progress-handle { opacity: 1; }
+
+  .np-row {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 24px; padding: 0 24px; flex: 1; min-height: 0;
+  }
+
+  /* Track info zone (left) */
+  .np-track-zone {
+    display: flex; align-items: center; gap: 12px; min-width: 0;
+  }
+  .np-thumb {
+    width: 48px; height: 48px; object-fit: cover; border: 1px solid var(--hairline);
+    flex-shrink: 0; transition: filter 0.4s ease, transform 0.3s ease;
+  }
+  .now-playing.np-fading .np-thumb { filter: brightness(0.7) saturate(0.5); }
+  .np-track-zone:hover .np-thumb { transform: scale(1.05); }
   .np-info { flex: 1; min-width: 0; }
-  .np-title { font-family: 'DM Mono', monospace; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .np-cat { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ash); text-transform: uppercase; }
-  .np-controls { display: flex; align-items: center; gap: 12px; }
-  .np-play {
-    width: 32px; height: 32px; border: 1px solid var(--accent); display: flex;
-    align-items: center; justify-content: center; cursor: pointer; color: var(--accent);
-    background: none;
+  .np-title {
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+    color: var(--text-primary); overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; margin-bottom: 3px;
   }
-  .np-wave { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+  .np-cat {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .now-playing.np-fading .np-title,
+  .now-playing.np-fading .np-cat { transition: opacity 0.35s ease; opacity: 0.5; }
+  .np-fav-btn {
+    width: 30px; height: 30px; background: none; border: none; cursor: pointer;
+    color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0;
+  }
+  .np-fav-btn:hover { color: var(--accent); transform: scale(1.1); }
+  .np-fav-btn.faved { color: var(--accent); }
+  .np-fav-btn.faved svg { fill: var(--accent); }
+
+  /* Center transport */
+  .np-transport {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .np-tcontrol {
+    width: 32px; height: 32px; background: none; border: none; cursor: pointer;
+    color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; border-radius: 50%;
+  }
+  .np-tcontrol:hover { color: var(--accent); transform: scale(1.1); background: var(--surface-2); }
+  .np-play {
+    width: 36px; height: 36px; border: 1.5px solid var(--accent); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    color: var(--accent); background: var(--input-fill);
+    transition: all 0.15s;
+  }
+  .np-play:hover { background: var(--accent); color: var(--text-on-accent); transform: scale(1.05); box-shadow: 0 0 16px rgba(224,177,0,0.4); }
+  .np-time {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-secondary); letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums; margin-left: 6px; min-width: 88px;
+  }
+
+  /* Right zone: wave + volume */
+  .np-right-zone {
+    display: flex; align-items: center; gap: 18px; justify-content: flex-end;
+  }
+  .np-wave { display: flex; align-items: flex-end; gap: 3px; height: 18px; }
   .np-bar { width: 3px; border-radius: 1px; background: var(--accent); animation: npwave 0.8s ease-in-out infinite alternate; }
   @keyframes npwave { from { transform: scaleY(0.4); } to { transform: scaleY(1); } }
+
+  /* Volume — inline slider that expands on hover */
+  .np-vol-wrap {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .np-vol-btn {
+    width: 30px; height: 30px; background: none; border: none; cursor: pointer;
+    color: var(--text-secondary); display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; border-radius: 50%;
+  }
+  .np-vol-btn:hover { color: var(--accent); background: var(--surface-2); }
+  .np-vol-slider-wrap {
+    width: 0; overflow: hidden; transition: width 0.25s ease;
+  }
+  .np-vol-wrap:hover .np-vol-slider-wrap { width: 90px; }
+  .np-vol-slider {
+    width: 90px; height: 3px; -webkit-appearance: none; appearance: none;
+    background: var(--hairline); border-radius: 2px; outline: none; cursor: pointer;
+  }
+  .np-vol-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(224,177,0,0.18);
+  }
+  .np-vol-slider::-moz-range-thumb {
+    width: 12px; height: 12px; border-radius: 50%; border: none;
+    background: var(--accent); cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(224,177,0,0.18);
+  }
+
+  @media (max-width: 880px) {
+    .now-playing { height: 88px; }
+    .np-row { grid-template-columns: 1fr auto; gap: 12px; }
+    .np-right-zone { display: none; }
+    .np-time { display: none; }
+  }
 
   /* Scrollbar */
   .content::-webkit-scrollbar { width: 4px; }
@@ -512,8 +930,735 @@
     letter-spacing: 0.12em;
   }
   .sidebar-radio-tab { animation: aurora-shift 4s ease-in-out infinite; }
+
+  /* ====================================================================
+     POMODORO / FOCUS PAGE
+     ==================================================================== */
+  .pomo-page { display: flex; flex-direction: column; gap: 24px; }
+
+  /* Giant brand-block header (3× the size of the view-title) */
+  .pomo-block-head {
+    display: flex; flex-direction: column; gap: 12px;
+    margin-bottom: 8px;
+    animation: pomo-block-in 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes pomo-block-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .pomo-block-eyebrow {
+    font-size: 11px; color: var(--accent); font-weight: 700;
+    letter-spacing: 0.18em; line-height: 1;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .pomo-block-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 28px; height: 1px; background: var(--accent);
+  }
+  .pomo-block-title {
+    /* Same font/weight/case as view-title — scaled up 3× */
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 84px;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+    color: var(--text-primary);
+    margin: 0;
+    background: linear-gradient(180deg, var(--text-primary) 0%, var(--text-primary) 60%, rgba(224,177,0,0.75) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .pomo-block-rule {
+    width: 64px; height: 3px; background: var(--accent);
+    margin-top: 4px;
+    box-shadow: 0 0 12px rgba(224,177,0,0.5);
+  }
+
+  @media (max-width: 900px) {
+    .pomo-block-title { font-size: 56px; }
+  }
+  @media (max-width: 600px) {
+    .pomo-block-title { font-size: 40px; }
+  }
+
+  .pomo-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .pomo-streak {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; background: var(--input-fill); border: 1px solid var(--accent-soft);
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  }
+
+  /* Stats grid */
+  .pomo-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .pomo-stat {
+    background: var(--surface-raised); border: 1px solid var(--hairline);
+    padding: 20px 22px; box-shadow: var(--inset-highlight), var(--shadow-card);
+    display: flex; flex-direction: column; gap: 4px; transition: all 0.18s;
+  }
+  .pomo-stat:hover {
+    border-color: var(--accent-soft); transform: translateY(-2px);
+    box-shadow: var(--inset-highlight), var(--shadow-card-hover);
+  }
+  .pomo-stat-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .pomo-stat-value {
+    font-family: 'Inter', sans-serif; font-size: 38px; font-weight: 800;
+    color: var(--accent); letter-spacing: -0.02em; line-height: 1;
+  }
+  .pomo-stat-sub {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* Main timer area */
+  .pomo-main {
+    background: var(--surface-section); border: 1px solid var(--hairline);
+    padding: 48px 32px; display: flex; flex-direction: column; align-items: center;
+    gap: 32px; box-shadow: var(--inset-highlight), var(--shadow-card);
+    position: relative; overflow: hidden;
+  }
+  .pomo-main::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(224,177,0,0.08) 0%, transparent 60%);
+  }
+  .pomo-timer-wrap { position: relative; z-index: 1; }
+  .pomo-ring {
+    display: block; transform-origin: center;
+  }
+  .pomo-ring-progress {
+    transition: stroke-dashoffset 1s linear, stroke 0.3s;
+  }
+  .pomo-time-display {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px; pointer-events: none;
+  }
+  .pomo-mode-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em;
+    color: var(--accent); text-transform: uppercase; font-weight: 700;
+  }
+  .pomo-time {
+    font-family: 'Inter', sans-serif; font-size: 64px; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -0.04em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pomo-session-hint {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em;
+    color: var(--text-secondary); text-transform: uppercase;
+  }
+  .pomo-controls {
+    display: flex; gap: 12px; position: relative; z-index: 1; align-items: center;
+  }
+  .pomo-btn-primary {
+    height: 48px; padding: 0 40px; background: var(--accent);
+    color: var(--text-on-accent); font-family: 'DM Mono', monospace;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; border: none; cursor: pointer;
+    transition: all 0.15s; min-width: 160px;
+  }
+  .pomo-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(224,177,0,0.3); }
+  .pomo-btn-primary.running { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+  .pomo-btn-secondary {
+    height: 48px; padding: 0 22px; background: var(--input-fill);
+    color: var(--text-secondary); font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; border: 1px solid var(--hairline);
+    cursor: pointer; transition: all 0.15s;
+    backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  }
+  .pomo-btn-secondary:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Settings + heatmap row */
+  /* Two-column row: timer + focus tracks panel */
+  .pomo-row {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;
+  }
+  @media (max-width: 1100px) { .pomo-row { grid-template-columns: 1fr; } }
+
+  .pomo-tracks-panel {
+    background: var(--surface-section); border: 1px solid var(--hairline);
+    box-shadow: var(--inset-highlight), var(--shadow-card);
+    display: flex; flex-direction: column;
+    max-height: 540px; overflow: hidden;
+  }
+  .pomo-tracks-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 20px 22px 16px; gap: 12px; border-bottom: 1px solid var(--hairline);
+  }
+  .pomo-tracks-count {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 700;
+    color: var(--accent); background: rgba(224,177,0,0.10);
+    border: 1px solid var(--accent-soft); padding: 4px 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0;
+  }
+  .pomo-tracks-list {
+    flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+  }
+  .pomo-tracks-list::-webkit-scrollbar { width: 4px; }
+  .pomo-tracks-list::-webkit-scrollbar-thumb { background: var(--hairline); }
+  .pomo-track-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 22px; cursor: pointer; transition: all 0.15s;
+    border-bottom: 1px solid var(--hairline); position: relative;
+  }
+  .pomo-track-row:last-child { border-bottom: none; }
+  .pomo-track-row:hover { background: var(--surface-2); padding-left: 26px; }
+  .pomo-track-row.now-playing { background: rgba(224,177,0,0.06); }
+  .pomo-track-row.now-playing::before {
+    content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 60%; background: var(--accent);
+  }
+  .pomo-track-thumb {
+    width: 44px; height: 30px; object-fit: cover;
+    border: 1px solid var(--hairline); flex-shrink: 0;
+    filter: saturate(0.5) brightness(0.55); transition: filter 0.15s;
+  }
+  .pomo-track-row:hover .pomo-track-thumb,
+  .pomo-track-row.now-playing .pomo-track-thumb { filter: saturate(1) brightness(0.95); border-color: var(--accent); }
+  .pomo-track-info { flex: 1; min-width: 0; }
+  .pomo-track-name {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    color: var(--text-primary); white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; margin-bottom: 2px;
+  }
+  .pomo-track-row:hover .pomo-track-name { color: var(--accent); }
+  .pomo-track-creator {
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pomo-track-dur {
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-secondary);
+    text-transform: uppercase; flex-shrink: 0;
+  }
+  .pomo-track-play {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: var(--text-on-accent);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.15s; flex-shrink: 0;
+  }
+  .pomo-track-row:hover .pomo-track-play { opacity: 1; }
+  .pomo-track-row.now-playing .pomo-track-play {
+    opacity: 1; background: transparent; border: 2px solid var(--accent);
+    color: var(--accent);
+  }
+
+  .pomo-tracks-footer {
+    padding: 14px 22px; border-top: 1px solid var(--hairline);
+    background: var(--surface-2); text-align: center;
+  }
+  .pomo-tracks-link {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600;
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em;
+    transition: opacity 0.15s;
+  }
+  .pomo-tracks-link:hover { opacity: 0.75; }
+
+  .pomo-bottom {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .pomo-settings, .pomo-history {
+    background: var(--surface-section); border: 1px solid var(--hairline);
+    padding: 24px; box-shadow: var(--inset-highlight), var(--shadow-section);
+  }
+  .pomo-setting-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--hairline);
+  }
+  .pomo-setting-row:last-child { border-bottom: none; }
+  .pomo-setting-row label {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .pomo-stepper {
+    display: flex; align-items: center; gap: 4px;
+    background: var(--input-fill); border: 1px solid var(--hairline);
+    padding: 2px;
+  }
+  .pomo-stepper button {
+    width: 28px; height: 28px; background: transparent; border: none;
+    color: var(--text-secondary); font-family: 'DM Mono', monospace;
+    font-size: 16px; cursor: pointer; transition: all 0.12s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pomo-stepper button:hover { background: var(--accent); color: var(--text-on-accent); }
+  .pomo-stepper span {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-primary); padding: 0 12px; min-width: 78px; text-align: center;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* Toggle switch */
+  .pomo-toggle {
+    width: 40px; height: 22px; border-radius: 11px;
+    background: var(--input-fill); border: 1px solid var(--hairline);
+    cursor: pointer; position: relative; transition: all 0.18s;
+  }
+  .pomo-toggle-knob {
+    position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--text-secondary); transition: all 0.18s;
+  }
+  .pomo-toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+  .pomo-toggle[aria-pressed="true"] .pomo-toggle-knob { left: 20px; background: var(--text-on-accent); }
+
+  /* Heatmap grid: 7 rows × 5 cols (35 days) */
+  .pomo-heatmap {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+    margin-bottom: 14px;
+  }
+  .pomo-heat-cell {
+    aspect-ratio: 1; border-radius: 3px; background: var(--hairline);
+    transition: all 0.15s; cursor: default; position: relative;
+  }
+  .pomo-heat-cell[data-count]:hover {
+    transform: scale(1.15); box-shadow: 0 0 0 2px var(--accent);
+  }
+  .pomo-heat-cell[data-tip]:hover::after {
+    content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%;
+    transform: translateX(-50%); background: var(--surface-2); color: var(--text-primary);
+    font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase;
+    padding: 4px 8px; white-space: nowrap; pointer-events: none; z-index: 10;
+    border: 1px solid var(--hairline); letter-spacing: 0.05em;
+  }
+  .pomo-heatmap-legend {
+    display: flex; align-items: center; gap: 4px; justify-content: flex-end;
+  }
+  .pomo-heatmap-legend .pomo-heat-cell {
+    width: 10px; height: 10px; aspect-ratio: unset; cursor: default;
+  }
+
+  /* ====================================================================
+     NOTIFICATIONS PANEL
+     ==================================================================== */
+  .notif-wrap { position: relative; }
+  .notif-badge {
+    position: absolute; top: -3px; right: -3px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #ef4444; border: 2px solid var(--surface-1);
+    pointer-events: none; display: none;
+  }
+  .notif-badge.visible { display: block; animation: notif-pulse 2s ease-in-out infinite; }
+  @keyframes notif-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); }
+    50%     { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+  }
+  .notif-panel {
+    position: absolute; top: calc(100% + 12px); right: 0;
+    width: 380px; max-height: 480px;
+    background: var(--surface-section); border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-card), 0 24px 48px rgba(0,0,0,0.35);
+    z-index: 1000; display: none; flex-direction: column;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .notif-panel.open { display: flex; animation: notif-slide 0.22s ease-out; }
+  @keyframes notif-slide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .notif-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px; border-bottom: 1px solid var(--hairline);
+  }
+  .notif-panel-title {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700;
+  }
+  .notif-mark-read {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
+    transition: color 0.15s; padding: 4px 6px;
+  }
+  .notif-mark-read:hover { color: var(--accent); }
+  .notif-list {
+    flex: 1; overflow-y: auto; padding: 4px 0;
+  }
+  .notif-list::-webkit-scrollbar { width: 4px; }
+  .notif-list::-webkit-scrollbar-thumb { background: var(--hairline); }
+  .notif-item {
+    display: flex; gap: 12px; padding: 14px 18px;
+    border-bottom: 1px solid var(--hairline); cursor: pointer;
+    transition: background 0.12s; align-items: flex-start;
+  }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-item:hover { background: var(--surface-2); }
+  .notif-item.unread { background: rgba(224,177,0,0.04); }
+  .notif-item.unread:hover { background: rgba(224,177,0,0.08); }
+  .notif-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-2); border: 1px solid var(--hairline);
+    color: var(--accent);
+  }
+  .notif-icon.research { color: #4ade80; }
+  .notif-icon.library  { color: #60a5fa; }
+  .notif-icon.you      { color: var(--accent); }
+  .notif-icon.system   { color: #c084fc; }
+  .notif-body { flex: 1; min-width: 0; }
+  .notif-title-text {
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--text-primary); margin-bottom: 3px; line-height: 1.3;
+  }
+  .notif-desc {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;
+  }
+  .notif-meta {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em;
+    opacity: 0.7;
+  }
+  .notif-empty {
+    padding: 48px 18px; text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .notif-panel-footer {
+    padding: 12px 18px; border-top: 1px solid var(--hairline);
+    text-align: center;
+  }
+  .notif-panel-footer button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
+    transition: color 0.15s;
+  }
+  .notif-panel-footer button:hover { color: var(--accent); }
+
+  /* === GLOBAL INPUT/CHIP FILL ===
+     Anything that holds text — inputs, textareas, selects, search bars — gets
+     an 80% opaque fill so text never sits directly on the grid background.
+     Applies in both themes. */
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select {
+    background: var(--input-fill) !important;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  /* Also fill any element a JS author marked as background:transparent or background:none
+     when it contains text — applied via attribute selectors for inline-styled chips */
+  [style*="background:transparent"],
+  [style*="background: transparent"] {
+    background: var(--input-fill) !important;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  /* Exception: hero overlay needs to actually be transparent — keep it transparent */
+  .hero-overlay[style*="background:transparent"],
+  .hero-overlay[style*="background: transparent"] { background: var(--hero-overlay-grad) !important; }
+
+  /* === LIGHT-MODE INLINE-STYLE RESCUES ===
+     These override hardcoded inline styles + JS-rendered dark colors that don't theme-switch.
+     Uses attribute selectors so we don't need to refactor every template literal. */
+  [data-theme="light"] [style*="color:#F3F3F0"],
+  [data-theme="light"] [style*="color: #F3F3F0"] { color: #0A0A0A !important; }
+  [data-theme="light"] [style*="color:#6B7680"],
+  [data-theme="light"] [style*="color: #6B7680"] { color: #6B7280 !important; }
+  [data-theme="light"] [style*="background:#0f0f0f"],
+  [data-theme="light"] [style*="background: #0f0f0f"] { background: #FFFFFF !important; }
+  [data-theme="light"] [style*="background:#050505"],
+  [data-theme="light"] [style*="background: #050505"] { background: #FFFFFF !important; }
+  [data-theme="light"] [style*="border:1px solid rgba(255,255,255,0.1)"],
+  [data-theme="light"] [style*="border: 1px solid rgba(255,255,255,0.1)"] { border-color: rgba(224,177,0,0.20) !important; }
+  [data-theme="light"] [style*="border:1px solid rgba(255,255,255,0.07)"],
+  [data-theme="light"] [style*="border: 1px solid rgba(255,255,255,0.07)"] { border-color: rgba(224,177,0,0.18) !important; }
+  [data-theme="light"] [style*="border:1px dashed rgba(255,255,255,0.07)"] { border-color: rgba(224,177,0,0.25) !important; }
+  /* Newsletter input border on focus is set via JS — we need to hint focus color for light too via accent stays the same */
+
+  /* Modal background in light mode */
+  [data-theme="light"] #personalisation-modal > div {
+    box-shadow: 0 4px 12px rgba(15,15,15,0.06), 0 24px 48px rgba(15,15,15,0.10);
+  }
+
+  /* Library cards / archive cards rendered by JS — make sure they breathe in light */
+  [data-theme="light"] .lib-card,
+  [data-theme="light"] .archive-card,
+  [data-theme="light"] .framework-card,
+  [data-theme="light"] .queue-item {
+    background: var(--surface-1) !important;
+    border-color: var(--hairline) !important;
+    box-shadow: var(--shadow-card);
+  }
+  [data-theme="light"] .lib-card:hover,
+  [data-theme="light"] .archive-card:hover,
+  [data-theme="light"] .framework-card:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Channel tabs container border */
+  [data-theme="light"] .channel-tabs { background: var(--surface-1); }
+  [data-theme="light"] .channel-tab:not(.active):hover { background: var(--surface-2); }
+
+  /* Radio player container in light */
+  [data-theme="light"] .radio-player {
+    background: var(--surface-section);
+    box-shadow: var(--shadow-card);
+  }
+  /* Radio thumbnail filter tweak — too dim in light */
+  [data-theme="light"] .radio-thumb { filter: saturate(0.6) brightness(0.85); }
+  /* Library list thumbs too — make them vivid in light */
+  [data-theme="light"] .lib-list-thumb { filter: saturate(0.85) brightness(0.95); }
+  /* Track thumbs in uploads list */
+  [data-theme="light"] .track-thumb { opacity: 0.8; }
+
+  /* Track list rows + queue rows */
+  [data-theme="light"] .track-item { border-bottom-color: var(--hairline); }
+  [data-theme="light"] .track-item:hover { background: var(--surface-2); }
+  [data-theme="light"] .lib-list-row { border-bottom-color: var(--hairline); }
+  [data-theme="light"] .lib-list-row:first-child { border-top-color: var(--hairline); }
+
+  /* Light-mode body grid is yellow — make sure the hero-grid overlay doesn't fight it */
+  [data-theme="light"] .hero-grid { opacity: 0.06; }
+
+  /* Now-playing waves in light: yellow not white */
+  [data-theme="light"] .np-bar { background: var(--accent); }
+
+  /* Smoother focus ring in light */
+  [data-theme="light"] .search-input:focus,
+  [data-theme="light"] input:focus { box-shadow: 0 0 0 3px rgba(224,177,0,0.18); }
+
+  /* Topbar logo "NN" — keep yellow but slightly darker for contrast on white */
+  [data-theme="light"] .logo-sq { color: #B89400 !important; }
+
+  /* ====================================================================
+     LIGHT-MODE HOVER SYSTEM
+     Every interactive thing flips to solid yellow + black text on hover.
+     Tactile, satisfying, super obvious.
+     ==================================================================== */
+
+  /* Reusable transition for all hover targets */
+  [data-theme="light"] .feature-card,
+  [data-theme="light"] .cat-card,
+  [data-theme="light"] .sidebar-link,
+  [data-theme="light"] .track-item,
+  [data-theme="light"] .lib-list-row,
+  [data-theme="light"] .queue-item,
+  [data-theme="light"] .lib-card,
+  [data-theme="light"] .framework-card,
+  [data-theme="light"] .channel-tab,
+  [data-theme="light"] .notif-btn,
+  [data-theme="light"] .theme-toggle,
+  [data-theme="light"] .gallery-link,
+  [data-theme="light"] .research-item,
+  [data-theme="light"] .listener-row,
+  [data-theme="light"] .store-btn,
+  [data-theme="light"] .hero-nav,
+  [data-theme="light"] .slide-dot {
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease,
+                box-shadow 0.18s ease, transform 0.18s ease, filter 0.18s ease !important;
+  }
+
+  /* — FEATURE CARDS — full yellow flip */
+  [data-theme="light"] .feature-card:not(.highlight):hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(224,177,0,0.30), 0 18px 40px rgba(224,177,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-title,
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-desc,
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-sub,
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-link {
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-desc { color: rgba(26,24,21,0.75) !important; }
+  [data-theme="light"] .feature-card:not(.highlight):hover .fc-sub { color: rgba(26,24,21,0.65) !important; }
+
+  /* — CAT CARDS (Neuronest Library tiles on home) */
+  [data-theme="light"] .cat-card:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(224,177,0,0.30), 0 18px 40px rgba(224,177,0,0.25), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  [data-theme="light"] .cat-card:hover .cat-name,
+  [data-theme="light"] .cat-card:hover .cat-modality,
+  [data-theme="light"] .cat-card:hover .cat-meta,
+  [data-theme="light"] .cat-card:hover .cat-evidence {
+    color: #1A1815 !important;
+    border-color: rgba(26,24,21,0.4) !important;
+    opacity: 1 !important;
+  }
+
+  /* — SIDEBAR LINKS — yellow fill, black icon + label */
+  [data-theme="light"] .sidebar-link:hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .sidebar-link:hover .nav-label { color: #1A1815 !important; }
+  [data-theme="light"] .sidebar-link:hover svg { stroke: #1A1815 !important; }
+
+  /* Active sidebar link: keep accent indicator but card is soft yellow tint, not full flip */
+  [data-theme="light"] .sidebar-link.active {
+    background: rgba(224,177,0,0.18) !important;
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .sidebar-link.active .nav-label { color: #8A6A00 !important; }
+
+  /* — TRACK LIST ROWS (uploads list on home) */
+  [data-theme="light"] .track-item:hover {
+    background: var(--accent) !important;
+  }
+  [data-theme="light"] .track-item:hover .track-name,
+  [data-theme="light"] .track-item:hover .track-cat {
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .track-item:hover .play-icon {
+    background: #1A1815 !important;
+    color: var(--accent) !important;
+  }
+  [data-theme="light"] .track-item:hover .track-thumb {
+    border-color: #1A1815 !important;
+    opacity: 1 !important;
+  }
+
+  /* — LIBRARY LIST ROWS */
+  [data-theme="light"] .lib-list-row:hover {
+    background: var(--accent) !important;
+  }
+  [data-theme="light"] .lib-list-row:hover .lib-list-title,
+  [data-theme="light"] .lib-list-row:hover .lib-list-creator,
+  [data-theme="light"] .lib-list-row:hover .lib-list-dur {
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .lib-list-row:hover .lib-list-tag {
+    color: #1A1815 !important;
+    border-color: rgba(26,24,21,0.4) !important;
+  }
+  [data-theme="light"] .lib-list-row:hover .lib-list-thumb {
+    filter: saturate(1) brightness(1) !important;
+  }
+
+  /* — LIBRARY GRID CARDS */
+  [data-theme="light"] .lib-card:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(224,177,0,0.30), 0 18px 40px rgba(224,177,0,0.25) !important;
+  }
+  [data-theme="light"] .lib-card:hover * {
+    color: #1A1815 !important;
+  }
+
+  /* — FRAMEWORK / RESEARCH CARDS */
+  [data-theme="light"] .framework-card:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(224,177,0,0.30), 0 18px 40px rgba(224,177,0,0.25) !important;
+  }
+  [data-theme="light"] .framework-card:hover * {
+    color: #1A1815 !important;
+    border-color: rgba(26,24,21,0.3) !important;
+  }
+
+  /* — QUEUE ITEMS */
+  [data-theme="light"] .queue-item:hover {
+    background: var(--accent) !important;
+  }
+  [data-theme="light"] .queue-item:hover * { color: #1A1815 !important; }
+
+  /* — CHANNEL TABS (inactive ones) */
+  [data-theme="light"] .channel-tab:not(.active):hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+  }
+
+  /* — TOPBAR BUTTONS (notif, theme toggle) */
+  [data-theme="light"] .notif-btn:hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+    border-color: var(--accent) !important;
+  }
+  [data-theme="light"] .theme-toggle:hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+    border-color: var(--accent) !important;
+    transform: rotate(15deg);
+  }
+
+  /* — TEXT LINKS (gallery link, "view all", etc) */
+  [data-theme="light"] .gallery-link:hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+    padding: 2px 8px;
+    margin: -2px -8px;
+  }
+
+  /* — RESEARCH FEED ITEMS */
+  [data-theme="light"] .research-item:hover {
+    background: rgba(224,177,0,0.12) !important;
+  }
+  [data-theme="light"] .research-item:hover .research-title {
+    color: #8A6A00 !important;
+  }
+
+  /* — HERO SLIDE NAV ARROWS */
+  [data-theme="light"] .hero-nav {
+    background: rgba(255,255,255,0.6) !important;
+    border-color: var(--hairline) !important;
+    color: #1A1815 !important;
+  }
+  [data-theme="light"] .hero-nav:hover {
+    background: var(--accent) !important;
+    color: #1A1815 !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 20px rgba(224,177,0,0.5);
+  }
+
+  /* — STORE / SECONDARY BUTTONS (App Store style buttons in hero) */
+  [data-theme="light"] .store-btn:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    opacity: 1 !important;
+  }
+  [data-theme="light"] .store-btn:hover .store-btn-text-top,
+  [data-theme="light"] .store-btn:hover .store-btn-text-main {
+    color: #1A1815 !important;
+  }
+
+  /* — PRIMARY BUTTON: already yellow → on hover, get darker yellow + lift */
+  [data-theme="light"] .btn-primary:hover {
+    filter: brightness(0.92);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(224,177,0,0.35), 0 8px 20px rgba(224,177,0,0.20);
+  }
+
+  /* — SLIDE DOTS — pop on hover */
+  [data-theme="light"] .slide-dot { background: rgba(26,24,21,0.25) !important; }
+  [data-theme="light"] .slide-dot:hover { background: var(--accent) !important; transform: scale(1.4); }
+  [data-theme="light"] .slide-dot.active { background: var(--accent) !important; }
+
+  /* — ACTIVE PRESS state — micro press-down on click for tactile feel */
+  [data-theme="light"] .feature-card:active,
+  [data-theme="light"] .cat-card:active,
+  [data-theme="light"] .lib-card:active,
+  [data-theme="light"] .framework-card:active,
+  [data-theme="light"] .sidebar-link:active,
+  [data-theme="light"] .notif-btn:active,
+  [data-theme="light"] .theme-toggle:active,
+  [data-theme="light"] .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.06s ease;
+  }
 </style>
-<script src="soundhub_files/iframe_api"></script></head>
+<script src="SoundHub%20%E2%80%94%20Neuronest_files/iframe_api"></script></head>
 <body data-new-gr-c-s-check-loaded="8.937.0" data-gr-ext-installed="">
 
 <div id="app">
@@ -542,6 +1687,15 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path><line x1="9" y1="21" x2="15" y2="21"></line><line x1="10" y1="17" x2="14" y2="17"></line></svg>
         <span class="nav-label">Research</span>
       </a>
+      <a class="sidebar-link" onclick="showPage('pomodoro')" title="Pomodoro">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="13" r="8"></circle>
+          <path d="M12 9v4l2.5 2.5"></path>
+          <path d="M9 2h6"></path>
+          <path d="M12 2v3"></path>
+        </svg>
+        <span class="nav-label">Focus</span>
+      </a>
       <a class="sidebar-link sidebar-radio-tab" onclick="showPage('radio')" title="Radio">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
@@ -566,10 +1720,33 @@
         <span class="topbar-title">Neuronest Radio // The Sound Hub</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;" id="search-area">
-        <input class="search-input" type="text" placeholder="Query signal archive..." oninput="filterArchive(this.value)">
-        <button class="notif-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <div class="search-wrap">
+          <input class="search-input" id="global-search" type="text" placeholder="Search moods, nature, ambient soundscapes, focus tracks..." oninput="globalSearch(this.value)" onfocus="if(this.value)globalSearch(this.value)" onkeydown="globalSearchKeydown(event)" autocomplete="off">
+          <button class="search-clear" id="search-clear-btn" onclick="clearGlobalSearch()" aria-label="Clear search" style="display:none;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+          <div class="search-dropdown" id="search-dropdown" role="listbox"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle light/dark mode">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
         </button>
+        <div class="notif-wrap">
+          <button class="notif-btn" onclick="toggleNotifPanel(event)" aria-label="Notifications">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="notif-badge visible" id="notif-badge"></span>
+          </button>
+          <div class="notif-panel" id="notif-panel" onclick="event.stopPropagation()">
+            <div class="notif-panel-header">
+              <span class="notif-panel-title">Notifications</span>
+              <button class="notif-mark-read" onclick="markAllNotifsRead()">Mark all read</button>
+            </div>
+            <div class="notif-list" id="notif-list"></div>
+            <div class="notif-panel-footer">
+              <button onclick="clearAllNotifs()">Clear all</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div style="display:none;align-items:center;gap:8px;" id="radio-status">
         <div id="header-wave" style="display:none;align-items:flex-end;gap:2px;height:16px;">
@@ -595,7 +1772,7 @@
             <div class="hero-grid"></div>
             <div class="hero-overlay"></div>
             <div class="hero-content">
-              <div id="hero-content-inner" style="transition: opacity 0.4s; opacity: 1;">
+              <div id="hero-content-inner" style="transition:opacity 0.4s ease;">
                 <div class="hero-label" id="hero-label" style="background: linear-gradient(135deg, rgb(79, 13, 186) 0%, rgb(192, 38, 211) 45%, rgb(244, 63, 94) 100%); color: rgb(255, 255, 255);">FEATURED TRACK · FOCUS</div>
                 <h1 class="hero-title" id="hero-slide-title" style="font-size: 56px;">Lofi Hip Hop Radio</h1>
                 <p id="hero-slide-sub" style="font-size: 15px; font-weight: 700; margin-bottom: 6px; font-family: &quot;Inter&quot;, sans-serif; color: rgb(243, 243, 240); background: linear-gradient(135deg, rgb(79, 13, 186) 0%, rgb(192, 38, 211) 45%, rgb(244, 63, 94) 100%) padding-box text; -webkit-text-fill-color: transparent;">by Lofi Girl</p>
@@ -643,6 +1820,27 @@ dopaminergic engagement without attentional capture.</p>
               <p class="fc-desc">Explore the latest findings in auditory cognitive stimulation.</p>
               <span class="fc-link">Access Module →</span>
             </div>
+            <div class="feature-card performance-card" onclick="showLearnMoreModal()">
+              <div class="perf-card-waves" aria-hidden="true">
+                <svg viewBox="0 0 400 160" preserveAspectRatio="none" width="100%" height="100%">
+                  <defs>
+                    <linearGradient id="perfWaveGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#E0B100" stop-opacity="0"></stop>
+                      <stop offset="50%" stop-color="#E0B100" stop-opacity="0.55"></stop>
+                      <stop offset="100%" stop-color="#E0B100" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,80 Q50,40 100,80 T200,80 T300,80 T400,80" fill="none" stroke="url(#perfWaveGrad)" stroke-width="1.4"></path>
+                  <path d="M0,80 Q50,50 100,80 T200,80 T300,80 T400,80" fill="none" stroke="url(#perfWaveGrad)" stroke-width="1" opacity="0.6"></path>
+                  <path d="M0,80 Q50,65 100,80 T200,80 T300,80 T400,80" fill="none" stroke="url(#perfWaveGrad)" stroke-width="0.8" opacity="0.4"></path>
+                </svg>
+              </div>
+              <div style="position:relative;z-index:1;">
+                <p class="fc-sub">The Science</p>
+                <h3 class="fc-title">Sound as a Tool<br>for Performance</h3>
+              </div>
+              <span class="fc-link" style="position:relative;z-index:1;">Learn More →</span>
+            </div>
           </div>
 
           <!-- Grid -->
@@ -652,47 +1850,20 @@ dopaminergic engagement without attentional capture.</p>
               <div class="uploads-log">
                 <div class="uploads-header">
                   <span class="section-label">Curated Selection</span>
-                  <span class="gallery-link" onclick="showPage('gallery')">[ Mode ]</span>
+                  <div style="display:flex;align-items:center;gap:14px;">
+                    <button id="curated-reshuffle" onclick="reshuffleCurated()" title="Reshuffle" style="background:none;border:none;cursor:pointer;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;padding:2px;transition:color 0.15s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                      </svg>
+                    </button>
+                    <span class="gallery-link" onclick="showPage('gallery')">[ Mode ]</span>
+                  </div>
                 </div>
                 <div class="track-list" id="uploads-list">
-    <div class="track-item" onclick="playTrack({'id':'v4C4keiF0tQ','title':'Heavy Rain &amp; Big Ocean Waves — White Noise','creator':'Relaxing White Noise','category':'Calm','tags':['Nature Immersion','Block Distractions','Stress Relief'],'duration':'10 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_023.jpg" alt="Heavy Rain &amp; Big Ocean Waves — White Noise">
-      <span class="track-name">Heavy Rain &amp; Big Ocean Waves — White Noise</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="v4C4keiF0tQ" onclick="toggleFav('v4C4keiF0tQ',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'UPrQdaixz-4','title':'Frog Funk Therapy — Breezy Jazz Funk','creator':'Nebula Breeze','category':'Calm','tags':['Mood Boost','Wind Down','Gentle Productivity'],'duration':'3 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_006.jpg" alt="Frog Funk Therapy — Breezy Jazz Funk">
-      <span class="track-name">Frog Funk Therapy — Breezy Jazz Funk</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="UPrQdaixz-4" onclick="toggleFav('UPrQdaixz-4',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'--h6buReAvw','title':'BEYOND — Meditation Music 444Hz','creator':'Zen Celesta','category':'Calm','tags':['Meditation','Grounding','Inner Peace'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_014.jpg" alt="BEYOND — Meditation Music 444Hz">
-      <span class="track-name">BEYOND — Meditation Music 444Hz</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="--h6buReAvw" onclick="toggleFav('--h6buReAvw',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
     <div class="track-item" onclick="playTrack({'id':'woTWj6iN_aY','title':'Calming Nervous System — Handpan Music','creator':'Malte Marten','category':'Calm','tags':['Calm Nervous System','Stress Relief','Body Relaxation'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_009.jpg" alt="Calming Nervous System — Handpan Music">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_004.jpg" alt="Calming Nervous System — Handpan Music">
       <span class="track-name">Calming Nervous System — Handpan Music</span>
       <span class="track-cat">Calm</span>
       <button class="fav-btn" data-id="woTWj6iN_aY" onclick="toggleFav('woTWj6iN_aY',event)" title="Favourite">
@@ -703,32 +1874,8 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'-KAxNNhyfSY','title':'Alpha Wave Promoting Soundscape','creator':'Tranquility Studios','category':'Calm','tags':['Calm Nervous System','Relaxed Focus','Alpha Waves'],'duration':'3 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_012.jpg" alt="Alpha Wave Promoting Soundscape">
-      <span class="track-name">Alpha Wave Promoting Soundscape</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="-KAxNNhyfSY" onclick="toggleFav('-KAxNNhyfSY',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'PDI3mdiQuG0','title':'Instant Stress Relief — Singing Bowls','creator':'Aurabowls','category':'Calm','tags':['Calm Nervous System','Stress Relief','Nervous System Reset'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_017.jpg" alt="Instant Stress Relief — Singing Bowls">
-      <span class="track-name">Instant Stress Relief — Singing Bowls</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="PDI3mdiQuG0" onclick="toggleFav('PDI3mdiQuG0',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
     <div class="track-item" onclick="playTrack({'id':'BXbsO8exZns','title':'Relaxing Meditation Music by Deuter','creator':'New Earth Records','category':'Calm','tags':['Meditation','Wind Down','Stress Relief'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_005.jpg" alt="Relaxing Meditation Music by Deuter">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_002.jpg" alt="Relaxing Meditation Music by Deuter">
       <span class="track-name">Relaxing Meditation Music by Deuter</span>
       <span class="track-cat">Calm</span>
       <button class="fav-btn" data-id="BXbsO8exZns" onclick="toggleFav('BXbsO8exZns',event)" title="Favourite">
@@ -739,56 +1886,8 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'qIW2Fu2SN0U','title':'12-Hour Engineered Pink Noise','creator':'Pink Noise (NEURONEST)','category':'Calm','tags':['Brain Restoration','Deep Sleep','Sharpen Memory'],'duration':'12 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_004.jpg" alt="12-Hour Engineered Pink Noise">
-      <span class="track-name">12-Hour Engineered Pink Noise</span>
-      <span class="track-cat">Calm</span>
-      <button class="fav-btn" data-id="qIW2Fu2SN0U" onclick="toggleFav('qIW2Fu2SN0U',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'NQk2mX5Z36k','title':'Jazzhop Study Enhancer — Isochronic Tones','creator':'Jason Lewis','category':'Focus','tags':['Sharpen Memory','Study Sessions','Deep Focus'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_011.jpg" alt="Jazzhop Study Enhancer — Isochronic Tones">
-      <span class="track-name">Jazzhop Study Enhancer — Isochronic Tones</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="NQk2mX5Z36k" onclick="toggleFav('NQk2mX5Z36k',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'rKxRHZec67M','title':'Jazz Alpha/Beta Isochronic Tones','creator':'Jason Lewis','category':'Focus','tags':['Sharpen Memory','Deep Focus','Mental Clarity'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_025.jpg" alt="Jazz Alpha/Beta Isochronic Tones">
-      <span class="track-name">Jazz Alpha/Beta Isochronic Tones</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="rKxRHZec67M" onclick="toggleFav('rKxRHZec67M',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'yLOM8R6lbzg','title':'Studying White Noise — 10 Hours','creator':'Relaxing White Noise','category':'Focus','tags':['Study Sessions','Block Distractions','Sustained Focus'],'duration':'10 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_013.jpg" alt="Studying White Noise — 10 Hours">
-      <span class="track-name">Studying White Noise — 10 Hours</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="yLOM8R6lbzg" onclick="toggleFav('yLOM8R6lbzg',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
     <div class="track-item" onclick="playTrack({'id':'jfKfPfyJRdk','title':'Lofi Hip Hop Radio — Relax / Study','creator':'Lofi Girl','category':'Focus','tags':['Relaxed Focus','Study Sessions','Background Listening'],'duration':'24/7 Livestream'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_003.jpg" alt="Lofi Hip Hop Radio — Relax / Study">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault.jpg" alt="Lofi Hip Hop Radio — Relax / Study">
       <span class="track-name">Lofi Hip Hop Radio — Relax / Study</span>
       <span class="track-cat">Focus</span>
       <button class="fav-btn" data-id="jfKfPfyJRdk" onclick="toggleFav('jfKfPfyJRdk',event)" title="Favourite">
@@ -799,32 +1898,8 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'qlM39cB_5hk','title':'Soft Dark Ambient — Beats to Code To','creator':'lock in music.','category':'Focus','tags':['Deep Work','Block Distractions','Coding'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_020.jpg" alt="Soft Dark Ambient — Beats to Code To">
-      <span class="track-name">Soft Dark Ambient — Beats to Code To</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="qlM39cB_5hk" onclick="toggleFav('qlM39cB_5hk',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'A6dzSX62gEY','title':'Clear Mind Intense Focus — Ambient Techno','creator':'Jason Lewis','category':'Focus','tags':['ADHD Support','Deep Focus','Block Distractions'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_015.jpg" alt="Clear Mind Intense Focus — Ambient Techno">
-      <span class="track-name">Clear Mind Intense Focus — Ambient Techno</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="A6dzSX62gEY" onclick="toggleFav('A6dzSX62gEY',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
     <div class="track-item" onclick="playTrack({'id':'U5kH5VE31Rc','title':'Stop Mind Wandering — Smoothed Brown Noise','creator':'Jason Lewis','category':'Focus','tags':['ADHD Support','Block Distractions','Quiet Mind'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_022.jpg" alt="Stop Mind Wandering — Smoothed Brown Noise">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_009.jpg" alt="Stop Mind Wandering — Smoothed Brown Noise">
       <span class="track-name">Stop Mind Wandering — Smoothed Brown Noise</span>
       <span class="track-cat">Focus</span>
       <button class="fav-btn" data-id="U5kH5VE31Rc" onclick="toggleFav('U5kH5VE31Rc',event)" title="Favourite">
@@ -835,20 +1910,8 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'74cOUSKXMz0','title':'3-Hour Study With Me — Hyper Efficient','creator':'Jason Sung','category':'Focus','tags':['Study Sessions','Sustained Work','Time-Boxed Focus'],'duration':'3 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_010.jpg" alt="3-Hour Study With Me — Hyper Efficient">
-      <span class="track-name">3-Hour Study With Me — Hyper Efficient</span>
-      <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="74cOUSKXMz0" onclick="toggleFav('74cOUSKXMz0',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
     <div class="track-item" onclick="playTrack({'id':'aju_UB5Vlf8','title':'90 Min Ethereal Intelligent DnB','creator':'Jungle Wizard','category':'Focus','tags':['Flow State','Creative Energy','Study Sessions'],'duration':'90 Minutes'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_007.jpg" alt="90 Min Ethereal Intelligent DnB">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_007.jpg" alt="90 Min Ethereal Intelligent DnB">
       <span class="track-name">90 Min Ethereal Intelligent DnB</span>
       <span class="track-cat">Focus</span>
       <button class="fav-btn" data-id="aju_UB5Vlf8" onclick="toggleFav('aju_UB5Vlf8',event)" title="Favourite">
@@ -859,11 +1922,23 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'2F6B9EibJjw','title':'Ambient Techno Mix','creator':'Ambient Techno mixes','category':'Focus','tags':['Deep Focus','Flow State','Block Distractions'],'duration':'2 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_019.jpg" alt="Ambient Techno Mix">
-      <span class="track-name">Ambient Techno Mix</span>
+    <div class="track-item" onclick="playTrack({'id':'v4C4keiF0tQ','title':'Heavy Rain &amp; Big Ocean Waves — White Noise','creator':'Relaxing White Noise','category':'Calm','tags':['Nature Immersion','Block Distractions','Stress Relief'],'duration':'10 Hours'})">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_010.jpg" alt="Heavy Rain &amp; Big Ocean Waves — White Noise">
+      <span class="track-name">Heavy Rain &amp; Big Ocean Waves — White Noise</span>
+      <span class="track-cat">Calm</span>
+      <button class="fav-btn" data-id="v4C4keiF0tQ" onclick="toggleFav('v4C4keiF0tQ',event)" title="Favourite">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
+    </div>
+  
+    <div class="track-item" onclick="playTrack({'id':'yLOM8R6lbzg','title':'Studying White Noise — 10 Hours','creator':'Relaxing White Noise','category':'Focus','tags':['Study Sessions','Block Distractions','Sustained Focus'],'duration':'10 Hours'})">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_006.jpg" alt="Studying White Noise — 10 Hours">
+      <span class="track-name">Studying White Noise — 10 Hours</span>
       <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="2F6B9EibJjw" onclick="toggleFav('2F6B9EibJjw',event)" title="Favourite">
+      <button class="fav-btn" data-id="yLOM8R6lbzg" onclick="toggleFav('yLOM8R6lbzg',event)" title="Favourite">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
     </svg>
@@ -871,59 +1946,11 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'AKUIk1_Hqfk','title':'Focus Flow — Deep Concentration House + Beta Waves','creator':'Jason Lewis','category':'Focus','tags':['Deep Focus','Flow State','Brain Boost'],'duration':'3 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_018.jpg" alt="Focus Flow — Deep Concentration House + Beta Waves">
-      <span class="track-name">Focus Flow — Deep Concentration House + Beta Waves</span>
+    <div class="track-item" onclick="playTrack({'id':'NQk2mX5Z36k','title':'Jazzhop Study Enhancer — Isochronic Tones','creator':'Jason Lewis','category':'Focus','tags':['Sharpen Memory','Study Sessions','Deep Focus'],'duration':'1 Hour'})">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_005.jpg" alt="Jazzhop Study Enhancer — Isochronic Tones">
+      <span class="track-name">Jazzhop Study Enhancer — Isochronic Tones</span>
       <span class="track-cat">Focus</span>
-      <button class="fav-btn" data-id="AKUIk1_Hqfk" onclick="toggleFav('AKUIk1_Hqfk',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'Yi7BM8XPTfA','title':'Theta / Delta Waves — Sleep Soundscape','creator':'The Guided Meditation Site','category':'Sleep','tags':['Deep Sleep','Brain Restoration','Fall Asleep Faster'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_002.jpg" alt="Theta / Delta Waves — Sleep Soundscape">
-      <span class="track-name">Theta / Delta Waves — Sleep Soundscape</span>
-      <span class="track-cat">Sleep</span>
-      <button class="fav-btn" data-id="Yi7BM8XPTfA" onclick="toggleFav('Yi7BM8XPTfA',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'lh4JdZTJe7k','title':'12 Hours Relaxing Sleep Music','creator':'Soothing Relaxation','category':'Sleep','tags':['Stress Relief','Deep Sleep','Wind Down'],'duration':'12 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_024.jpg" alt="12 Hours Relaxing Sleep Music">
-      <span class="track-name">12 Hours Relaxing Sleep Music</span>
-      <span class="track-cat">Sleep</span>
-      <button class="fav-btn" data-id="lh4JdZTJe7k" onclick="toggleFav('lh4JdZTJe7k',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'XntSTiJBauM','title':'Quantum Jump Sleep Meditation','creator':'Jason Stephenson','category':'Sleep','tags':['Fall Asleep Faster','Guided Relaxation','Deep Sleep'],'duration':'1 Hour'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_008.jpg" alt="Quantum Jump Sleep Meditation">
-      <span class="track-name">Quantum Jump Sleep Meditation</span>
-      <span class="track-cat">Sleep</span>
-      <button class="fav-btn" data-id="XntSTiJBauM" onclick="toggleFav('XntSTiJBauM',event)" title="Favourite">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-  </button>
-      <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
-    </div>
-  
-    <div class="track-item" onclick="playTrack({'id':'FdN1pnEaJs0','title':'Sleep Sounds Deep White Noise','creator':'Relaxing White Noise','category':'Sleep','tags':['Stay Asleep All Night','Block Distractions','Deep Sleep'],'duration':'10 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault.jpg" alt="Sleep Sounds Deep White Noise">
-      <span class="track-name">Sleep Sounds Deep White Noise</span>
-      <span class="track-cat">Sleep</span>
-      <button class="fav-btn" data-id="FdN1pnEaJs0" onclick="toggleFav('FdN1pnEaJs0',event)" title="Favourite">
+      <button class="fav-btn" data-id="NQk2mX5Z36k" onclick="toggleFav('NQk2mX5Z36k',event)" title="Favourite">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
     </svg>
@@ -932,7 +1959,7 @@ dopaminergic engagement without attentional capture.</p>
     </div>
   
     <div class="track-item" onclick="playTrack({'id':'aOPXARjP1hM','title':'Calm Noise Blanket — Parasympathetic Activation','creator':'The Sound Healers','category':'Sleep','tags':['Deep Sleep','Calm Nervous System','Brain Restoration'],'duration':'3 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_021.jpg" alt="Calm Noise Blanket — Parasympathetic Activation">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_008.jpg" alt="Calm Noise Blanket — Parasympathetic Activation">
       <span class="track-name">Calm Noise Blanket — Parasympathetic Activation</span>
       <span class="track-cat">Sleep</span>
       <button class="fav-btn" data-id="aOPXARjP1hM" onclick="toggleFav('aOPXARjP1hM',event)" title="Favourite">
@@ -943,11 +1970,11 @@ dopaminergic engagement without attentional capture.</p>
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></div>
     </div>
   
-    <div class="track-item" onclick="playTrack({'id':'_SsYljnOsU8','title':'Super Deep Brown Noise — Sleep &amp; Focus','creator':'Something Soothing','category':'Sleep','tags':['Deep Sleep','Block Distractions','Fall Asleep'],'duration':'2 Hours'})">
-      <img class="track-thumb" src="soundhub_files/mqdefault_016.jpg" alt="Super Deep Brown Noise — Sleep &amp; Focus">
-      <span class="track-name">Super Deep Brown Noise — Sleep &amp; Focus</span>
+    <div class="track-item" onclick="playTrack({'id':'lh4JdZTJe7k','title':'12 Hours Relaxing Sleep Music','creator':'Soothing Relaxation','category':'Sleep','tags':['Stress Relief','Deep Sleep','Wind Down'],'duration':'12 Hours'})">
+      <img class="track-thumb" src="SoundHub%20%E2%80%94%20Neuronest_files/mqdefault_003.jpg" alt="12 Hours Relaxing Sleep Music">
+      <span class="track-name">12 Hours Relaxing Sleep Music</span>
       <span class="track-cat">Sleep</span>
-      <button class="fav-btn" data-id="_SsYljnOsU8" onclick="toggleFav('_SsYljnOsU8',event)" title="Favourite">
+      <button class="fav-btn" data-id="lh4JdZTJe7k" onclick="toggleFav('lh4JdZTJe7k',event)" title="Favourite">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
     </svg>
@@ -1337,7 +2364,7 @@ sound, matched to you.
               <!-- Active Listeners -->
               <div class="listeners-section">
                 <div style="margin-bottom:4px;"><span class="section-label">Active Listeners</span></div>
-                <div class="listener-count" id="active-listener-count">2.2K</div>
+                <div class="listener-count" id="active-listener-count">1.7K</div>
                 <div class="listener-subtitle">Online Now</div>
                 <div class="listener-avatars" id="listener-list">
     <div class="listener-row">
@@ -1445,7 +2472,9 @@ sound, matched to you.
                   <div class="radio-tags" id="radio-tags"></div>
                 </div>
                 <div class="radio-controls">
-                  <button class="play-btn" id="radio-play-btn" onclick="toggleRadioPlay()" style="border-color: var(--focus-color); color: rgb(249, 168, 37); background: transparent;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button>
+                  <button class="play-btn" id="radio-play-btn" onclick="toggleRadioPlay()" style="border-color:var(--focus-color);color:var(--focus-color);">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                  </button>
                   <div>
                     <div class="play-status" id="play-status-text">READY TO PLAY</div>
                     <div class="play-status" id="play-dur-text" style="opacity:0.5;font-size:9px;"></div>
@@ -1465,11 +2494,38 @@ sound, matched to you.
         <!-- === GALLERY / LIBRARY === -->
         <div class="page" id="page-gallery">
           <div class="archive-view">
-            <!-- Header row: title + filters + view toggle -->
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
-              <div class="view-header"><h2 class="view-title">Library</h2><p class="view-subtitle" id="gallery-subtitle">25 tracks</p></div>
+            <!-- Header row: title + filters + sort + view toggle -->
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+              <div class="view-header" style="max-width:560px;">
+                <h2 class="view-title">Library</h2>
+                <p class="view-subtitle" id="gallery-subtitle">25 tracks</p>
+                <div style="margin-top:14px;">
+                  <span class="section-label" style="display:block;margin-bottom:6px;">Your Neuronest Hub</span>
+                  <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-secondary);line-height:1.7;">
+                    The more you listen, the smarter it gets. We track 
+what resonates — your focus sessions, sleep patterns, the sounds that 
+actually move you — and use that to surface tracks and curated mixes 
+that genuinely fit where your mind is at. No algorithm noise. Just 
+sound, matched to you.
+                  </p>
+                </div>
+              </div>
               <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
                 <div style="display:flex;gap:6px;flex-wrap:wrap;" id="gallery-filters"></div>
+                <!-- Sort dropdown -->
+                <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                  <label for="gallery-sort" class="mono upper" style="font-size:9px;color:var(--ash);letter-spacing:0.08em;">Sort</label>
+                  <select id="gallery-sort" onchange="setGallerySort(this.value)" style="background:var(--surface-1);border:1px solid var(--hairline);color:var(--text-primary);font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;padding:6px 24px 6px 10px;cursor:pointer;outline:none;transition:border-color 0.15s;appearance:none;background-image:url(&quot;data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23E0B100' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'&gt;&lt;polyline points='6 9 12 15 18 9'/&gt;&lt;/svg&gt;&quot;);background-repeat:no-repeat;background-position:right 8px center;background-size:10px;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--hairline)'">
+                    <option value="newest" selected="selected">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="title-asc">Title A → Z</option>
+                    <option value="title-desc">Title Z → A</option>
+                    <option value="creator-asc">Creator A → Z</option>
+                    <option value="duration-desc">Longest first</option>
+                    <option value="duration-asc">Shortest first</option>
+                    <option value="category">Category</option>
+                  </select>
+                </div>
                 <!-- View toggle -->
                 <div style="display:flex;border:1px solid var(--hairline);overflow:hidden;flex-shrink:0;">
                   <button id="view-grid-btn" onclick="setGalleryView('grid')" title="Grid view" style="width:32px;height:32px;background:rgba(224,177,0,0.08);border:none;color:var(--accent);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;">
@@ -1494,9 +2550,19 @@ sound, matched to you.
                 <h2 class="view-title">Research Foundation</h2>
                 <p class="view-subtitle">The science behind every sound — 4 categories · 28 sub-types</p>
               </div>
-              <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--obsidian);background:var(--accent);padding:14px 28px;text-decoration:none;transition:filter 0.15s;white-space:nowrap;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
-                Neuronest Research Hub →
-              </a>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <a href="#" onclick="event.preventDefault(); showLearnMoreModal();" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;color:var(--accent);background:transparent;border:1.5px solid var(--accent);padding:13px 22px;text-decoration:none;transition:all 0.15s;white-space:nowrap;cursor:pointer;" onmouseover="this.style.background='var(--accent)';this.style.color='var(--text-on-accent)';" onmouseout="this.style.background='transparent';this.style.color='var(--accent)';">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  How It Works
+                </a>
+                <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--obsidian);background:var(--accent);padding:14px 28px;text-decoration:none;transition:filter 0.15s;white-space:nowrap;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
+                  Neuronest Research Hub →
+                </a>
+              </div>
             </div>
             <!-- Category tabs -->
             <div style="display:flex;border:1px solid var(--hairline);width:fit-content;margin-bottom:16px;">
@@ -1518,8 +2584,8 @@ sound, matched to you.
 
         <!-- === UNDER CONSTRUCTION === -->
         <div class="page" id="page-under" style="position:relative;overflow:hidden;height:100%;">
-          <!-- Lottie wave background -->
-          <dotlottie-player src="assets/abstract blue black.lottie" autoplay="" loop="" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;min-width:800px;min-height:600px;opacity:0.5;pointer-events:none;z-index:0;">
+          <!-- Lottie wave background — base64 embedded for standalone HTML compatibility -->
+          <dotlottie-player src="data:application/zip;base64,UEsDBBQAAAAIAAAAAABcGXfZeQAAAJ4AAAANAAAAbWFuaWZlc3QuanNvbiXNOw7CMBAE0LtMHRDm0/gAVNwAUVjxChZiL1ovIBTl7ti4nNEbzYyQOQVjyQX+PIMjPNx2tz9gQJJINWbRFKaaIyuNzcK75TIgvOwmWsVJzJiOPFFpjMqo/OwQtbhSJg32p1Gs69W92Qd9P6Kxnjf4Ji195dYbLD9QSwMEFAAAAAgAAAAAAAu1pj0aBQAAiyAAABUAAABhbmltYXRpb25zLzEyMzQ1Lmpzb27tWe9vo0YQ/VcsPmO0v2DB39rrNarUSqdr1S9WVLkxjt3YxgLS9hTlf+97C9jGAadJHN1dzooIsDM7s/t25s2yvvP+9kZeGODP871Z7o1UEiRWCCGVElZo6XuLjTcSvpfhpk0AEYQ6NvzzvX/QQ+E+x93Evrdewd7VMoe16XTqOk6KIi0LbzS+8xZo8a6y1eYPAYXl5FOaV4JGd7HGHT7LT+7VWfuQp0P2GWj0ydPZT1sjEg0FxowON7Bz52X8N3Fdb7yR5eD/hVjeo2NLRFeUCEgwrz3JOFSxr5PQF5eVjoIKpPsqRgifV6NC+87/TiWygQ19ICJFoxXd0xKGCBXAFsMAYXP3oxgXpRP+CTAw3gOw1GcFS4dEQn4tYOnPCpYJVQuJLwysS8K1y1BC0JehddDBgsPx1/lkkw5+pvKA3coqiY8AiLE/CUGaqRiEDZCKINZYTS4mn6DqHDiJjGwtwRMk1SQ5DSVEYGWyhbhEp7GxgTGRX7fAwXgohUXfxLU5VJ7nlbp0a5I4CGGu7VYG2pqWW6WCEKNrvMKCaZbMJkqG9EB7kVBBHMW1vfv+cIL4WCjJSAU2ihhJPdFUcGWrAOCCe9ck9gUGxqVgJEDHCYo5BXTTLPjWjYNvzLFc+i/4j9ERtlPYQc0bjzUAVAqNKon9OOaDiKqWpmEoq3fEg25aklpnqOKobtO2adNW+1oneKR1PsHblTcq89sUoDarVJHPpJy7bFmt8fbdD9+/H/yeXpVZPqjSaTi4yLPbDRTmwHk2WRYwUS8D8tbZbS2mj5hUGuUrSXAxoGW9ottAPcwxAwEIY08QVoIQgiUcYDWXf7nbauny3VFFk/Zlnt2k3XO4yCeb+eIKs6i0OqcxWz6chgiMRPppIQx3HyKIrA0TUJnWUuPV2shYBCsus50g59FDMJxJxUP7Q/9xsVw+NnDqdA67ZBIccPtRVj+ehK3k41J10mHUP0WyTeESrWt9i/Zg9mBxSPyWT9bFLMtXHnlkj86JzppVA0vk5rVFsE7zDuj64jWf0hhtf8xu19PBuyxfo7A4H+3ZmjoACVTt9YEfLEyJSjMcfHzX8kYIT741UKxn6IgJt3YIbD9hgeup/8/bItQh9do7BELwyB6+a4fAL43TI2dt7IdKPZKGR1HDp4+Ryt/en1wRd/P2UlLHgQNtjI9rb4C9JEIacMC9Xy4XmyIdPF4tas23XC+uZ2juixbGRIvor6lYEVibHFFjhECkYCuIz7yAZYZghPyOCazABiwQxqKteqemiDTfKj137b55EkbHwVLvVpLIpAfIh/FWTFpH8IDmkI4PASe1d/J33AQIgJsu0nXpytVj2F4Mn1TUhtgg+kP7dipbk02nqG0vqjZHPqDMq9BjGGvfJNhAnenxTI//ix4d+W0JsqJH3o21LYJU2hEmCPJMj2d6POlmvIseeVR3enrUoMYQH5QvoEcZBhGOBLb3Mz2+eXqsiFHjB4MdPZIYQYpkQPdKXgwkzoVOxY5W+epMj98UPboj3qf+WsZ9ZOvEgj+5HWFOfDv3EaeMj1CnlIh0haB/xSOL+aT4ZcKl5EEq8MVz8SHPNmleLmo6XaxxquuwhTybImtgHYMFjg/PokMZJNzauCPhYfXG89tWe93cnDt3Cv1uU80ZMyetBTh7rHG2rBMeFzswEh4XmwSMjrYHZ8TEpyemmQe4dYe0CwAChRBlyLz+r4xPDbJnludzjL3BGEPn1SS/qUjt8v4/UEsBAgAAFAAAAAgAAAAAAFwZd9l5AAAAngAAAA0AAAAAAAAAAAAAAAAAAAAAAG1hbmlmZXN0Lmpzb25QSwECAAAUAAAACAAAAAAAC7WmPRoFAACLIAAAFQAAAAAAAAAAAAAAAACkAAAAYW5pbWF0aW9ucy8xMjM0NS5qc29uUEsFBgAAAAACAAIAfgAAAPEFAAAAAA==" autoplay="" loop="" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;min-width:800px;min-height:600px;opacity:0.5;pointer-events:none;z-index:0;">
           </dotlottie-player>
           <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;padding:40px 24px;box-sizing:border-box;gap:20px;text-align:center;">
             <div class="mono upper" style="font-size:10px;color:var(--ash);letter-spacing:0.12em;border:1px solid var(--hairline);padding:4px 12px;">MODULE OFFLINE</div>
@@ -1527,12 +2593,14 @@ sound, matched to you.
               <span style="font-family:'Great Vibes',cursive;font-weight:400;font-size:1.15em;text-transform:none;display:block;letter-spacing:0;background:linear-gradient(135deg,#f59e0b 0%,#ef4444 45%,#ec4899 80%,#f97316 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Personalised</span>
               <span style="font-family:'Inter',sans-serif;font-weight:900;text-transform:uppercase;display:block;font-size:0.88em;letter-spacing:-0.03em;background:linear-gradient(135deg,#f8f6f2 0%,#e8e4de 18%,#d4cfc8 32%,#f0ede9 48%,#c8c2bb 60%,#e4e0da 74%,#f5f3ef 88%,#dedad4 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Soundscapes<br>For Your Brain</span>
             </h2>
-            <p class="mono upper shine-text" style="font-size:11px;max-width:380px;line-height:1.8;margin-top:28px;">AI Learning Model to Adapt<br>Productivity Behaviours</p>
-            <div style="width:120px;height:2px;background:var(--accent);opacity:0.4;"></div>
+            <p class="mono upper shine-text" style="font-size:11px;max-width:380px;line-height:1.8;margin-top:-12px;">AI Learning Model to Adapt<br>Productivity Behaviours</p>
+            <div style="width:120px;height:2px;background:var(--accent);opacity:0.4;margin-top:12px;"></div>
 
-            <!-- Newsletter signup -->
-            <div style="margin-top:36px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:400px;">
-              <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#6B7680;line-height:1.7;">Sign up for the latest news on the tech —<br>free beta access for 1 month</p>
+            <!-- "Sign up..." intro pulled up to sit just under the divider -->
+            <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:#6B7680;line-height:1.7;margin-top:32px;text-align:center;">Sign up for the latest news on the tech —<br>free beta access for 1 month</p>
+
+            <!-- Newsletter signup form -->
+            <div style="margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:400px;">
               <form onsubmit="handleUnderSignup(event)" style="display:flex;gap:0;width:100%;">
                 <input id="under-email" type="email" required="" placeholder="your@email.com" style="flex:1;background:#0f0f0f;border:1px solid rgba(255,255,255,0.1);border-right:none;padding:12px 16px;font-family:'DM Mono',monospace;font-size:12px;color:#F3F3F0;outline:none;min-width:0;" onfocus="this.style.borderColor='#E0B100'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
                 <button type="submit" style="background:#E0B100;color:#050505;border:none;padding:12px 20px;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
@@ -1544,36 +2612,238 @@ sound, matched to you.
           </div><!-- end z-index content wrapper -->
         </div>
 
+        <!-- === POMODORO / FOCUS === -->
+        <div class="page" id="page-pomodoro">
+          <div class="pomo-page">
+            <!-- Giant brand block header -->
+            <div class="pomo-block-head">
+              <span class="mono upper pomo-block-eyebrow">Deep Work Module</span>
+              <h1 class="pomo-block-title">Pomodoro Block</h1>
+              <div class="pomo-block-rule"></div>
+            </div>
+
+            <!-- Header -->
+            <div class="pomo-header">
+              <div>
+                <h2 class="view-title">Focus Sessions</h2>
+                <p class="view-subtitle">Pomodoro tracker — work in deep, sustained intervals. Build the data trail of your best days.</p>
+              </div>
+              <div class="pomo-streak" id="pomo-streak-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="2"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"></path></svg>
+                <span id="pomo-streak-text">0 day streak</span>
+              </div>
+            </div>
+
+            <!-- Stats row -->
+            <div class="pomo-stats">
+              <div class="pomo-stat">
+                <div class="pomo-stat-label">TODAY</div>
+                <div class="pomo-stat-value" id="pomo-today-count">0</div>
+                <div class="pomo-stat-sub"><span id="pomo-today-mins">0</span> min</div>
+              </div>
+              <div class="pomo-stat">
+                <div class="pomo-stat-label">THIS WEEK</div>
+                <div class="pomo-stat-value" id="pomo-week-count">0</div>
+                <div class="pomo-stat-sub"><span id="pomo-week-mins">0</span> min</div>
+              </div>
+              <div class="pomo-stat">
+                <div class="pomo-stat-label">THIS MONTH</div>
+                <div class="pomo-stat-value" id="pomo-month-count">0</div>
+                <div class="pomo-stat-sub"><span id="pomo-month-hrs">0</span> hr logged</div>
+              </div>
+              <div class="pomo-stat">
+                <div class="pomo-stat-label">ALL TIME</div>
+                <div class="pomo-stat-value" id="pomo-all-count">0</div>
+                <div class="pomo-stat-sub"><span id="pomo-all-hrs">0</span> hr total</div>
+              </div>
+            </div>
+
+            <!-- Main row: timer (left) + Focus tracks quick-access (right) -->
+            <div class="pomo-row">
+              <div class="pomo-main">
+                <div class="pomo-timer-wrap">
+                  <!-- Circular SVG ring -->
+                  <svg class="pomo-ring" viewBox="0 0 240 240" width="280" height="280">
+                    <circle class="pomo-ring-track" cx="120" cy="120" r="108" fill="none" stroke="var(--hairline)" stroke-width="6"></circle>
+                    <circle class="pomo-ring-progress" id="pomo-ring-progress" cx="120" cy="120" r="108" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" stroke-dasharray="678.58" stroke-dashoffset="0" transform="rotate(-90 120 120)"></circle>
+                  </svg>
+                  <div class="pomo-time-display">
+                    <div class="pomo-mode-label" id="pomo-mode-label">FOCUS</div>
+                    <div class="pomo-time" id="pomo-time">25:00</div>
+                    <div class="pomo-session-hint" id="pomo-session-hint">Session 1 of 4</div>
+                  </div>
+                </div>
+
+                <div class="pomo-controls">
+                  <button class="pomo-btn-primary" id="pomo-start-btn" onclick="pomoToggle()">START</button>
+                  <button class="pomo-btn-secondary" id="pomo-skip-btn" onclick="pomoSkip()" title="Skip current session">SKIP</button>
+                  <button class="pomo-btn-secondary" id="pomo-reset-btn" onclick="pomoReset()" title="Reset timer">RESET</button>
+                </div>
+              </div>
+
+              <!-- Focus tracks quick access — auto-populated from any track tagged Focus -->
+              <div class="pomo-tracks-panel">
+                <div class="pomo-tracks-header">
+                  <div>
+                    <div class="section-label" style="margin-bottom:4px;">Focus Tracks</div>
+                    <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-secondary);line-height:1.5;">Curated for sustained attention. Pair with your session.</p>
+                  </div>
+                  <span class="pomo-tracks-count" id="pomo-tracks-count">0</span>
+                </div>
+                <div class="pomo-tracks-list" id="pomo-tracks-list"></div>
+                <div class="pomo-tracks-footer">
+                  <button class="pomo-tracks-link" onclick="setGalleryFilter('Focus');showPage('gallery');">Browse all in Library →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Settings + heatmap row -->
+            <div class="pomo-bottom">
+              <!-- Settings -->
+              <div class="pomo-settings">
+                <div class="section-label" style="margin-bottom:14px;">Session Settings</div>
+                <div class="pomo-setting-row">
+                  <label>Focus duration</label>
+                  <div class="pomo-stepper">
+                    <button onclick="pomoAdjust('focus',-5)" aria-label="Decrease">−</button>
+                    <span><span id="pomo-cfg-focus">25</span> min</span>
+                    <button onclick="pomoAdjust('focus',5)" aria-label="Increase">+</button>
+                  </div>
+                </div>
+                <div class="pomo-setting-row">
+                  <label>Short break</label>
+                  <div class="pomo-stepper">
+                    <button onclick="pomoAdjust('short',-1)" aria-label="Decrease">−</button>
+                    <span><span id="pomo-cfg-short">5</span> min</span>
+                    <button onclick="pomoAdjust('short',1)" aria-label="Increase">+</button>
+                  </div>
+                </div>
+                <div class="pomo-setting-row">
+                  <label>Long break</label>
+                  <div class="pomo-stepper">
+                    <button onclick="pomoAdjust('long',-5)" aria-label="Decrease">−</button>
+                    <span><span id="pomo-cfg-long">15</span> min</span>
+                    <button onclick="pomoAdjust('long',5)" aria-label="Increase">+</button>
+                  </div>
+                </div>
+                <div class="pomo-setting-row">
+                  <label>Sessions until long break</label>
+                  <div class="pomo-stepper">
+                    <button onclick="pomoAdjust('cycle',-1)" aria-label="Decrease">−</button>
+                    <span><span id="pomo-cfg-cycle">4</span> per cycle</span>
+                    <button onclick="pomoAdjust('cycle',1)" aria-label="Increase">+</button>
+                  </div>
+                </div>
+                <div class="pomo-setting-row">
+                  <label>Auto-start next session</label>
+                  <button class="pomo-toggle" id="pomo-cfg-autostart" onclick="pomoToggleSetting('autostart')" aria-pressed="false">
+                    <span class="pomo-toggle-knob"></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Heatmap + history -->
+              <div class="pomo-history">
+                <div class="section-label" style="margin-bottom:14px;">Last 35 Days</div>
+                <div class="pomo-heatmap" id="pomo-heatmap"></div>
+                <div class="pomo-heatmap-legend">
+                  <span class="mono upper" style="font-size:9px;color:var(--ash);">Less</span>
+                  <div class="pomo-heat-cell" style="background:var(--hairline);"></div>
+                  <div class="pomo-heat-cell" style="background:rgba(224,177,0,0.25);"></div>
+                  <div class="pomo-heat-cell" style="background:rgba(224,177,0,0.55);"></div>
+                  <div class="pomo-heat-cell" style="background:rgba(224,177,0,0.85);"></div>
+                  <div class="pomo-heat-cell" style="background:var(--accent);"></div>
+                  <span class="mono upper" style="font-size:9px;color:var(--ash);">More</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- Now Playing Bar -->
-<div class="now-playing visible" id="now-playing">
-  <img class="np-thumb" id="np-thumb" src="soundhub_files/mqdefault_012.jpg" alt="">
-  <div class="np-info">
-    <div class="np-title" id="np-title">Alpha Wave Promoting Soundscape</div>
-    <div class="np-cat" id="np-cat">Calm · 3 Hours</div>
+<!-- Now Playing Bar — persistent mini player -->
+<div class="now-playing" id="now-playing">
+  <!-- Progress bar (clickable to scrub) -->
+  <div class="np-progress-track" id="np-progress-track" onclick="npSeek(event)" title="Click to seek">
+    <div class="np-progress-bar" id="np-progress-bar"></div>
+    <div class="np-progress-handle" id="np-progress-handle"></div>
   </div>
-  <div class="np-controls">
-    <div class="np-wave" id="np-wave" style="display: flex;">
-      <div class="np-bar" style="height:6px;animation-delay:0s;"></div>
-      <div class="np-bar" style="height:10px;animation-delay:0.12s;"></div>
-      <div class="np-bar" style="height:8px;animation-delay:0.06s;"></div>
-      <div class="np-bar" style="height:14px;animation-delay:0.18s;"></div>
-      <div class="np-bar" style="height:6px;animation-delay:0.09s;"></div>
+
+  <div class="np-row">
+    <!-- Track info -->
+    <div class="np-track-zone">
+      <img class="np-thumb" id="np-thumb" src="" alt="">
+      <div class="np-info">
+        <div class="np-title" id="np-title">—</div>
+        <div class="np-cat" id="np-cat">—</div>
+      </div>
+      <button class="np-fav-btn" id="np-fav-btn" onclick="npToggleFav(event)" aria-label="Favourite" title="Add to favourites">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      </button>
     </div>
-    <button class="np-play" onclick="toggleGlobalPlay()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" id="np-icon"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-    </button>
+
+    <!-- Center transport: prev / play / next + time -->
+    <div class="np-transport">
+      <button class="np-tcontrol" onclick="npPrev()" aria-label="Previous" title="Previous track in queue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"></path></svg>
+      </button>
+      <button class="np-play" onclick="toggleGlobalPlay()" aria-label="Play / Pause">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" id="np-icon"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+      </button>
+      <button class="np-tcontrol" onclick="npNext()" aria-label="Next" title="Next track in queue">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"></path></svg>
+      </button>
+      <span class="np-time mono" id="np-time">0:00 / 0:00</span>
+    </div>
+
+    <!-- Right zone: wave + volume + queue source -->
+    <div class="np-right-zone">
+      <div class="np-wave" id="np-wave">
+        <div class="np-bar" style="height:6px;animation-delay:0s;"></div>
+        <div class="np-bar" style="height:10px;animation-delay:0.12s;"></div>
+        <div class="np-bar" style="height:8px;animation-delay:0.06s;"></div>
+        <div class="np-bar" style="height:14px;animation-delay:0.18s;"></div>
+        <div class="np-bar" style="height:6px;animation-delay:0.09s;"></div>
+      </div>
+      <div class="np-vol-wrap">
+        <button class="np-vol-btn" onclick="npToggleMute()" aria-label="Volume">
+          <svg id="np-vol-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"></path></svg>
+        </button>
+        <div class="np-vol-slider-wrap">
+          <input type="range" min="0" max="100" value="100" class="np-vol-slider" id="np-vol-slider" oninput="npSetVolume(this.value)">
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- Hidden YT player -->
-<iframe id="yt-player" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Try listening for 20 mins ~ Alpha Waves to Relieve Stress ~ Help heal body and mind  :)" width="1" height="1" src="soundhub_files/a.htm"></iframe>
+<iframe id="yt-player" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="YouTube video player" width="1" height="1" src="SoundHub%20%E2%80%94%20Neuronest_files/a.htm"></iframe>
 
 <script>
+/* ===== Theme toggle ===== */
+(function initTheme() {
+  try {
+    const saved = localStorage.getItem('nn_theme');
+    if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  } catch(e) {}
+})();
+function toggleTheme() {
+  const root = document.documentElement;
+  const isLight = root.getAttribute('data-theme') === 'light';
+  if (isLight) {
+    root.removeAttribute('data-theme');
+    try { localStorage.setItem('nn_theme', 'dark'); } catch(e) {}
+  } else {
+    root.setAttribute('data-theme', 'light');
+    try { localStorage.setItem('nn_theme', 'light'); } catch(e) {}
+  }
+}
+
 const TRACKS = [
   // — CALM —
   { id:'v4C4keiF0tQ', title:'Heavy Rain & Big Ocean Waves — White Noise', creator:'Relaxing White Noise', category:'Calm', tags:['Nature Immersion','Block Distractions','Stress Relief'], duration:'10 Hours' },
@@ -1756,13 +3026,80 @@ window.onYouTubeIframeAPIReady = function() {
   document.head.appendChild(s);
 })();
 
-function playTrack(track) {
+/* ===== Smooth audio fade transitions =====
+   Uses YT player's setVolume() ramped over time. Premium feel — no abrupt cuts. */
+const FADE_OUT_MS = 550;
+const FADE_IN_MS  = 700;
+const FADE_STEPS  = 20;
+const TARGET_VOLUME = 100;
+let fadeTimer = null;
+let isFading  = false;
+
+function cancelFade() {
+  if (fadeTimer) { clearInterval(fadeTimer); fadeTimer = null; }
+  isFading = false;
+}
+
+// Returns a Promise that resolves when the fade completes
+function fadeVolume(from, to, durationMs) {
+  return new Promise(resolve => {
+    if (!ytReady || !ytPlayer || !ytPlayer.setVolume) { resolve(); return; }
+    cancelFade();
+    isFading = true;
+    const stepInterval = Math.max(15, durationMs / FADE_STEPS);
+    const totalSteps = Math.max(1, Math.round(durationMs / stepInterval));
+    let i = 0;
+    try { ytPlayer.setVolume(from); } catch(e) {}
+    fadeTimer = setInterval(() => {
+      i++;
+      // ease-in-out cubic for premium feel
+      const t = i / totalSteps;
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const vol = from + (to - from) * eased;
+      try { ytPlayer.setVolume(Math.max(0, Math.min(100, vol))); } catch(e) {}
+      if (i >= totalSteps) {
+        try { ytPlayer.setVolume(to); } catch(e) {}
+        clearInterval(fadeTimer); fadeTimer = null; isFading = false;
+        resolve();
+      }
+    }, stepInterval);
+  });
+}
+
+// Visual cue — brief dim/pulse on now-playing bar during the swap
+function pulseNowPlaying() {
+  const bar = document.getElementById('now-playing');
+  if (!bar) return;
+  bar.classList.add('np-fading');
+  setTimeout(() => bar.classList.remove('np-fading'), FADE_OUT_MS + 100);
+}
+
+async function playTrack(track) {
+  // If same track is already loaded, just toggle
+  if (currentTrack && currentTrack.id === track.id && isPlaying) return;
+
+  // First-time play: no fade-out needed (nothing playing yet)
+  const isFirstPlay = !currentTrack || !ytReady || !ytPlayer || !ytPlayer.loadVideoById;
+
   currentTrack = track;
   isPlaying = true;
   updateNowPlaying();
-  if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
-    ytPlayer.loadVideoById(track.id);
+
+  if (isFirstPlay) {
+    // Just load and let YT play at full volume
+    if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
+      try { ytPlayer.setVolume(TARGET_VOLUME); } catch(e) {}
+      ytPlayer.loadVideoById(track.id);
+    }
+    return;
   }
+
+  // Crossfade: fade out → swap → fade in
+  pulseNowPlaying();
+  await fadeVolume(TARGET_VOLUME, 0, FADE_OUT_MS);
+  try { ytPlayer.loadVideoById(track.id); } catch(e) {}
+  // Give YT a tick to start buffering before fading in
+  setTimeout(() => { fadeVolume(0, TARGET_VOLUME, FADE_IN_MS); }, 120);
 }
 
 function stopPlayback() {
@@ -1770,11 +3107,19 @@ function stopPlayback() {
   updatePlayState();
 }
 
-function toggleGlobalPlay() {
+async function toggleGlobalPlay() {
   if (!currentTrack) return;
   isPlaying = !isPlaying;
-  if (ytReady && ytPlayer) {
-    isPlaying ? ytPlayer.playVideo() : ytPlayer.pauseVideo();
+  if (!ytReady || !ytPlayer) { updatePlayState(); return; }
+  if (isPlaying) {
+    // Resume: fade volume up as we play
+    try { ytPlayer.setVolume(0); } catch(e) {}
+    ytPlayer.playVideo();
+    fadeVolume(0, TARGET_VOLUME, FADE_IN_MS);
+  } else {
+    // Pause: fade volume down, then pause (so the cut isn't abrupt)
+    await fadeVolume(TARGET_VOLUME, 0, FADE_OUT_MS);
+    try { ytPlayer.pauseVideo(); } catch(e) {}
   }
   updatePlayState();
 }
@@ -1795,6 +3140,147 @@ function updateNowPlaying() {
   document.getElementById('np-title').textContent = currentTrack.title;
   document.getElementById('np-cat').textContent = currentTrack.category + ' · ' + currentTrack.duration;
   updatePlayState();
+  renderMiniPlayer();
+}
+
+/* ====================================================================
+   PERSISTENT MINI PLAYER — progress/seek, prev/next, volume, fav
+   ==================================================================== */
+let npProgressTimer = null;
+let npLastVolume = 100;        // remembered for unmute
+let npMuted = false;
+
+function renderMiniPlayer() {
+  // Fav button state
+  const favBtn = document.getElementById('np-fav-btn');
+  if (favBtn && currentTrack) {
+    const isFav = favourites.has(currentTrack.id);
+    favBtn.classList.toggle('faved', isFav);
+  }
+  npStartProgressLoop();
+}
+
+function npFormatTime(secs) {
+  if (!isFinite(secs) || secs < 0) return '0:00';
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+function npStartProgressLoop() {
+  if (npProgressTimer) clearInterval(npProgressTimer);
+  npProgressTimer = setInterval(npUpdateProgress, 500);
+  npUpdateProgress();
+}
+
+function npUpdateProgress() {
+  if (!ytReady || !ytPlayer || !ytPlayer.getCurrentTime) return;
+  let cur = 0, tot = 0;
+  try { cur = ytPlayer.getCurrentTime() || 0; } catch(e) {}
+  try { tot = ytPlayer.getDuration()    || 0; } catch(e) {}
+  const pct = tot > 0 ? Math.min(100, (cur / tot) * 100) : 0;
+  const bar = document.getElementById('np-progress-bar');
+  const handle = document.getElementById('np-progress-handle');
+  const timeEl = document.getElementById('np-time');
+  if (bar) bar.style.width = pct + '%';
+  if (handle) handle.style.left = pct + '%';
+  if (timeEl) timeEl.textContent = `${npFormatTime(cur)} / ${npFormatTime(tot)}`;
+}
+
+function npSeek(event) {
+  if (!ytReady || !ytPlayer || !ytPlayer.getDuration) return;
+  const track = document.getElementById('np-progress-track');
+  if (!track) return;
+  const rect = track.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+  let dur = 0;
+  try { dur = ytPlayer.getDuration() || 0; } catch(e) {}
+  if (dur > 0) {
+    try { ytPlayer.seekTo(pct * dur, true); } catch(e) {}
+    npUpdateProgress();
+  }
+}
+
+/* === Queue logic for prev/next ===
+   Queue context = the category of the current track (Focus → next focus track, etc.)
+   Falls back to All TRACKS if no match. */
+function npGetQueue() {
+  if (!currentTrack) return TRACKS;
+  const cat = currentTrack.category;
+  const sameCategory = TRACKS.filter(t => t.category === cat);
+  return sameCategory.length > 1 ? sameCategory : TRACKS;
+}
+
+function npPrev() {
+  if (!currentTrack) return;
+  const queue = npGetQueue();
+  const idx = queue.findIndex(t => t.id === currentTrack.id);
+  if (idx === -1) return;
+  const prev = idx > 0 ? queue[idx - 1] : queue[queue.length - 1];
+  playTrack(prev);
+}
+
+function npNext() {
+  if (!currentTrack) return;
+  const queue = npGetQueue();
+  const idx = queue.findIndex(t => t.id === currentTrack.id);
+  if (idx === -1) return;
+  const next = idx < queue.length - 1 ? queue[idx + 1] : queue[0];
+  playTrack(next);
+}
+
+function npSetVolume(v) {
+  const vol = Math.max(0, Math.min(100, parseInt(v, 10)));
+  npLastVolume = vol;
+  npMuted = (vol === 0);
+  if (ytReady && ytPlayer && ytPlayer.setVolume && !isFading) {
+    try { ytPlayer.setVolume(vol); } catch(e) {}
+  }
+  npUpdateVolumeIcon();
+}
+
+function npToggleMute() {
+  if (!ytReady || !ytPlayer) return;
+  const slider = document.getElementById('np-vol-slider');
+  if (npMuted) {
+    npMuted = false;
+    const v = npLastVolume || 100;
+    if (slider) slider.value = v;
+    try { ytPlayer.setVolume(v); } catch(e) {}
+  } else {
+    npMuted = true;
+    if (slider) slider.value = 0;
+    try { ytPlayer.setVolume(0); } catch(e) {}
+  }
+  npUpdateVolumeIcon();
+}
+
+function npUpdateVolumeIcon() {
+  const icon = document.getElementById('np-vol-icon');
+  if (!icon) return;
+  const v = npMuted ? 0 : npLastVolume;
+  if (v === 0) {
+    icon.innerHTML = '<path d="M16.5 12A4.5 4.5 0 0 0 14 8v2.18l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+  } else if (v < 50) {
+    icon.innerHTML = '<path d="M7 9v6h4l5 5V4l-5 5H7zm9.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/>';
+  } else {
+    icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.23v2.06A7.013 7.013 0 0 1 19 12c0 3.21-2.11 5.93-5 6.71v2.06a9.005 9.005 0 0 0 7-8.77c0-4.28-2.99-7.86-7-8.77z"/>';
+  }
+}
+
+function npToggleFav(event) {
+  event.stopPropagation();
+  if (!currentTrack) return;
+  // Reuse existing toggleFav if available; otherwise toggle directly
+  if (typeof toggleFav === 'function') {
+    toggleFav(currentTrack.id, event);
+  } else if (favourites.has(currentTrack.id)) {
+    favourites.delete(currentTrack.id);
+  } else {
+    favourites.add(currentTrack.id);
+  }
+  if (typeof saveFavs === 'function') saveFavs();
+  renderMiniPlayer();
 }
 
 function updatePlayState() {
@@ -1808,6 +3294,12 @@ function updatePlayState() {
     wave.style.display = 'none';
   }
   updateRadioUI();
+  // Keep focus tracks panel in sync with current track
+  if (typeof pomoRenderFocusTracks === 'function' && document.getElementById('pomo-tracks-list')) {
+    pomoRenderFocusTracks();
+  }
+  // Mini player state
+  if (typeof renderMiniPlayer === 'function') renderMiniPlayer();
 }
 
 // Pages
@@ -1820,20 +3312,39 @@ function showPage(name) {
   document.getElementById('search-area').style.display = isRadio ? 'none' : 'flex';
   document.getElementById('radio-status').style.display = isRadio ? 'flex' : 'none';
 
-  // Sidebar active state — archive removed, gallery now sits at index 1
-  const idx = {dashboard:0, gallery:1, under:2, theory:3, radio:4};
+  // Sidebar active state
+  const idx = {dashboard:0, gallery:1, under:2, theory:3, pomodoro:4, radio:5};
   const links = document.querySelectorAll('.sidebar-link');
   if (idx[name] !== undefined) links[idx[name]].classList.add('active');
 
   if (name === 'gallery') { renderGallery(); }
   if (name === 'theory') renderTheory();
   if (name === 'radio') renderRadio();
+  if (name === 'pomodoro') renderPomodoro();
 }
 
 // Render uploads list
+// Fisher-Yates shuffle — returns a new array, doesn't mutate input
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let curatedSelection = [];
+
+function rerollCuratedSelection() {
+  curatedSelection = shuffleArray(TRACKS).slice(0, 10);
+}
+
 function renderUploads() {
   const el = document.getElementById('uploads-list');
-  el.innerHTML = TRACKS.map(t => `
+  if (!el) return;
+  if (!curatedSelection.length) rerollCuratedSelection();
+  el.innerHTML = curatedSelection.map(t => `
     <div class="track-item" onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})">
       <img class="track-thumb" src="${thumb(t.id)}" alt="${t.title}" />
       <span class="track-name">${t.title}</span>
@@ -1842,6 +3353,17 @@ function renderUploads() {
       <div class="play-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
   `).join('');
+}
+
+// Reshuffle + re-render
+function reshuffleCurated() {
+  rerollCuratedSelection();
+  renderUploads();
+  const btn = document.getElementById('curated-reshuffle');
+  if (btn) {
+    btn.classList.add('spinning');
+    setTimeout(() => btn.classList.remove('spinning'), 600);
+  }
 }
 
 // Neuronest Library — all tracks
@@ -1968,7 +3490,7 @@ function renderArchive(query='') {
     const filters = ['All','Focus','Sleep','Calm'];
     if (favTracks.length) filters.push('Favourites');
     const libBtnStyle = (f) => {
-      if (libFilter !== f) return 'background:none;color:var(--ash);border-color:var(--hairline);';
+      if (libFilter !== f) return 'background:var(--input-fill);color:var(--ash);border-color:var(--hairline);backdrop-filter:blur(2px);';
       if (f === 'Sleep') return `background:${SLEEP_GRAD};color:#050505;border-color:transparent;font-weight:700;`;
       if (f === 'Focus') return 'background:#E0B100;color:#050505;border-color:#E0B100;font-weight:700;';
       if (f === 'Calm') return 'background:#a78bfa;color:#050505;border-color:#a78bfa;font-weight:700;';
@@ -2020,9 +3542,204 @@ function renderArchive(query='') {
   document.getElementById('archive-subtitle').textContent = `${filtered.length} track${filtered.length!==1?'s':''} · ${libFilter}`;
 }
 
-function filterArchive(q) {
-  if (document.getElementById('page-dashboard').classList.contains('active')) renderSignalArchive(q);
+/* ====================================================================
+   GLOBAL SEARCH — tracks + research, phrase-match (case-insensitive)
+   ==================================================================== */
+const SEARCH_LIMIT_PER_GROUP = 6;
+let searchActiveIdx = -1;
+let searchResults = [];   // flat list of {type, ref} for keyboard nav
+let searchDebounce = null;
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+function highlight(text, query) {
+  if (!query) return escapeHtml(text);
+  const safe = escapeHtml(text);
+  const q = escapeHtml(query);
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
+  return safe.replace(re, '<span class="sr-highlight">$1</span>');
+}
+
+function globalSearch(raw) {
+  const q = (raw || '').trim().toLowerCase();
+  const dropdown = document.getElementById('search-dropdown');
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) clearBtn.style.display = q ? 'flex' : 'none';
+
+  // Also keep the dashboard archive filter behaviour when on home
+  if (document.getElementById('page-dashboard') && document.getElementById('page-dashboard').classList.contains('active')
+      && typeof renderSignalArchive === 'function') {
+    renderSignalArchive(raw || '');
+  }
+
+  if (!q) {
+    dropdown.classList.remove('open');
+    dropdown.innerHTML = '';
+    searchResults = []; searchActiveIdx = -1;
+    return;
+  }
+
+  // Debounce to avoid rapid re-renders on fast typing
+  if (searchDebounce) clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => runGlobalSearch(q, raw), 80);
+}
+
+function runGlobalSearch(q, raw) {
+  const dropdown = document.getElementById('search-dropdown');
+
+  // Track matches — title, creator, category, tags
+  const trackMatches = TRACKS.filter(t => {
+    const hay = [
+      t.title, t.creator, t.category,
+      ...(t.tags || [])
+    ].join(' ').toLowerCase();
+    return hay.includes(q);
+  }).slice(0, SEARCH_LIMIT_PER_GROUP);
+
+  // Research matches — title, journal, series, year
+  const researchMatches = (typeof RESEARCH !== 'undefined' ? RESEARCH : []).filter(r => {
+    const hay = [r.title, r.journal, r.series || '', String(r.year || '')].join(' ').toLowerCase();
+    return hay.includes(q);
+  }).slice(0, SEARCH_LIMIT_PER_GROUP);
+
+  searchResults = []; searchActiveIdx = -1;
+
+  if (!trackMatches.length && !researchMatches.length) {
+    dropdown.innerHTML = `<div class="sr-empty">No matches for "${escapeHtml(raw || q)}"<small>Try a mood (calm, focus), a sound (rain, piano), or a topic (gamma, sleep)</small></div>`;
+    dropdown.classList.add('open');
+    return;
+  }
+
+  let html = '';
+
+  if (trackMatches.length) {
+    html += `<div class="sr-group-label">Tracks <span class="sr-group-count">${trackMatches.length}</span></div>`;
+    trackMatches.forEach(t => {
+      const cat = (t.category || '').toLowerCase();
+      searchResults.push({ type: 'track', ref: t });
+      html += `
+        <div class="sr-item" data-sr-idx="${searchResults.length - 1}" onclick='playFromSearch(${JSON.stringify(t).replace(/'/g,"&#39;")})'>
+          <img class="sr-thumb" src="${thumb(t.id)}" alt="" loading="lazy" />
+          <div class="sr-body">
+            <div class="sr-title">${highlight(t.title, raw || q)}</div>
+            <div class="sr-meta">
+              <span class="sr-badge sr-badge-${cat}">${escapeHtml(t.category)}</span>
+              <span class="sr-dot">·</span>
+              <span>${highlight(t.creator, raw || q)}</span>
+              <span class="sr-dot">·</span>
+              <span>${escapeHtml(t.duration || '')}</span>
+            </div>
+          </div>
+          <div class="sr-action">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  if (researchMatches.length) {
+    html += `<div class="sr-group-label">Research <span class="sr-group-count">${researchMatches.length}</span></div>`;
+    researchMatches.forEach(r => {
+      searchResults.push({ type: 'research', ref: r });
+      const conf = r.confidence === 'High' ? '<span class="sr-conf-high">High Confidence</span>' : escapeHtml(r.confidence || '');
+      html += `
+        <a class="sr-item" data-sr-idx="${searchResults.length - 1}" href="${escapeHtml(r.doi || '#')}" target="_blank" rel="noopener" onclick="closeSearchDropdown()">
+          <div class="sr-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+          </div>
+          <div class="sr-body">
+            <div class="sr-title">${highlight(r.title, raw || q)}</div>
+            <div class="sr-meta">
+              <span>${highlight(r.journal, raw || q)}</span>
+              <span class="sr-dot">·</span>
+              <span>${escapeHtml(String(r.year || ''))}</span>
+              ${r.confidence ? `<span class="sr-dot">·</span>${conf}` : ''}
+            </div>
+          </div>
+          <div class="sr-action">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </div>
+        </a>
+      `;
+    });
+  }
+
+  dropdown.innerHTML = html;
+  dropdown.classList.add('open');
+}
+
+function playFromSearch(track) {
+  // Ensure fadeVolume / playTrack work — reuse existing playTrack
+  playTrack(track);
+  closeSearchDropdown();
+  // Visual confirmation — briefly pulse the now-playing bar
+  if (typeof pulseNowPlaying === 'function') pulseNowPlaying();
+}
+
+function closeSearchDropdown() {
+  const dd = document.getElementById('search-dropdown');
+  if (dd) dd.classList.remove('open');
+}
+
+function clearGlobalSearch() {
+  const inp = document.getElementById('global-search');
+  if (inp) { inp.value = ''; inp.focus(); }
+  globalSearch('');
+}
+
+function globalSearchKeydown(e) {
+  const dd = document.getElementById('search-dropdown');
+  if (!dd) return;
+  if (e.key === 'Escape') {
+    closeSearchDropdown();
+    e.target.blur();
+    return;
+  }
+  if (!dd.classList.contains('open') || !searchResults.length) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    searchActiveIdx = Math.min(searchActiveIdx + 1, searchResults.length - 1);
+    refreshActiveSearchItem();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    searchActiveIdx = Math.max(searchActiveIdx - 1, 0);
+    refreshActiveSearchItem();
+  } else if (e.key === 'Enter') {
+    if (searchActiveIdx < 0) return;
+    e.preventDefault();
+    const item = searchResults[searchActiveIdx];
+    if (!item) return;
+    if (item.type === 'track') playFromSearch(item.ref);
+    else if (item.type === 'research') {
+      window.open(item.ref.doi, '_blank', 'noopener');
+      closeSearchDropdown();
+    }
+  }
+}
+
+function refreshActiveSearchItem() {
+  const dd = document.getElementById('search-dropdown');
+  if (!dd) return;
+  dd.querySelectorAll('.sr-item').forEach(el => el.classList.remove('active'));
+  const active = dd.querySelector(`.sr-item[data-sr-idx="${searchActiveIdx}"]`);
+  if (active) {
+    active.classList.add('active');
+    active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+}
+
+// Close on outside click
+document.addEventListener('click', (e) => {
+  const wrap = e.target.closest('.search-wrap');
+  if (!wrap) closeSearchDropdown();
+});
+
+// Back-compat: older callers still reference filterArchive
+function filterArchive(q) { globalSearch(q); }
 
 // Library (Gallery)
 let galleryFilter = 'All';
@@ -2034,7 +3751,7 @@ function renderGallery() {
   if (hasFavs) filters.push('Favourites');
   // Colour-coded filter button styles per category
   const filterBtnStyle = (f) => {
-    if (galleryFilter !== f) return 'background:none;color:var(--ash);border-color:var(--hairline);';
+    if (galleryFilter !== f) return 'background:var(--input-fill);color:var(--ash);border-color:var(--hairline);backdrop-filter:blur(2px);';
     if (f === 'Focus')              return `background:${FOCUS_GRAD};color:#fff;border-color:transparent;font-weight:700;`;
     if (f === 'Sleep')              return `background:${SLEEP_GRAD};color:#fff;border-color:transparent;font-weight:700;`;
     if (f === 'Calm')               return `background:${CALM_GRAD};color:#050505;border-color:transparent;font-weight:700;`;
@@ -2138,10 +3855,13 @@ function renderGallery() {
   }
 
   // ── Regular filters (All / Focus / Sleep / Calm / Favourites) ──
-  const visible = galleryFilter === 'Favourites'         ? TRACKS.filter(t => favourites.has(t.id))
+  let visible = galleryFilter === 'Favourites'           ? TRACKS.filter(t => favourites.has(t.id))
     : galleryFilter === 'All'                            ? TRACKS
     : galleryFilter === 'Curated Selection'              ? TRACKS
     : TRACKS.filter(t => t.category === galleryFilter);
+
+  // Apply sort
+  visible = sortTracks(visible);
 
   // Switch grid class based on view
   el.className = galleryView === 'list' ? 'list-view' : '';
@@ -2229,6 +3949,53 @@ function setGalleryView(v) {
   if (gridBtn) { gridBtn.style.background = v === 'grid' ? 'rgba(224,177,0,0.08)' : 'none'; gridBtn.style.color = v === 'grid' ? 'var(--accent)' : 'var(--ash)'; }
   if (listBtn) { listBtn.style.background = v === 'list' ? 'rgba(224,177,0,0.08)' : 'none'; listBtn.style.color = v === 'list' ? 'var(--accent)' : 'var(--ash)'; }
   renderGallery();
+}
+
+/* ===== Library Sort ===== */
+let gallerySort = 'newest'; // 'newest'|'oldest'|'title-asc'|'title-desc'|'creator-asc'|'duration-desc'|'duration-asc'|'category'
+
+function setGallerySort(v) {
+  gallerySort = v;
+  renderGallery();
+}
+
+// Convert "10 Hours" / "45 Minutes" / "1 Hour 30 Minutes" → minutes
+function durationToMinutes(d) {
+  if (!d) return 0;
+  const s = d.toLowerCase();
+  let mins = 0;
+  const hMatch = s.match(/(\d+(?:\.\d+)?)\s*hour/);
+  const mMatch = s.match(/(\d+(?:\.\d+)?)\s*min/);
+  if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+  if (mMatch) mins += parseFloat(mMatch[1]);
+  return mins;
+}
+
+function sortTracks(arr) {
+  const copy = arr.slice();
+  // Tag each with its original TRACKS index so we can sort by recency without mutating data
+  const idxMap = new Map(TRACKS.map((t, i) => [t.id, i]));
+  switch (gallerySort) {
+    case 'newest':
+      // Convention: top of TRACKS array = newest (you can flip later when you add real timestamps)
+      return copy.sort((a,b) => (idxMap.get(a.id) ?? 0) - (idxMap.get(b.id) ?? 0));
+    case 'oldest':
+      return copy.sort((a,b) => (idxMap.get(b.id) ?? 0) - (idxMap.get(a.id) ?? 0));
+    case 'title-asc':
+      return copy.sort((a,b) => a.title.localeCompare(b.title));
+    case 'title-desc':
+      return copy.sort((a,b) => b.title.localeCompare(a.title));
+    case 'creator-asc':
+      return copy.sort((a,b) => (a.creator||'').localeCompare(b.creator||''));
+    case 'duration-desc':
+      return copy.sort((a,b) => durationToMinutes(b.duration) - durationToMinutes(a.duration));
+    case 'duration-asc':
+      return copy.sort((a,b) => durationToMinutes(a.duration) - durationToMinutes(b.duration));
+    case 'category':
+      return copy.sort((a,b) => (a.category||'').localeCompare(b.category||'') || a.title.localeCompare(b.title));
+    default:
+      return copy;
+  }
 }
 
 // Theory / Research cards
@@ -2358,9 +4125,9 @@ function buildEvidenceFilters() {
     const col = f === 'All' ? '#6B7680' : (EVIDENCE_COLORS[f] || '#6B7680');
     const isActive = evidenceFilter === f;
     return `<button onclick="setEvidenceFilter('${f}')" id="ef-${f.replace(/[^a-z]/gi,'')}"
-      style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;padding:4px 10px;border:1px solid;cursor:pointer;transition:all 0.15s;letter-spacing:0.06em;
-      ${isActive ? `background:${col};color:#050505;border-color:${col};font-weight:700;` : `background:transparent;color:${col};border-color:${col}44;`}"
-      onmouseover="if('${f}'!==evidenceFilter)this.style.background='${col}22'" onmouseout="if('${f}'!==evidenceFilter)this.style.background='transparent'">${f}</button>`;
+      style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;padding:4px 10px;border:1px solid;cursor:pointer;transition:all 0.15s;letter-spacing:0.06em;backdrop-filter:blur(2px);
+      ${isActive ? `background:${col};color:#050505;border-color:${col};font-weight:700;` : `background:var(--input-fill);color:${col};border-color:${col}66;`}"
+      onmouseover="if('${f}'!==evidenceFilter)this.style.background='${col}33'" onmouseout="if('${f}'!==evidenceFilter)this.style.background='var(--input-fill)'">${f}</button>`;
   }).join('');
 }
 
@@ -2543,21 +4310,55 @@ function selectRadioTrack(id, title) {
 
 function toggleRadioPlay() {
   if (!radioTrackId) return;
-  radioPlaying = !radioPlaying;
   const track = TRACKS.find(t => t.id === radioTrackId);
-  if (track) {
-    if (radioPlaying) { playTrack(track); }
-    else { isPlaying = false; if(ytReady&&ytPlayer) ytPlayer.pauseVideo(); updatePlayState(); }
+  if (!track) return;
+  // If this radio track is currently the one playing, toggle pause/play.
+  // Otherwise, always start it fresh.
+  const isThisTrackActive = currentTrack && currentTrack.id === radioTrackId;
+
+  if (isThisTrackActive && isPlaying) {
+    // Pause it (with fade)
+    isPlaying = false;
+    if (ytReady && ytPlayer) {
+      fadeVolume(TARGET_VOLUME, 0, FADE_OUT_MS).then(() => {
+        try { ytPlayer.pauseVideo(); } catch(e) {}
+      });
+    }
+    updatePlayState();
+  } else if (isThisTrackActive && !isPlaying) {
+    // Resume it (with fade)
+    isPlaying = true;
+    if (ytReady && ytPlayer) {
+      try { ytPlayer.setVolume(0); ytPlayer.playVideo(); } catch(e) {}
+      fadeVolume(0, TARGET_VOLUME, FADE_IN_MS);
+    }
+    updatePlayState();
+  } else {
+    // Different track — load it with the normal crossfade
+    playTrack(track);
   }
+  // radioPlaying is now derived, so just recompute + re-render
   updateRadioUI();
 }
 
+/* Radio state is derived from global playback truth.
+   radioPlaying = true only when the globally-playing track IS the selected radio channel. */
+function syncRadioState() {
+  radioPlaying = !!(isPlaying && currentTrack && currentTrack.id === radioTrackId);
+}
+
 function updateRadioUI() {
+  syncRadioState();
   const btn = document.getElementById('radio-play-btn');
   const statusEl = document.getElementById('play-status-text');
   const streamEl = document.getElementById('stream-status');
   const headerWave = document.getElementById('header-wave');
   const meta = CHANNEL_META[radioChannel];
+
+  // Topbar stream indicator reflects GLOBAL playback (any track, anywhere).
+  // So the user always knows sound is live, not just when on Radio tab.
+  if (streamEl) streamEl.textContent = isPlaying ? 'STREAMING' : 'STANDBY';
+  if (headerWave) headerWave.style.display = isPlaying ? 'flex' : 'none';
 
   if (!btn) return;
 
@@ -2565,16 +4366,12 @@ function updateRadioUI() {
     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
     btn.style.background = meta.color;
     btn.style.color = '#050505';
-    statusEl.textContent = 'NOW STREAMING';
-    if (streamEl) streamEl.textContent = 'STREAMING';
-    if (headerWave) headerWave.style.display = 'flex';
+    if (statusEl) statusEl.textContent = 'NOW STREAMING';
   } else {
     btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     btn.style.background = 'transparent';
     btn.style.color = meta.color;
-    statusEl.textContent = 'READY TO PLAY';
-    if (streamEl) streamEl.textContent = 'STANDBY';
-    if (headerWave) headerWave.style.display = 'none';
+    if (statusEl) statusEl.textContent = isPlaying ? 'OTHER TRACK PLAYING' : 'READY TO PLAY';
   }
 }
 
@@ -2729,6 +4526,477 @@ function initHeroSlideshow() {
   startHeroTimer();
 }
 
+/* ====================================================================
+   POMODORO / FOCUS SYSTEM
+   ==================================================================== */
+const POMO_DEFAULTS = { focus: 25, short: 5, long: 15, cycle: 4, autostart: false };
+let pomoConfig = { ...POMO_DEFAULTS };
+let pomoState = {
+  mode: 'focus',           // 'focus' | 'short' | 'long'
+  running: false,
+  remaining: 25 * 60,      // seconds
+  sessionInCycle: 1,       // 1..cycle
+  startedAt: null,
+};
+let pomoInterval = null;
+let pomoSessions = [];     // { ts: ISO, mins: number, mode: 'focus' }
+
+function pomoLoad() {
+  try {
+    const cfg = JSON.parse(localStorage.getItem('nn_pomo_cfg') || 'null');
+    if (cfg) pomoConfig = { ...POMO_DEFAULTS, ...cfg };
+    const sess = JSON.parse(localStorage.getItem('nn_pomo_sessions') || '[]');
+    if (Array.isArray(sess)) pomoSessions = sess;
+  } catch(e) {}
+  pomoState.remaining = pomoConfig.focus * 60;
+}
+function pomoSaveCfg() { try { localStorage.setItem('nn_pomo_cfg', JSON.stringify(pomoConfig)); } catch(e) {} }
+function pomoSaveSess() { try { localStorage.setItem('nn_pomo_sessions', JSON.stringify(pomoSessions)); } catch(e) {} }
+
+function pomoFormatTime(secs) {
+  const m = Math.floor(secs / 60);
+  const s = secs % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function pomoCurrentDuration() {
+  if (pomoState.mode === 'focus') return pomoConfig.focus * 60;
+  if (pomoState.mode === 'short') return pomoConfig.short * 60;
+  return pomoConfig.long * 60;
+}
+
+function pomoUpdateRing() {
+  const ring = document.getElementById('pomo-ring-progress');
+  if (!ring) return;
+  const total = pomoCurrentDuration();
+  const pct = total > 0 ? (pomoState.remaining / total) : 0;
+  const circumference = 2 * Math.PI * 108; // ~678.58
+  ring.setAttribute('stroke-dashoffset', circumference * (1 - pct));
+  // Color shifts by mode
+  const colorByMode = { focus: 'var(--accent)', short: '#60a5fa', long: '#c084fc' };
+  ring.setAttribute('stroke', colorByMode[pomoState.mode] || 'var(--accent)');
+}
+
+function pomoUpdateUI() {
+  const timeEl = document.getElementById('pomo-time');
+  const labelEl = document.getElementById('pomo-mode-label');
+  const hintEl = document.getElementById('pomo-session-hint');
+  const startBtn = document.getElementById('pomo-start-btn');
+  if (!timeEl) return;
+  timeEl.textContent = pomoFormatTime(pomoState.remaining);
+  const labels = { focus:'FOCUS', short:'SHORT BREAK', long:'LONG BREAK' };
+  labelEl.textContent = labels[pomoState.mode];
+  hintEl.textContent = `Session ${pomoState.sessionInCycle} of ${pomoConfig.cycle}`;
+  startBtn.textContent = pomoState.running ? 'PAUSE' : (pomoState.remaining < pomoCurrentDuration() ? 'RESUME' : 'START');
+  startBtn.classList.toggle('running', pomoState.running);
+  pomoUpdateRing();
+  // Live update document title when running
+  if (pomoState.running) {
+    document.title = `${pomoFormatTime(pomoState.remaining)} ${labels[pomoState.mode]} — Neuronest`;
+  } else if (pomoState.remaining === pomoCurrentDuration()) {
+    document.title = 'SoundHub — Neuronest';
+  }
+}
+
+function pomoTick() {
+  if (!pomoState.running) return;
+  pomoState.remaining = Math.max(0, pomoState.remaining - 1);
+  pomoUpdateUI();
+  if (pomoState.remaining === 0) {
+    pomoComplete();
+  }
+}
+
+function pomoComplete() {
+  // Log a session if we just finished a FOCUS block
+  if (pomoState.mode === 'focus') {
+    pomoSessions.push({ ts: new Date().toISOString(), mins: pomoConfig.focus, mode: 'focus' });
+    pomoSaveSess();
+    pushNotif({
+      type: 'you',
+      title: `Focus session complete`,
+      desc: `${pomoConfig.focus} min logged. Take a ${pomoState.sessionInCycle >= pomoConfig.cycle ? 'long' : 'short'} break.`,
+    });
+  }
+  pomoState.running = false;
+  clearInterval(pomoInterval); pomoInterval = null;
+
+  // Audio cue
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.frequency.value = pomoState.mode === 'focus' ? 660 : 440;
+    o.connect(g); g.connect(ctx.destination);
+    g.gain.setValueAtTime(0.0001, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
+    o.start(); o.stop(ctx.currentTime + 0.65);
+  } catch(e) {}
+
+  // Advance to next mode
+  if (pomoState.mode === 'focus') {
+    if (pomoState.sessionInCycle >= pomoConfig.cycle) {
+      pomoState.mode = 'long';
+      pomoState.sessionInCycle = 1;
+    } else {
+      pomoState.mode = 'short';
+      pomoState.sessionInCycle += 1;
+    }
+  } else {
+    pomoState.mode = 'focus';
+  }
+  pomoState.remaining = pomoCurrentDuration();
+  pomoRenderStats();
+  pomoRenderHeatmap();
+  pomoUpdateUI();
+  if (pomoConfig.autostart) {
+    setTimeout(() => pomoToggle(), 800);
+  }
+}
+
+function pomoToggle() {
+  pomoState.running = !pomoState.running;
+  if (pomoState.running) {
+    pomoState.startedAt = Date.now();
+    if (pomoInterval) clearInterval(pomoInterval);
+    pomoInterval = setInterval(pomoTick, 1000);
+  } else {
+    if (pomoInterval) clearInterval(pomoInterval);
+    pomoInterval = null;
+  }
+  pomoUpdateUI();
+}
+
+function pomoSkip() {
+  if (pomoInterval) clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoState.running = false;
+  // Move to next mode without logging
+  if (pomoState.mode === 'focus') {
+    if (pomoState.sessionInCycle >= pomoConfig.cycle) {
+      pomoState.mode = 'long';
+      pomoState.sessionInCycle = 1;
+    } else {
+      pomoState.mode = 'short';
+      pomoState.sessionInCycle += 1;
+    }
+  } else {
+    pomoState.mode = 'focus';
+  }
+  pomoState.remaining = pomoCurrentDuration();
+  pomoUpdateUI();
+}
+
+function pomoReset() {
+  if (pomoInterval) clearInterval(pomoInterval);
+  pomoInterval = null;
+  pomoState.running = false;
+  pomoState.remaining = pomoCurrentDuration();
+  pomoUpdateUI();
+}
+
+function pomoAdjust(field, delta) {
+  const limits = { focus:[5,90], short:[1,30], long:[5,60], cycle:[2,8] };
+  const [min,max] = limits[field] || [1,99];
+  pomoConfig[field] = Math.max(min, Math.min(max, (pomoConfig[field] || 0) + delta));
+  pomoSaveCfg();
+  pomoRefreshConfigUI();
+  // If the user adjusts the current mode's duration AND timer isn't running, update remaining
+  if (!pomoState.running) {
+    if ((field === 'focus' && pomoState.mode === 'focus') ||
+        (field === 'short' && pomoState.mode === 'short') ||
+        (field === 'long' && pomoState.mode === 'long')) {
+      pomoState.remaining = pomoCurrentDuration();
+    }
+  }
+  pomoUpdateUI();
+}
+
+function pomoToggleSetting(field) {
+  pomoConfig[field] = !pomoConfig[field];
+  pomoSaveCfg();
+  pomoRefreshConfigUI();
+}
+
+function pomoRefreshConfigUI() {
+  const f = document.getElementById('pomo-cfg-focus');
+  const s = document.getElementById('pomo-cfg-short');
+  const l = document.getElementById('pomo-cfg-long');
+  const c = document.getElementById('pomo-cfg-cycle');
+  const a = document.getElementById('pomo-cfg-autostart');
+  if (f) f.textContent = pomoConfig.focus;
+  if (s) s.textContent = pomoConfig.short;
+  if (l) l.textContent = pomoConfig.long;
+  if (c) c.textContent = pomoConfig.cycle;
+  if (a) a.setAttribute('aria-pressed', pomoConfig.autostart ? 'true' : 'false');
+}
+
+// Stats
+function pomoRenderStats() {
+  const now = new Date();
+  const today = now.toDateString();
+  const startOfWeek = (() => { const d=new Date(now); d.setHours(0,0,0,0); d.setDate(d.getDate() - ((d.getDay()+6)%7)); return d; })();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  let tCount=0, tMins=0, wCount=0, wMins=0, mCount=0, mMins=0, allCount=pomoSessions.length, allMins=0;
+  pomoSessions.forEach(s => {
+    const d = new Date(s.ts);
+    allMins += s.mins;
+    if (d.toDateString() === today) { tCount++; tMins += s.mins; }
+    if (d >= startOfWeek) { wCount++; wMins += s.mins; }
+    if (d >= startOfMonth) { mCount++; mMins += s.mins; }
+  });
+  const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setText('pomo-today-count', tCount);
+  setText('pomo-today-mins', tMins);
+  setText('pomo-week-count', wCount);
+  setText('pomo-week-mins', wMins);
+  setText('pomo-month-count', mCount);
+  setText('pomo-month-hrs', (mMins/60).toFixed(1));
+  setText('pomo-all-count', allCount);
+  setText('pomo-all-hrs', (allMins/60).toFixed(1));
+
+  // Streak — consecutive days with at least one session
+  const dayMap = new Set(pomoSessions.map(s => new Date(s.ts).toDateString()));
+  let streak = 0;
+  for (let i=0; i<3650; i++) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    if (dayMap.has(d.toDateString())) streak++; else break;
+  }
+  const streakEl = document.getElementById('pomo-streak-text');
+  if (streakEl) streakEl.textContent = `${streak} day${streak===1?'':'s'} streak`;
+}
+
+function pomoRenderHeatmap() {
+  const el = document.getElementById('pomo-heatmap');
+  if (!el) return;
+  const now = new Date();
+  // Build daily counts
+  const counts = {};
+  pomoSessions.forEach(s => {
+    const k = new Date(s.ts).toDateString();
+    counts[k] = (counts[k] || 0) + 1;
+  });
+  const max = Math.max(1, ...Object.values(counts));
+  let html = '';
+  // 35 days, oldest first → newest last (reads left-to-right, top-to-bottom like a calendar)
+  for (let i=34; i>=0; i--) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    const key = d.toDateString();
+    const c = counts[key] || 0;
+    let bg = 'var(--hairline)';
+    if (c > 0) {
+      const pct = Math.min(1, c / max);
+      if (pct < 0.25) bg = 'rgba(224,177,0,0.25)';
+      else if (pct < 0.5) bg = 'rgba(224,177,0,0.55)';
+      else if (pct < 0.85) bg = 'rgba(224,177,0,0.85)';
+      else bg = 'var(--accent)';
+    }
+    const tip = `${d.toLocaleDateString(undefined,{month:'short',day:'numeric'})} · ${c} session${c===1?'':'s'}`;
+    html += `<div class="pomo-heat-cell" style="background:${bg};" data-count="${c}" data-tip="${tip}"></div>`;
+  }
+  el.innerHTML = html;
+}
+
+function pomoRenderFocusTracks() {
+  const list = document.getElementById('pomo-tracks-list');
+  const countEl = document.getElementById('pomo-tracks-count');
+  if (!list) return;
+  // Auto-source from any track tagged Focus
+  const focusTracks = TRACKS.filter(t => t.category === 'Focus');
+  if (countEl) countEl.textContent = `${focusTracks.length} TRACKS`;
+  if (!focusTracks.length) {
+    list.innerHTML = `<div style="padding:48px 22px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;">No focus tracks yet</div>`;
+    return;
+  }
+  list.innerHTML = focusTracks.map(t => {
+    const isCurrent = currentTrack && currentTrack.id === t.id;
+    const playIcon = isCurrent && isPlaying
+      ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+      : '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    return `
+      <div class="pomo-track-row ${isCurrent?'now-playing':''}" onclick='playTrack(${JSON.stringify(t).replace(/'/g,"&#39;")})'>
+        <img class="pomo-track-thumb" src="${thumb(t.id)}" alt="${t.title}" loading="lazy" />
+        <div class="pomo-track-info">
+          <div class="pomo-track-name">${t.title}</div>
+          <div class="pomo-track-creator">${t.creator}</div>
+        </div>
+        <span class="pomo-track-dur">${t.duration}</span>
+        <div class="pomo-track-play">${playIcon}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPomodoro() {
+  pomoRefreshConfigUI();
+  pomoRenderStats();
+  pomoRenderHeatmap();
+  pomoRenderFocusTracks();
+  pomoUpdateUI();
+}
+
+/* ====================================================================
+   NOTIFICATIONS
+   ==================================================================== */
+let notifs = [];
+
+function notifLoad() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('nn_notifs') || 'null');
+    if (Array.isArray(stored)) { notifs = stored; return; }
+  } catch(e) {}
+  // Seed first-run notifications so the panel never feels empty
+  notifs = [
+    {
+      id: 'seed-1', type: 'system',
+      title: 'Welcome to Neuronest SoundHub',
+      desc: 'New features land regularly. Tap the bell to keep up.',
+      ts: Date.now() - 1000 * 60 * 5, read: false
+    },
+    {
+      id: 'seed-2', type: 'research',
+      title: '2 new papers added to Research Hub',
+      desc: 'Gamma entrainment and slow-wave enhancement studies.',
+      ts: Date.now() - 1000 * 60 * 60 * 2, read: false,
+      onclick: () => showPage('theory')
+    },
+    {
+      id: 'seed-3', type: 'library',
+      title: 'New track: Alpha Wave Promoting Soundscape',
+      desc: 'Now in the Calm channel — try it for wind-down sessions.',
+      ts: Date.now() - 1000 * 60 * 60 * 26, read: false,
+      onclick: () => showPage('gallery')
+    },
+    {
+      id: 'seed-4', type: 'you',
+      title: 'Focus tracker is live',
+      desc: 'Track your pomodoros and build your focus streak.',
+      ts: Date.now() - 1000 * 60 * 60 * 28, read: false,
+      onclick: () => showPage('pomodoro')
+    },
+  ];
+  notifSave();
+}
+
+function notifSave() {
+  try {
+    // Strip onclick handlers before saving (functions don't serialize)
+    const clean = notifs.map(n => { const {onclick, ...rest} = n; return rest; });
+    localStorage.setItem('nn_notifs', JSON.stringify(clean));
+  } catch(e) {}
+}
+
+function pushNotif({ type='system', title, desc, onclick }) {
+  notifs.unshift({
+    id: 'n-' + Date.now(),
+    type, title, desc,
+    ts: Date.now(), read: false, onclick
+  });
+  if (notifs.length > 30) notifs = notifs.slice(0, 30);
+  notifSave();
+  renderNotifBadge();
+  renderNotifList();
+}
+
+function notifIconSVG(type) {
+  const icons = {
+    research: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/></svg>',
+    library:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
+    you:      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg>',
+    system:   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+  };
+  return icons[type] || icons.system;
+}
+
+function timeAgo(ts) {
+  const diff = (Date.now() - ts) / 1000;
+  if (diff < 60) return 'JUST NOW';
+  if (diff < 3600) return Math.floor(diff/60) + 'M AGO';
+  if (diff < 86400) return Math.floor(diff/3600) + 'H AGO';
+  if (diff < 604800) return Math.floor(diff/86400) + 'D AGO';
+  return new Date(ts).toLocaleDateString(undefined,{month:'short',day:'numeric'}).toUpperCase();
+}
+
+function renderNotifList() {
+  const el = document.getElementById('notif-list');
+  if (!el) return;
+  if (!notifs.length) {
+    el.innerHTML = `<div class="notif-empty">No notifications yet</div>`;
+    return;
+  }
+  el.innerHTML = notifs.map(n => `
+    <div class="notif-item ${n.read?'':'unread'}" data-id="${n.id}" onclick="onNotifClick('${n.id}')">
+      <div class="notif-icon ${n.type}">${notifIconSVG(n.type)}</div>
+      <div class="notif-body">
+        <div class="notif-title-text">${n.title}</div>
+        <div class="notif-desc">${n.desc || ''}</div>
+        <div class="notif-meta">${timeAgo(n.ts)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function onNotifClick(id) {
+  const n = notifs.find(x => x.id === id);
+  if (!n) return;
+  n.read = true;
+  notifSave();
+  renderNotifBadge();
+  renderNotifList();
+  if (typeof n.onclick === 'function') {
+    closeNotifPanel();
+    n.onclick();
+  } else {
+    // Re-route to pages based on type as a fallback
+    closeNotifPanel();
+    if (n.type === 'research') showPage('theory');
+    else if (n.type === 'library') showPage('gallery');
+    else if (n.type === 'you') showPage('pomodoro');
+  }
+}
+
+function renderNotifBadge() {
+  const badge = document.getElementById('notif-badge');
+  if (!badge) return;
+  const unread = notifs.some(n => !n.read);
+  badge.classList.toggle('visible', unread);
+}
+
+function toggleNotifPanel(e) {
+  if (e) e.stopPropagation();
+  const panel = document.getElementById('notif-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    renderNotifList();
+  }
+}
+function closeNotifPanel() {
+  const panel = document.getElementById('notif-panel');
+  if (panel) panel.classList.remove('open');
+}
+function markAllNotifsRead() {
+  notifs.forEach(n => n.read = true);
+  notifSave();
+  renderNotifBadge();
+  renderNotifList();
+}
+function clearAllNotifs() {
+  notifs = [];
+  notifSave();
+  renderNotifBadge();
+  renderNotifList();
+}
+
+// Close notif panel on outside click
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('notif-panel');
+  const wrap = panel && panel.closest('.notif-wrap');
+  if (panel && panel.classList.contains('open') && wrap && !wrap.contains(e.target)) {
+    closeNotifPanel();
+  }
+});
+
 // Init
 initHeroSlideshow();
 renderUploads();
@@ -2737,6 +5005,9 @@ renderListeners();
 renderResearchFeed();
 renderHomeFavourites();
 updateFavChannelTab();
+pomoLoad();
+notifLoad();
+renderNotifBadge();
 function handleUnderSignup(e) {
   e.preventDefault();
   document.getElementById('under-email').style.display = 'none';
@@ -2804,10 +5075,144 @@ be first in line.</p>
   </div>
 </div>
 
+<!-- ===== HOW IT WORKS / LEARN MORE MODAL ===== -->
+<div id="learn-more-modal" onclick="if(event.target===this)closeLearnMoreModal()" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:24px;">
+  <div style="background:var(--surface-section);border:1px solid var(--hairline);box-shadow:var(--shadow-card),0 24px 64px rgba(0,0,0,0.5);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;padding:40px 44px;position:relative;animation:lm-slide 0.35s cubic-bezier(0.16,1,0.3,1);">
+    <button onclick="closeLearnMoreModal()" style="position:absolute;top:18px;right:18px;width:36px;height:36px;background:var(--input-fill);border:1px solid var(--hairline);color:var(--text-secondary);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all 0.15s;" onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)';" onmouseout="this.style.color='var(--text-secondary)';this.style.borderColor='var(--hairline)';" aria-label="Close">✕</button>
+
+    <!-- Header -->
+    <div style="margin-bottom:28px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(224,177,0,0.12);border:1px solid var(--accent-soft);padding:6px 14px;margin-bottom:20px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--accent)"><circle cx="12" cy="12" r="10"></circle></svg>
+        <span class="mono upper" style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:var(--accent);">The Science</span>
+      </div>
+      <h2 style="font-family:'Inter',sans-serif;font-size:32px;font-weight:800;color:var(--text-primary);letter-spacing:-0.02em;line-height:1.1;margin-bottom:12px;">Using Sound as a Tool for Performance</h2>
+      <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.1em;">A brief on how auditory input regulates brain state</p>
+    </div>
+
+    <!-- Body -->
+    <div style="font-family:'Inter',sans-serif;font-size:14px;line-height:1.7;color:var(--text-primary);">
+      <p style="margin-bottom:18px;">Sound isn't just entertainment — 
+it's a direct input to the nervous system. The right auditory signal at 
+the right moment can shift cortical rhythms, modulate arousal, and bias 
+the brain toward the state you want: deep focus, calm recovery, or 
+restorative sleep.</p>
+
+      <!-- 3 pillar cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0;">
+        <div class="lm-pillar">
+          <div class="lm-pillar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+          <h4 class="lm-pillar-title">Attention</h4>
+          <p class="lm-pillar-desc">Isochronic &amp; binaural tones drive beta/gamma rhythms that sustain attention without fatigue.</p>
+        </div>
+        <div class="lm-pillar">
+          <div class="lm-pillar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </div>
+          <h4 class="lm-pillar-title">Recovery</h4>
+          <p class="lm-pillar-desc">Low-frequency soundscapes engage the vagus nerve, dropping HR and cortisol in minutes.</p>
+        </div>
+        <div class="lm-pillar">
+          <div class="lm-pillar-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          </div>
+          <h4 class="lm-pillar-title">Sleep</h4>
+          <p class="lm-pillar-desc">Pink noise &amp; delta-tuned audio enhance slow-wave depth — the phase where memory consolidates.</p>
+        </div>
+      </div>
+
+      <p style="margin-bottom:18px;"><span style="color:var(--accent);font-weight:700;">Neuronest's approach:</span>
+ every track in the library is tagged by what it's engineered to do — 
+not by genre. We surface the science behind each category, so you can 
+pick sound the way you'd pick a supplement: intentionally, for an 
+outcome.</p>
+
+      <!-- How the pieces fit together -->
+      <div style="background:var(--input-fill);border:1px solid var(--hairline);padding:20px 22px;margin:24px 0;">
+        <div class="mono upper" style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:var(--accent);margin-bottom:14px;">How the Pieces Fit Together</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:14px;align-items:flex-start;"><span class="mono" style="font-size:10px;color:var(--accent);padding-top:2px;font-weight:700;width:24px;">01</span><div><strong style="color:var(--text-primary);">Library</strong> — curated tracks, each tagged for focus, calm, or sleep outcomes.</div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;"><span class="mono" style="font-size:10px;color:var(--accent);padding-top:2px;font-weight:700;width:24px;">02</span><div><strong style="color:var(--text-primary);">Research</strong> — the papers &amp; frameworks that justify why each sound belongs in its category.</div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;"><span class="mono" style="font-size:10px;color:var(--accent);padding-top:2px;font-weight:700;width:24px;">03</span><div><strong style="color:var(--text-primary);">Focus Sessions</strong> — pair a pomodoro with a focus track and the data starts telling you what works for you.</div></div>
+          <div style="display:flex;gap:14px;align-items:flex-start;"><span class="mono" style="font-size:10px;color:var(--accent);padding-top:2px;font-weight:700;width:24px;">04</span><div><strong style="color:var(--text-primary);">Personalised AI</strong> (coming soon) — your patterns feed a model that surfaces what fits your state.</div></div>
+        </div>
+      </div>
+
+      <p style="color:var(--text-secondary);font-size:13px;margin-bottom:24px;">Performance isn't about pushing harder. It's about being in the right state for the task. Neuronest is the instrument for that.</p>
+    </div>
+
+    <!-- Footer CTAs -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--hairline);">
+      <a href="https://neuronesthub.org/neuroscience-news.html" target="_blank" rel="noopener" style="flex:1;min-width:200px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--text-on-accent);background:var(--accent);padding:14px 22px;text-decoration:none;transition:filter 0.15s;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='brightness(1)'">
+        Read the Full Research Hub →
+      </a>
+      <button onclick="closeLearnMoreModal(); showPage('theory');" style="display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;color:var(--accent);background:transparent;border:1.5px solid var(--accent);padding:13px 22px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.background='var(--accent)';this.style.color='var(--text-on-accent)';" onmouseout="this.style.background='transparent';this.style.color='var(--accent)';">
+        Browse Categories
+      </button>
+    </div>
+  </div>
+</div>
+
 <style>
 #personalisation-modal { display: none; }
 #personalisation-modal.active { display: flex; }
+#learn-more-modal.active { display: flex; }
+@keyframes lm-slide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.lm-pillar {
+  background: var(--input-fill);
+  border: 1px solid var(--hairline);
+  padding: 18px 16px;
+  transition: all 0.2s;
+}
+.lm-pillar:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(224,177,0,0.15);
+}
+.lm-pillar-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(224,177,0,0.12);
+  border: 1px solid var(--accent-soft);
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.lm-pillar-title {
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.lm-pillar-desc {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--text-secondary); line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  #learn-more-modal > div { padding: 32px 24px; }
+  #learn-more-modal h2 { font-size: 24px !important; }
+  #learn-more-modal .lm-pillar { padding: 14px 12px; }
+  #learn-more-modal [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+}
 </style>
+<script>
+function showLearnMoreModal() {
+  document.getElementById('learn-more-modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLearnMoreModal() {
+  document.getElementById('learn-more-modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('learn-more-modal');
+    if (m && m.classList.contains('active')) closeLearnMoreModal();
+  }
+});
+</script>
 
 
 </body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
