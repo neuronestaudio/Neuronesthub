@@ -2950,8 +2950,13 @@
       }
       .heat-bar-cell { flex: 1; height: 100%; }
     
-      #worldmap { display: block; width: 100%; height: 580px; cursor: grab; }
+      #worldmap {
+        display: block; width: 100%; height: 580px; cursor: grab;
+        user-select: none; -webkit-user-select: none;
+        -webkit-user-drag: none; -moz-user-select: none;
+      }
       #worldmap:active { cursor: grabbing; }
+      .map-wrap { user-select: none; -webkit-user-select: none; }
     
       /* SVG country styles */
       .country {
@@ -7492,6 +7497,8 @@ require medical framing to be valuable.</p>
     const countryTooltip = document.getElementById('countryTooltip');
     
     const svg = d3.select('#worldmap');
+    // Suppress browser's native HTML drag so D3 zoom/pan intercepts all pointer events
+    document.getElementById('worldmap').addEventListener('dragstart', e => e.preventDefault());
     const width = mapWrap.clientWidth;
     const height = 580;
     svg.attr('viewBox', `0 0 ${width} ${height}`);
