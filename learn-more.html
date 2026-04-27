@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Learn More — NeuroNest</title>
   <script>
-    // Apply saved theme before first paint to prevent flash (matches Sound Hub system)
-    try {
-      if (localStorage.getItem('nn_theme') === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    } catch(e) {}
+    // Learn More page always defaults to dark mode regardless of global theme preference
+    document.documentElement.removeAttribute('data-theme');
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3608,8 +3604,8 @@
               #44403c 55%,
               #2d2828 80%,
               #1A1815 100%);
-            filter: drop-shadow(0 0 18px rgba(109,91,208,0.55))
-                    drop-shadow(0 0 4px rgba(109,91,208,0.7));
+            filter: drop-shadow(0 0 5px rgba(109,91,208,0.55))
+                    drop-shadow(0 0 5px rgba(109,91,208,0.7));
           }
           [data-theme="light"] .ea-reveal-layer {
             background-image: linear-gradient(100deg,

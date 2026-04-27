@@ -671,6 +671,7 @@
   
   
   <link rel="stylesheet" href="/assets/index-00858f62.css">
+    <link rel="preload" href="/assets/hero_banner-compressed.mp4" as="video" type="video/mp4">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
 <body>
@@ -694,8 +695,8 @@
 
     <main>
         <section class="hero">
-            <video class="hero-video" autoplay loop muted playsinline>
-                <source src="/assets/hero_banner-f373f89a-f373f89a-f373f89a.mp4" type="video/mp4">
+            <video class="hero-video" autoplay loop muted playsinline preload="auto" poster="/assets/hero_poster.jpg">
+                <source src="/assets/hero_banner-compressed.mp4" type="video/mp4">
             </video>
             <div class="hero-shadow"></div>
             <div class="hero-content">
