@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SoundHub — Neuronest</title>
-<script type="text/javascript" id="www-widgetapi-script" src="SoundHub%20%E2%80%94%20Neuronest_files/www-widgetapi.js" async=""></script><script>
+<script>
   // Apply saved theme before first paint to prevent flash
   try {
     if (localStorage.getItem('nn_theme') === 'light') {
@@ -12,7 +12,7 @@
     }
   } catch(e) {}
 </script>
-<script src="SoundHub%20%E2%80%94%20Neuronest_files/dotlottie-player.mjs" type="module"></script>
+<script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;800;900&family=Playfair+Display:wght@700;900&family=Great+Vibes&display=swap');
 
@@ -2822,7 +2822,7 @@ sound, matched to you.
 </div>
 
 <!-- Hidden YT player -->
-<iframe id="yt-player" frameborder="0" allowfullscreen="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="YouTube video player" width="1" height="1" src="SoundHub%20%E2%80%94%20Neuronest_files/a.htm"></iframe>
+<div id="yt-player" style="position:absolute;width:1px;height:1px;overflow:hidden;"></div>
 
 <script>
 /* ===== Theme toggle ===== */
@@ -3010,14 +3010,27 @@ let radioChannel = 'Focus';
 let radioTrackId = null;
 let ytPlayer = null;
 let ytReady = false;
+let ytPlayerReady = false;   // true once onReady fires
+let pendingTrack = null;    // track queued before YT player was ready
 
 // YT API
 window.onYouTubeIframeAPIReady = function() {
   ytReady = true;
   ytPlayer = new YT.Player('yt-player', {
     height:'1', width:'1',
-    playerVars: { autoplay:0, controls:0 },
-    events: { onStateChange: e => { if(e.data === 0) stopPlayback(); } }
+    playerVars: { autoplay:1, controls:0 },
+    events: {
+      onReady: function() {
+        ytPlayerReady = true;
+        if (pendingTrack) {
+          const t = pendingTrack;
+          pendingTrack = null;
+          try { ytPlayer.setVolume(TARGET_VOLUME); } catch(e) {}
+          ytPlayer.loadVideoById(t.id);
+        }
+      },
+      onStateChange: e => { if (e.data === 0) stopPlayback(); }
+    }
   });
 };
 (function(){
@@ -3086,10 +3099,13 @@ async function playTrack(track) {
   updateNowPlaying();
 
   if (isFirstPlay) {
-    // Just load and let YT play at full volume
-    if (ytReady && ytPlayer && ytPlayer.loadVideoById) {
+    if (ytPlayerReady && ytPlayer && ytPlayer.loadVideoById) {
+      // Player fully ready — play immediately
       try { ytPlayer.setVolume(TARGET_VOLUME); } catch(e) {}
       ytPlayer.loadVideoById(track.id);
+    } else {
+      // API still loading — queue the track; onReady will start it
+      pendingTrack = track;
     }
     return;
   }
