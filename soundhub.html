@@ -3096,6 +3096,12 @@ async function playTrack(track) {
 
   currentTrack = track;
   isPlaying = true;
+  try {
+    localStorage.setItem('nn_playing', JSON.stringify({
+      id: track.id, title: track.title, category: track.category,
+      duration: track.duration || '', creator: track.creator || '', ts: Date.now()
+    }));
+  } catch(e) {}
   updateNowPlaying();
 
   if (isFirstPlay) {
@@ -3120,6 +3126,7 @@ async function playTrack(track) {
 
 function stopPlayback() {
   isPlaying = false;
+  try { localStorage.removeItem('nn_playing'); } catch(e) {}
   updatePlayState();
 }
 

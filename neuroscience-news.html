@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
     <link href="NeuroNest%20_%20Research%20Hub%20&amp;%20Neuroscience%20News_files/css2.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="NeuroNest%20_%20Research%20Hub%20&amp;%20Neuroscience%20News_files/page-transitions.css">
     <script src="NeuroNest%20_%20Research%20Hub%20&amp;%20Neuroscience%20News_files/dotlottie-wc.js" type="module"></script>
     <script>
@@ -512,22 +513,32 @@
 
         /* ── Hero ────────────────────────────────────────────── */
         .hero { position: relative; min-height: 64vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
-        .hero video { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: brightness(0.55); }
+        .hero video { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.3; filter: brightness(0.55); }
         .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-overlay); z-index: -1; }
         .hero-eyebrow {
-            font-family: 'Outfit', sans-serif;
-            font-size: clamp(13px, 1.6vw, 18px);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin: 0 0 16px;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(80px, 10vw, 130px);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+            margin: 0;
             background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 30%, #6366f1 60%, #7e22ce 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            display: inline-block;
-            line-height: 1;
+            display: block;
+            line-height: 1.0;
             filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+            position: relative;
+            margin-bottom: -0.12em;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .hero-title-group {
+            position: relative;
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 24px;
         }
         [data-theme="light"] .hero-eyebrow {
             background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4338ca 100%);
@@ -549,9 +560,9 @@
         }
         [data-theme="light"] .hero h1 {
             text-shadow:
-                0 0 5px rgba(224, 177, 0, 0.55),
-                0 0 36px rgba(196, 146, 0, 0.40),
-                0 0 70px rgba(224, 177, 0, 0.22);
+                0 0 2.5px rgba(167, 139, 250, 0.28),
+                0 0 18px rgba(126, 34, 206, 0.20),
+                0 0 35px rgba(126, 34, 206, 0.11);
         }
         .hero p { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 16px; max-width: 540px; margin: 0 auto; }
         .hero-stats { display: inline-flex; align-items: center; gap: 28px; margin-top: 32px; padding: 16px 28px; border: 1px solid var(--glass-border); border-radius: 60px; background: var(--hero-stats-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -565,6 +576,33 @@
         .hero-mission { font-family: 'Inter', sans-serif; margin-top: 22px; font-size: 13px; color: var(--text-grey); max-width: 580px; margin-left: auto; margin-right: auto; }
         .hero-mission a { color: var(--accent); border-bottom: 1px solid rgba(224,177,0,0.4); padding-bottom: 1px; transition: border-color 0.2s ease; }
         .hero-mission a:hover { border-bottom-color: var(--accent); }
+        /* ── Hero Latest Paper Teaser ─── */
+        .hero-latest-teaser { margin-top: 28px; }
+        .hlt-inner {
+            display: inline-flex; align-items: center; gap: 12px;
+            padding: 10px 16px 10px 12px;
+            border: 1px solid rgba(167,139,250,0.3);
+            border-radius: 40px;
+            background: rgba(167,139,250,0.06);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            max-width: 560px; text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+            text-align: left;
+        }
+        .hlt-inner:hover { border-color: rgba(167,139,250,0.55); background: rgba(167,139,250,0.10); }
+        .hlt-badge {
+            font-family: 'Outfit', sans-serif; font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.6px;
+            padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+            background: linear-gradient(135deg, #a78bfa 0%, #7e22ce 100%); color: #fff;
+        }
+        .hlt-hook {
+            font-family: 'Inter', sans-serif; font-size: 12px; color: rgba(255,255,255,0.72);
+            margin: 0; line-height: 1.45; flex: 1;
+        }
+        .hlt-arrow { width: 14px; height: 14px; flex-shrink: 0; color: #a78bfa; }
+        [data-theme="light"] .hlt-inner { border-color: rgba(126,34,206,0.22); background: rgba(126,34,206,0.05); }
+        [data-theme="light"] .hlt-hook { color: rgba(0,0,0,0.62); }
         @media (max-width: 540px) {
             .hero-stats { gap: 16px; padding: 12px 18px; }
             .hero-stat-num { font-size: 22px; }
@@ -584,6 +622,9 @@
         .section-label::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
         .section-title { max-width: 820px; margin-bottom: 14px; font-size: clamp(28px, 4.5vw, 52px); line-height: 1.05; text-transform: uppercase; font-weight: 700; }
         .section-sub { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 15px; max-width: 640px; margin-bottom: 44px; }
+        .section-sub--serif { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-size: clamp(17px, 1.6vw, 22px); color: var(--text-grey); font-weight: 400; line-height: 1.55; letter-spacing: -0.01em; max-width: 680px; }
+        .section-sub-link { color: var(--accent); border-bottom: 1px solid rgba(224,177,0,0.4); padding-bottom: 1px; transition: border-color 0.2s ease; font-style: normal; }
+        .section-sub-link:hover { border-bottom-color: var(--accent); }
 
         /* ── Research Spotlight Slider (Soundhub home pattern) ── */
         .research-spotlight {
@@ -609,12 +650,25 @@
         .research-spotlight:hover {
             box-shadow: 0 0 0 1.5px var(--slide-glow), 0 8px 48px rgba(0,0,0,0.5);
         }
-        .rs-bg, .rs-grid, .rs-overlay { position: absolute; inset: 0; pointer-events: none; }
+        .rs-bg, .rs-grid, .rs-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
         .rs-bg {
             background: linear-gradient(135deg, rgba(224,177,0,0.16) 0%, rgba(224,177,0,0.05) 35%, transparent 65%),
                         radial-gradient(ellipse at 80% 50%, rgba(167,139,250,0.08) 0%, transparent 55%),
                         radial-gradient(ellipse at 20% 80%, rgba(224,177,0,0.10) 0%, transparent 40%);
         }
+        .rs-video-bg {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.45;
+            filter: brightness(0.6) saturate(0.9);
+            pointer-events: none;
+        }
+        [data-theme="light"] .rs-video-bg { opacity: 0.22; filter: brightness(0.7) saturate(0.7); }
         .rs-slide-bg {
             position: absolute; inset: 0; pointer-events: none;
             background-size: 100% 100%;
@@ -622,6 +676,7 @@
             opacity: 0;
             transition: opacity 0.55s ease;
             will-change: opacity;
+            z-index: 3;
         }
         .rs-grid {
             opacity: 0.04;
@@ -764,18 +819,7 @@
         .rs-nav svg { width: 16px; height: 16px; }
 
         /* Ghost preview cards — upcoming slides peek from the right */
-        .rs-ghost-stack {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            z-index: 12;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
+        .rs-ghost-stack { display: none !important; }
         .rs-ghost-stack::before {
             content: "UP NEXT";
             font-family: 'Inter', sans-serif;
@@ -1174,19 +1218,30 @@
             opacity: 0.9;
         }
         .cat-tile[data-filter="all"]::before {
-            background: linear-gradient(135deg, #2a2a35 0%, #18181c 100%);
+            background:
+                linear-gradient(135deg, rgba(42,42,53,0.55) 0%, rgba(24,24,28,0.88) 100%),
+                url('assets/pinterest_20.jpg') center/cover no-repeat;
         }
+        /* Photo layer: sits above gradient (z-index -1) at 50% opacity */
         .cat-tile[data-filter="cat-focus"]::before {
-            background: linear-gradient(135deg, #ff9a4d 0%, #c44d1a 60%, #3d1a0a 100%);
+            background:
+                linear-gradient(135deg, rgba(255,154,77,0.55) 0%, rgba(196,77,26,0.72) 60%, rgba(61,26,10,0.88) 100%),
+                url('assets/pinterest_1.jpg') center/cover no-repeat;
         }
         .cat-tile[data-filter="cat-sleep"]::before {
-            background: linear-gradient(135deg, #a78bfa 0%, #6d4ec9 60%, #2c1e58 100%);
+            background:
+                linear-gradient(135deg, rgba(167,139,250,0.55) 0%, rgba(109,78,201,0.72) 60%, rgba(44,30,88,0.88) 100%),
+                url('assets/pinterest_3.jpg') center/cover no-repeat;
         }
         .cat-tile[data-filter="cat-calm"]::before {
-            background: linear-gradient(135deg, #67e8f9 0%, #2da9bb 60%, #0e3d47 100%);
+            background:
+                linear-gradient(135deg, rgba(103,232,249,0.55) 0%, rgba(45,169,187,0.72) 60%, rgba(14,61,71,0.88) 100%),
+                url('assets/pinterest_6.jpg') center/cover no-repeat;
         }
         .cat-tile[data-filter="cat-other"]::before {
-            background: linear-gradient(135deg, #94a3b8 0%, #545d70 60%, #1e2230 100%);
+            background:
+                linear-gradient(135deg, rgba(148,163,184,0.55) 0%, rgba(84,93,112,0.72) 60%, rgba(30,34,48,0.88) 100%),
+                url('assets/pinterest_14.jpg') center/cover no-repeat;
         }
         .cat-tile:hover { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--accent), 0 16px 40px rgba(224,177,0,0.25); }
         .cat-tile.active { box-shadow: 0 0 0 2px var(--text-white), 0 16px 40px rgba(0,0,0,0.4); }
@@ -1273,7 +1328,7 @@
         .list-header span:last-child { text-align: right; }
 
         /* ── Research Grid (Premium Tracklist Cards) ─────────── */
-        .research-grid { display: flex; flex-direction: column; gap: 4px; }
+        .research-grid { display: flex; flex-direction: column; gap: 6px; }
         .research-card {
             display: grid;
             grid-template-columns: 56px 1fr 200px 100px;
@@ -1281,16 +1336,44 @@
             align-items: center;
             padding: 14px 20px;
             border-radius: 10px;
-            background: transparent;
-            border: 1px solid transparent;
-            transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            transition: background 0.28s ease, border-color 0.28s ease,
+                        box-shadow 0.28s ease, transform 0.18s ease;
             position: relative;
+            overflow: hidden;
         }
-        .research-card:hover {
-            background: rgba(224,177,0,0.08);
-            border-color: rgba(224,177,0,0.35);
+        /* Gradient shimmer layer — drawn with ::before so bg transition is smooth */
+        .research-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            border-radius: inherit;
+            transition: opacity 0.28s ease;
+            pointer-events: none;
         }
-        .research-card:hover .research-card__title { color: var(--accent); }
+        /* Per-category hover gradients */
+        .research-card.cat-focus::after  { background: linear-gradient(110deg, rgba(255,154,77,0.22) 0%, rgba(239,68,68,0.12) 60%, transparent 100%); }
+        .research-card.cat-sleep::after  { background: linear-gradient(110deg, rgba(167,139,250,0.22) 0%, rgba(126,34,206,0.12) 60%, transparent 100%); }
+        .research-card.cat-calm::after   { background: linear-gradient(110deg, rgba(103,232,249,0.20) 0%, rgba(6,182,212,0.10) 60%, transparent 100%); }
+        .research-card.cat-other::after  { background: linear-gradient(110deg, rgba(148,163,184,0.18) 0%, rgba(100,116,139,0.08) 60%, transparent 100%); }
+
+        .research-card:hover { transform: translateX(3px); box-shadow: 0 4px 28px rgba(0,0,0,0.18); }
+        .research-card:hover::after { opacity: 1; }
+
+        /* Category-specific border + title colour on hover */
+        .research-card.cat-focus:hover  { border-color: rgba(255,154,77,0.55);  box-shadow: 0 4px 28px rgba(255,154,77,0.14); }
+        .research-card.cat-sleep:hover  { border-color: rgba(167,139,250,0.55); box-shadow: 0 4px 28px rgba(167,139,250,0.14); }
+        .research-card.cat-calm:hover   { border-color: rgba(103,232,249,0.50); box-shadow: 0 4px 28px rgba(103,232,249,0.12); }
+        .research-card.cat-other:hover  { border-color: rgba(148,163,184,0.50); box-shadow: 0 4px 28px rgba(148,163,184,0.10); }
+
+        .research-card.cat-focus:hover .research-card__title  { color: var(--cat-focus); }
+        .research-card.cat-sleep:hover .research-card__title  { color: var(--cat-sleep); }
+        .research-card.cat-calm:hover  .research-card__title  { color: var(--cat-calm); }
+        .research-card.cat-other:hover .research-card__title  { color: var(--cat-other); }
+        .research-card:hover .research-card__desc { color: var(--text-grey); }
+
         .research-card.hidden { display: none; }
         .card-index {
             display: flex; align-items: center; justify-content: center;
@@ -1316,7 +1399,7 @@
         .research-card.cat-calm .card-index::before { background: var(--cat-calm); }
         .research-card.cat-other .card-index::before { background: var(--cat-other); }
         .research-card:hover .card-index { color: var(--text-white); background: var(--index-bg-hover); }
-        .card-body { min-width: 0; }
+        .card-body { min-width: 0; position: relative; z-index: 1; }
         .research-card__title {
             font-family: 'Outfit', sans-serif;
             font-size: 16px;
@@ -1328,7 +1411,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            transition: color 0.2s ease;
+            transition: color 0.25s ease;
         }
         .research-card__desc {
             font-family: 'Inter', sans-serif;
@@ -1339,9 +1422,10 @@
             -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            transition: color 0.25s ease;
         }
         .card-cat {
-            display: flex; align-items: center;
+            display: flex; align-items: center; position: relative; z-index: 1;
         }
         .category-badge {
             font-family: 'Inter', sans-serif;
@@ -1353,7 +1437,7 @@
             border-radius: 20px;
             white-space: nowrap;
             border: 1px solid currentColor;
-            background: transparent;
+            background: color-mix(in srgb, currentColor 20%, transparent);
         }
         .card-action {
             display: flex; justify-content: flex-end; align-items: center;
@@ -1362,15 +1446,19 @@
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: color 0.2s ease;
+            transition: color 0.25s ease;
+            position: relative; z-index: 1;
         }
-        .research-card:hover .card-action { color: var(--accent); }
+        .research-card.cat-focus:hover  .card-action { color: var(--cat-focus); }
+        .research-card.cat-sleep:hover  .card-action { color: var(--cat-sleep); }
+        .research-card.cat-calm:hover   .card-action { color: var(--cat-calm); }
+        .research-card.cat-other:hover  .card-action { color: var(--cat-other); }
         .card-action svg {
             width: 14px; height: 14px;
             margin-left: 6px;
-            transition: transform 0.2s ease;
+            transition: transform 0.25s ease;
         }
-        .research-card:hover .card-action svg { transform: translateX(3px); }
+        .research-card:hover .card-action svg { transform: translateX(5px); }
 
         /* ── News Grid (kept but refined) ────────────────────── */
         .news-grid {
@@ -1384,13 +1472,23 @@
             border: 1px solid var(--glass-border);
             border-radius: 16px;
             background: var(--card-bg);
-            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+            position: relative;
+            overflow: hidden;
         }
+        /* Hover accent overlay — sits above gradient bg, below text */
+        .news-card::after {
+            content: ''; position: absolute; inset: 0; border-radius: inherit;
+            background: rgba(224,177,0,0.07); opacity: 0;
+            transition: opacity 0.28s ease; pointer-events: none; z-index: 1;
+        }
+        .news-card:hover::after { opacity: 1; }
+        .news-card__source, .news-card__title, .news-card__desc,
+        .news-card__meta { position: relative; z-index: 2; }
         .news-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(224,177,0,0.4);
-            background: rgba(224,177,0,0.06);
-            box-shadow: 0 12px 32px rgba(224,177,0,0.12);
+            transform: translateY(-4px);
+            border-color: rgba(224,177,0,0.38);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.28), 0 0 0 1px rgba(224,177,0,0.12);
         }
         .news-card:hover .news-card__title { color: var(--accent); }
         .news-card__source {
@@ -1527,6 +1625,108 @@
         }
         .news-list-header.visible { display: grid; }
         .news-list-header span:last-child { text-align: right; }
+
+        /* ══════════════════════════════════════════════════════════
+           CARD ABSTRACT MESH BACKGROUNDS
+           Each card has a unique iridescent/3D-art inspired gradient.
+           26 unique fills — zero duplicates per page.
+           Mapped to the reference aesthetic palettes (ref images 1–20+).
+           ══════════════════════════════════════════════════════════ */
+
+        /* ── Research tracklist cards ────────────────────────────── */
+        /* Dark surface base overrides the near-transparent --card-bg */
+        #notion-grid .research-card { background-color: #0b0b16; }
+
+        /* 1 · Holographic iridescent (teal ↔ pink · lavender core) */
+        #notion-grid .research-card:nth-child(1)  { background-image: radial-gradient(ellipse at 3% 50%, rgba(103,232,249,.22) 0%,transparent 55%), radial-gradient(ellipse at 97% 50%, rgba(244,114,182,.22) 0%,transparent 55%), radial-gradient(ellipse at 50% 50%, rgba(167,139,250,.14) 0%,transparent 40%); }
+        /* 2 · Orange glass lens (warm amber ↔ coral) */
+        #notion-grid .research-card:nth-child(2)  { background-image: radial-gradient(ellipse at 4% 50%, rgba(251,146,60,.28) 0%,transparent 52%), radial-gradient(ellipse at 96% 50%, rgba(239,68,68,.20) 0%,transparent 50%); }
+        /* 3 · Lime gloss balloons (vibrant lime-green) */
+        #notion-grid .research-card:nth-child(3)  { background-image: radial-gradient(ellipse at 4% 50%, rgba(163,230,53,.28) 0%,transparent 52%), radial-gradient(ellipse at 90% 50%, rgba(217,249,157,.20) 0%,transparent 46%); }
+        /* 4 · Warm amber frosted (peach · gold · amber) */
+        #notion-grid .research-card:nth-child(4)  { background-image: radial-gradient(ellipse at 5% 50%, rgba(252,211,77,.28) 0%,transparent 50%), radial-gradient(ellipse at 95% 50%, rgba(249,115,22,.24) 0%,transparent 48%); }
+        /* 5 · Dark S-wave amber (deep burnt-orange sweep on dark) */
+        #notion-grid .research-card:nth-child(5)  { background-image: radial-gradient(ellipse at 3% 78%, rgba(234,88,12,.34) 0%,transparent 52%), radial-gradient(ellipse at 90% 22%, rgba(202,138,4,.28) 0%,transparent 48%); }
+        /* 6 · Purple-blue-gold metallic blob (violet · cobalt · amber) */
+        #notion-grid .research-card:nth-child(6)  { background-image: radial-gradient(ellipse at 3% 50%, rgba(168,85,247,.32) 0%,transparent 52%), radial-gradient(ellipse at 97% 50%, rgba(234,179,8,.26) 0%,transparent 48%), radial-gradient(ellipse at 50% 50%, rgba(59,130,246,.16) 0%,transparent 38%); }
+        /* 7 · Dark amber torus (deep orange ring on black) */
+        #notion-grid .research-card:nth-child(7)  { background-image: radial-gradient(ellipse at 6% 50%, rgba(251,146,60,.32) 0%,transparent 46%), radial-gradient(ellipse at 94% 50%, rgba(239,68,68,.22) 0%,transparent 44%); }
+        /* 8 · Blue watercolour waves (pale blue · silver on cream-dark) */
+        #notion-grid .research-card:nth-child(8)  { background-image: radial-gradient(ellipse at 84% 86%, rgba(147,197,253,.30) 0%,transparent 56%), radial-gradient(ellipse at 96% 10%, rgba(186,230,253,.24) 0%,transparent 50%); }
+        /* 9 · Rainbow disc stack (full spectrum linear) */
+        #notion-grid .research-card:nth-child(9)  { background-image: linear-gradient(100deg, rgba(244,63,94,.22) 0%, rgba(168,85,247,.22) 33%, rgba(59,130,246,.22) 67%, rgba(16,185,129,.22) 100%); }
+        /* 10 · Purple silk flowing (deep violet · royal indigo) */
+        #notion-grid .research-card:nth-child(10) { background-image: radial-gradient(ellipse at 3% 30%, rgba(139,92,246,.32) 0%,transparent 56%), radial-gradient(ellipse at 97% 70%, rgba(99,102,241,.26) 0%,transparent 56%); }
+
+        /* Light theme: preserve warm cream base · soften all tints */
+        [data-theme="light"] #notion-grid .research-card { background-color: rgba(255,253,245,.92); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(n) { background-image: none; }
+        [data-theme="light"] #notion-grid .research-card:nth-child(1)  { background-image: radial-gradient(ellipse at 3% 50%, rgba(103,232,249,.11) 0%,transparent 55%), radial-gradient(ellipse at 97% 50%, rgba(244,114,182,.11) 0%,transparent 55%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(2)  { background-image: radial-gradient(ellipse at 4% 50%, rgba(251,146,60,.14) 0%,transparent 52%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(3)  { background-image: radial-gradient(ellipse at 4% 50%, rgba(163,230,53,.13) 0%,transparent 52%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(4)  { background-image: radial-gradient(ellipse at 5% 50%, rgba(252,211,77,.13) 0%,transparent 50%), radial-gradient(ellipse at 95% 50%, rgba(249,115,22,.11) 0%,transparent 48%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(5)  { background-image: radial-gradient(ellipse at 3% 78%, rgba(234,88,12,.16) 0%,transparent 52%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(6)  { background-image: radial-gradient(ellipse at 3% 50%, rgba(168,85,247,.13) 0%,transparent 52%), radial-gradient(ellipse at 97% 50%, rgba(234,179,8,.11) 0%,transparent 48%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(7)  { background-image: radial-gradient(ellipse at 6% 50%, rgba(251,146,60,.14) 0%,transparent 46%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(8)  { background-image: radial-gradient(ellipse at 84% 86%, rgba(147,197,253,.14) 0%,transparent 56%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(9)  { background-image: linear-gradient(100deg, rgba(244,63,94,.08) 0%, rgba(168,85,247,.08) 33%, rgba(59,130,246,.08) 67%, rgba(16,185,129,.08) 100%); }
+        [data-theme="light"] #notion-grid .research-card:nth-child(10) { background-image: radial-gradient(ellipse at 3% 30%, rgba(139,92,246,.13) 0%,transparent 56%); }
+
+        /* ── News grid cards (grid view only) ───────────────────── */
+        .news-grid[data-view="grid"] .news-card { background-color: #0b0b16; border-color: rgba(255,255,255,.09); }
+
+        /* 11 · Pink-coral spiral (magenta · coral · hot-pink) */
+        .news-grid[data-view="grid"] .news-card:nth-child(1)  { background-image: radial-gradient(ellipse at 80% 84%, rgba(249,115,22,.34) 0%,transparent 56%), radial-gradient(ellipse at 16% 16%, rgba(236,72,153,.26) 0%,transparent 52%); }
+        /* 12 · Blue globe wireframe (royal blue · indigo) */
+        .news-grid[data-view="grid"] .news-card:nth-child(2)  { background-image: radial-gradient(circle at 52% 62%, rgba(99,102,241,.30) 0%,transparent 60%), radial-gradient(circle at 84% 14%, rgba(147,197,253,.24) 0%,transparent 52%); }
+        /* 13 · Orange sphere + purple grid (scarlet · deep violet) */
+        .news-grid[data-view="grid"] .news-card:nth-child(3)  { background-image: radial-gradient(circle at 34% 66%, rgba(249,115,22,.34) 0%,transparent 50%), radial-gradient(ellipse at 74% 14%, rgba(126,34,206,.30) 0%,transparent 56%); }
+        /* 14 · Cyan + purple neon ring (teal · violet glow) */
+        .news-grid[data-view="grid"] .news-card:nth-child(4)  { background-image: radial-gradient(circle at 52% 56%, rgba(6,182,212,.28) 0%,transparent 54%), radial-gradient(ellipse at 14% 14%, rgba(168,85,247,.30) 0%,transparent 54%); }
+        /* 15 · Orange translucent forms (warm coral · amber glass) */
+        .news-grid[data-view="grid"] .news-card:nth-child(5)  { background-image: radial-gradient(ellipse at 24% 46%, rgba(234,88,12,.30) 0%,transparent 54%), radial-gradient(ellipse at 80% 68%, rgba(251,146,60,.26) 0%,transparent 50%); }
+        /* 16 · Blue dot-matrix blob (cobalt · periwinkle · indigo) */
+        .news-grid[data-view="grid"] .news-card:nth-child(6)  { background-image: radial-gradient(circle at 56% 52%, rgba(59,130,246,.30) 0%,transparent 54%), radial-gradient(circle at 24% 76%, rgba(139,92,246,.26) 0%,transparent 50%); }
+        /* 17 · Blue wireframe sphere cluster (navy · cobalt) */
+        .news-grid[data-view="grid"] .news-card:nth-child(7)  { background-image: radial-gradient(ellipse at 42% 44%, rgba(37,99,235,.30) 0%,transparent 58%), radial-gradient(ellipse at 74% 74%, rgba(29,78,216,.26) 0%,transparent 50%); }
+        /* 18 · Iridescent torus soft (peach · pink · lavender · cyan) */
+        .news-grid[data-view="grid"] .news-card:nth-child(8)  { background-image: radial-gradient(circle at 52% 52%, rgba(251,191,36,.22) 0%,transparent 40%), radial-gradient(ellipse at 16% 84%, rgba(244,114,182,.28) 0%,transparent 54%), radial-gradient(ellipse at 84% 16%, rgba(103,232,249,.24) 0%,transparent 50%); }
+        /* 19 · Teal frosted pebbles (teal · slate-grey) */
+        .news-grid[data-view="grid"] .news-card:nth-child(9)  { background-image: radial-gradient(ellipse at 52% 36%, rgba(20,184,166,.30) 0%,transparent 54%), radial-gradient(ellipse at 52% 72%, rgba(51,65,85,.36) 0%,transparent 50%); }
+        /* 20 · Sound-wave magenta fan (rose · magenta · violet) */
+        .news-grid[data-view="grid"] .news-card:nth-child(10) { background-image: radial-gradient(ellipse at 26% 52%, rgba(236,72,153,.32) 0%,transparent 54%), radial-gradient(ellipse at 74% 52%, rgba(139,92,246,.28) 0%,transparent 54%); }
+        /* 21 · Deep indigo-cobalt (blue-black abstract) */
+        .news-grid[data-view="grid"] .news-card:nth-child(11) { background-image: radial-gradient(ellipse at 52% 52%, rgba(99,102,241,.26) 0%,transparent 58%), radial-gradient(ellipse at 18% 82%, rgba(79,70,229,.32) 0%,transparent 52%); }
+        /* 22 · Warm golden amber (rich amber glow) */
+        .news-grid[data-view="grid"] .news-card:nth-child(12) { background-image: radial-gradient(ellipse at 62% 42%, rgba(234,88,12,.34) 0%,transparent 52%), radial-gradient(ellipse at 28% 72%, rgba(234,179,8,.28) 0%,transparent 50%); }
+        /* 23 · Crystal cyan-azure (clear blue water) */
+        .news-grid[data-view="grid"] .news-card:nth-child(13) { background-image: radial-gradient(circle at 52% 52%, rgba(6,182,212,.24) 0%,transparent 56%), radial-gradient(ellipse at 82% 18%, rgba(147,197,253,.30) 0%,transparent 52%); }
+        /* 24 · Deep rose-crimson (scarlet · hot-pink) */
+        .news-grid[data-view="grid"] .news-card:nth-child(14) { background-image: radial-gradient(ellipse at 28% 62%, rgba(244,63,94,.30) 0%,transparent 54%), radial-gradient(ellipse at 72% 38%, rgba(168,85,247,.26) 0%,transparent 52%); }
+        /* 25 · Emerald-green bioluminescent */
+        .news-grid[data-view="grid"] .news-card:nth-child(15) { background-image: radial-gradient(ellipse at 64% 36%, rgba(16,185,129,.28) 0%,transparent 54%), radial-gradient(ellipse at 22% 76%, rgba(52,211,153,.24) 0%,transparent 50%); }
+        /* 26 · Sky-blue platinum (azure · silver) */
+        .news-grid[data-view="grid"] .news-card:nth-child(16) { background-image: radial-gradient(ellipse at 36% 44%, rgba(14,165,233,.30) 0%,transparent 56%), radial-gradient(ellipse at 76% 66%, rgba(56,189,248,.26) 0%,transparent 52%); }
+
+        /* Light theme reset — soft tints over warm cream */
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card { background-color: rgba(255,253,245,.94); border-color: rgba(74,58,15,.12); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(n) { background-image: none; }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(1)  { background-image: radial-gradient(ellipse at 80% 84%, rgba(249,115,22,.12) 0%,transparent 56%), radial-gradient(ellipse at 16% 16%, rgba(236,72,153,.10) 0%,transparent 52%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(2)  { background-image: radial-gradient(circle at 52% 62%, rgba(99,102,241,.11) 0%,transparent 60%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(3)  { background-image: radial-gradient(circle at 34% 66%, rgba(249,115,22,.12) 0%,transparent 50%), radial-gradient(ellipse at 74% 14%, rgba(126,34,206,.10) 0%,transparent 56%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(4)  { background-image: radial-gradient(circle at 52% 56%, rgba(6,182,212,.12) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(5)  { background-image: radial-gradient(ellipse at 24% 46%, rgba(234,88,12,.13) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(6)  { background-image: radial-gradient(circle at 56% 52%, rgba(59,130,246,.12) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(7)  { background-image: radial-gradient(ellipse at 42% 44%, rgba(37,99,235,.12) 0%,transparent 58%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(8)  { background-image: radial-gradient(circle at 52% 52%, rgba(251,191,36,.10) 0%,transparent 40%), radial-gradient(ellipse at 16% 84%, rgba(244,114,182,.11) 0%,transparent 54%), radial-gradient(ellipse at 84% 16%, rgba(103,232,249,.11) 0%,transparent 50%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(9)  { background-image: radial-gradient(ellipse at 52% 36%, rgba(20,184,166,.12) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(10) { background-image: radial-gradient(ellipse at 26% 52%, rgba(236,72,153,.12) 0%,transparent 54%), radial-gradient(ellipse at 74% 52%, rgba(139,92,246,.11) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(11) { background-image: radial-gradient(ellipse at 52% 52%, rgba(99,102,241,.11) 0%,transparent 58%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(12) { background-image: radial-gradient(ellipse at 62% 42%, rgba(234,88,12,.13) 0%,transparent 52%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(13) { background-image: radial-gradient(circle at 52% 52%, rgba(6,182,212,.12) 0%,transparent 56%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(14) { background-image: radial-gradient(ellipse at 28% 62%, rgba(244,63,94,.12) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(15) { background-image: radial-gradient(ellipse at 64% 36%, rgba(16,185,129,.12) 0%,transparent 54%); }
+        [data-theme="light"] .news-grid[data-view="grid"] .news-card:nth-child(16) { background-image: radial-gradient(ellipse at 36% 44%, rgba(14,165,233,.12) 0%,transparent 56%); }
 
         /* ── Synthesis Mode: Select Buttons on Cards ─────────── */
         /* Buttons are HIDDEN by default — only revealed when synthesis mode is active */
@@ -3283,12 +3483,13 @@
     <main>
         <section class="hero">
             <video autoplay="autoplay" loop="" muted="muted" playsinline="">
-                <source src="NeuroNest%20_%20Research%20Hub%20&amp;%20Neuroscience%20News_files/hero_banner.mp4" type="video/mp4">
+                <source src="assets/hero_banner.mp4" type="video/mp4">
             </video>
             <div class="container">
-                <p class="hero-eyebrow">Neuroscience News</p>
-                <h1>Research Hub</h1>
-                <p>Peer-reviewed findings, clinical updates, and research insights in auditory neuroscience.</p>
+                <div class="hero-title-group">
+                    <p class="hero-eyebrow">neuroscience news</p>
+                    <h1>Research Hub</h1>
+                </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
                         <span class="hero-stat-num" id="hero-paper-count">26</span>
@@ -3297,7 +3498,7 @@
                     <div class="hero-stat-divider"></div>
                     <div class="hero-stat-pulse">New Review Weekly</div>
                 </div>
-                <p class="hero-mission">We commit to reviewing at least one peer-reviewed paper every week. <a href="mailto:research@neuronest.io?subject=NeuroNest%20Research%20Team%20Application">Join the research team →</a></p>
+                <div id="hero-latest-teaser" class="hero-latest-teaser"></div>
             </div>
         </section>
 
@@ -3315,12 +3516,13 @@
             <div class="container">
                 <span class="section-label">NeuroNest Research Database</span>
                 <h2 class="section-title">Deep Research Insights</h2>
-                <p class="section-sub">A curated archive of 
-peer-reviewed studies on auditory neuromodulation — selected for 
-clinical relevance, methodological rigour, and translational value.</p>
+                <p class="section-sub section-sub--serif">Peer-reviewed findings, clinical updates, and research insights in auditory neuroscience.<br> We commit to reviewing at least one academic paper every week. <a href="mailto:research@neuronest.io?subject=NeuroNest%20Research%20Team%20Application" class="section-sub-link">Join the research team →</a></p>
 
                 <!-- Research Spotlight Slider -->
                 <section class="research-spotlight" id="research-spotlight" style="--slide-glow: #ff9a4d;">
+                    <video class="rs-video-bg" autoplay loop muted playsinline aria-hidden="true">
+                        <source src="assets/research_hub.mp4" type="video/mp4">
+                    </video>
                     <div class="rs-bg"></div>
                     <div class="rs-slide-bg" id="rs-slide-bg" style="opacity: 0.32; background-image: linear-gradient(135deg, rgb(196, 77, 26) 0%, rgb(255, 122, 61) 50%, rgb(255, 176, 119) 100%);"></div>
                     <div class="rs-slide-bg" id="rs-slide-bg-b" style="background-image: linear-gradient(135deg, rgb(245, 158, 11) 0%, rgb(239, 68, 68) 55%, rgb(185, 28, 28) 100%); opacity: 0;"></div>
@@ -3337,7 +3539,7 @@ NeuroNest’s gamma protocols.</p>
                         <a class="rs-cta" id="rs-cta" href="file:///C:/Users/dlint/Downloads/research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" target="_self" rel="" style="background: linear-gradient(135deg, rgb(196, 77, 26) 0%, rgb(255, 122, 61) 50%, rgb(255, 176, 119) 100%); color: rgb(255, 255, 255);">Read Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
                     </div>
                     <div class="rs-dots" id="rs-dots"><button class="rs-dot" data-slide="0" aria-label="Go to slide 1" type="button"></button><button class="rs-dot active" data-slide="1" aria-label="Go to slide 2" type="button"></button><button class="rs-dot" data-slide="2" aria-label="Go to slide 3" type="button"></button><button class="rs-dot" data-slide="3" aria-label="Go to slide 4" type="button"></button><button class="rs-dot" data-slide="4" aria-label="Go to slide 5" type="button"></button><button class="rs-dot" data-slide="5" aria-label="Go to slide 6" type="button"></button><button class="rs-dot" data-slide="6" aria-label="Go to slide 7" type="button"></button><button class="rs-dot" data-slide="7" aria-label="Go to slide 8" type="button"></button><button class="rs-dot" data-slide="8" aria-label="Go to slide 9" type="button"></button><button class="rs-dot" data-slide="9" aria-label="Go to slide 10" type="button"></button><button class="rs-dot" data-slide="10" aria-label="Go to slide 11" type="button"></button><button class="rs-dot" data-slide="11" aria-label="Go to slide 12" type="button"></button><button class="rs-dot" data-slide="12" aria-label="Go to slide 13" type="button"></button><button class="rs-dot" data-slide="13" aria-label="Go to slide 14" type="button"></button></div>
-                    <div class="rs-ghost-stack" id="rs-ghost-stack" aria-hidden="true" data-built="1" style="opacity: 1;"><button type="button" class="rs-ghost depth-0" data-ghost-slot="0" data-ghost-idx="2" aria-label="Preview slide 3" style="--ghost-gradient: linear-gradient(135deg, #c49200 0%, #E0B100 50%, #f0c200 100%);"><span class="rs-ghost-label">Featured Review · 2025</span><div class="rs-ghost-title">Brainwave Entrainment for Health</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button><button type="button" class="rs-ghost depth-1" data-ghost-slot="1" data-ghost-idx="3" aria-label="Preview slide 4" style="--ghost-gradient: linear-gradient(135deg, #b85220 0%, #ff7a3d 50%, #ffb077 100%);"><span class="rs-ghost-label">Pathway Collection</span><div class="rs-ghost-title">Focus &amp; Cognition</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>
+                    <div class="rs-ghost-stack" id="rs-ghost-stack" aria-hidden="true" style="display:none;"><button type="button" class="rs-ghost depth-0" data-ghost-slot="0" data-ghost-idx="2" aria-label="Preview slide 3" style="--ghost-gradient: linear-gradient(135deg, #c49200 0%, #E0B100 50%, #f0c200 100%);"><span class="rs-ghost-label">Featured Review · 2025</span><div class="rs-ghost-title">Brainwave Entrainment for Health</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button><button type="button" class="rs-ghost depth-1" data-ghost-slot="1" data-ghost-idx="3" aria-label="Preview slide 4" style="--ghost-gradient: linear-gradient(135deg, #b85220 0%, #ff7a3d 50%, #ffb077 100%);"><span class="rs-ghost-label">Pathway Collection</span><div class="rs-ghost-title">Focus &amp; Cognition</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>
                     <button class="rs-nav rs-prev" id="rs-prev" aria-label="Previous slide" type="button">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                     </button>
@@ -4620,6 +4822,27 @@ cross-frequency coupling.</p>
                 }
             };
 
+            // ── Hero Latest Paper Teaser ─────────────────────────────
+            (function () {
+                var teaserEl = document.getElementById('hero-latest-teaser');
+                if (!teaserEl) return;
+                var firstCard = document.querySelector('#notion-grid .research-card');
+                if (!firstCard) return;
+                var rawHref = firstCard.getAttribute('href') || '';
+                // Normalise absolute file:// paths to relative research/...html
+                var relHref = rawHref.replace(/^.*?(research\/)/, '$1');
+                var title = ((firstCard.querySelector('.research-card__title') || {}).textContent || '').trim();
+                var summary = PAPER_SUMMARIES[relHref];
+                var cat = (summary && summary.category) ? summary.category : 'Research';
+                var hook = (summary && summary.takeaways && summary.takeaways[0]) ? summary.takeaways[0] : title;
+                teaserEl.innerHTML =
+                    '<a class="hlt-inner" href="' + relHref + '">' +
+                    '<span class="hlt-badge">Latest Review \u00b7 ' + cat + '</span>' +
+                    '<p class="hlt-hook">' + hook + '</p>' +
+                    '<svg class="hlt-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                    '</a>';
+            })();
+
             var modal = document.getElementById('paper-modal');
             var modalCard = document.getElementById('paper-modal-card');
             var modalClose = document.getElementById('paper-modal-close');
@@ -5740,4 +5963,4 @@ cross-frequency coupling.</p>
     </div>
 
 
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
+</body><script src="assets/nn-persistent-player.js"></script><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
