@@ -37,11 +37,11 @@
       --text-0: #f0ede8;
       --text-1: #a8a49e;
       --text-2: #666260;
-      --accent: #4a9e8e;
-      --accent-dim: rgba(74,158,142,0.25);
-      --accent-glow: rgba(74,158,142,0.08);
-      --gold: #c9a96e;
-      --gold-dim: rgba(201,169,110,0.12);
+      --accent: #f0525f;
+      --accent-dim: rgba(240,82,95,0.25);
+      --accent-glow: rgba(240,82,95,0.08);
+      --gold: #f59e0b;
+      --gold-dim: rgba(245,158,11,0.12);
       --max: 1160px;
       --measure: 720px;
 
@@ -443,7 +443,7 @@
       font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(167, 139, 250, 0.7); /* muted violet — archival metadata */
+      color: rgba(251, 113, 133, 0.8); /* rose — archival metadata */
       font-feature-settings: 'zero'; /* slashed zero for clarity */
     }
 
@@ -485,8 +485,8 @@
       inset: 0;
       pointer-events: none;
       background-image:
-        linear-gradient(rgba(74,158,142,0.09) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(74,158,142,0.09) 1px, transparent 1px);
+        linear-gradient(rgba(240,82,95,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(240,82,95,0.05) 1px, transparent 1px);
       background-size: 30px 30px;
       z-index: 0;
     }
@@ -496,8 +496,9 @@
       inset: 0;
       pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 50% at 10% 0%, rgba(74,158,142,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(201,169,110,0.05) 0%, transparent 70%);
+        radial-gradient(ellipse 70% 55% at 8% 0%,  rgba(240,82,95,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 92% 100%, rgba(168,85,247,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(245,158,11,0.05) 0%, transparent 60%);
       z-index: 0;
     }
     .progress {
@@ -614,18 +615,16 @@
       line-height: 1;
       text-transform: uppercase;
       background-image: linear-gradient(100deg,
-        #4a9e8e 0%,
-        #5eead4 8%,
-        #34d399 16%,
-        #fbbf24 26%,
-        #f59e0b 34%,
-        #ec4899 44%,
-        #c026d3 54%,
-        #a78bfa 64%,
-        #818cf8 74%,
-        #06b6d4 84%,
-        #2dd4bf 92%,
-        #4a9e8e 100%);
+        #ff6b35 0%,
+        #f43f5e 9%,
+        #e879f9 19%,
+        #a855f7 30%,
+        #6366f1 42%,
+        #06b6d4 54%,
+        #10b981 64%,
+        #f59e0b 76%,
+        #ef4444 88%,
+        #ff6b35 100%);
       background-size: 320% auto;
       background-position: 0% center;
       -webkit-background-clip: text;
@@ -639,6 +638,13 @@
     @keyframes heroEyebrowShine {
       0%   { background-position: 0%   center; }
       100% { background-position: 320% center; }
+    }
+    @keyframes arcSpin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .arcSpin { animation: none; }
     }
     @media (prefers-reduced-motion: reduce) {
       .hero h1 .hero-eyebrow-tool { animation: none; background-position: 30% center; }
@@ -716,7 +722,7 @@
     }
     .hero h1 em {
       font-style: normal;
-      background: linear-gradient(135deg, #312e81 0%, #4f46e5 35%, #7c3aed 65%, #c026d3 100%);
+      background: linear-gradient(135deg, #ff6b35 0%, #f43f5e 30%, #a855f7 65%, #6366f1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -758,13 +764,13 @@
       color: #ede9fe;
       background:
         linear-gradient(135deg,
-          rgba(167,139,250,0.95) 0%,
-          rgba(124,58,237,0.95) 35%,
-          rgba(79,70,229,0.95) 70%,
-          rgba(124,58,237,0.95) 100%);
+          rgba(240,82,95,0.97) 0%,
+          rgba(220,38,127,0.95) 30%,
+          rgba(168,85,247,0.95) 65%,
+          rgba(99,102,241,0.95) 100%);
       background-size: 200% 200%;
       background-position: 0% 50%;
-      border: 1px solid rgba(167,139,250,0.55);
+      border: 1px solid rgba(240,82,95,0.55);
       border-radius: 999px;
       padding: 18px 36px;
       font-family: var(--font-mono);
@@ -780,7 +786,7 @@
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.18),
         inset 0 -1px 0 rgba(0,0,0,0.25),
-        0 6px 22px rgba(124,58,237,0.4),
+        0 6px 22px rgba(240,82,95,0.45),
         0 2px 6px rgba(0,0,0,0.4);
       transition:
         transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -957,82 +963,82 @@
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Sleep — indigo */
+    /* Sleep — deep cobalt → electric violet */
     .pillar-pill-sleep {
-      background: linear-gradient(135deg, rgba(99,102,241,0.55) 0%, rgba(99,102,241,0.22) 50%, rgba(8,10,24,0.55) 100%);
-      border: 1px solid rgba(129,140,248,0.55);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 24px rgba(99,102,241,0.32);
-      color: #e0e7ff;
+      background: linear-gradient(135deg, rgba(37,99,235,0.70) 0%, rgba(124,58,237,0.40) 55%, rgba(6,8,30,0.60) 100%);
+      border: 1px solid rgba(96,165,250,0.60);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 28px rgba(37,99,235,0.40);
+      color: #bfdbfe;
     }
     a:hover .pillar-pill-sleep {
-      background: linear-gradient(135deg, rgba(129,140,248,0.9) 0%, rgba(99,102,241,0.55) 50%, rgba(79,70,229,0.75) 100%);
-      border-color: rgba(199,210,254,0.95);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.22),
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        0 0 0 4px rgba(99,102,241,0.16),
-        0 10px 44px rgba(99,102,241,0.7),
-        0 4px 16px rgba(99,102,241,0.45);
-      transform: translateY(-2px);
-      color: #ffffff;
-    }
-
-    /* Focus — amber */
-    .pillar-pill-focus {
-      background: linear-gradient(135deg, rgba(212,160,23,0.55) 0%, rgba(212,160,23,0.22) 50%, rgba(14,11,5,0.55) 100%);
-      border: 1px solid rgba(245,158,11,0.55);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 24px rgba(212,160,23,0.32);
-      color: #fef3c7;
-    }
-    a:hover .pillar-pill-focus {
-      background: linear-gradient(135deg, rgba(251,191,36,0.9) 0%, rgba(245,158,11,0.55) 50%, rgba(217,119,6,0.75) 100%);
-      border-color: rgba(254,243,199,0.95);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.22),
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        0 0 0 4px rgba(245,158,11,0.18),
-        0 10px 44px rgba(245,158,11,0.65),
-        0 4px 16px rgba(212,160,23,0.45);
-      transform: translateY(-2px);
-      color: #ffffff;
-    }
-
-    /* Calm — emerald */
-    .pillar-pill-calm {
-      background: linear-gradient(135deg, rgba(52,211,153,0.55) 0%, rgba(52,211,153,0.22) 50%, rgba(4,14,11,0.55) 100%);
-      border: 1px solid rgba(52,211,153,0.58);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 24px rgba(52,211,153,0.32);
-      color: #d1fae5;
-    }
-    a:hover .pillar-pill-calm {
-      background: linear-gradient(135deg, rgba(110,231,183,0.9) 0%, rgba(52,211,153,0.55) 50%, rgba(5,150,105,0.75) 100%);
-      border-color: rgba(209,250,229,0.95);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.22),
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        0 0 0 4px rgba(52,211,153,0.16),
-        0 10px 44px rgba(52,211,153,0.6),
-        0 4px 16px rgba(52,211,153,0.45);
-      transform: translateY(-2px);
-      color: #ffffff;
-    }
-
-    /* ADHD — violet (brand centerpiece, slightly stronger treatment) */
-    .pillar-pill-adhd {
-      background: linear-gradient(135deg, rgba(124,58,237,0.62) 0%, rgba(167,139,250,0.28) 50%, rgba(12,6,24,0.55) 100%);
-      border: 1px solid rgba(167,139,250,0.6);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 4px 28px rgba(124,58,237,0.4);
-      color: #ede9fe;
-    }
-    a:hover .pillar-pill-adhd {
-      background: linear-gradient(135deg, rgba(167,139,250,0.95) 0%, rgba(124,58,237,0.7) 50%, rgba(192,38,211,0.75) 100%);
-      border-color: rgba(237,233,254,1);
+      background: linear-gradient(135deg, rgba(96,165,250,0.95) 0%, rgba(124,58,237,0.70) 50%, rgba(79,70,229,0.85) 100%);
+      border-color: rgba(191,219,254,0.95);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.25),
-        inset 0 0 0 1px rgba(255,255,255,0.1),
-        0 0 0 4px rgba(124,58,237,0.22),
-        0 12px 52px rgba(124,58,237,0.8),
-        0 6px 20px rgba(192,38,211,0.55);
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        0 0 0 4px rgba(37,99,235,0.18),
+        0 10px 48px rgba(37,99,235,0.75),
+        0 4px 18px rgba(124,58,237,0.50);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    /* Focus — sunrise orange → vivid amber */
+    .pillar-pill-focus {
+      background: linear-gradient(135deg, rgba(234,88,12,0.70) 0%, rgba(245,158,11,0.38) 55%, rgba(20,8,2,0.60) 100%);
+      border: 1px solid rgba(251,146,60,0.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 28px rgba(234,88,12,0.40);
+      color: #fed7aa;
+    }
+    a:hover .pillar-pill-focus {
+      background: linear-gradient(135deg, rgba(251,146,60,0.97) 0%, rgba(245,158,11,0.70) 50%, rgba(217,119,6,0.85) 100%);
+      border-color: rgba(254,215,170,0.95);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        0 0 0 4px rgba(234,88,12,0.20),
+        0 10px 48px rgba(245,158,11,0.70),
+        0 4px 18px rgba(234,88,12,0.50);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    /* Calm — forest green → electric teal */
+    .pillar-pill-calm {
+      background: linear-gradient(135deg, rgba(5,150,105,0.70) 0%, rgba(6,182,212,0.35) 55%, rgba(2,12,10,0.60) 100%);
+      border: 1px solid rgba(52,211,153,0.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 28px rgba(5,150,105,0.40);
+      color: #a7f3d0;
+    }
+    a:hover .pillar-pill-calm {
+      background: linear-gradient(135deg, rgba(52,211,153,0.97) 0%, rgba(6,182,212,0.70) 50%, rgba(5,150,105,0.85) 100%);
+      border-color: rgba(167,243,208,0.95);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        0 0 0 4px rgba(5,150,105,0.18),
+        0 10px 48px rgba(52,211,153,0.65),
+        0 4px 18px rgba(6,182,212,0.50);
+      transform: translateY(-2px);
+      color: #ffffff;
+    }
+
+    /* ADHD — hot magenta → crimson (brand centerpiece, strongest treatment) */
+    .pillar-pill-adhd {
+      background: linear-gradient(135deg, rgba(192,38,211,0.70) 0%, rgba(244,63,68,0.35) 55%, rgba(18,4,20,0.60) 100%);
+      border: 1px solid rgba(232,121,249,0.65);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 32px rgba(192,38,211,0.45);
+      color: #f5d0fe;
+    }
+    a:hover .pillar-pill-adhd {
+      background: linear-gradient(135deg, rgba(232,121,249,0.97) 0%, rgba(244,63,68,0.70) 50%, rgba(192,38,211,0.85) 100%);
+      border-color: rgba(245,208,254,1);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.28),
+        inset 0 0 0 1px rgba(255,255,255,0.10),
+        0 0 0 4px rgba(192,38,211,0.25),
+        0 12px 56px rgba(192,38,211,0.85),
+        0 6px 22px rgba(244,63,68,0.55);
       transform: translateY(-2px);
       color: #ffffff;
     }
@@ -3403,14 +3409,18 @@
     <section class="hero reveal in" id="intro" style="position: relative; overflow: hidden; min-height: 100vh; display: flex; flex-direction: column; padding: 0; border-top: none;">
       <!-- Particle wave lottie background -->
       <dotlottie-player src="assets/Particle wave with depth.lottie" autoplay="" loop="" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.32; pointer-events: none; --lottie-player-object-fit: cover; filter: saturate(0.8) brightness(0.9);"></dotlottie-player>
+      <!-- Curved poster-inspired gradient arc -->
+      <div aria-hidden="true" style="position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;">
+        <div style="position: absolute; width: 180%; height: 180%; top: -40%; left: -40%; background: conic-gradient(from 210deg at 28% 68%, rgba(255,107,53,0.18) 0deg, rgba(244,63,68,0.14) 40deg, rgba(192,38,211,0.12) 85deg, rgba(99,102,241,0.10) 130deg, rgba(6,182,212,0.09) 180deg, rgba(16,185,129,0.08) 230deg, rgba(245,158,11,0.13) 290deg, rgba(255,107,53,0.18) 360deg); border-radius: 50%; animation: arcSpin 45s linear infinite;"></div>
+      </div>
       <!-- Particle canvas (Three.js) -->
       <canvas id="particleCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; opacity: 0.45; pointer-events: none;" data-engine="three.js r160" width="1718" height="1299"></canvas>
       <!-- Deep vignette — the "satisfying dark" layer. Falls off to pure #080a0f at edges so foreground type has theatre-grade contrast. -->
       <div aria-hidden="true" style="position: absolute; inset: 0; z-index: 3; pointer-events: none; background:
           radial-gradient(ellipse 60% 55% at 50% 50%, rgba(8,10,15,0) 0%, rgba(8,10,15,0.35) 45%, rgba(8,10,15,0.85) 80%, rgba(8,10,15,0.96) 100%),
           linear-gradient(to bottom, rgba(8,10,15,0.55) 0%, rgba(8,10,15,0) 18%, rgba(8,10,15,0) 82%, rgba(8,10,15,0.75) 100%);"></div>
-      <!-- Subtle radial violet core — kept faint, reads as a light source behind the title -->
-      <div style="position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); width: 720px; height: 540px; background: radial-gradient(ellipse, rgba(124,58,237,0.11) 0%, rgba(124,58,237,0.04) 40%, transparent 72%); z-index: 3; pointer-events: none;"></div>
+      <!-- Subtle multicolor radial core — warm orange → magenta → violet light source behind title -->
+      <div style="position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(244,63,68,0.10) 0%, rgba(192,38,211,0.07) 30%, rgba(99,102,241,0.05) 55%, transparent 72%); z-index: 3; pointer-events: none;"></div>
 
       <!-- Top marquee -->
       <div class="marquee-strip" style="margin-top: 80px; position: relative; z-index: 15;">
@@ -6599,7 +6609,7 @@ require medical framing to be valuable.</p>
           (Math.random() - 0.5) * 80,
           (Math.random() - 0.5) * 40
         ));
-        bgMesh.setColorAt(i, bgColor.setHSL(0.49, 0.8, 0.25));
+        bgMesh.setColorAt(i, bgColor.setHSL(0.94, 0.9, 0.30));
       }
 
       const bgClock = new THREE.Clock();
@@ -6624,7 +6634,7 @@ require medical framing to be valuable.</p>
           bgDummy.updateMatrix();
           bgMesh.setMatrixAt(i, bgDummy.matrix);
 
-          bgColor.setHSL((0.49 + Math.sin(i * 0.008 + t * 0.3) * 0.07) % 1, 0.8, 0.22 + Math.sin(t * 0.8 + i * 0.015) * 0.08);
+          bgColor.setHSL((0.94 + Math.sin(i * 0.008 + t * 0.3) * 0.18) % 1, 0.9, 0.28 + Math.sin(t * 0.8 + i * 0.015) * 0.10);
           bgMesh.setColorAt(i, bgColor);
         }
         bgMesh.instanceMatrix.needsUpdate = true;
