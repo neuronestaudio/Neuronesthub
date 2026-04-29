@@ -517,8 +517,9 @@
       top: 20px; left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      background: rgba(8,10,15,0.8);
-      border: 1px solid var(--line);
+      background: rgba(8,10,15,0.82);
+      border: 1px solid transparent;
+      background-clip: padding-box;
       border-radius: 999px;
       padding: 10px 20px 10px 20px;
       padding-right: 70px;
@@ -526,14 +527,44 @@
       display: flex;
       align-items: center;
       white-space: nowrap;
+      /* gradient border via box-shadow */
+      box-shadow:
+        0 0 0 1px rgba(244,63,68,0.45),
+        0 0 0 1px rgba(168,85,247,0.0),
+        inset 0 1px 0 rgba(255,255,255,0.06),
+        0 8px 32px rgba(0,0,0,0.45);
+      position: fixed;
+    }
+    /* Animated gradient border on the nav pill */
+    .site-nav::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 999px;
+      padding: 1px;
+      background: linear-gradient(90deg, #f43f5e, #a855f7, #6366f1, #06b6d4, #f43f5e);
+      background-size: 300% 100%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: navBorderShift 6s linear infinite;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    @keyframes navBorderShift {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
     }
     .site-nav .brand {
       font-family: var(--b-font);
-      font-size: 1.275rem;   /* 1.5× the previous 0.85rem */
+      font-size: 1.275rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--text-0);
+      background: linear-gradient(135deg, #f43f5e 0%, #a855f7 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       margin-right: 24px;
       text-decoration: none;
     }
