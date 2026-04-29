@@ -1,7 +1,13 @@
-require("dotenv").config({ path: require("path").join(__dirname, "..", ".env"), override: false });
-const { Client } = require("@notionhq/client");
-const fs = require("fs");
-const path = require("path");
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import { Client } from "@notionhq/client";
+import fs from "fs";
+import path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, "..", ".env"), override: false });
 
 if (!process.env.NOTION_API_KEY) {
   console.error("Missing NOTION_API_KEY environment variable.");
