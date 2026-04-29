@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Learn More — NeuroNest</title>
   <script>
-    // Learn More page always defaults to dark mode regardless of global theme preference
-    document.documentElement.removeAttribute('data-theme');
+    // Apply saved theme (nn_theme) before first paint; default is dark mode
+    try {
+      if (localStorage.getItem('nn_theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+    } catch(e) { document.documentElement.removeAttribute('data-theme'); }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3647,7 +3653,7 @@
         <div class="pillar-nav-grid reveal visible" style="gap: 16px;">
 
           <!-- SLEEP -->
-          <a href="#sleep" style="text-decoration: none; color: inherit; background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(129,140,248,0.8)';this.style.background='rgba(8,10,24,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(99,102,241,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(99,102,241,0.32)';this.style.background='rgba(99,102,241,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="#sleep" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_38_opt.jpg') center/cover no-repeat; border: 1px solid rgba(99,102,241,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(129,140,248,0.8)';this.style.background='linear-gradient(rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.94) 100%), url('assets/pinterest_38_opt.jpg') center/cover no-repeat';this.style.boxShadow='inset 0 0 0 1px rgba(99,102,241,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(99,102,241,0.32)';this.style.background='linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_38_opt.jpg') center/cover no-repeat';this.style.boxShadow='none';this.style.transform='none'">
             <div class="pillar-pill pillar-pill-sleep">
               <span>Sleep</span>
               <svg width="28" height="18" viewBox="0 0 18 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 6h16M11 1l5 5-5 5"></path></svg>
@@ -3662,7 +3668,7 @@ sooner.</div>
           </a>
 
           <!-- FOCUS -->
-          <a href="#focus" style="text-decoration: none; color: inherit; background: rgba(212,160,23,0.10); border: 1px solid rgba(212,160,23,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(245,158,11,0.8)';this.style.background='rgba(14,11,5,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(212,160,23,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(212,160,23,0.32)';this.style.background='rgba(212,160,23,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="#focus" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_22_opt.jpg') center/cover no-repeat; border: 1px solid rgba(212,160,23,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(245,158,11,0.8)';this.style.background='linear-gradient(rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.94) 100%), url('assets/pinterest_22_opt.jpg') center/cover no-repeat';this.style.boxShadow='inset 0 0 0 1px rgba(212,160,23,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(212,160,23,0.32)';this.style.background='linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_22_opt.jpg') center/cover no-repeat';this.style.boxShadow='none';this.style.transform='none'">
             <div class="pillar-pill pillar-pill-focus">
               <span>Focus</span>
               <svg width="28" height="18" viewBox="0 0 18 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 6h16M11 1l5 5-5 5"></path></svg>
@@ -3677,7 +3683,7 @@ designed to focus in.</div>
           </a>
 
           <!-- CALM -->
-          <a href="#calm" style="text-decoration: none; color: inherit; background: rgba(45,140,106,0.10); border: 1px solid rgba(45,140,106,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(52,211,153,0.8)';this.style.background='rgba(4,14,11,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(52,211,153,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(45,140,106,0.32)';this.style.background='rgba(45,140,106,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="#calm" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_33_opt.jpg') center/cover no-repeat; border: 1px solid rgba(45,140,106,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(52,211,153,0.8)';this.style.background='linear-gradient(rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.94) 100%), url('assets/pinterest_33_opt.jpg') center/cover no-repeat';this.style.boxShadow='inset 0 0 0 1px rgba(52,211,153,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(45,140,106,0.32)';this.style.background='linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_33_opt.jpg') center/cover no-repeat';this.style.boxShadow='none';this.style.transform='none'">
             <div class="pillar-pill pillar-pill-calm">
               <span>Calm</span>
               <svg width="28" height="18" viewBox="0 0 18 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 6h16M11 1l5 5-5 5"></path></svg>
@@ -3694,7 +3700,7 @@ as safe — signalling the parasympathetic branch to take over so the body
           </a>
 
           <!-- ADHD -->
-          <a href="#adhd" style="text-decoration: none; color: inherit; background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; position: relative; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(167,139,250,0.85)';this.style.background='rgba(12,6,24,0.94)';this.style.boxShadow='inset 0 0 0 1px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.6)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.32)';this.style.background='rgba(124,58,237,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="#adhd" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_36_opt.jpg') center/cover no-repeat; border: 1px solid rgba(124,58,237,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; position: relative; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(167,139,250,0.85)';this.style.background='linear-gradient(rgba(5,5,5,0.88) 0%, rgba(5,5,5,0.94) 100%), url('assets/pinterest_36_opt.jpg') center/cover no-repeat';this.style.boxShadow='inset 0 0 0 1px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.6)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.32)';this.style.background='linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_36_opt.jpg') center/cover no-repeat';this.style.boxShadow='none';this.style.transform='none'">
             <div style="position: absolute; top: 16px; right: 16px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: #fff; background: linear-gradient(135deg,#4f46e5,#7c3aed); padding: 4px 12px; border-radius: 999px;">Core mission</div>
             <div class="pillar-pill pillar-pill-adhd">
               <span>ADHD</span>
@@ -3789,25 +3795,25 @@ of sleep can begin.</p>
         </div>
 
         <div class="ps-stat-grid reveal visible">
-          <div class="ps-stat">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_47_opt.jpg') center/cover no-repeat;">
             <div class="ps-stat-num">+23%</div>
             <div class="ps-stat-title">Slow-wave sleep</div>
             <div class="ps-stat-desc">Increase in deep restorative sleep in RCTs using pink noise throughout the night.</div>
             <div class="ps-stat-cite">Ngo et al., Neuron 2013</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_31_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(99,102,241,0.15);">
             <div class="ps-stat-num">−58%</div>
             <div class="ps-stat-title">Nocturnal wakes</div>
             <div class="ps-stat-desc">Reduction in environmental noise disruptions during sleep with broadband masking present.</div>
             <div class="ps-stat-cite">Messineo et al., Frontiers 2020</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_37_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(99,102,241,0.15);">
             <div class="ps-stat-num">5 min</div>
             <div class="ps-stat-title">Faster onset</div>
             <div class="ps-stat-desc">Average reduction in sleep onset latency when a stable noise floor is present before lights-out.</div>
             <div class="ps-stat-cite">Messineo et al., 2020 · Crossover RCT</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(99,102,241,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_34_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(99,102,241,0.15);">
             <div class="ps-stat-num" style="font-size: clamp(28px, 3vw, 40px);">Memory+</div>
             <div class="ps-stat-title">Next-day recall</div>
             <div class="ps-stat-desc">Pink noise during SWS enhances declarative memory consolidation on word-pair tests.</div>
@@ -3933,25 +3939,25 @@ high-distraction environment.</p>
         </div>
 
         <div class="ps-stat-grid reveal visible">
-          <div class="ps-stat">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_45_opt.jpg') center/cover no-repeat;">
             <div class="ps-stat-num">7×</div>
             <div class="ps-stat-title">Focus improvement</div>
             <div class="ps-stat-desc">Greater sustained concentration versus standard playlist in cognitive performance trials.</div>
             <div class="ps-stat-cite">Brain.fm · Söderlund 2019</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_25_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(212,160,23,0.15);">
             <div class="ps-stat-num">~120% proven</div>
             <div class="ps-stat-title">Beta wave increase</div>
             <div class="ps-stat-desc">Increase in 12–30 Hz beta activity — the EEG signature of focused cognitive effort.</div>
             <div class="ps-stat-cite">Woods et al., Nature Comms 2024</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_40_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(212,160,23,0.15);">
             <div class="ps-stat-num">95%</div>
             <div class="ps-stat-title">Sustained attention</div>
             <div class="ps-stat-desc">Of participants maintained task focus for 25-minute blocks with structured audio protocol.</div>
             <div class="ps-stat-cite">Cicchetti et al., 2021</div>
           </div>
-          <div class="ps-stat" style="border-left: 1px solid rgba(212,160,23,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_43_opt.jpg') center/cover no-repeat;border-left: 1px solid rgba(212,160,23,0.15);">
             <div class="ps-stat-num" style="font-size:clamp(28px,3vw,42px);">Flow↑</div>
             <div class="ps-stat-title">Lower distraction</div>
             <div class="ps-stat-desc">Reduced mind-wandering when environmental acoustic variability is minimised.</div>
@@ -4048,25 +4054,25 @@ it rises. Nature soundscapes and low-frequency audio shift this needle —
         </div>
 
         <div class="ps-stat-grid reveal visible">
-          <div class="ps-stat">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_55_opt.jpg') center/cover no-repeat;">
             <div class="ps-stat-num" style="font-size:clamp(32px,3vw,46px);">HRV↑</div>
             <div class="ps-stat-title">Vagal tone</div>
             <div class="ps-stat-desc">Measurable increase in heart rate variability — the gold-standard autonomic recovery marker.</div>
             <div class="ps-stat-cite">Thayer &amp; Lane, Neurosci. Rev. 2009</div>
           </div>
-          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_50_opt.jpg') center/cover no-repeat;border-left:1px solid rgba(45,140,106,0.15);">
             <div class="ps-stat-num">3.6×</div>
             <div class="ps-stat-title">Stress reduction</div>
             <div class="ps-stat-desc">Greater reduction in stress response vs silence in controlled autonomic recovery trials.</div>
             <div class="ps-stat-cite">Alvarsson et al., J. Env. Psych 2010</div>
           </div>
-          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_54_opt.jpg') center/cover no-repeat;border-left:1px solid rgba(45,140,106,0.15);">
             <div class="ps-stat-num">5 min</div>
             <div class="ps-stat-title">Onset time</div>
             <div class="ps-stat-desc">Measurable autonomic shifts begin within 5–10 minutes of sound plus slow breathing.</div>
             <div class="ps-stat-cite">Zeidan et al., J. Neurosci. 2011</div>
           </div>
-          <div class="ps-stat" style="border-left:1px solid rgba(45,140,106,0.15);">
+          <div class="ps-stat" style="background: linear-gradient(rgba(5,5,5,0.78) 0%, rgba(8,8,8,0.90) 100%), url('assets/pinterest_53_opt.jpg') center/cover no-repeat;border-left:1px solid rgba(45,140,106,0.15);">
             <div class="ps-stat-num" style="font-size:clamp(28px,3vw,42px);">Vagus</div>
             <div class="ps-stat-title">Direct pathway</div>
             <div class="ps-stat-desc">Nature soundscapes activate the vagus nerve via the auditory-autonomic axis — no effort required.</div>
@@ -4309,7 +4315,7 @@ says, where the evidence is strong, where it's preliminary, and where we
         <!-- Evidence pillars — reworked -->
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; margin-top: 48px;" class="reveal visible">
 
-          <div style="background: var(--surface); padding: 28px 24px;">
+          <div style="background: linear-gradient(rgba(5,5,5,0.82) 0%, rgba(8,8,8,0.93) 100%), url('assets/pinterest_48_opt.jpg') center/cover no-repeat; padding: 28px 24px;">
             <!-- Sleep SVG -->
             <svg viewBox="0 0 60 60" style="width: 44px; height: 44px; margin-bottom: 14px;" xmlns="http://www.w3.org/2000/svg">
               <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(74,158,142,0.15)" stroke-width="1"></circle>
@@ -4333,7 +4339,7 @@ sleep aid — it's acoustic architecture for your bedroom environment. The
             <a href="#outcomes" style="display: inline-block; margin-top: 14px; font-family: var(--m-font); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid var(--accent-dim); padding-bottom: 2px;">See sleep outcomes →</a>
           </div>
 
-          <div style="background: var(--surface); padding: 28px 24px; border-left: 1px solid var(--line); border-right: 1px solid var(--line);">
+          <div style="background: linear-gradient(rgba(5,5,5,0.82) 0%, rgba(8,8,8,0.93) 100%), url('assets/pinterest_46_opt.jpg') center/cover no-repeat; padding: 28px 24px; border-left: 1px solid var(--line); border-right: 1px solid var(--line);">
             <!-- Focus SVG -->
             <svg viewBox="0 0 60 60" style="width: 44px; height: 44px; margin-bottom: 14px;" xmlns="http://www.w3.org/2000/svg">
               <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(201,169,110,0.15)" stroke-width="1"></circle>
@@ -4360,7 +4366,7 @@ prevents it.</p>
             <a href="#outcomes" style="display: inline-block; margin-top: 14px; font-family: var(--m-font); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-decoration: none; border-bottom: 1px solid var(--accent-dim); padding-bottom: 2px;">See focus outcomes →</a>
           </div>
 
-          <div style="background: var(--surface); padding: 28px 24px;">
+          <div style="background: linear-gradient(rgba(5,5,5,0.82) 0%, rgba(8,8,8,0.93) 100%), url('assets/pinterest_30_opt.jpg') center/cover no-repeat; padding: 28px 24px;">
             <!-- Calm / HRV SVG -->
             <svg viewBox="0 0 60 60" style="width: 44px; height: 44px; margin-bottom: 14px;" xmlns="http://www.w3.org/2000/svg">
               <circle cx="30" cy="30" r="28" fill="none" stroke="rgba(74,158,142,0.1)" stroke-width="1"></circle>
@@ -5727,7 +5733,7 @@ require medical framing to be valuable.</p>
         <div class="pillar-nav-grid reveal visible" style="gap: 16px; grid-template-columns: repeat(4, 1fr);">
 
           <!-- SLEEP PATH -->
-          <a href="/soundhub.html#sleep" style="text-decoration: none; color: inherit; background: rgba(99,102,241,0.10); border: 1px solid rgba(99,102,241,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(129,140,248,0.8)';this.style.background='rgba(8,10,24,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(99,102,241,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(99,102,241,0.32)';this.style.background='rgba(99,102,241,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="/soundhub.html#sleep" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_38_opt.jpg') center/cover no-repeat; border: 1px solid rgba(99,102,241,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(129,140,248,0.8)';this.style.background='rgba(8,10,24,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(99,102,241,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(99,102,241,0.32)';this.style.background='rgba(99,102,241,0.10)';this.style.boxShadow='none';this.style.transform='none'">
             <!-- Mono label -->
             <div style="font-family: var(--font-mono); font-size: clamp(26px, 2.4vw, 30px); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #818cf8; margin-bottom: 28px; line-height: 1; text-align: center;">Sleep</div>
             <!-- Glyph — centered -->
@@ -5746,7 +5752,7 @@ require medical framing to be valuable.</p>
           </a>
 
           <!-- FOCUS PATH -->
-          <a href="/soundhub.html#focus" style="text-decoration: none; color: inherit; background: rgba(212,160,23,0.10); border: 1px solid rgba(212,160,23,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(245,158,11,0.8)';this.style.background='rgba(14,11,5,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(212,160,23,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(212,160,23,0.32)';this.style.background='rgba(212,160,23,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="/soundhub.html#focus" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_22_opt.jpg') center/cover no-repeat; border: 1px solid rgba(212,160,23,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(245,158,11,0.8)';this.style.background='rgba(14,11,5,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(212,160,23,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(212,160,23,0.32)';this.style.background='rgba(212,160,23,0.10)';this.style.boxShadow='none';this.style.transform='none'">
             <div style="font-family: var(--font-mono); font-size: clamp(26px, 2.4vw, 30px); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #f59e0b; margin-bottom: 28px; line-height: 1; text-align: center;">Focus</div>
             <div style="font-size: 36px; line-height: 1; color: #f59e0b; margin-bottom: 22px; opacity: 0.85; text-align: center;">◈</div>
             <div style="font-family: var(--font-hero); font-size: clamp(24px, 2.4vw, 34px); font-weight: 700; line-height: 0.95; letter-spacing: -0.025em; text-transform: uppercase; color: #f0ede8; margin-bottom: 16px;">
@@ -5760,7 +5766,7 @@ require medical framing to be valuable.</p>
           </a>
 
           <!-- CALM PATH -->
-          <a href="/soundhub.html#calm" style="text-decoration: none; color: inherit; background: rgba(45,140,106,0.10); border: 1px solid rgba(45,140,106,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(52,211,153,0.8)';this.style.background='rgba(4,14,11,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(52,211,153,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(45,140,106,0.32)';this.style.background='rgba(45,140,106,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="/soundhub.html#calm" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_33_opt.jpg') center/cover no-repeat; border: 1px solid rgba(45,140,106,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(52,211,153,0.8)';this.style.background='rgba(4,14,11,0.92)';this.style.boxShadow='inset 0 0 0 1px rgba(52,211,153,0.15), 0 20px 50px rgba(0,0,0,0.55)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(45,140,106,0.32)';this.style.background='rgba(45,140,106,0.10)';this.style.boxShadow='none';this.style.transform='none'">
             <div style="font-family: var(--font-mono); font-size: clamp(26px, 2.4vw, 30px); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #34d399; margin-bottom: 28px; line-height: 1; text-align: center;">Calm</div>
             <div style="font-size: 36px; line-height: 1; color: #34d399; margin-bottom: 22px; opacity: 0.85; text-align: center;">◯</div>
             <div style="font-family: var(--font-hero); font-size: clamp(24px, 2.4vw, 34px); font-weight: 700; line-height: 0.95; letter-spacing: -0.025em; text-transform: uppercase; color: #f0ede8; margin-bottom: 16px;">
@@ -5774,7 +5780,7 @@ require medical framing to be valuable.</p>
           </a>
 
           <!-- ADHD PATH -->
-          <a href="/soundhub.html#adhd" style="text-decoration: none; color: inherit; background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; position: relative; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(167,139,250,0.85)';this.style.background='rgba(12,6,24,0.94)';this.style.boxShadow='inset 0 0 0 1px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.6)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.32)';this.style.background='rgba(124,58,237,0.10)';this.style.boxShadow='none';this.style.transform='none'">
+          <a href="/soundhub.html#adhd" style="text-decoration: none; color: inherit; background: linear-gradient(rgba(5,5,5,0.72) 0%, rgba(5,5,5,0.82) 100%), url('assets/pinterest_36_opt.jpg') center/cover no-repeat; border: 1px solid rgba(124,58,237,0.32); border-radius: 20px; padding: 32px 22px; display: flex; flex-direction: column; gap: 0; position: relative; transition: border-color 0.32s ease, background 0.32s ease, transform 0.32s ease, box-shadow 0.32s ease;" onmouseover="this.style.borderColor='rgba(167,139,250,0.85)';this.style.background='rgba(12,6,24,0.94)';this.style.boxShadow='inset 0 0 0 1px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.6)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(124,58,237,0.32)';this.style.background='rgba(124,58,237,0.10)';this.style.boxShadow='none';this.style.transform='none'">
             <div style="font-family: var(--font-mono); font-size: clamp(26px, 2.4vw, 30px); font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: #a78bfa; margin-bottom: 28px; line-height: 1; text-align: center;">ADHD</div>
             <div style="font-size: 36px; line-height: 1; background: linear-gradient(135deg,#7c3aed,#c026d3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 22px; opacity: 0.9; text-align: center;">◇</div>
             <div style="font-family: var(--font-hero); font-size: clamp(24px, 2.4vw, 34px); font-weight: 700; line-height: 0.95; letter-spacing: -0.025em; text-transform: uppercase; color: #f0ede8; margin-bottom: 16px;">

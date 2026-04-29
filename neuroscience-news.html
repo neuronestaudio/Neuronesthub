@@ -14,7 +14,7 @@
         // Apply saved theme before paint to prevent FOUC
         (function () {
             try {
-                if (localStorage.getItem('neuronest-theme') === 'light') {
+                if (localStorage.getItem('nn_theme') === 'light') {
                     document.documentElement.setAttribute('data-theme', 'light');
                 }
             } catch (e) {}
@@ -512,39 +512,60 @@
         }
 
         /* ── Hero ────────────────────────────────────────────── */
-        .hero { position: relative; min-height: 64vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero { position: relative; min-height: 64vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero .container { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .hero video { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.3; filter: brightness(0.55); }
         .hero::before { content: ""; position: absolute; inset: 0; background: var(--hero-overlay); z-index: -1; }
-        .hero-eyebrow {
-            font-family: 'Great Vibes', cursive;
-            font-size: clamp(80px, 10vw, 130px);
-            font-weight: 400;
-            text-transform: none;
-            letter-spacing: 0;
-            margin: 0;
-            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 30%, #6366f1 60%, #7e22ce 100%);
+        @keyframes eyebrowGradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .hero-title-group .hero-eyebrow {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(28px, 3.5vw, 52px);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin: 0 0 14px;
+            background: linear-gradient(135deg,
+                #c4b5fd 0%,
+                #818cf8 18%,
+                #6366f1 33%,
+                #a78bfa 48%,
+                #7e22ce 62%,
+                #4f46e5 76%,
+                #c4b5fd 100%
+            );
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             display: block;
-            line-height: 1.0;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
-            position: relative;
-            margin-bottom: -0.12em;
+            text-align: center;
+            line-height: 1.1;
             pointer-events: none;
-            white-space: nowrap;
+            animation: eyebrowGradientShift 5s ease infinite;
         }
         .hero-title-group {
             position: relative;
-            display: inline-block;
-            text-align: left;
+            display: block;
+            text-align: center;
             margin-bottom: 24px;
         }
-        [data-theme="light"] .hero-eyebrow {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #4338ca 100%);
+        [data-theme="light"] .hero-title-group .hero-eyebrow {
+            background: linear-gradient(135deg,
+                #8b5cf6 0%,
+                #4f46e5 20%,
+                #6366f1 40%,
+                #7c3aed 60%,
+                #4338ca 80%,
+                #8b5cf6 100%
+            );
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             background-clip: text;
-            filter: none;
+            animation: eyebrowGradientShift 5s ease infinite;
         }
         .hero h1 {
             font-size: clamp(34px, 7vw, 76px);
@@ -565,7 +586,7 @@
                 0 0 35px rgba(126, 34, 206, 0.11);
         }
         .hero p { font-family: 'Inter', sans-serif; color: var(--text-grey); font-size: 16px; max-width: 540px; margin: 0 auto; }
-        .hero-stats { display: inline-flex; align-items: center; gap: 28px; margin-top: 32px; padding: 16px 28px; border: 1px solid var(--glass-border); border-radius: 60px; background: var(--hero-stats-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-stats { display: inline-flex; align-items: center; gap: 28px; margin-top: 48px; padding: 16px 28px; border: 1px solid var(--glass-border); border-radius: 60px; background: var(--hero-stats-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .hero-stat { display: flex; flex-direction: column; align-items: center; line-height: 1; }
         .hero-stat-num { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700; color: var(--text-white); letter-spacing: -0.5px; }
         .hero-stat-label { font-family: 'Inter', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1.6px; color: var(--text-grey); margin-top: 6px; }
@@ -3455,7 +3476,7 @@
                     </div>
                     <button class="nav-syn-generate" id="syn-generate-btn" type="button" hidden="">Generate <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
                 </div>
-                <a href="file:///C:/Users/dlint/Downloads/neuroscience-news.html" class="nav-brand">
+                <a href="neuroscience-news.html" class="nav-brand">
                     <span class="nav-brand-dim">NEURONEST AU</span>
                     <span class="nav-brand-divider">|</span>
                     <span class="nav-brand-bold">RESEARCH HUB</span>
@@ -3536,7 +3557,7 @@
 auditory and visual 40 Hz gamma stimulation reduces amyloid pathology 
 and rescues cognitive function — the foundational paper behind 
 NeuroNest’s gamma protocols.</p>
-                        <a class="rs-cta" id="rs-cta" href="file:///C:/Users/dlint/Downloads/research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" target="_self" rel="" style="background: linear-gradient(135deg, rgb(196, 77, 26) 0%, rgb(255, 122, 61) 50%, rgb(255, 176, 119) 100%); color: rgb(255, 255, 255);">Read Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+                        <a class="rs-cta" id="rs-cta" href="research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" target="_self" rel="" style="background: linear-gradient(135deg, rgb(196, 77, 26) 0%, rgb(255, 122, 61) 50%, rgb(255, 176, 119) 100%); color: rgb(255, 255, 255);">Read Study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
                     </div>
                     <div class="rs-dots" id="rs-dots"><button class="rs-dot" data-slide="0" aria-label="Go to slide 1" type="button"></button><button class="rs-dot active" data-slide="1" aria-label="Go to slide 2" type="button"></button><button class="rs-dot" data-slide="2" aria-label="Go to slide 3" type="button"></button><button class="rs-dot" data-slide="3" aria-label="Go to slide 4" type="button"></button><button class="rs-dot" data-slide="4" aria-label="Go to slide 5" type="button"></button><button class="rs-dot" data-slide="5" aria-label="Go to slide 6" type="button"></button><button class="rs-dot" data-slide="6" aria-label="Go to slide 7" type="button"></button><button class="rs-dot" data-slide="7" aria-label="Go to slide 8" type="button"></button><button class="rs-dot" data-slide="8" aria-label="Go to slide 9" type="button"></button><button class="rs-dot" data-slide="9" aria-label="Go to slide 10" type="button"></button><button class="rs-dot" data-slide="10" aria-label="Go to slide 11" type="button"></button><button class="rs-dot" data-slide="11" aria-label="Go to slide 12" type="button"></button><button class="rs-dot" data-slide="12" aria-label="Go to slide 13" type="button"></button><button class="rs-dot" data-slide="13" aria-label="Go to slide 14" type="button"></button></div>
                     <div class="rs-ghost-stack" id="rs-ghost-stack" aria-hidden="true" style="display:none;"><button type="button" class="rs-ghost depth-0" data-ghost-slot="0" data-ghost-idx="2" aria-label="Preview slide 3" style="--ghost-gradient: linear-gradient(135deg, #c49200 0%, #E0B100 50%, #f0c200 100%);"><span class="rs-ghost-label">Featured Review · 2025</span><div class="rs-ghost-title">Brainwave Entrainment for Health</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button><button type="button" class="rs-ghost depth-1" data-ghost-slot="1" data-ghost-idx="3" aria-label="Preview slide 4" style="--ghost-gradient: linear-gradient(135deg, #b85220 0%, #ff7a3d 50%, #ffb077 100%);"><span class="rs-ghost-label">Pathway Collection</span><div class="rs-ghost-title">Focus &amp; Cognition</div><svg class="rs-ghost-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>
@@ -3583,7 +3604,7 @@ NeuroNest’s gamma protocols.</p>
                         </span>
                     </a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/learn-more.html" class="feature-card performance-card">
+                    <a href="learn-more.html" class="feature-card performance-card">
                         <div class="perf-waves" aria-hidden="true">
                             <svg viewBox="0 0 400 160" preserveAspectRatio="none" width="100%" height="100%">
                                 <defs>
@@ -3691,7 +3712,7 @@ NeuroNest’s gamma protocols.</p>
 
                 <div class="research-grid" id="notion-grid">
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/enhancement-of-sleep-slow-waves-underlying-mechanisms-and-practical-consequences.html" class="research-card cat-sleep">
+                    <a href="research/enhancement-of-sleep-slow-waves-underlying-mechanisms-and-practical-consequences.html" class="research-card cat-sleep">
                         <div class="card-index">01</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Enhancement of sleep slow waves: underlying mechanisms and practical consequences</h3>
@@ -3705,7 +3726,7 @@ NeuroNest’s gamma protocols.</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/enhancement-of-sleep-slow-waves-underlying-mechanisms-and-practical-consequences.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/gamma-entrainment-binds-higher-order-brain-regions-and-offers-neuroprotection.html" class="research-card cat-focus">
+                    <a href="research/gamma-entrainment-binds-higher-order-brain-regions-and-offers-neuroprotection.html" class="research-card cat-focus">
                         <div class="card-index">02</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Gamma entrainment binds higher-order brain regions and offers neuroprotection</h3>
@@ -3719,7 +3740,7 @@ NeuroNest’s gamma protocols.</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/gamma-entrainment-binds-higher-order-brain-regions-and-offers-neuroprotection.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/auditory-beats-in-the-brain.html" class="research-card cat-other">
+                    <a href="research/auditory-beats-in-the-brain.html" class="research-card cat-other">
                         <div class="card-index">03</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Auditory beats in the brain</h3>
@@ -3733,7 +3754,7 @@ NeuroNest’s gamma protocols.</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/auditory-beats-in-the-brain.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" class="research-card cat-focus">
+                    <a href="research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" class="research-card cat-focus">
                         <div class="card-index">04</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Multi-sensory gamma stimulation ameliorates Alzheimer's-associated pathology and improves cognition</h3>
@@ -3750,7 +3771,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/multi-sensory-gamma-stimulation-ameliorates-alzheimer-s-associated-pathology-and-improves-cognition.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/gamma-frequency-entrainment-attenuates-amyloid-load-and-modifies-microglia.html" class="research-card cat-focus">
+                    <a href="research/gamma-frequency-entrainment-attenuates-amyloid-load-and-modifies-microglia.html" class="research-card cat-focus">
                         <div class="card-index">05</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Gamma frequency entrainment attenuates amyloid load and modifies microglia</h3>
@@ -3764,7 +3785,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/gamma-frequency-entrainment-attenuates-amyloid-load-and-modifies-microglia.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/effect-of-rosary-prayer-and-yoga-mantras-on-autonomic-cardiovascular-rhythms-comparative-study.html" class="research-card cat-other">
+                    <a href="research/effect-of-rosary-prayer-and-yoga-mantras-on-autonomic-cardiovascular-rhythms-comparative-study.html" class="research-card cat-other">
                         <div class="card-index">06</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Effect of rosary prayer and yoga mantras on autonomic cardiovascular rhythms: comparative study</h3>
@@ -3778,7 +3799,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/effect-of-rosary-prayer-and-yoga-mantras-on-autonomic-cardiovascular-rhythms-comparative-study.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/neurohemodynamic-correlates-of-om-chanting-a-pilot-functional-magnetic-resonance-imaging-study.html" class="research-card cat-calm">
+                    <a href="research/neurohemodynamic-correlates-of-om-chanting-a-pilot-functional-magnetic-resonance-imaging-study.html" class="research-card cat-calm">
                         <div class="card-index">07</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Neurohemodynamic correlates of 'OM' chanting: A pilot functional magnetic resonance imaging study</h3>
@@ -3792,7 +3813,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/neurohemodynamic-correlates-of-om-chanting-a-pilot-functional-magnetic-resonance-imaging-study.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/music-structure-determines-heart-rate-variability-of-singers.html" class="research-card cat-other">
+                    <a href="research/music-structure-determines-heart-rate-variability-of-singers.html" class="research-card cat-other">
                         <div class="card-index">08</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Music structure determines heart rate variability of singers</h3>
@@ -3806,7 +3827,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/music-structure-determines-heart-rate-variability-of-singers.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/humming-greatly-increases-nasal-nitric-oxide.html" class="research-card cat-other">
+                    <a href="research/humming-greatly-increases-nasal-nitric-oxide.html" class="research-card cat-other">
                         <div class="card-index">09</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Humming greatly increases nasal nitric oxide</h3>
@@ -3820,7 +3841,7 @@ ES, Singer AC, Tsai LH</p>
                         </div>
                     <button type="button" class="syn-select-btn" data-syn-href="research/humming-greatly-increases-nasal-nitric-oxide.html" aria-label="Add to synthesis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button></a>
 
-                    <a href="file:///C:/Users/dlint/Downloads/research/singing-modulates-mood-stress-cortisol-cytokine-and-neuropeptide-activity-in-cancer-patients-and-carers.html" class="research-card cat-calm">
+                    <a href="research/singing-modulates-mood-stress-cortisol-cytokine-and-neuropeptide-activity-in-cancer-patients-and-carers.html" class="research-card cat-calm">
                         <div class="card-index">10</div>
                         <div class="card-body">
                             <h3 class="research-card__title">Singing modulates mood, stress, cortisol, cytokine and neuropeptide activity in cancer patients and carers</h3>
@@ -4020,7 +4041,7 @@ cross-frequency coupling.</p>
             // ── Theme toggle (light/dark) with localStorage persistence ─
             var root = document.documentElement;
             var stored = null;
-            try { stored = localStorage.getItem('neuronest-theme'); } catch (e) {}
+            try { stored = localStorage.getItem('nn_theme'); } catch (e) {}
             if (stored === 'light') root.setAttribute('data-theme', 'light');
             var themeBtn = document.getElementById('theme-toggle');
             if (themeBtn) {
@@ -4028,10 +4049,10 @@ cross-frequency coupling.</p>
                     var isLight = root.getAttribute('data-theme') === 'light';
                     if (isLight) {
                         root.removeAttribute('data-theme');
-                        try { localStorage.setItem('neuronest-theme', 'dark'); } catch (e) {}
+                        try { localStorage.setItem('nn_theme', 'dark'); } catch (e) {}
                     } else {
                         root.setAttribute('data-theme', 'light');
-                        try { localStorage.setItem('neuronest-theme', 'light'); } catch (e) {}
+                        try { localStorage.setItem('nn_theme', 'light'); } catch (e) {}
                     }
                 });
             }
