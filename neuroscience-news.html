@@ -3344,6 +3344,208 @@
             .paper-modal-cta { justify-content: center; }
         }
 
+        /* ══════════════════════════════════════════════════════
+           DEEP READER — full-content glass morphism overlay
+        ══════════════════════════════════════════════════════ */
+        .reader-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            padding: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [data-theme="light"] .reader-overlay { background: rgba(15, 12, 8, 0.65); }
+        .reader-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .reader-panel {
+            position: relative;
+            width: 100%;
+            max-width: 860px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: rgba(11, 10, 14, 0.92);
+            border-left: 1px solid rgba(255, 255, 255, 0.07);
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.06);
+            transform: translateY(32px) scale(0.985);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        [data-theme="light"] .reader-panel {
+            background: rgba(248, 245, 236, 0.97);
+            border-color: rgba(110, 90, 0, 0.15);
+            box-shadow: 0 0 80px rgba(60, 50, 20, 0.22), inset 0 1px 0 rgba(255,253,245,0.6);
+        }
+        .reader-overlay.open .reader-panel {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Topbar of reader */
+        .reader-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.02);
+            gap: 16px;
+        }
+        [data-theme="light"] .reader-topbar { border-color: rgba(110,90,0,0.12); background: rgba(255,253,245,0.5); }
+        .reader-topbar-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+        .reader-pill {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 4px 10px; border-radius: 30px;
+            background: rgba(224,177,0,0.1); border: 1px solid rgba(224,177,0,0.28);
+            color: var(--accent); font-family: 'Inter', sans-serif;
+            font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .reader-pill::before {
+            content: ""; width: 5px; height: 5px; border-radius: 50%;
+            background: var(--accent); box-shadow: 0 0 6px rgba(224,177,0,0.8);
+            flex-shrink: 0;
+        }
+        .reader-topbar-cat {
+            font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1.2px;
+            padding: 4px 10px; border-radius: 20px; border: 1px solid currentColor;
+            flex-shrink: 0;
+        }
+        .reader-topbar-cat.cat-focus { color: var(--cat-focus); }
+        .reader-topbar-cat.cat-sleep { color: var(--cat-sleep); }
+        .reader-topbar-cat.cat-calm  { color: var(--cat-calm); }
+        .reader-topbar-cat.cat-other { color: var(--cat-other); }
+
+        .reader-close {
+            width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+            background: transparent; color: var(--text-grey); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
+        }
+        [data-theme="light"] .reader-close { border-color: rgba(110,90,0,0.2); color: #6B6557; }
+        .reader-close:hover { background: var(--accent); color: #1A1815; border-color: transparent; transform: rotate(90deg); }
+        .reader-close svg { width: 14px; height: 14px; }
+
+        /* Body of reader */
+        .reader-body {
+            flex: 1; overflow-y: auto; padding: 0;
+            scroll-behavior: smooth;
+        }
+        .reader-body::-webkit-scrollbar { width: 4px; }
+        .reader-body::-webkit-scrollbar-thumb { background: rgba(224,177,0,0.25); border-radius: 2px; }
+        .reader-body::-webkit-scrollbar-track { background: transparent; }
+
+        /* Injected article content container */
+        .reader-article {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 52px 40px 80px;
+            font-family: 'Inter', sans-serif;
+            color: #b2b2b2;
+        }
+        [data-theme="light"] .reader-article { color: #4a453c; }
+        .reader-article h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(24px, 3.5vw, 38px);
+            font-weight: 800; line-height: 1.15; letter-spacing: -0.4px;
+            color: #ffffff; margin-bottom: 12px;
+        }
+        [data-theme="light"] .reader-article h1 { color: #1A1815; }
+        .reader-article .reader-authors {
+            font-size: 13px; color: #6b7280; margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 28px;
+        }
+        [data-theme="light"] .reader-article .reader-authors {
+            color: #6B6557; border-color: rgba(110,90,0,0.15);
+        }
+        .reader-article h3 {
+            font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700;
+            color: #ffffff; margin: 40px 0 14px; letter-spacing: 0.3px;
+        }
+        [data-theme="light"] .reader-article h3 { color: #1A1815; }
+        .reader-article h4 {
+            font-size: 16px; font-weight: 600; color: #d0cfc8; margin: 24px 0 8px;
+        }
+        [data-theme="light"] .reader-article h4 { color: #3a3630; }
+        .reader-article p { font-size: 15px; line-height: 1.75; margin-bottom: 16px; }
+        .reader-article ul, .reader-article ol { margin: 10px 0 16px 22px; }
+        .reader-article li { font-size: 14px; line-height: 1.7; margin-bottom: 6px; }
+        .reader-article strong { color: #e5e4de; font-weight: 600; }
+        [data-theme="light"] .reader-article strong { color: #2a2720; }
+        .reader-article table {
+            width: 100%; border-collapse: collapse; font-size: 13px;
+            margin: 20px 0; overflow-x: auto; display: block;
+        }
+        .reader-article th {
+            padding: 10px 14px; border-bottom: 2px solid rgba(255,255,255,0.12);
+            text-align: left; font-weight: 600; color: #d0cfc8;
+        }
+        [data-theme="light"] .reader-article th { border-color: rgba(110,90,0,0.2); color: #2a2720; }
+        .reader-article td {
+            padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: #9ca3af;
+        }
+        [data-theme="light"] .reader-article td { border-color: rgba(110,90,0,0.1); color: #6B6557; }
+        .reader-article hr {
+            border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 32px 0;
+        }
+        [data-theme="light"] .reader-article hr { border-color: rgba(110,90,0,0.15); }
+        .reader-article em { font-style: italic; }
+
+        /* Loading skeleton */
+        .reader-loading {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 20px; height: 100%;
+            padding: 80px 40px;
+            color: var(--text-muted);
+        }
+        .reader-loading-spinner {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 2px solid rgba(224,177,0,0.15);
+            border-top-color: var(--accent);
+            animation: reader-spin 0.8s linear infinite;
+        }
+        @keyframes reader-spin { to { transform: rotate(360deg); } }
+        .reader-loading-text {
+            font-family: 'Inter', sans-serif; font-size: 12px;
+            text-transform: uppercase; letter-spacing: 1.4px;
+        }
+
+        /* Footer of reader */
+        .reader-footer {
+            flex-shrink: 0; padding: 16px 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex; justify-content: flex-end; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.02);
+        }
+        [data-theme="light"] .reader-footer {
+            border-color: rgba(110,90,0,0.12); background: rgba(255,253,245,0.5);
+        }
+        .reader-back-btn {
+            font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1.3px;
+            color: var(--text-muted); background: transparent; border: none; cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .reader-back-btn:hover { color: var(--text-white); }
+        [data-theme="light"] .reader-back-btn:hover { color: #1A1815; }
+        @media (max-width: 600px) {
+            .reader-panel { max-width: 100%; }
+            .reader-article { padding: 36px 24px 60px; }
+        }
+
         /* ── Responsive ──────────────────────────────────────── */
         @media (max-width: 900px) {
             .category-tiles { grid-template-columns: repeat(3, 1fr); }
@@ -4930,19 +5132,126 @@ cross-frequency coupling.</p>
                 });
             }
 
-            // Hook into research-card and news-card clicks → show modal first
-            document.querySelectorAll('.research-card, .news-card').forEach(function (card) {
-                card.addEventListener('click', function (e) {
-                    // Cmd/Ctrl/middle click bypass — power user expects direct nav
-                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+            // ── Deep Reader ───────────────────────────────────────
+            var readerOverlay = document.getElementById('reader-overlay');
+            var readerBody = document.getElementById('reader-body');
+            var readerArticle = document.getElementById('reader-article');
+            var readerLoading = document.getElementById('reader-loading');
+            var readerCat = document.getElementById('reader-cat');
+            var readerClose = document.getElementById('reader-close');
+            var readerBackBtn = document.getElementById('reader-back-btn');
+            var readerCache = {};
 
+            function openReader(opts) {
+                if (!readerOverlay) return;
+                var summary = opts.summary || {};
+                // Set category badge
+                if (readerCat) {
+                    readerCat.textContent = summary.category || 'Research';
+                    readerCat.className = 'reader-topbar-cat ' + (summary.catClass || 'cat-other');
+                }
+                // Reset body
+                readerArticle.style.display = 'none';
+                readerArticle.innerHTML = '';
+                readerLoading.style.display = 'flex';
+                readerBody.scrollTop = 0;
+
+                // Show overlay
+                readerOverlay.classList.add('open');
+                readerOverlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+                if (readerClose) setTimeout(function () { readerClose.focus(); }, 50);
+
+                // Fetch content
+                var href = opts.href;
+                if (readerCache[href]) {
+                    injectReaderContent(readerCache[href]);
+                    return;
+                }
+                fetch(href)
+                    .then(function (r) { return r.text(); })
+                    .then(function (html) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+                        var article = doc.querySelector('article');
+                        var bodyContent = article ? article.querySelector('.body-content') : null;
+                        var h1El = article ? article.querySelector('h1') : null;
+                        var authorsEl = article ? article.querySelector('.authors') : null;
+
+                        var titleHTML = h1El ? h1El.outerHTML : '';
+                        var authorsHTML = authorsEl ? '<p class="reader-authors">' + authorsEl.innerHTML + '</p>' : '';
+                        var contentHTML = bodyContent ? bodyContent.innerHTML : (article ? article.innerHTML : '<p>Content unavailable.</p>');
+
+                        // Remove meta-bar and first h1/authors from body if already in header
+                        var combined = titleHTML + authorsHTML + contentHTML;
+                        readerCache[href] = combined;
+                        injectReaderContent(combined);
+                    })
+                    .catch(function () {
+                        readerLoading.style.display = 'none';
+                        readerArticle.style.display = 'block';
+                        readerArticle.innerHTML = '<p style="color:var(--text-muted);padding:40px 0;">Could not load this investigation. <a href="' + href + '" style="color:var(--accent);">Open directly →</a></p>';
+                    });
+            }
+
+            function injectReaderContent(html) {
+                readerLoading.style.display = 'none';
+                readerArticle.innerHTML = html;
+                readerArticle.style.display = 'block';
+            }
+
+            function closeReader() {
+                if (!readerOverlay) return;
+                readerOverlay.classList.remove('open');
+                readerOverlay.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+
+            if (readerOverlay) {
+                readerOverlay.addEventListener('click', function (e) {
+                    if (e.target === readerOverlay) closeReader();
+                });
+                if (readerClose) readerClose.addEventListener('click', closeReader);
+                if (readerBackBtn) readerBackBtn.addEventListener('click', closeReader);
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && readerOverlay.classList.contains('open')) closeReader();
+                });
+            }
+
+            // Rewire "Read full study" in summary modal → open deep reader
+            if (modalCtaEl) {
+                modalCtaEl.addEventListener('click', function (e) {
+                    var href = modalCtaEl.getAttribute('href');
+                    if (!href || href === '#' || href.indexOf('http') === 0) return; // external — let navigate
+                    e.preventDefault();
+                    var summary = PAPER_SUMMARIES[href] || {};
+                    closePaperModal();
+                    openReader({ href: href, summary: summary });
+                });
+            }
+
+            // Hook into research-card clicks → show deep reader directly for internal papers
+            document.querySelectorAll('.research-card').forEach(function (card) {
+                card.addEventListener('click', function (e) {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+                    var href = card.getAttribute('href');
+                    if (!href || href.indexOf('http') === 0) return; // external — navigate normally
+                    e.preventDefault();
+                    var summary = PAPER_SUMMARIES[href] || {};
+                    openReader({ href: href, summary: summary });
+                });
+            });
+
+            // News cards still use the summary modal (external links)
+            document.querySelectorAll('.news-card').forEach(function (card) {
+                card.addEventListener('click', function (e) {
+                    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
                     var href = card.getAttribute('href');
                     if (!href) return;
-                    if (!PAPER_SUMMARIES[href]) return; // no curated summary, allow normal nav
-
+                    if (!PAPER_SUMMARIES[href]) return;
                     e.preventDefault();
-                    var titleEl = card.querySelector('.research-card__title, .news-card__title');
-                    var descEl = card.querySelector('.research-card__desc, .news-card__source');
+                    var titleEl = card.querySelector('.news-card__title');
+                    var descEl = card.querySelector('.news-card__source');
                     openPaperModal({
                         href: href,
                         title: titleEl ? titleEl.textContent.trim() : '',
@@ -5946,6 +6255,31 @@ cross-frequency coupling.</p>
     <!-- Synthesis Report Modal -->
     <div class="syn-modal" id="syn-modal" role="dialog" aria-modal="true" aria-labelledby="syn-report-title" aria-hidden="true">
         <div class="syn-report" id="syn-report"></div>
+    </div>
+
+    <!-- Deep Reader Overlay — full article content glass morphism panel -->
+    <div class="reader-overlay" id="reader-overlay" role="dialog" aria-modal="true" aria-label="Research paper reader" aria-hidden="true">
+        <div class="reader-panel" id="reader-panel">
+            <div class="reader-topbar">
+                <div class="reader-topbar-left">
+                    <span class="reader-pill">Deep Investigation</span>
+                    <span class="reader-topbar-cat" id="reader-cat">Research</span>
+                </div>
+                <button class="reader-close" id="reader-close" aria-label="Close reader">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="reader-body" id="reader-body">
+                <div class="reader-loading" id="reader-loading">
+                    <div class="reader-loading-spinner"></div>
+                    <span class="reader-loading-text">Loading investigation…</span>
+                </div>
+                <div class="reader-article" id="reader-article" style="display:none;"></div>
+            </div>
+            <div class="reader-footer">
+                <button class="reader-back-btn" id="reader-back-btn" type="button">Close ✕</button>
+            </div>
+        </div>
     </div>
 
     <!-- Paper Summary Modal -->

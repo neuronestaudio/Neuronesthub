@@ -5,12 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SoundHub — Neuronest</title>
 <script>
-  // Apply saved theme before first paint to prevent flash
-  try {
-    if (localStorage.getItem('nn_theme') === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  } catch(e) {}
+  // Dark mode is always the default — clear any saved light preference
+  try { localStorage.removeItem('nn_theme'); } catch(e) {}
 </script>
 <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 <style>
@@ -478,6 +474,7 @@
 
   /* Section headers */
   .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.12em; }
+  .research-section .section-label { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.1em; }
 
   /* Uploads Log */
   .uploads-log { background: var(--surface-section-warm); border: 1px solid var(--hairline); padding: 24px; box-shadow: var(--inset-highlight), var(--shadow-section); }
@@ -1391,9 +1388,14 @@
   [data-theme="light"] .archive-card,
   [data-theme="light"] .framework-card,
   [data-theme="light"] .queue-item {
-    background: var(--surface-1) !important;
+    background: rgba(232, 230, 224, 0.5) !important;
     border-color: var(--hairline) !important;
     box-shadow: var(--shadow-card);
+  }
+  /* Ensure text inside JS-rendered cards is readable in light mode */
+  [data-theme="light"] .lib-card p,
+  [data-theme="light"] .lib-card span:not(.fav-btn *) {
+    color: var(--text-primary) !important;
   }
   [data-theme="light"] .lib-card:hover,
   [data-theme="light"] .archive-card:hover,
@@ -2827,10 +2829,7 @@ sound, matched to you.
 <script>
 /* ===== Theme toggle ===== */
 (function initTheme() {
-  try {
-    const saved = localStorage.getItem('nn_theme');
-    if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
-  } catch(e) {}
+  // Dark is default; light only applied when explicitly toggled this session
 })();
 function toggleTheme() {
   const root = document.documentElement;
@@ -3801,7 +3800,7 @@ function renderGallery() {
       // ── ALBUM SHELF VIEW ──
       document.getElementById('gallery-subtitle').textContent = `${NN_ALBUMS.length} album${NN_ALBUMS.length !== 1 ? 's' : ''}`;
       el.innerHTML = NN_ALBUMS.map(album => `
-        <div onclick="openNNAlbum('${album.id}')"
+        <div class="lib-card" onclick="openNNAlbum('${album.id}')"
           style="background:linear-gradient(145deg,#1c1a10 0%,#111111 55%,#0d0d0d 100%);border:1px solid rgba(224,177,0,0.2);cursor:pointer;display:flex;flex-direction:column;transition:all 0.18s;position:relative;"
           onmouseover="this.style.borderColor='rgba(224,177,0,0.55)';this.style.transform='translateY(-2px)';"
           onmouseout="this.style.borderColor='rgba(224,177,0,0.2)';this.style.transform='translateY(0)';">
@@ -3855,7 +3854,7 @@ function renderGallery() {
       ${album.releases.map(t => {
         const trackObj = {id:t.id,title:t.title,creator:'Neuronest',category:'Focus',tags:['Meditation'],duration:'—'};
         return `
-        <div onclick="playTrack(${JSON.stringify(trackObj).replace(/"/g,"'")})"
+        <div class="lib-card" onclick="playTrack(${JSON.stringify(trackObj).replace(/"/g,"'")})"
           style="background:linear-gradient(145deg,#1a1710 0%,#111111 60%,#0d0d0d 100%);border:1px solid rgba(224,177,0,0.18);cursor:pointer;display:flex;flex-direction:column;transition:border-color 0.15s;position:relative;"
           onmouseover="this.style.borderColor='rgba(224,177,0,0.5)'" onmouseout="this.style.borderColor='rgba(224,177,0,0.18)'">
           <div style="position:relative;height:160px;overflow:hidden;">
@@ -3920,7 +3919,7 @@ function renderGallery() {
 
   } else {
     el.innerHTML = visible.map(t => `
-      <div onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})"
+      <div class="lib-card" onclick="playTrack(${JSON.stringify(t).replace(/"/g,"'")})"
         style="background:linear-gradient(145deg,#161616 0%,#111111 55%,#0d0d0d 100%);border:1px solid var(--hairline);cursor:pointer;display:flex;flex-direction:column;transition:border-color 0.15s;position:relative;"
         onmouseover="this.style.borderColor='${catHover(t.category)}'" onmouseout="this.style.borderColor='var(--hairline)'">
         <div style="position:relative;height:160px;overflow:hidden;">
